@@ -85,6 +85,28 @@ function reformRouters(routersList) {
             ]
         },
 
+        {
+            path: '/home',
+            component: Layout,
+            redirect: '/home/index',
+            children: [
+                { path: 'index', component: () => import('@/views/home/index'), name: 'home', meta: {title: '面板'} }
+            ]
+        },
+        {
+            path: '/allAthlete',
+            component: Layout,
+            redirect: '/allAthlete/list',
+            // name: 'allAthlete',
+            // meta: {title: '所有运动员'},
+            children: [
+                { path: 'create', component: () => import('@/views/allAthlete/create'), name: 'allAthleteCreate', meta: { title: '新建队员' }, hidden: true},
+                { path: 'edit/:id(\\d+)', component: () => import('@/views/allAthlete/edit'), name: 'allAthleteEdit', meta: { title: '编辑队员', noCache: true }, hidden: true },
+                { path: 'list', component: () => import('@/views/allAthlete/list'), name: 'allAthleteList', meta: { title: '所有运动员' }}
+            ]
+        },
+
+
         // {
         //   path: '/components',
         //   component: Layout,

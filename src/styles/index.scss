@@ -5,6 +5,12 @@
 @import './sidebar.scss';
 @import './btn.scss';
 
+* {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  font-style: normal;
+}
 body {
   height: 100%;
   -moz-osx-font-smoothing: grayscale;
