@@ -42,7 +42,8 @@ export default {
 <style rel="stylesheet/scss" lang="scss" scoped>
 .navbar {
   border-radius: 0px !important;
-    padding: 0 14px;
+    background: rgb(48, 65, 86);
+    padding: 15px 15px 15px 0;
     .el-row {
         margin-top: 10px;
     }

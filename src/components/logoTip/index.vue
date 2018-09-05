@@ -1,7 +1,7 @@
 <template>
     <div class="top-logo clearfix">
         <div class="left">
-            <img src="http://img.zcool.cn/community/0117e2571b8b246ac72538120dd8a4.jpg@1280w_1l_2o_100sh.jpg" alt="">
+            <img src="http://t2.hddhhn.com/uploads/tu/201707/200/8.jpg" alt="">
             <span>擎动科技</span>
         </div>
         <div class="right">
