@@ -101,7 +101,7 @@ function reformRouters(routersList) {
             // meta: {title: '所有运动员'},
             children: [
                 { path: 'create', component: () => import('@/views/allAthlete/create'), name: 'allAthleteCreate', meta: { title: '新建队员' }, hidden: true},
-                { path: 'edit/:id(\\d+)', component: () => import('@/views/allAthlete/edit'), name: 'allAthleteEdit', meta: { title: '编辑队员', noCache: true }, hidden: true },
+                { path: 'edit', component: () => import('@/views/allAthlete/edit'), name: 'allAthleteEdit', meta: { title: '编辑队员', noCache: true }, hidden: true },
                 { path: 'list', component: () => import('@/views/allAthlete/list'), name: 'allAthleteList', meta: { title: '所有运动员' }}
             ]
         },

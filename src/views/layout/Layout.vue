@@ -80,6 +80,6 @@ export default {
     top: 0;
   }
   .bottom-content {
-    padding-top: 85px;
+    padding-top: 125px;
   }
 </style>

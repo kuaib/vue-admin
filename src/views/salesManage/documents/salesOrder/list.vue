@@ -9,7 +9,7 @@
             <el-button type="primary">查询</el-button>
             <el-button type="primary">导出</el-button>
         </el-row>
-        <el-row class="table-wwrapper">
+        <el-row class="table-wrapper">
             <el-table
                     :header-cell-style="setRowStyle"
                     :data="salesOrderList"
@@ -124,7 +124,7 @@
 </script>
 <style lang="scss" scoped>
     // >20,才能让表格的border都显示
-    .table-wwrapper {
+    .table-wrapper {
         margin-top: 22px;
     }
 </style>

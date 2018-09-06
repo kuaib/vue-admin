@@ -138,9 +138,10 @@ export default {
         margin-left: 15px;
       }
       &.active {
-        background-color: #42b983;
+        background-color: #66b1ff;
+        /*background-color: #42b983;*/
         color: #fff;
-        border-color: #42b983;
+        border-color: #66b1ff;
         &::before {
           content: '';
           background: #fff;

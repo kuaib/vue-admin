@@ -181,11 +181,11 @@ code {
 }
 
 .filter-container {
-  padding-bottom: 10px;
+  padding-bottom: 12px;
   .filter-item {
     display: inline-block;
     vertical-align: middle;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
   }
 }
 
@@ -200,4 +200,11 @@ code {
 
 .table-wrappe {
   padding: 1px;  // 主要为了有时候表格的某一个边框不显示
+}
+
+.left {
+  float: left;
+}
+.right {
+  float: right;
 }

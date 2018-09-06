@@ -2,7 +2,7 @@
     <div class="top-logo clearfix">
         <div class="left">
             <img src="http://t2.hddhhn.com/uploads/tu/201707/200/8.jpg" alt="">
-            <span>擎动科技</span>
+            <span>aaa</span>
         </div>
         <div class="right">
             <slot></slot>

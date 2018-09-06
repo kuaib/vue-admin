@@ -3,13 +3,14 @@
         <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm"
                  label-position="left">
             <div class="title-container">
-                <h3 class="title">系统登录</h3>
+                <h3 class="title">{{$t('login.title')}}</h3>
+                <lang-select class="set-language"></lang-select>
             </div>
             <el-form-item prop="username">
                 <span class="svg-container svg-container_login">
                   <svg-icon icon-class="user"/>
                 </span>
-                <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="账号"></el-input>
+                <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" :placeholder="$t('login.username')"></el-input>
             </el-form-item>
 
             <el-form-item prop="password">
@@ -18,7 +19,7 @@
                 </span>
                 <el-input name="password" :type="passwordType" @keyup.enter.native="handleLogin"
                           v-model="loginForm.password" autoComplete="on"
-                          placeholder="密码"></el-input>
+                          :placeholder="$t('login.password')"></el-input>
                 <span class="show-pwd" @click="showPwd">
                     <svg-icon v-show="passwordType==='password'" icon-class="eyeclose"/>
                     <svg-icon v-show="!passwordType" icon-class="eye"/>
@@ -26,12 +27,12 @@
             </el-form-item>
 
             <div class="tips">
-                <span @click="showDialog=true">忘记密码 ?</span>
+                <span @click="showDialog=true">{{$t('login.forgetPswd')}}</span>
             </div>
-            <el-button class="loginBtn" type="primary" :loading="loading" @click.native.prevent="handleLogin">登录</el-button>
+            <el-button class="loginBtn" type="primary" :loading="loading" @click.native.prevent="handleLogin">{{$t('login.logIn')}}</el-button>
         </el-form>
 
-        <el-dialog title="忘记密码" :visible.sync="showDialog" append-to-body>
+        <el-dialog :title="$t('login.forgetPswd')" :visible.sync="showDialog" append-to-body>
             <br/>
             <forget-pswd/>
         </el-dialog>
@@ -40,28 +41,29 @@
 </template>
 
 <script>
+    import LangSelect from '@/components/LangSelect'
     import forgetPswd from './forgetPswd'
 
     export default {
-        components: {forgetPswd},
+        components: {LangSelect, forgetPswd},
         name: 'login',
         data() {
             const validateUsername = (rule, value, callback) => {
                 if (value.trim() === '') {
-                    callback(new Error('请输入用户名'))
+                    callback(new Error(this.$t('login.usernameW1')))
                 } else if (this.syncText) {
-                    callback(new Error('用户名不存在'))
+                    callback(new Error(this.$t('login.usernameW2')))
                 } else {
                     callback()
                 }
             }
             const validatePassword = (rule, value, callback) => {
                 if (value === '') {
-                    callback(new Error('请输入密码'))
+                    callback(new Error(this.$t('login.passwordW1')))
                 } else if (this.syncTextPwd) {
-                    callback(new Error('密码不正确'))
+                    callback(new Error(this.$t('login.passwordW2')))
                 } else if (value.length < 6) {
-                    callback(new Error('密码长度不能小于6位'))
+                    callback(new Error(this.$t('login.passwordW3')))
                 } else {
                     callback()
                 }
@@ -199,6 +201,12 @@
                 margin: 0px auto 40px auto;
                 text-align: center;
                 font-weight: bold;
+            }
+            .set-language {
+                color: #fff;
+                position: absolute;
+                top: 5px;
+                right: 0px;
             }
         }
         .show-pwd {
