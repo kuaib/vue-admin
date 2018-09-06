@@ -55,41 +55,52 @@
 
         <el-table :data="list" v-loading="listLoading" border fit highlight-current-row
                   style="width: 100%;min-height:1000px;">
-            <!--<el-table-column align="center" :label="$t('table.id')" width="65">-->
-                <!--<template slot-scope="scope">-->
-                    <!--<span>{{scope.row.id}}</span>-->
-                <!--</template>-->
-            <!--</el-table-column>-->
-            <el-table-column align="center" :label="$t('table.date')">
+            <el-table-column align="center" :label="$t('allAthlete.name')">
                 <template slot-scope="scope">
                     <span>{{scope.row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" :label="$t('table.author')">
+            <el-table-column align="center" :label="$t('allAthlete.special')">
                 <template slot-scope="scope">
                     <span>{{scope.row.author}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" :label="$t('table.reviewer')">
+            <el-table-column align="center" :label="$t('allAthlete.sex')">
                 <template slot-scope="scope">
                     <span style='color:red;'>{{scope.row.reviewer}}</span>
                 </template>
             </el-table-column>
-            <el-table-column :label="$t('table.importance')">
+            <el-table-column :label="$t('allAthlete.age')">
                 <template slot-scope="scope">
                     <svg-icon v-for="n in +scope.row.importance" icon-class="star" class="meta-item__icon" :key="n"></svg-icon>
                 </template>
             </el-table-column>
-            <el-table-column align="center" :label="$t('table.readings')" width="95">
+            <el-table-column align="center" :label="$t('allAthlete.height')">
                 <template slot-scope="scope">
                     <span v-if="scope.row.pageviews" class="link-type">{{scope.row.pageviews}}</span>
                     <span v-else>0</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" :label="$t('table.actions')" width="230" class-name="small-padding fixed-width">
+            <el-table-column align="center" :label="$t('allAthlete.tel')">
                 <template slot-scope="scope">
-                    <el-button type="primary" size="mini"><router-link :to="{path: '/allAthlete/edit',query: {id:scope.row.id}}">{{$t('table.edit')}}</router-link></el-button>
-                    <el-button v-if="scope.row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">{{$t('table.delete')}}</el-button>
+                    <span v-if="scope.row.pageviews" class="link-type">{{scope.row.pageviews}}</span>
+                    <span v-else>0</span>
+                </template>
+            </el-table-column>
+            <el-table-column align="center" :label="$t('allAthlete.wx')">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.pageviews" class="link-type">{{scope.row.pageviews}}</span>
+                    <span v-else>0</span>
+                </template>
+            </el-table-column>
+            <el-table-column align="center" :label="$t('commonwords.edit')">
+                <template slot-scope="scope">
+                    <el-button type="primary" size="mini"><router-link :to="{path: '/allAthlete/edit',query: {id:scope.row.id}}"><i class="el-icon-edit"></i></router-link></el-button>
+                </template>
+            </el-table-column>
+            <el-table-column align="center" :label="$t('commonwords.delete')">
+                <template slot-scope="scope">
+                    <el-button size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')"><i class="el-icon-delete"></i></el-button>
                 </template>
             </el-table-column>
         </el-table>

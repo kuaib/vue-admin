@@ -64,12 +64,19 @@ export default {
     },
     // common words
     commonwords: {
+        pIpt: 'Please enter a ',
+        pIptA: 'Please enter an ',
+        pSel: 'Please select a ',
+        pSelA: 'Please select an ',
         cancel: 'Cancel',
         confirm: 'Confirm',
+        reset: 'Reset',
         edit: 'Edit',
         create: 'Create',
-        actions: 'actions',
-        export: 'export'
+        actions: 'Actions',
+        export: 'Export',
+        athlete: 'Athlete',
+        teammember: 'Team member'
     },
     navbar: {
         logOut: 'Log Out',
@@ -94,6 +101,27 @@ export default {
         passwordW1: 'Please enter the password',
         passwordW2: 'Password is incorrect',
         passwordW3: 'Password length should not be less than 6 bits',
+    },
+    // 所有运动员页面
+    allAthlete: {
+        baseInfo: 'Basic information',
+        dailyMonitoring: 'Daily monitoring',
+        damageRisk: 'Damage risk',
+        ranks: 'ranks',
+        title: 'Photo uploading of athletes',
+
+        name: 'Name',
+        special: 'Special',
+        sex: 'Sex',
+        age: 'Age',
+        height: 'Height',
+        tel: 'Telephone',
+        wx: 'WeChat',
+        birthday: 'Birthday',
+        weight: 'Weight',
+        idCard: 'ID',
+        male: 'Male',
+        female: 'Female'
     },
 
 

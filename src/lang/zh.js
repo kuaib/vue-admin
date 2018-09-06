@@ -64,14 +64,20 @@ export default {
     },
     // 常用词
     commonwords: {
-        Cancel: '取 消',
-        Confirm: '确 定',
-        Edit: '编辑',
-        Create: '新建',
-        Actions: '操作',
-        Export: '导出',
-        Athlete: '运动员',
-        Teammember: '队员'
+        pIpt: '请输入',
+        pIptA: '请输入',
+        pSel: '请选择',
+        pSelA: '请选择',
+        cancel: '取 消',
+        confirm: '确 认',
+        reset: '重 置',
+        edit: '编辑',
+        delete: '删除',
+        create: '新建',
+        actions: '操作',
+        export: '导出',
+        athlete: '运动员',
+        teammember: '队员'
     },
     navbar: {
         logOut: '注销',
@@ -100,12 +106,24 @@ export default {
     },
     // 所有运动员页面
     allAthlete: {
-        list: {
-            BaseInfo: '基础信息',
-            Dailymonitoring: '日常监测',
-            Damagerisk: '损伤风险',
-            Ranks: '队伍',
-        }
+        baseInfo: '基础信息',
+        dailyMonitoring: '日常监测',
+        damageRisk: '损伤风险',
+        ranks: '队伍',
+        title: '运动员照片上传',
+
+        name: '姓名',
+        special: '专项',
+        sex: '性别',
+        age: '年龄',
+        height: '身高',
+        tel: '电话',
+        wx: '微信',
+        birthday: '生日',
+        weight: '体重',
+        idCard: '身份证',
+        male: '男',
+        female: '女'
     },
 
 
