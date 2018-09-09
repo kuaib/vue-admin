@@ -76,12 +76,13 @@ export default {
         actions: 'Actions',
         export: 'Export',
         athlete: 'Athlete',
-        teammember: 'Team member'
+        member: 'Member',
+        team: 'Team'
     },
     navbar: {
         logOut: 'Log Out',
         allAthlete: 'All athlete',
-        ranksManage: 'Ranks management',
+        teamManage: 'Ranks management',
         enterData: 'Enter data',
         test: 'Test',
 

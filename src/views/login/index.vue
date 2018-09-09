@@ -50,8 +50,8 @@
         data() {
             const validateUsername = (rule, value, callback) => {
                 if (value.trim() === '') {
-                    callback(new Error(this.$t('login.usernameW1')))
-                } else if (this.syncText) {
+                    callback(new Error('请输入用户名'))
+                } else if (this.syncTextUser) {
                     callback(new Error(this.$t('login.usernameW2')))
                 } else {
                     callback()
@@ -59,11 +59,9 @@
             }
             const validatePassword = (rule, value, callback) => {
                 if (value === '') {
-                    callback(new Error(this.$t('login.passwordW1')))
-                } else if (this.syncTextPwd) {
-                    callback(new Error(this.$t('login.passwordW2')))
+                    callback(new Error('请输入密码'))
                 } else if (value.length < 6) {
-                    callback(new Error(this.$t('login.passwordW3')))
+                    callback(new Error('密码长度不能小于6位'))
                 } else {
                     callback()
                 }
@@ -74,18 +72,16 @@
                     password: '1111111'
                 },
                 loginRules: {
-                    username: [{required: true, trigger: 'blur', validator: validateUsername}],
+                    username: [{required: true, trigger: 'blur', message: '请输入用户名'}],
                     password: [{required: true, trigger: 'blur', validator: validatePassword}]
                 },
                 passwordType: 'password',
                 loading: false,
-                showDialog: false,
-
-                syncTextUser: '',   // 接口返回内容(用户名提示)
-                syncTextPwd: '',    // 接口返回内容(密码提示)
+                showDialog: false
             }
         },
         methods: {
+            // 密码可见性切换
             showPwd() {
                 if (this.passwordType === 'password') {
                     this.passwordType = ''

@@ -4,7 +4,7 @@
           <el-row>
               <!--<el-button type="primary"><router-link to="/">去首页</router-link></el-button>-->
               <el-button type="primary" v-if="$route.path.indexOf('/dashboard')!=-1">{{$t('navbar.allAthlete')}}</el-button>
-              <el-button type="primary">{{$t('navbar.ranksManage')}}</el-button>
+              <el-button type="primary">{{$t('navbar.teamManage')}}</el-button>
               <el-button type="primary">{{$t('navbar.enterData')}}</el-button>
               <el-button type="primary">{{$t('navbar.test')}}</el-button>
               <el-button type="primary" @click="logout">{{$t('navbar.logOut')}}</el-button>
@@ -29,7 +29,7 @@ export default {
     ])
   },
     created() {
-      console.log(this.$route)
+      // console.log(this.$route)
     },
   methods: {
     toggleSideBar() {
