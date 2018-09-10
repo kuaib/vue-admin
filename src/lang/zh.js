@@ -77,12 +77,13 @@ export default {
         actions: '操作',
         export: '导出',
         athlete: '运动员',
-        teammember: '队员'
+        member: '队员',
+        team: '队伍'
     },
     navbar: {
         logOut: '注销',
         allAthlete: '所有运动员',
-        ranksManage: '队伍管理',
+        teamManage: '队伍管理',
         enterData: '录入数据',
         test: '测试',
 
