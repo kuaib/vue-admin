@@ -18,7 +18,7 @@
               style="width: 100%;">
       <el-table-column sortable align="center" label="队名">
         <template slot-scope="scope">
-          <span>{{scope.row.teamName}}</span>
+          <router-link tag="div" :to="{path: '/',query:{id: scope.row.id}}">{{scope.row.teamName}}</router-link>
         </template>
       </el-table-column>
       <el-table-column sortable align="center" label="专项">
@@ -52,6 +52,7 @@
 </template>
 
 <script>
+  import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article'
   import { getTeamList, deleteTeam } from '@/api/team'
   import waves from '@/directive/waves' // 水波纹指令
 
@@ -77,6 +78,9 @@
       this.getList()
     },
     methods: {
+      aaa() {
+        alert(34343)
+      },
       // 获取列表
       getList() {
         this.listLoading = true;
@@ -93,6 +97,15 @@
         }).catch(rej => {
             console.log('获取队伍列表失败')
         })
+        // fetchList(this.listQuery).then(response => {
+        //   this.list = response.data.items
+        //   this.total = response.data.total
+        //
+        //   // Just to simulate the time of the request
+        //   setTimeout(() => {
+        //     this.listLoading = false
+        //   }, 1.5 * 1000)
+        // })
       },
 
       // 删除队伍

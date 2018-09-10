@@ -29,8 +29,28 @@ export function deleteTeam (id) {
 // 保存队伍(包括新建和更更新)
 export function saveTeam (data) {
   return request({
-    url: '/team/delete',
+    url: '/team/save',
     method: 'post',
     data
   })
 }
+
+// 获取新建队伍各种下拉列表集合
+export function getAllDic () {
+   return request({
+      url: '/dict/getAllDic',
+      method: 'post'
+  })
+}
+
+// 获取新建队伍各种下拉列表集合
+export function uploadTeamLogo (file) {
+  return request({
+    url: '/sys/upload/teamLogo',
+    method: 'post',
+    data: {
+      file: file
+    }
+  })
+}
+
