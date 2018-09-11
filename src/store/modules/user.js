@@ -201,32 +201,23 @@ function reformRouters(routersList) {
       ]
     },
     {
-      path: '/allAthlete',
+      path: '/athleteManage',
       component: Layout,
-      // redirect: '/allAthlete/list',
-      // name: 'allAthlete',
-      // meta: {title: '所有运动员'},
+      meta: {title: '运动员管理'},
       children: [
         {
-          path: 'create',
-          component: () => import('@/views/allAthlete/create'),
-          name: 'allAthleteCreate',
-          meta: {title: '新建队员'},
-          hidden: true
-        },
-        {
-          path: 'edit',
-          component: () => import('@/views/allAthlete/edit'),
-          name: 'allAthleteEdit',
-          meta: {title: '编辑队员', noCache: true},
-          hidden: true
-        },
-        {
           path: 'list',
-          component: () => import('@/views/allAthlete/list'),
-          name: 'allAthleteList',
-          meta: {title: '所有运动员'}
+          component: () => import('@/views/athleteManage/list'),
+          name: 'athleteList',
+          meta: {title: '运动员列表'}
+        },
+        {
+          path: 'manage',
+          component: () => import('@/views/athleteManage/manage'),
+          name: 'athleteManage',
+          meta: {title: '运动员新增/维护'}
         }
+
       ]
     },
     {
@@ -237,22 +228,21 @@ function reformRouters(routersList) {
         {
           path: 'list',
           component: () => import('@/views/teamManage/list'),
-          name: 'teamManageList',
+          name: 'teamList',
           meta: {title: '队伍列表'}
         },
         {
-          path: 'createTeam',
-          component: () => import('@/views/teamManage/createTeam'),
-          name: 'createTeam',
-          meta: {title: '新建队伍'},
-          hidden: true
+          path: 'manage',
+          component: () => import('@/views/teamManage/manage'),
+          name: 'teamManage',
+          meta: {title: '队伍新增/维护'}
         },
-        {
-          path: 'createMember',
-          component: () => import('@/views/teamManage/createMember'),
-          name: 'createMember',
-          meta: {title: '新建无队运动员'}
-        },
+        // {
+        //   path: 'createMember',
+        //   component: () => import('@/views/teamManage/createMember'),
+        //   name: 'createMember',
+        //   meta: {title: '新建无队运动员'}
+        // },
         // {
         //   path: 'edit',
         //   component: () => import('@/views/teamManage/edit'),

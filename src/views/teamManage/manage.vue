@@ -4,13 +4,13 @@
       <el-row :gutter="20">
         <el-col :span="9">
           <el-row>
-            <el-form-item label="姓名" prop="name">
-              <el-input v-model="form.name" placeholder="请输入姓名"></el-input>
+            <el-form-item label="队名" prop="teamName">
+              <el-input v-model="form.teamName" placeholder="请输入队名"></el-input>
             </el-form-item>
           </el-row>
           <el-row>
-            <el-form-item label="队伍" prop="teamId" >
-              <el-select v-model="form.categoryId" placeholder="请选择队伍" @change="handleChange(form.categoryId,'team')">
+            <el-form-item label="类别" prop="categoryId" >
+              <el-select v-model="form.categoryId" placeholder="请选择专项" @change="handleChange(form.categoryId,'category')">
                 <el-option v-for="item in cateList" :label="item.dicValue" :value="item.dicKey" :key="item.dicKey"></el-option>
               </el-select>
             </el-form-item>
@@ -22,42 +22,18 @@
               </el-select>
             </el-form-item>
           </el-row>
-          <el-form-item label="性别">
-            <el-radio-group v-model="form.sexId">
-              <el-radio label="男" value="1"></el-radio>
-              <el-radio label="女" value="2"></el-radio>
-            </el-radio-group>
+          <el-row>
+            <el-form-item label="单位" prop="organizationId">
+              <el-select v-model="form.organizationId" placeholder="请选择单位" @change="handleChange(form.organizationId,'organization')">
+                <el-option v-for="item in orgList" :label="item.dicValue" :value="item.dicKey" :key="item.dicKey"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-row>
+          <el-form-item label="教练" prop="coach">
+            <el-select v-model="form.coachId" placeholder="请选择教练" @change="handleChange(form.coachId,'coach')">
+              <el-option v-for="item in coachList" :label="item.dicValue" :value="item.dicKey" :key="item.dicKey"></el-option>
+            </el-select>
           </el-form-item>
-          <el-form-item label="生日" prop="birthday">
-            <el-col :span="11">
-              <el-date-picker type="date" placeholder="选择日期" v-model="form.birthday" style="width: 100%;"></el-date-picker>
-            </el-col>
-          </el-form-item>
-          <el-row>
-            <el-form-item label="身高" prop="height">
-              <el-input v-model="form.height" placeholder="请输入身高"></el-input>
-            </el-form-item>
-          </el-row>
-          <el-row>
-            <el-form-item label="体重" prop="weight">
-              <el-input v-model="form.weight" placeholder="请输入体重"></el-input>
-            </el-form-item>
-          </el-row>
-          <el-row>
-            <el-form-item label="身份证" prop="cardId">
-              <el-input v-model="form.cardId" placeholder="请输入身份证"></el-input>
-            </el-form-item>
-          </el-row>
-          <el-row>
-            <el-form-item label="电话" prop="telehpone">
-              <el-input v-model="form.telehpone" placeholder="请输入电话"></el-input>
-            </el-form-item>
-          </el-row>
-          <el-row>
-            <el-form-item label="微信" prop="weChart">
-              <el-input v-model="form.weChart" placeholder="请输入微信"></el-input>
-            </el-form-item>
-          </el-row>
         </el-col>
         <el-col :span="9" :offset="6">
           <div class="imgTitle">队伍logo上传</div>
@@ -90,44 +66,58 @@
     data() {
       return {
         submitFlag: false,  // 提交锁
-        teamList: [{dicValue: '国家队',dicKey: 1},{dicValue: '集训队',dicKey: 2}],       // 队伍选项
+        cateList: [{dicValue: '国家队',dicKey: 1},{dicValue: '集训队',dicKey: 2}],    // 类别选项
         specialList: [{dicValue: '赛艇',dicKey: 1},{dicValue: '⽪皮划艇',dicKey: 2}],    // 专项选项
+        orgList: [{dicValue: '赛艇⽪皮划艇协会',dicKey: 1},{dicValue: '游泳中⼼心',dicKey: 2}],    // 单位选项
+        coachList: [{dicValue: '教练a',dicKey: 1},{dicValue: '教练b',dicKey: 2}],    // 专项选项
         form: {
+          id: this.$route.query.id,
           logo: '',         // 图片url
-          name: '',         // 姓名
+          teamName: '',     // 队伍
 
-          teamId: '',        // 队伍Id
-          teamName: '',      // 队伍name
+          categoryId: '',        // 类别Id
+          categoryName: '',      // 类别name
 
-          specialId: '',      // 专项id
-          specialName: '',   // 专项name
+          specialId: '',         // 专项id
+          specialName: '',       // 专项name
 
-          birthday: '',   // 生日
-          height: '',     // 身高
-          weight: '',     // 体重
-          cardId: '',     // 身份证
-          telephone: '',  // 电话
-          weChart: ''     // 微信
+          organizationId: '',    // 单位id
+          organizationName: '',  // 单位name
+
+          coachId: '',           // 教练id
+          coachName: '',         // 教练name
 
         },
         rules: { // 表单校验规则
-          name: [
-            {required: true, message: '请输入姓名', trigger: 'blur'},
+          teamName: [
+            {required: true, message: '请输入队伍名称', trigger: 'blur'},
           ],
-          teamId: [
-            {required: true, message: '请选择队伍', trigger: 'blur'},
+          categoryId: [
+            {required: true, message: '请选择类别', trigger: 'blur'},
           ],
-          specialId: [
-            {required: true, message: '请选择专项', trigger: 'blur'},
-          ]
         }
       }
     },
     created() {
       this.getSelectList();
+      if(this.id) {
+        this.initPage();
+      }
     },
 
     methods: {
+      // 编辑时渲染页面
+      initPage() {
+        initData().then(res => {
+          if(res.code === '200') {
+
+          } else {
+            this.$message(res.msg)
+          }
+        }).cath(rej => {
+          console.log('渲染失败')
+        })
+      },
       // 获取所有下拉徐选项列表
       getSelectList() {
         getAllDic().then(res => {

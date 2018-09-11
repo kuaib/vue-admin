@@ -8,8 +8,8 @@
           <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">搜索</el-button>
         </div>
         <div class="right">
-          <el-button class="filter-item" type="primary" icon="el-icon-plus" @click="toCreateTeam">新建队伍</el-button>
-          <el-button class="filter-item" type="primary" icon="el-icon-plus" @click="toCreateMember">新建队员</el-button>
+          <el-button class="filter-item" type="primary" icon="el-icon-plus" @click="toTeamManage">新建队伍</el-button>
+          <el-button class="filter-item" type="primary" icon="el-icon-plus" @click="toMemberManage">新建队员</el-button>
         </div>
       </el-row>
     </div>
@@ -126,13 +126,13 @@
         this.getList()
       },
 
-      // 跳转新增队伍
-      toCreateTeam() {
-        this.$router.push('/teamManage/createTeam');
+      // 跳转队伍管理页面
+      toTeamManage() {
+        this.$router.push('/teamManage/manage');
       },
-      // 跳转新增队员
-      toCreateMember() {
-        this.$router.push('/teamManage/createMember');
+      // 跳转运动员管理页面
+      toMemberManage() {
+        this.$router.push('/athleteManage/manage');
       },
 
       // 改变每页显示条目数

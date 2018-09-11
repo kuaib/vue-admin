@@ -3,14 +3,14 @@
         <div class="filter-container">
             <el-row class="clearfix">
                 <div class="left">
-                    <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" :placeholder="$t('table.title')" v-model="listQuery.searchKey">
+                    <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="搜索" v-model="listQuery.searchKey">
                     </el-input>
                     <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">{{$t('table.search')}}</el-button>
                 </div>
                 <div class="right">
-                    <el-button class="filter-item" type="primary" icon="el-icon-plus" @click="toCreate">{{$t('table.add')}}</el-button>
-                    <el-button class="filter-item" type="primary">基础信息</el-button>
-                    <el-button class="filter-item" type="primary">日常监测&损伤风险</el-button>
+                    <el-button class="filter-item" type="primary" icon="el-icon-plus" @click="toManage">新建运动员</el-button>
+                    <el-button class="filter-item" type="primary">自定义表格</el-button>
+                    <el-button class="filter-item" type="primary">导出表格</el-button>
                 </div>
             </el-row>
             <el-row :gutter="20">
@@ -95,7 +95,7 @@
             </el-table-column>
             <el-table-column align="center" :label="$t('commonwords.edit')">
                 <template slot-scope="scope">
-                    <el-button type="primary" size="mini"><router-link :to="{path: '/allAthlete/edit',query: {id:scope.row.id}}"><i class="el-icon-edit"></i></router-link></el-button>
+                    <el-button type="primary" size="mini"><router-link :to="{path: '/athleteManage/edit',query: {id:scope.row.id}}"><i class="el-icon-edit"></i></router-link></el-button>
                 </template>
             </el-table-column>
             <el-table-column align="center" :label="$t('commonwords.delete')">
@@ -193,9 +193,9 @@
                 row.status = status
             },
 
-            // 跳转新增页
-            toCreate() {
-                this.$router.push('/allAthlete/create');
+            // 跳转运动员维护页面
+            toManage() {
+                this.$router.push('/athleteManage/manage');
             }
         }
     }
