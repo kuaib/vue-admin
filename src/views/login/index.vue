@@ -69,7 +69,7 @@
             return {
                 loginForm: {
                     username: 'admin',
-                    password: '1111111'
+                    password: '1234567'
                 },
                 loginRules: {
                     username: [{required: true, trigger: 'blur', message: '请输入用户名'}],
@@ -92,9 +92,10 @@
             handleLogin() {
                 this.$refs.loginForm.validate(valid => {
                     if (valid) {
-                        this.loading = true
+                        this.loading = true;
                         this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
-                            this.loading = false
+                            this.loading = false;
+                            console.log(32323232)
                             this.$router.push({path: '/'})
                         }).catch(() => {
                             this.loading = false

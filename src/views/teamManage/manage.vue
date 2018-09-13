@@ -39,7 +39,7 @@
           <div class="imgTitle">队伍logo上传</div>
           <el-upload
             class="avatar-uploader"
-            action="/sys/upload/teamLogo"
+            action="/api/sports/sys/upload/teamLogo"
             :show-file-list="false"
             :on-success="uploadSuccess"
             :before-upload="beforeUpload">
@@ -66,10 +66,10 @@
     data() {
       return {
         submitFlag: false,  // 提交锁
-        cateList: [{dicValue: '国家队',dicKey: 1},{dicValue: '集训队',dicKey: 2}],    // 类别选项
-        specialList: [{dicValue: '赛艇',dicKey: 1},{dicValue: '⽪皮划艇',dicKey: 2}],    // 专项选项
-        orgList: [{dicValue: '赛艇⽪皮划艇协会',dicKey: 1},{dicValue: '游泳中⼼心',dicKey: 2}],    // 单位选项
-        coachList: [{dicValue: '教练a',dicKey: 1},{dicValue: '教练b',dicKey: 2}],    // 专项选项
+        cateList: [],       // 类别选项
+        specialList: [],    // 专项选项
+        orgList: [],        // 单位选项
+        coachList: [],      // 专项选项
         form: {
           id: this.$route.query.id,
           logo: '',         // 图片url
@@ -121,13 +121,14 @@
       // 获取所有下拉徐选项列表
       getSelectList() {
         getAllDic().then(res => {
-          if(res.code === '200') {
+          if(res.data.code === 200) {
+            const data = res.data.data;
             this.cateList = data.cateList;
             this.specialList = data.specialList;
             this.orgList = data.orgList;
             this.coachList = data.coachList;
           } else {
-            this.$message(res.msg);
+            this.$message(res.data.msg);
           }
         }).catch(rej => {
           console.log('获取失败')
@@ -141,7 +142,7 @@
             this.submitFlag = true;
             saveTeam(this.form).then(res => {
               this.submitFlag = false;
-              this.$message(res.msg)
+              this.$message(res.data.msg)
             }).catch(rej => {
               this.submitFlag = false;
               console.log('保存失败')

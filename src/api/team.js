@@ -8,7 +8,7 @@ import request from '@/utils/request'
 // 获取队伍列表信息
 export function getTeamList (currentPage, pageSize, keyWord) {
   return request({
-    url: '/team/list',
+    url: '/sports/team/list',
     method: 'get',
     params: {
       currentPage: currentPage,
@@ -21,7 +21,7 @@ export function getTeamList (currentPage, pageSize, keyWord) {
 // 删除队伍
 export function deleteTeam (id) {
   return request({
-    url: '/team/delete' + id,
+    url: '/sports/team/delete' + id,
     method: 'post'
   })
 }
@@ -29,7 +29,7 @@ export function deleteTeam (id) {
 // 保存队伍(包括新建和更更新)
 export function saveTeam (data) {
   return request({
-    url: '/team/save',
+    url: '/sports/team/save',
     method: 'post',
     data
   })
@@ -38,19 +38,9 @@ export function saveTeam (data) {
 // 获取新建队伍各种下拉列表集合
 export function getAllDic () {
    return request({
-      url: '/dict/getAllDic',
-      method: 'post'
+      url: '/sports/dict/getAllDic',
+      method: 'get'
   })
 }
 
-// 获取新建队伍各种下拉列表集合
-export function uploadTeamLogo (file) {
-  return request({
-    url: '/sys/upload/teamLogo',
-    method: 'post',
-    data: {
-      file: file
-    }
-  })
-}
 

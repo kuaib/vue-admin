@@ -9,9 +9,12 @@ const getters = {
   name: state => state.user.name,
   introduction: state => state.user.introduction,
   status: state => state.user.status,
-  roles: state => state.user.roles,
   setting: state => state.user.setting,
   errorLogs: state => state.errorLog.logs,
+
+  roles: state => state.user.roles,
+  userName: state => state.user.userName,
+  realName: state => state.user.realName,
   user_routers: state => state.user.routers,    // 已有路由
   user_addRouters: state => state.user.addRouters    // 自己新增的路由
 }

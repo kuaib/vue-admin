@@ -55,6 +55,11 @@
 
         <el-table :data="list" v-loading="listLoading" border fit highlight-current-row
                   style="width: 100%;min-height:1000px;">
+            <el-table-column align="center" label="录入数据">
+                <template slot-scope="scope">
+                    <el-button size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')"><i class="el-icon-plus"></i></el-button>
+                </template>
+            </el-table-column>
             <el-table-column align="center" :label="$t('allAthlete.name')">
                 <template slot-scope="scope">
                     <span>{{scope.row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
@@ -93,13 +98,10 @@
                     <span v-else>0</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" :label="$t('commonwords.edit')">
+
+            <el-table-column align="center" label="操作">
                 <template slot-scope="scope">
                     <el-button type="primary" size="mini"><router-link :to="{path: '/athleteManage/edit',query: {id:scope.row.id}}"><i class="el-icon-edit"></i></router-link></el-button>
-                </template>
-            </el-table-column>
-            <el-table-column align="center" :label="$t('commonwords.delete')">
-                <template slot-scope="scope">
                     <el-button size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')"><i class="el-icon-delete"></i></el-button>
                 </template>
             </el-table-column>

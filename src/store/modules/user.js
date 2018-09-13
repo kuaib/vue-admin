@@ -2,7 +2,16 @@ import {loginByUsername, logout, getUserInfo, getUserMenue} from '@/api/login'
 import {getToken, setToken, removeToken} from '@/utils/auth'
 import Layout from '@/views/layout/Layout'
 import {constantRouterMap} from '@/router'
+import Cookies from 'js-cookie'
 
+// 将数组中的对象的某个属性提取为一个数组
+function filterPro(arr, proName) {
+  let result = [];
+  arr.forEach((item,idx) => {
+    result.push(item[proName])
+  })
+  return result;
+}
 
 let routersList = [
   {
@@ -79,38 +88,39 @@ let routersList = [
 //   routersList.forEach((item, idx) => {
 //     arr.push(eachRouter(item))
 //   })
-//   console.log(arr)
+//   console.log(arr);
+//   return arr;
+// }
+//
+// // 递归每一项路由
+// function eachRouter(route) {
+//   let obj = {};
+//   if(route.children && route.children.length >0) {
+//     obj.path = route.path;
+//     obj.component = () => import('@/views/layout/Layout');
+//     obj.meta = {
+//       title: route.meta.title,
+//       icon: route.meta.icon,
+//     };
+//     let arr = [];
+//     route.children.forEach((item,idx) => {
+//       arr.push(eachRouter(item))
+//     })
+//     obj.children = arr;
+//   } else {
+//     obj.path = route.path;
+//     obj.name = route.name;
+//     obj.component = () => import('@' + route.component);
+//     obj.meta = {
+//       title: route.meta.title,
+//       icon: route.meta.icon,
+//       hidden: route.meta.hideInMenu
+//     }
+//   }
+//   return obj;
 // }
 
-// 递归每一项路由
-function eachRouter(route) {
-  let obj = {};
-  if(route.children && route.children.length >0) {
-    obj.path = route.path;
-    obj.component = () => import('@/views/layout/Layout');
-    obj.meta = {
-      title: route.meta.title,
-      icon: route.meta.icon,
-    };
-    let arr = [];
-    route.children.forEach((item,idx) => {
-      arr.push(eachRouter(item))
-    })
-    obj.children = arr;
-  } else {
-    obj.path = route.path;
-    obj.name = route.name;
-    obj.component = () => import('@' + route.component);
-    obj.meta = {
-      title: route.meta.title,
-      icon: route.meta.icon,
-      hidden: route.meta.hideInMenu
-    }
-  }
-  return obj;
-}
 
-// reformRouters(routersList)
 
 // 将后台返回的路由数据的集合进行组装(成为路由的格式)
 function reformRouters(routersList) {
@@ -236,21 +246,7 @@ function reformRouters(routersList) {
           component: () => import('@/views/teamManage/manage'),
           name: 'teamManage',
           meta: {title: '队伍新增/维护'}
-        },
-        // {
-        //   path: 'createMember',
-        //   component: () => import('@/views/teamManage/createMember'),
-        //   name: 'createMember',
-        //   meta: {title: '新建无队运动员'}
-        // },
-        // {
-        //   path: 'edit',
-        //   component: () => import('@/views/teamManage/edit'),
-        //   name: 'allAthleteEdit',
-        //   meta: {title: '编辑队员', noCache: true},
-        //   hidden: true
-        // },
-
+        }
       ]
     },
 
@@ -296,11 +292,13 @@ const user = {
     name: '',
     avatar: '',
     introduction: '',
-    roles: ['admin'],
     setting: {
       articlePlatform: []
     },
 
+    roles: ['ROLE_chief'], // 用户所具有的角色
+    userName: '',          // 用户名
+    realName: '',          // 真实姓名
     routers: constantRouterMap, // 白名单路由
     addRouters: [], // 动态回去的路由
 
@@ -328,8 +326,21 @@ const user = {
     SET_AVATAR: (state, avatar) => {
       state.avatar = avatar
     },
+    // 设置角色
     SET_ROLES: (state, roles) => {
       state.roles = roles
+    },
+    // 设置用户名
+    SET_USERNAME: (state, userName) => {
+      state.userName = userName
+    },
+    // 设置真实姓名
+    SET_REALNAME: (state, realName) => {
+      state.realName = realName
+    },
+
+    SET_ROLECODE: (state, roleCode) => {
+      state.roleCode = roleCode
     },
     // 设置路由
     SET_ROUTERS: (state, routers) => {
@@ -341,53 +352,24 @@ const user = {
   // 请求方法都在api/login.js中
   actions: {
     // 接口可以调通的时候打开
-    // // 用户名登录
-    // LoginByUsername({commit}, userInfo) {
-    //   const username = userInfo.username.trim()
-    //   return new Promise((resolve, reject) => {
-    //     loginByUsername(username, userInfo.password).then(response => {
-    //       if(response.code === '200') {
-    //         const data = response.data;
-    //         commit('SET_ROLES', data.roles);
-    //         setToken(response.data.roles);
-    //       } else {
-    //         this.$message(response.ms);
-    //       }
-    //       resolve()
-    //     }).catch(error => {
-    //       reject(error)
-    //     })
-    //   })
-    // },
-    // // 获取用户菜单-路由(业务需求，菜单和路由需要在后端返回)
-    // GetUserMenue({commit, state}) {
-    //   return new Promise((resolve, reject) => {
-    //     getUserMenue(state.roles.roleCode).then(response => {
-    //       if (response.code === '200') {
-    //         if (data && data.length > 0) { // 验证返回的菜单是否是一个非空数组
-    //             let newRouters = reformRouters(data);
-    //             commit('SET_ROUTERS', newRouters);
-    //             resolve()
-    //         } else {
-    //             reject('getInfo: routers must be a non-null array !')
-    //         }
-    //       } else {
-    //           this.$message(res.msg);
-    //       }
-    //     }).catch(error => {
-    //       reject(error)
-    //     })
-    //   })
-    // },
-
     // 用户名登录
-    LoginByUsername({commit}, userInfo) {
+    LoginByUsername({commit,state}, userInfo) {
       const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
-        loginByUsername(username, userInfo.password).then(response => {
-          const data = response.data
-          commit('SET_TOKEN', data.token)
-          setToken(response.data.token)
+        loginByUsername(userInfo).then(response => {
+          if(response.data.code === 200) {
+            const data = response.data.data;
+            console.log(filterPro(data.roles,'roleCode'))
+            commit('SET_ROLES', filterPro(data.roles,'roleCode'));    // 角色名称
+            commit('SET_REALNAME', data.realName);          // 真实姓名
+            commit('SET_USERNAME', data.username);          // 用户名
+            Cookies.set('roles',state.roles);
+            Cookies.set('realName',state.realName);
+            Cookies.set('userName',state.username);
+            resolve();
+          } else {
+            this.$message(response.data.msg);
+          }
           resolve()
         }).catch(error => {
           reject(error)
@@ -398,15 +380,53 @@ const user = {
     // 获取用户菜单-路由(业务需求，菜单和路由需要在后端返回)
     GetUserMenue({commit, state}) {
       return new Promise((resolve, reject) => {
-        getUserMenue(state.token).then(response => {
-          let newRouters = reformRouters();
-          commit('SET_ROUTERS', newRouters)
-          resolve()
+        getUserMenue(state.roles[0]).then(response => {
+          if (response.data.code === 200) {
+            const res = response.data.data;
+            if (res && res.length > 0) { // 验证返回的菜单是否是一个非空数组
+                let newRouters = reformRouters(res);
+                commit('SET_ROUTERS', newRouters);
+                resolve()
+            } else {
+                reject('getInfo: routers must be a non-null array !')
+            }
+          } else {
+              // this.$message(response.msg);
+          }
         }).catch(error => {
           reject(error)
         })
       })
     },
+
+    // 用户名登录
+    // LoginByUsername({commit}, userInfo) {
+    //   const username = userInfo.username.trim()
+    //   return new Promise((resolve, reject) => {
+    //     // loginByUsername(username, userInfo.password).then(response => {
+    //     loginByUsername(userInfo).then(response => {
+    //       const data = response.data
+    //       commit('SET_TOKEN', data.token)
+    //       setToken(response.data.token)
+    //       resolve()
+    //     }).catch(error => {
+    //       reject(error)
+    //     })
+    //   })
+    // },
+    //
+    // // 获取用户菜单-路由(业务需求，菜单和路由需要在后端返回)
+    // GetUserMenue({commit, state}) {
+    //   return new Promise((resolve, reject) => {
+    //     getUserMenue(state.token).then(response => {
+    //       let newRouters = reformRouters();
+    //       commit('SET_ROUTERS', newRouters)
+    //       resolve()
+    //     }).catch(error => {
+    //       reject(error)
+    //     })
+    //   })
+    // },
 
     // 获取用户信息
     // GetUserInfo({ commit, state }) {
@@ -451,9 +471,9 @@ const user = {
     LogOut({commit, state}) {
       return new Promise((resolve, reject) => {
         logout(state.token).then(() => {
-          commit('SET_TOKEN', '')
-          commit('SET_ROLES', [])
-          removeToken()
+          // commit('SET_TOKEN', '')
+          commit('SET_ROLES', '')
+          // removeToken()
           resolve()
         }).catch(error => {
           reject(error)
