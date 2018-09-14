@@ -95,6 +95,16 @@ let aa = [
             "meta": {"access": null, "title": "运动员列表", "icon": "ios-people-outline", "hideInMenu": false},
             "url": "",
             "hideInMenu": false
+        },{
+            path: 'manage',
+            component: 'views/athleteManage/manage',
+            name: 'athleteManage',
+            meta: {title: '运动员新增/维护'}
+        },{
+            path: 'edit',
+            component: 'views/athleteManage/edit',
+            name: 'edit',
+            meta: {title: '编辑'}
         }]
     }]
 
@@ -369,8 +379,7 @@ const user = {
                     if (response.data.code === 200) {
                         const res = response.data.data;
                         if (res && res.length > 0) { // 验证返回的菜单是否是一个非空数组
-                            let newRouters = reformRouters(res);
-                            // let newRouters = reformRouters(aa);
+                            let newRouters = reformRouters(aa);
                             commit('SET_ROUTERS', newRouters);
                             resolve()
                         } else {

@@ -10,7 +10,7 @@
                     </el-row>
                     <el-row>
                         <el-form-item label="类别" prop="categoryId">
-                            <el-select v-model="form.categoryId" placeholder="请选择专项"
+                            <el-select v-model="form.categoryId" placeholder="请选择类别"
                                        @change="handleChange(form.categoryId,'category')">
                                 <el-option v-for="item in cateList" :label="item.dicValue" :value="item.dicKey"
                                            :key="item.dicKey"></el-option>
@@ -69,7 +69,8 @@
 </template>
 
 <script>
-    import {getAllDic, saveTeam} from '@/api/team'
+    import {getAllDic} from '@/api/common'
+    import {saveTeam} from '@/api/team'
 
     export default ({
         data() {
@@ -78,7 +79,7 @@
                 cateList: [],       // 类别选项
                 specialList: [],    // 专项选项
                 orgList: [],        // 单位选项
-                coachList: [],      // 专项选项
+                coachList: [],      // 教练选项
                 form: {
                     id: this.$route.query.id,
                     logo: '',         // 图片url
@@ -110,7 +111,7 @@
         created() {
             this.getSelectList();
             if (this.id) {
-                this.initPage();
+                // this.initPage();
             }
         },
 
@@ -118,16 +119,17 @@
             // 编辑时渲染页面
             initPage() {
                 initData().then(res => {
-                    if (res.code === '200') {
+                    if (res.data.code === 200) {
 
                     } else {
-                        this.$message(res.msg)
+                        this.$message(res.data.msg)
                     }
                 }).cath(rej => {
                     console.log('渲染失败')
                 })
             },
-            // 获取所有下拉徐选项列表
+
+            // 获取下拉选项
             getSelectList() {
                 getAllDic().then(res => {
                     if (res.data.code === 200) {

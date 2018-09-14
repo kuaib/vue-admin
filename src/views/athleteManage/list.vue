@@ -5,7 +5,7 @@
                 <div class="left">
                     <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="搜索" v-model="listQuery.searchKey">
                     </el-input>
-                    <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">{{$t('table.search')}}</el-button>
+                    <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">搜索</el-button>
                 </div>
                 <div class="right">
                     <el-button class="filter-item" type="primary" icon="el-icon-plus" @click="toManage">新建运动员</el-button>
@@ -15,33 +15,38 @@
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="4">
-                    <el-select clearable class="filter-item" v-model="listQuery.ranks" placeholder="请选择队伍">
-                        <el-option v-for="item in ranksOptions" :key="item" :label="item" :value="item">
-                        </el-option>
+                    <el-select clearable class="filter-item" v-model="listQuery.categoryId" placeholder="请选择队伍"
+                               @change="handleChange(listQuery.categoryId,'category')">
+                        <el-option v-for="item in cateList" :label="item.dicValue" :value="item.dicKey"
+                                   :key="item.dicKey"></el-option>
                     </el-select>
                 </el-col>
                 <el-col :span="4">
-                    <el-select clearable class="filter-item" v-model="listQuery.special" placeholder="请选择专项">
-                        <el-option v-for="item in specialOptions" :key="item" :label="item" :value="item">
-                        </el-option>
+                    <el-select clearable class="filter-item" v-model="listQuery.specialId" placeholder="请选择专项"
+                               @change="handleChange(listQuery.specialId,'special')">
+                        <el-option v-for="item in specialList" :label="item.dicValue" :value="item.dicKey"
+                                   :key="item.dicKey"></el-option>
                     </el-select>
                 </el-col>
                 <el-col :span="4">
-                    <el-select clearable class="filter-item" v-model="listQuery.sex" placeholder="请选择性别">
-                        <el-option v-for="item in sexOptions" :key="item" :label="item" :value="item">
-                        </el-option>
+                    <el-select clearable class="filter-item" v-model="listQuery.gender" placeholder="请选择性别"
+                               @change="handleChange(listQuery.genderId,'gender')">
+                        <el-option v-for="item in genderList" :label="item.dicValue" :value="item.dicKey"
+                                   :key="item.dicKey"></el-option>
                     </el-select>
                 </el-col>
                 <el-col :span="4">
-                    <el-select clearable class="filter-item" v-model="listQuery.company" placeholder="请选择单位">
-                        <el-option v-for="item in companyOptions" :key="item" :label="item" :value="item">
-                        </el-option>
+                    <el-select clearable class="filter-item" v-model="listQuery.organizationId" placeholder="请选择单位"
+                               @change="handleChange(listQuery.organizationId,'organization')">
+                        <el-option v-for="item in orgList" :label="item.dicValue" :value="item.dicKey"
+                                   :key="item.dicKey"></el-option>
                     </el-select>
                 </el-col>
                 <el-col :span="4">
-                    <el-select clearable class="filter-item" v-model="listQuery.province" placeholder="请选择省份">
-                        <el-option v-for="item in provinceOptions" :key="item" :label="item" :value="item">
-                        </el-option>
+                    <el-select clearable class="filter-item" v-model="listQuery.provinceId" placeholder="请选择省份"
+                               @change="handleChange(listQuery.provinceId,'provinces')">
+                        <el-option v-for="item in provincesList" :label="item.dicValue" :value="item.dicKey"
+                                   :key="item.dicKey"></el-option>
                     </el-select>
                 </el-col>
                 <el-col :span="4">
@@ -116,6 +121,7 @@
 
 <script>
     import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article'
+    import { getAllDic } from '@/api/common'
     import waves from '@/directive/waves' // 水波纹指令
     import { parseTime } from '@/utils'
 
@@ -126,11 +132,11 @@
         },
         data() {
             return {
-                ranksOptions: [1,2,3],  // 队伍
-                specialOptions: [11,22,33],     // 专项
-                sexOptions: [111,222,333],  // 性别
-                companyOptions: [1111,2222,3333,4444], // 单位
-                provinceOptions: [11111,22222,33333],   // 省份
+                cateList: [],  // 队伍
+                specialList: [],   // 专项
+                genderList: [{dicKey: '1', dicValue: '男'},{dicKey: '2', dicValue: '女'}], // 性别
+                orgList: [],       // 单位
+                provincesList: [],      // 省份
                 riskOptions: ['a','b'], // 损伤风险
 
 
@@ -141,20 +147,40 @@
                     page: 1,
                     limit: 20,
                     searchKey: '',
-                    ranks: '',
-                    special: '',
-                    sex: '',
-                    company: '',
-                    province: '',
+                    category: '',
+                    specialId: '',
+                    genderId: '',
+                    organizationId: '',
+                    provinceId: '',
                     risk: '',
                 }
             }
         },
 
         created() {
+            this.getSelectList();
             this.getList()
         },
         methods: {
+            // 获取下拉选项
+            getSelectList() {
+                getAllDic().then(res => {
+                    if (res.data.code === 200) {
+                        const data = res.data.data;
+                        this.cateList = data.cateList;
+                        this.specialList = data.specialList;
+                        this.orgList = data.orgList;
+                        this.coachList = data.coachList;
+                        this.provincesList = data.provincesList;
+                    } else {
+                        this.$message(res.data.msg);
+                    }
+                }).catch(rej => {
+                    console.log('获取失败')
+                })
+            },
+
+            // 获取运动员列表
             getList() {
                 this.listLoading = true
                 fetchList(this.listQuery).then(response => {
@@ -198,7 +224,38 @@
             // 跳转运动员维护页面
             toManage() {
                 this.$router.push('/athleteManage/manage');
-            }
+            },
+
+            // 改变下拉选项
+            handleChange(val, type) {
+                // let obj = {};
+                // if (type === 'category') {
+                //     obj = this.arrToObj(this.cateList);
+                //     this.form.categoryName = obj[val];
+                // } else if (type === 'special') {
+                //     obj = this.arrToObj(this.specialList);
+                //     this.form.specialName = obj[val];
+                // } else if (type === 'organization') {
+                //     obj = this.arrToObj(this.orgList);
+                //     this.form.organizationName = obj[val];
+                // } else if(type === 'coach') {
+                //     obj = this.arrToObj(this.coachList);
+                //     this.form.coachName = obj[val];
+                // } else if(type === 'provinces') {
+                //     obj = this.arrToObj(this.provincesList);
+                //     this.form.coachName = obj[val];
+                // } else if(type === 'gender') {
+                //     obj = this.arrToObj(this.genderList);
+                //     this.form.coachName = obj[val];
+                // }
+            },
+            // 转换数组集合(方便快速找出key对应的value)
+            arrToObj(arrList) {
+                return arrList.reduce((acc, cur) => {
+                    acc[cur.dicKey] = cur.dicValue;
+                    return acc
+                }, {})
+            },
         }
     }
 </script>

@@ -35,12 +35,3 @@ export function saveTeam (data) {
   })
 }
 
-// 获取新建队伍各种下拉列表集合
-export function getAllDic () {
-   return request({
-      url: '/sports/dict/getAllDic',
-      method: 'get'
-  })
-}
-
-
