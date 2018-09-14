@@ -13,3 +13,14 @@ export function saveAthlete (data) {
     data
   })
 }
+
+// 通过队伍查询队员
+export function getAthleteList (teamId) {
+    return request({
+        url: '/sports/athlete/getAthleteByTeam',
+        method: 'get',
+        data: {
+            teamId: teamId
+        }
+    })
+}

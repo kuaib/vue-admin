@@ -1,5 +1,6 @@
 <template>
     <div>
+        <!--顶部按钮和搜素-->
         <div class="filter-container">
             <el-row class="clearfix">
                 <div class="left">
@@ -9,7 +10,7 @@
                 </div>
                 <div class="right">
                     <el-button class="filter-item" type="primary" icon="el-icon-plus" @click="toManage">新建运动员</el-button>
-                    <el-button class="filter-item" type="primary">自定义表格</el-button>
+                    <el-button class="filter-item" type="primary" @click="designTable = true">自定义表格</el-button>
                     <el-button class="filter-item" type="primary">导出表格</el-button>
                 </div>
             </el-row>
@@ -50,7 +51,7 @@
                     </el-select>
                 </el-col>
                 <el-col :span="4">
-                    <el-select clearable class="filter-item" v-model="listQuery.risk" placeholder="请选择损伤风险">
+                    <el-select clearable class="filter-item" v-model="listQuery.risk" placeholder="请选择损伤分数范围">
                         <el-option v-for="item in riskOptions" :key="item" :label="item" :value="item">
                         </el-option>
                     </el-select>
@@ -58,94 +59,88 @@
             </el-row>
         </div>
 
+        <!--表格-->
         <el-table :data="list" v-loading="listLoading" border fit highlight-current-row
-                  style="width: 100%;min-height:1000px;">
-            <el-table-column align="center" label="录入数据">
+                  style="width: 100%">
+            <el-table-column align="center" label="录入数据" width="50">
                 <template slot-scope="scope">
-                    <el-button size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')"><i class="el-icon-plus"></i></el-button>
+                    <el-button size="mini" type="primary" @click="handleModifyStatus(scope.row,'deleted')" style="width:30px;padding:7px 0"><i class="el-icon-plus"></i></el-button>
                 </template>
             </el-table-column>
-            <el-table-column align="center" :label="$t('allAthlete.name')">
+            <el-table-column align="center"  v-if="item.isShow" v-for="item in tableTitle" :label="item.title"
+                             :width="item.columnName==='gender' || item.columnName==='age' || item.columnName==='height'?60
+                             :item.columnName==='views'?100:''">
                 <template slot-scope="scope">
-                    <span>{{scope.row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column align="center" :label="$t('allAthlete.special')">
-                <template slot-scope="scope">
-                    <span>{{scope.row.author}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column align="center" :label="$t('allAthlete.sex')">
-                <template slot-scope="scope">
-                    <span style='color:red;'>{{scope.row.reviewer}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column :label="$t('allAthlete.age')">
-                <template slot-scope="scope">
-                    <svg-icon v-for="n in +scope.row.importance" icon-class="star" class="meta-item__icon" :key="n"></svg-icon>
-                </template>
-            </el-table-column>
-            <el-table-column align="center" :label="$t('allAthlete.height')">
-                <template slot-scope="scope">
-                    <span v-if="scope.row.pageviews" class="link-type">{{scope.row.pageviews}}</span>
-                    <span v-else>0</span>
-                </template>
-            </el-table-column>
-            <el-table-column align="center" :label="$t('allAthlete.tel')">
-                <template slot-scope="scope">
-                    <span v-if="scope.row.pageviews" class="link-type">{{scope.row.pageviews}}</span>
-                    <span v-else>0</span>
-                </template>
-            </el-table-column>
-            <el-table-column align="center" :label="$t('allAthlete.wx')">
-                <template slot-scope="scope">
-                    <span v-if="scope.row.pageviews" class="link-type">{{scope.row.pageviews}}</span>
-                    <span v-else>0</span>
+                    <el-button v-if="item.columnName==='views'" @click="goToDetail(scope.row.id)">进入</el-button>
+                    <span v-else>{{scope.row[item.columnName]}}</span>
                 </template>
             </el-table-column>
 
-            <el-table-column align="center" label="操作">
+            <el-table-column align="center" label="操作" width="130">
                 <template slot-scope="scope">
-                    <el-button type="primary" size="mini"><router-link :to="{path: '/athleteManage/edit',query: {id:scope.row.id}}"><i class="el-icon-edit"></i></router-link></el-button>
+                    <el-button type="primary" size="mini"><router-link :to="{path: '/athleteManage/manage',query: {id:scope.row.id}}"><i class="el-icon-edit"></i></router-link></el-button>
                     <el-button size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')"><i class="el-icon-delete"></i></el-button>
                 </template>
             </el-table-column>
         </el-table>
 
+        <!--分页-->
         <div class="pagination-container">
             <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="listQuery.page" :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
             </el-pagination>
         </div>
+
+        <!--动态定义表格弹窗-->
+        <column-dialog :designTable="designTable" @canncelAct="canncelAct" @sureAct="sureAct"></column-dialog>
     </div>
 </template>
 
 <script>
     import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article'
     import { getAllDic } from '@/api/common'
+    import { getAthleteList } from '@/api/athlete'
     import waves from '@/directive/waves' // 水波纹指令
-    import { parseTime } from '@/utils'
+    import columnDialog from './components/columnDialog'
+
 
     export default {
         name: 'complexTable',
-        directives: {
-            waves
-        },
+        directives: {waves},
+        components: {columnDialog},
         data() {
             return {
-                cateList: [],  // 队伍
-                specialList: [],   // 专项
+                cateList: [],       // 队伍
+                specialList: [],    // 专项
                 genderList: [{dicKey: '1', dicValue: '男'},{dicKey: '2', dicValue: '女'}], // 性别
-                orgList: [],       // 单位
+                orgList: [],        // 单位
                 provincesList: [],      // 省份
                 riskOptions: ['a','b'], // 损伤风险
 
 
-                list: null,         // table列表
+                list: [
+                    {name: '45kg', views: '11', special: '165cm',gender: '男',age: '11',height:'175',telephone:'13333333333',REP:33,ready:45,sleep:'12',score: 80},
+                    {name: '45kg', views: '11', special: '165cm',gender: '男',age: '11',height:'175',telephone:'13333333333',REP:33,ready:45,sleep:'12',score: 80},
+                    {name: '45kg', views: '11', special: '165cm',gender: '男',age: '11',height:'175',telephone:'13333333333',REP:33,ready:45,sleep:'12',score: 80},
+
+                ],         // table列表
+                tableTitle: [
+                    {title:'姓名',columnName: 'name',isShow: true},
+                    {title:'运动员看板',columnName: 'views',isShow: true},
+                    {title:'专项',columnName: 'special',isShow: true},
+                    {title:'性别',columnName: 'gender',isShow: true},
+                    {title:'年龄',columnName: 'age',isShow: true},
+                    {title:'身高',columnName: 'height',isShow: true},
+                    {title:'电话',columnName: 'telephone',isShow: true},
+                    {title:'自感疲劳PRE',columnName: 'REP',isShow: true},
+                    {title:'准备度',columnName: 'ready',isShow: true},
+                    {title:'睡眠',columnName: 'sleep',isShow: true},
+                    {title:'损伤分数',columnName: 'score',isShow: true}
+                ],
+
                 total: null,        // 总条目数
-                listLoading: true,  // 查询table的loading
                 listQuery: {
                     page: 1,
-                    limit: 20,
+                    limit: 10,
                     searchKey: '',
                     category: '',
                     specialId: '',
@@ -153,10 +148,12 @@
                     organizationId: '',
                     provinceId: '',
                     risk: '',
-                }
+                },
+
+                listLoading: false,  // 查询table的loading
+                designTable: true,  // 是否弹出定义表格弹窗
             }
         },
-
         created() {
             this.getSelectList();
             this.getList()
@@ -183,15 +180,31 @@
             // 获取运动员列表
             getList() {
                 this.listLoading = true
-                fetchList(this.listQuery).then(response => {
-                    this.list = response.data.items
-                    this.total = response.data.total
-
-                    // Just to simulate the time of the request
-                    setTimeout(() => {
-                        this.listLoading = false
-                    }, 1.5 * 1000)
+                getAthleteList().then(res => {
+                    this.listLoading = false;
+                    if(res.data.code === 200) {
+                        if(res.data.data && res.data.data.length > 0) {
+                            this.list = res.data.data;
+                        }
+                    } else {
+                        this.$message(res.data.msg)
+                    }
+                }).catch(rej => {
+                    this.listLoading = false;
+                    console.log('获取运动员列表失败');
                 })
+
+
+                // this.listLoading = true
+                // fetchList(this.listQuery).then(response => {
+                //     this.list = response.data.items
+                //     this.total = response.data.total
+                //
+                //     // Just to simulate the time of the request
+                //     setTimeout(() => {
+                //         this.listLoading = false
+                //     }, 1.5 * 1000)
+                // })
             },
 
             // 点击搜索
@@ -226,6 +239,11 @@
                 this.$router.push('/athleteManage/manage');
             },
 
+            // 跳转至看板
+            goToDetail(id) {
+                // this.$router.push({path: '/athleteManage/manage', query: {id: id}});
+            },
+
             // 改变下拉选项
             handleChange(val, type) {
                 // let obj = {};
@@ -256,6 +274,34 @@
                     return acc
                 }, {})
             },
+
+            // 取消定义表格弹窗
+            canncelAct() {
+                this.designTable = false;
+            },
+            // 确定定义表格弹窗
+            sureAct(data) {
+                this.designTable = false;
+            }
         }
     }
 </script>
+
+<style lang="scss">
+    .main-title .el-dialog__title {
+        font-size: 20px;
+        font-weight: 700;
+    }
+    .title {
+        margin-bottom: 15px;
+        span{
+            font-size: 16px;
+            font-weight: 700;
+        }
+    }
+
+    .check-item {
+        display: block !important;
+        margin-left: 0 !important;
+    }
+</style>
