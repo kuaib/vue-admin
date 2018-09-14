@@ -95,7 +95,6 @@
                         this.loading = true;
                         this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
                             this.loading = false;
-                            console.log(32323232)
                             this.$router.push({path: '/'})
                         }).catch(() => {
                             this.loading = false
