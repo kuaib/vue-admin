@@ -51,9 +51,9 @@
                             :show-file-list="false"
                             :on-success="uploadSuccess"
                             :before-upload="beforeUpload">
-                        <template v-if="form.logo">
-                            <img :src="form.logo" class="avatar">
-                            <i class="el-icon-delete avatar-delete-icon" @click.stop.prevent="form.logo=''"></i>
+                        <template v-if="imgUrl">
+                            <img :src="imgUrl" class="avatar">
+                            <i class="el-icon-delete avatar-delete-icon" @click.stop.prevent="imgUrl=''"></i>
                         </template>
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
@@ -80,6 +80,8 @@
                 specialList: [],    // 专项选项
                 orgList: [],        // 单位选项
                 coachList: [],      // 教练选项
+
+                imgUrl: '',         // 图片的预览地址
                 form: {
                     id: this.$route.query.id,
                     logo: '',         // 图片url
@@ -122,10 +124,13 @@
                     if (res.data.code === 200) {
 
                     } else {
-                        this.$message(res.data.msg)
+                        this.$message({
+                            message: res.data.msg,
+                            type: 'warning'
+                        })
                     }
-                }).cath(rej => {
-                    console.log('渲染失败')
+                }).catch(rej => {
+                    console.log('获取数据失败')
                 })
             },
 
@@ -139,7 +144,10 @@
                         this.orgList = data.orgList;
                         this.coachList = data.coachList;
                     } else {
-                        this.$message(res.data.msg);
+                        this.$message({
+                            message: res.data.msg,
+                            type: 'warning'
+                        })
                     }
                 }).catch(rej => {
                     console.log('获取失败')
@@ -153,12 +161,22 @@
                         this.submitFlag = true;
                         saveTeam(this.form).then(res => {
                             this.submitFlag = false;
-                            this.$message(res.data.msg)
+                            if(res.data.code === 200) {
+                                this.$message({
+                                    message: res.data.msg,
+                                    type: 'success'
+                                });
+                                this.$router.replace('/teamManage/list');
+                            } else {
+                                this.$message({
+                                    message: res.data.msg,
+                                    type: 'warning'
+                                })
+                            }
                         }).catch(rej => {
                             this.submitFlag = false;
                             console.log('保存失败')
                         })
-                        console.log(this.form)
                     } else {
                         return false
                     }
@@ -196,12 +214,10 @@
                 this.$refs[formName].resetFields()
             },
 
-            // 图片上传成功
+            // 图片上传成功回调函数
             uploadSuccess(res, file) {
-            //     if(res.data.)
-            // console.log(res)
-            // console.log(file)
-                this.form.logo = URL.createObjectURL(file.raw);
+                this.imgUrl = URL.createObjectURL(file.raw);
+                this.form.logo = res.data.fileName;
             },
 
             // 上传前的校验

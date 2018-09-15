@@ -23,7 +23,7 @@
                   style="width: 100%;">
             <el-table-column sortable align="center" label="队名">
                 <template slot-scope="scope">
-                    <router-link tag="div" :to="{path: '/',query:{id: scope.row.id}}">{{scope.row.teamName}}
+                    <router-link tag="div" :to="{path:'/athleteManage/manage',query:{teamId: scope.row.id}}">{{scope.row.teamName}}
                     </router-link>
                 </template>
             </el-table-column>
@@ -91,15 +91,11 @@
             this.getList()
         },
         methods: {
-            aaa() {
-                alert(34343)
-            },
             // 获取队伍列表
             getList() {
                 this.listLoading = true;
                 getTeamList(this.listQuery.current, this.listQuery.pageSize, this.listQuery.keyWord).then(res => {
                     this.listLoading = false;
-                    console.log(res.data.code)
                     if (res.data.code === 200) {
                         const data = res.data.data;
                         this.list = data.list;
@@ -107,20 +103,15 @@
                         this.listQuery.pageSize = data.pagination.pageSize;
                         this.listQuery.current = data.pagination.current;
                     } else {
-                        this.$message(res.data.msg);
+                        this.$message({
+                            message: res.data.msg,
+                            type: 'warning'
+                        })
                     }
                 }).catch(rej => {
+                    this.listLoading = false;
                     console.log('获取队伍列表失败')
                 })
-                // fetchList(this.listQuery).then(response => {
-                //   this.list = response.data.items
-                //   this.total = response.data.total
-                //
-                //   // Just to simulate the time of the request
-                //   setTimeout(() => {
-                //     this.listLoading = false
-                //   }, 1.5 * 1000)
-                // })
             },
 
             // 删除队伍
@@ -128,11 +119,33 @@
                 this.listLoading = true;
                 deleteTeam(row.id).then(res => {
                     this.listLoading = false;
-                    this.$message(res.msg)
+                    if(res.data.code === 200) {
+                        this.$message({
+                            message: res.data.msg,
+                            type: 'success'
+                        })
+                    } else {
+                        this.$message({
+                            message: res.data.msg,
+                            type: 'warning'
+                        })
+                    }
                 }).catch((rej) => {
                     this.listLoading = false;
                     console.log('删除失败');
                 })
+            },
+
+            // 改变每页显示条目数
+            handleSizeChange(val) {
+                this.listQuery.pageSize = val
+                this.getList()
+            },
+
+            // 跳转到指定页数
+            handleCurrentChange(val) {
+                this.listQuery.current = val
+                this.getList()
             },
 
             // 点击搜索
@@ -148,19 +161,7 @@
             // 跳转运动员管理页面
             toMemberManage() {
                 this.$router.push('/athleteManage/manage');
-            },
-
-            // 改变每页显示条目数
-            handleSizeChange(val) {
-                this.listQuery.pageSize = val
-                this.getList()
-            },
-
-            // 跳转到指定页数
-            handleCurrentChange(val) {
-                this.listQuery.current = val
-                this.getList()
-            },
+            }
         }
     }
 </script>

@@ -64,7 +64,7 @@
                   style="width: 100%">
             <el-table-column align="center" label="录入数据" width="50">
                 <template slot-scope="scope">
-                    <el-button size="mini" type="primary" @click="handleModifyStatus(scope.row,'deleted')" style="width:30px;padding:7px 0"><i class="el-icon-plus"></i></el-button>
+                    <el-button size="mini" type="primary" @click="enteringData(scope.row)" style="width:30px;padding:7px 0"><i class="el-icon-plus"></i></el-button>
                 </template>
             </el-table-column>
             <el-table-column align="center"  v-if="item.isShow" v-for="item in tableTitle" :label="item.title"
@@ -79,14 +79,17 @@
             <el-table-column align="center" label="操作" width="130">
                 <template slot-scope="scope">
                     <el-button type="primary" size="mini"><router-link :to="{path: '/athleteManage/manage',query: {id:scope.row.id}}"><i class="el-icon-edit"></i></router-link></el-button>
-                    <el-button size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')"><i class="el-icon-delete"></i></el-button>
+                    <el-button size="mini" type="danger" @click="deleteData(scope.row.id)"><i class="el-icon-delete"></i></el-button>
                 </template>
             </el-table-column>
         </el-table>
 
         <!--分页-->
         <div class="pagination-container">
-            <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="listQuery.page" :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
+            <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                           :current-page="listQuery.current" :page-sizes="[10,20,30, 50]"
+                           :page-size="listQuery.pageSize" layout="total, sizes, prev, pager, next, jumper"
+                           :total="total">
             </el-pagination>
         </div>
 
@@ -109,6 +112,8 @@
         components: {columnDialog},
         data() {
             return {
+                teamId: this.$route.query.teamId, // 通过队伍查询队员的时候使用，队伍id
+
                 cateList: [],       // 队伍
                 specialList: [],    // 专项
                 genderList: [{dicKey: '1', dicValue: '男'},{dicKey: '2', dicValue: '女'}], // 性别
@@ -139,8 +144,8 @@
 
                 total: null,        // 总条目数
                 listQuery: {
-                    page: 1,
-                    limit: 10,
+                    current: 1,
+                    pageSize: 10,
                     searchKey: '',
                     category: '',
                     specialId: '',
@@ -151,12 +156,16 @@
                 },
 
                 listLoading: false,  // 查询table的loading
-                designTable: true,  // 是否弹出定义表格弹窗
+                designTable: false,  // 是否弹出定义表格弹窗
             }
         },
         created() {
             this.getSelectList();
-            this.getList()
+            if(this.teamId) {
+                // ？？？？？？？？？？
+            } else {
+                this.getList();
+            }
         },
         methods: {
             // 获取下拉选项
@@ -170,14 +179,17 @@
                         this.coachList = data.coachList;
                         this.provincesList = data.provincesList;
                     } else {
-                        this.$message(res.data.msg);
+                        this.$message({
+                            message: res.data.msg,
+                            type: 'warning'
+                        })
                     }
                 }).catch(rej => {
                     console.log('获取失败')
                 })
             },
 
-            // 获取运动员列表
+            // 获取运动员列表(不通过队伍)
             getList() {
                 this.listLoading = true
                 getAthleteList().then(res => {
@@ -187,51 +199,44 @@
                             this.list = res.data.data;
                         }
                     } else {
-                        this.$message(res.data.msg)
+                        this.$message({
+                            message: res.data.msg,
+                            type: 'warning'
+                        })
                     }
                 }).catch(rej => {
                     this.listLoading = false;
                     console.log('获取运动员列表失败');
                 })
-
-
-                // this.listLoading = true
-                // fetchList(this.listQuery).then(response => {
-                //     this.list = response.data.items
-                //     this.total = response.data.total
-                //
-                //     // Just to simulate the time of the request
-                //     setTimeout(() => {
-                //         this.listLoading = false
-                //     }, 1.5 * 1000)
-                // })
             },
+
+            // 删除数据行
+            deleteData(id) {
+
+            },
+
 
             // 点击搜索
             handleFilter() {
-                this.listQuery.page = 1
+                this.listQuery.current = 1;
                 this.getList()
             },
 
             // 改变每页显示条目数
             handleSizeChange(val) {
-                this.listQuery.limit = val
+                this.listQuery.pageSize = val;
                 this.getList()
             },
 
             // 跳转到指定页数
             handleCurrentChange(val) {
-                this.listQuery.page = val
+                this.listQuery.current = val;
                 this.getList()
             },
 
-            // 删除
-            handleModifyStatus(row, status) {
-                this.$message({
-                    message: '操作成功',
-                    type: 'success'
-                })
-                row.status = status
+            // 跳转录入数据页面
+            enteringData(row, status) {
+                // this.$router.push('/athleteManage/')
             },
 
             // 跳转运动员维护页面
