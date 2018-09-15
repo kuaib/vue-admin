@@ -100,11 +100,6 @@ let aa = [
             component: 'views/athleteManage/manage',
             name: 'athleteManage',
             meta: {title: '运动员新增/维护'}
-        },{
-            path: 'edit',
-            component: 'views/athleteManage/edit',
-            name: 'edit',
-            meta: {title: '编辑'}
         }]
     }]
 

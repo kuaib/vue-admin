@@ -21,23 +21,23 @@
 
         <el-table :data="list" v-loading="listLoading" border fit highlight-current-row
                   style="width: 100%;">
-            <el-table-column sortable align="center" label="队名">
+            <el-table-column align="center" label="队名">
                 <template slot-scope="scope">
-                    <router-link tag="div" :to="{path:'/athleteManage/manage',query:{teamId: scope.row.id}}">{{scope.row.teamName}}
+                    <router-link class="teamName" tag="div" :to="{path:'/athleteManage/list',query:{teamId: scope.row.id}}">{{scope.row.teamName}}
                     </router-link>
                 </template>
             </el-table-column>
-            <el-table-column sortable align="center" label="专项">
+            <el-table-column align="center" label="专项">
                 <template slot-scope="scope">
                     <span>{{scope.row.specialName}}</span>
                 </template>
             </el-table-column>
-            <el-table-column sortable align="center" label="级别">
+            <el-table-column align="center" label="级别">
                 <template slot-scope="scope">
                     <span>{{scope.row.categoryName}}</span>
                 </template>
             </el-table-column>
-            <el-table-column sortable align="center" label="单位">
+            <el-table-column align="center" label="单位">
                 <template slot-scope="scope">
                     <span>{{scope.row.organizationName}}</span>
                 </template>
@@ -45,7 +45,7 @@
             <el-table-column align="center" label="操作">
                 <template slot-scope="scope">
                     <el-button type="primary" size="mini">
-                        <router-link :to="{path: '/teamManage/edit',query: {id:scope.row.id}}"><i
+                        <router-link :to="{path: '/teamManage/manage',query: {teamId:scope.row.id}}"><i
                                 class="el-icon-edit"></i></router-link>
                     </el-button>
                     <el-button size="mini" type="danger" @click="handleDelete(scope.row)"><i class="el-icon-delete"></i>
@@ -82,7 +82,7 @@
                 listQuery: {
                     current: 1,
                     pageSize: 10,
-                    keyWord: ''
+                    keyWord: null
                 }
             }
         },
@@ -116,35 +116,43 @@
 
             // 删除队伍
             handleDelete(row) {
-                this.listLoading = true;
-                deleteTeam(row.id).then(res => {
-                    this.listLoading = false;
-                    if(res.data.code === 200) {
-                        this.$message({
-                            message: res.data.msg,
-                            type: 'success'
-                        })
-                    } else {
-                        this.$message({
-                            message: res.data.msg,
-                            type: 'warning'
-                        })
-                    }
-                }).catch((rej) => {
-                    this.listLoading = false;
-                    console.log('删除失败');
-                })
+                this.$confirm('确定删除' + row.teamName + '吗?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning',
+                    center: true
+                }).then(() => {
+                    this.listLoading = true;
+                    deleteTeam(row.id).then(res => {
+                        this.listLoading = false;
+                        if(res.data.code === 200) {
+                            this.$message({
+                                message: res.data.msg,
+                                type: 'success'
+                            })
+                            this.getList();
+                        } else {
+                            this.$message({
+                                message: res.data.msg,
+                                type: 'warning'
+                            })
+                        }
+                    }).catch((rej) => {
+                        this.listLoading = false;
+                        console.log('删除失败');
+                    })
+                }).catch(() => {});
             },
 
             // 改变每页显示条目数
             handleSizeChange(val) {
-                this.listQuery.pageSize = val
+                this.listQuery.pageSize = val;
                 this.getList()
             },
 
             // 跳转到指定页数
             handleCurrentChange(val) {
-                this.listQuery.current = val
+                this.listQuery.current = val;
                 this.getList()
             },
 
@@ -165,3 +173,10 @@
         }
     }
 </script>
+
+<style>
+    .teamName {
+        cursor: pointer;
+        color: #409EFF;
+    }
+</style>

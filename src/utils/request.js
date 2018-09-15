@@ -26,9 +26,10 @@ service.interceptors.request.use(config => {
 
 // respone interceptor
 service.interceptors.response.use(response => {
-    if(response.data.code === -1) {
-        console.log(window.location);
-        Cookies.remove();
+    if(response.data.code === 911) {
+        Cookies.remove('roles');
+        Cookies.remove('realName');
+        Cookies.remove('userName');
         window.location.href = window.location.origin;
     }
     return response;

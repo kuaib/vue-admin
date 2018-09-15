@@ -16,10 +16,10 @@
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="4">
-                    <el-select clearable class="filter-item" v-model="listQuery.categoryId" placeholder="请选择队伍"
-                               @change="handleChange(listQuery.categoryId,'category')">
-                        <el-option v-for="item in cateList" :label="item.dicValue" :value="item.dicKey"
-                                   :key="item.dicKey"></el-option>
+                    <el-select clearable class="filter-item" v-model="listQuery.teamId" placeholder="请选择队伍"
+                               @change="handleChange(listQuery.teamId,'team')">
+                        <el-option v-for="item in teamList" :label="item.teamName" :value="item.teamId"
+                                   :key="item.teamId"></el-option>
                     </el-select>
                 </el-col>
                 <el-col :span="4">
@@ -52,7 +52,7 @@
                 </el-col>
                 <el-col :span="4">
                     <el-select clearable class="filter-item" v-model="listQuery.risk" placeholder="请选择损伤分数范围">
-                        <el-option v-for="item in riskOptions" :key="item" :label="item" :value="item">
+                        <el-option v-for="item in riskList" :key="item" :label="item" :value="item">
                         </el-option>
                     </el-select>
                 </el-col>
@@ -79,7 +79,7 @@
             <el-table-column align="center" label="操作" width="130">
                 <template slot-scope="scope">
                     <el-button type="primary" size="mini"><router-link :to="{path: '/athleteManage/manage',query: {id:scope.row.id}}"><i class="el-icon-edit"></i></router-link></el-button>
-                    <el-button size="mini" type="danger" @click="deleteData(scope.row.id)"><i class="el-icon-delete"></i></el-button>
+                    <el-button size="mini" type="danger" @click="deleteData(scope.row)"><i class="el-icon-delete"></i></el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -99,9 +99,10 @@
 </template>
 
 <script>
-    import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article'
+    // import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article'
     import { getAllDic } from '@/api/common'
     import { getAthleteList } from '@/api/athlete'
+    import { getTeamListAll } from '@/api/team'
     import waves from '@/directive/waves' // 水波纹指令
     import columnDialog from './components/columnDialog'
 
@@ -112,14 +113,12 @@
         components: {columnDialog},
         data() {
             return {
-                teamId: this.$route.query.teamId, // 通过队伍查询队员的时候使用，队伍id
-
-                cateList: [],       // 队伍
+                teamList: [],       // 队伍
                 specialList: [],    // 专项
                 genderList: [{dicKey: '1', dicValue: '男'},{dicKey: '2', dicValue: '女'}], // 性别
                 orgList: [],        // 单位
-                provincesList: [],      // 省份
-                riskOptions: ['a','b'], // 损伤风险
+                provincesList: [],  // 省份
+                riskList: ['0-9','10-19','20-29','30-59','60-69','70-79','80-89','90-100'], // 损伤风险
 
 
                 list: [
@@ -146,13 +145,13 @@
                 listQuery: {
                     current: 1,
                     pageSize: 10,
-                    searchKey: '',
-                    category: '',
-                    specialId: '',
-                    genderId: '',
-                    organizationId: '',
-                    provinceId: '',
-                    risk: '',
+                    searchKey: null,
+                    teamId: null,       // 通过队伍查询队员的时候使用，队伍id
+                    specialId: null,
+                    genderId: null,
+                    organizationId: null,
+                    provinceId: null,
+                    risk: null,
                 },
 
                 listLoading: false,  // 查询table的loading
@@ -160,12 +159,12 @@
             }
         },
         created() {
-            this.getSelectList();
-            if(this.teamId) {
-                // ？？？？？？？？？？
-            } else {
-                this.getList();
+            if(this.$route.query.teamId) {
+                this.listQuery.teamId = parseInt(this.$route.query.teamId);
             }
+            this.getAllTeam();      // 获取队伍下拉
+            this.getSelectList();   // 获取其他下拉
+            this.getList();     // 获取运动员列表
         },
         methods: {
             // 获取下拉选项
@@ -189,10 +188,26 @@
                 })
             },
 
-            // 获取运动员列表(不通过队伍)
+            // 获取所有队伍信息（不分页）
+            getAllTeam() {
+                getTeamListAll().then(res => {
+                    if(res.data.code === 200) {
+                        this.teamList = res.data.data;
+                    } else {
+                        this.$message({
+                            message: res.data.msg,
+                            type: 'warning'
+                        })
+                    }
+                }).catch(rej => {
+                    console.log('获取队伍列表失败')
+                })
+            },
+
+            // 获取运动员列表
             getList() {
-                this.listLoading = true
-                getAthleteList().then(res => {
+                this.listLoading = true;
+                getAthleteList(this.listQuery.teamId).then(res => {
                     this.listLoading = false;
                     if(res.data.code === 200) {
                         if(res.data.data && res.data.data.length > 0) {
@@ -211,8 +226,21 @@
             },
 
             // 删除数据行
-            deleteData(id) {
+            deleteData(row) {
+                this.$confirm('确定删除 ' + row.name + ' 这名运动员吗?', '删除运动员', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning',
+                    center: true
+                }).then(() => {
+                    // 删除接口
+                    this.$message({
+                        type: 'success',
+                        message: '删除成功!'
+                    });
+                }).catch(() => {
 
+                });
             },
 
 
@@ -241,7 +269,12 @@
 
             // 跳转运动员维护页面
             toManage() {
-                this.$router.push('/athleteManage/manage');
+                if(this.$route.query.teamId && this.listQuery.teamId) {
+                    let teamName = this.arrToObj(this.teamList)[this.listQuery.teamId];
+                    this.$router.push({path:'/athleteManage/manage',query:{teamId: this.listQuery.teamId, teamName: teamName}});
+                } else {
+                    this.$router.push('/athleteManage/manage');
+                }
             },
 
             // 跳转至看板
@@ -272,10 +305,10 @@
                 //     this.form.coachName = obj[val];
                 // }
             },
-            // 转换数组集合(方便快速找出key对应的value)
+            // 转换队伍数组
             arrToObj(arrList) {
                 return arrList.reduce((acc, cur) => {
-                    acc[cur.dicKey] = cur.dicValue;
+                    acc[cur.teamId] = cur.teamName;
                     return acc
                 }, {})
             },

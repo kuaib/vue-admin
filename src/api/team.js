@@ -19,24 +19,18 @@ export function getTeamList(currentPage, pageSize, keyWord) {
 }
 
 // 获取队伍列表信息(不分页)
-export function getTeamListAll(keyWord) {
+export function getTeamListAll() {
     return request({
         url: '/sports/team/all',
-        method: 'get',
-        params: {
-            keyWord: keyWord
-        }
+        method: 'get'
     })
 }
 
 // 删除队伍
 export function deleteTeam(id) {
     return request({
-        url: '/sports/team/delete',
-        method: 'post',
-        data: {
-            id: id
-        }
+        url: '/sports/team/delete/' + id,
+        method: 'post'
     })
 }
 
@@ -46,6 +40,17 @@ export function saveTeam(data) {
         url: '/sports/team/save',
         method: 'post',
         data
+    })
+}
+
+// 队伍详情信息
+export function teamDetail(teamId) {
+    return request({
+        url: '/sports/team/detail',
+        method: 'get',
+        params: {
+            teamId: teamId
+        }
     })
 }
 

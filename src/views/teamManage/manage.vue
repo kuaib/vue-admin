@@ -70,7 +70,7 @@
 
 <script>
     import {getAllDic} from '@/api/common'
-    import {saveTeam} from '@/api/team'
+    import {saveTeam, teamDetail} from '@/api/team'
 
     export default ({
         data() {
@@ -83,7 +83,7 @@
 
                 imgUrl: '',         // 图片的预览地址
                 form: {
-                    id: this.$route.query.id,
+                    id: null,
                     logo: '',         // 图片url
                     teamName: '',     // 队伍
 
@@ -112,17 +112,25 @@
         },
         created() {
             this.getSelectList();
-            if (this.id) {
-                // this.initPage();
-            }
         },
 
         methods: {
             // 编辑时渲染页面
             initPage() {
-                initData().then(res => {
+                teamDetail(this.form.id).then(res => {
                     if (res.data.code === 200) {
+                        const data = res.data.data;
+                        this.imgUrl =  data.logo;
 
+                        this.form.teamName = data.teamName;
+                        this.form.categoryId = data.categoryId.toString();;
+                        this.form.categoryName = data.categoryName;
+                        this.form.specialId = data.specialId.toString();;
+                        this.form.specialName = data.specialName;
+                        this.form.organizationId = data.organizationId.toString();;
+                        this.form.organizationName = data.organizationName;
+                        this.form.coachId = data.coachId.toString();;
+                        this.form.coachName = data.coachName;
                     } else {
                         this.$message({
                             message: res.data.msg,
@@ -137,6 +145,7 @@
             // 获取下拉选项
             getSelectList() {
                 getAllDic().then(res => {
+                    console.log(111111)
                     if (res.data.code === 200) {
                         const data = res.data.data;
                         this.cateList = data.cateList;
@@ -148,6 +157,12 @@
                             message: res.data.msg,
                             type: 'warning'
                         })
+                    }
+                }).then(() => {
+                    if (this.$route.query.teamId) {
+                        console.log(232323232323232)
+                        this.form.id = this.$route.query.teamId;
+                        this.initPage();
                     }
                 }).catch(rej => {
                     console.log('获取失败')
