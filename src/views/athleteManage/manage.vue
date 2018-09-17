@@ -101,7 +101,7 @@
                             :before-upload="beforeUpload">
                         <template v-if="imgUrl">
                             <img :src="imgUrl" class="avatar">
-                            <i class="el-icon-delete avatar-delete-icon" @click.stop.prevent="imgUrl=''"></i>
+                            <i class="el-icon-delete avatar-delete-icon" @click.stop.prevent="imgUrl=null"></i>
                         </template>
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
@@ -123,7 +123,7 @@
     export default ({
         data() {
             return {
-                imgUrl: '',         // 图片的预览地址
+                imgUrl: null,         // 图片的预览地址
                 isTeam: false,  // 是否无队
 
                 submitFlag: false,  // 提交锁
@@ -132,28 +132,28 @@
                 provincesList: [],   // 省份选项
                 form: {
                     id: this.$route.query.id ? this.$route.query.id : '',
-                    photo: '',        // 图片url
-                    athleteName1: '', // 姓名
+                    photo: null,        // 图片url
+                    athleteName1: null, // 姓名
 
-                    teamId: '',        // 队伍Id
-                    teamName: '',      // 队伍name
+                    teamId: null,        // 队伍Id
+                    teamName: null,      // 队伍name
 
-                    specialId: '',      // 专项id
-                    specialName: '',    // 专项name
+                    specialId: null,      // 专项id
+                    specialName: null,    // 专项name
 
-                    provinceId: "",     //省份id
-                    provinceName: "",   //省份名称
+                    provinceId: null,     //省份id
+                    provinceName: null,   //省份名称
 
                     gender: '1',    // 性别
-                    trainingAge: '',// 训练年限
+                    trainingAge: null,// 训练年限
                     isCross: '0',   // 是否跨项
-                    crossSince: '', // 跨项开始时间
-                    birthday: '',   // 生日
-                    height: '',     // 身高
-                    weight: '',     // 体重
-                    idCard: '',     // 身份证
-                    telephone: '',  // 电话
-                    weChart: ''     // 微信
+                    crossSince: null, // 跨项开始时间
+                    birthday: null,   // 生日
+                    height: null,     // 身高
+                    weight: null,     // 体重
+                    idCard: null,     // 身份证
+                    telephone: null,  // 电话
+                    weChart: null     // 微信
 
                 },
                 rules: { // 表单校验规则

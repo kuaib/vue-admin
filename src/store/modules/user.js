@@ -374,7 +374,7 @@ const user = {
                     if (response.data.code === 200) {
                         const res = response.data.data;
                         if (res && res.length > 0) { // 验证返回的菜单是否是一个非空数组
-                            let newRouters = reformRouters(aa);
+                            let newRouters = reformRouters(res);
                             commit('SET_ROUTERS', newRouters);
                             resolve()
                         } else {

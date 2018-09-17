@@ -53,7 +53,7 @@
                             :before-upload="beforeUpload">
                         <template v-if="imgUrl">
                             <img :src="imgUrl" class="avatar">
-                            <i class="el-icon-delete avatar-delete-icon" @click.stop.prevent="imgUrl=''"></i>
+                            <i class="el-icon-delete avatar-delete-icon" @click.stop.prevent="imgUrl=null"></i>
                         </template>
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
@@ -71,33 +71,35 @@
 <script>
     import {getAllDic} from '@/api/common'
     import {saveTeam, teamDetail} from '@/api/team'
+    import LocalDB from '@/utils/indexedDB'
 
     export default ({
         data() {
             return {
+                teamTable: null,    // indexed
                 submitFlag: false,  // 提交锁
                 cateList: [],       // 类别选项
                 specialList: [],    // 专项选项
                 orgList: [],        // 单位选项
                 coachList: [],      // 教练选项
 
-                imgUrl: '',         // 图片的预览地址
+                imgUrl: null,         // 图片的预览地址
                 form: {
                     id: null,
-                    logo: '',         // 图片url
-                    teamName: '',     // 队伍
+                    logo: null,         // 图片url
+                    teamName: null,     // 队伍
 
-                    categoryId: '',        // 类别Id
-                    categoryName: '',      // 类别name
+                    categoryId: null,        // 类别Id
+                    categoryName: null,      // 类别name
 
-                    specialId: '',         // 专项id
-                    specialName: '',       // 专项name
+                    specialId: null,         // 专项id
+                    specialName: null,       // 专项name
 
-                    organizationId: '',    // 单位id
-                    organizationName: '',  // 单位name
+                    organizationId: null,    // 单位id
+                    organizationName: null,  // 单位name
 
-                    coachId: '',           // 教练id
-                    coachName: '',         // 教练name
+                    coachId: null,           // 教练id
+                    coachName: null,         // 教练name
 
                 },
                 rules: { // 表单校验规则
@@ -112,6 +114,7 @@
         },
         created() {
             this.getSelectList();
+            this.teamTable = new LocalDB('sports', 'team');
         },
 
         methods: {
@@ -145,7 +148,6 @@
             // 获取下拉选项
             getSelectList() {
                 getAllDic().then(res => {
-                    console.log(111111)
                     if (res.data.code === 200) {
                         const data = res.data.data;
                         this.cateList = data.cateList;
@@ -160,7 +162,6 @@
                     }
                 }).then(() => {
                     if (this.$route.query.teamId) {
-                        console.log(232323232323232)
                         this.form.id = this.$route.query.teamId;
                         this.initPage();
                     }
@@ -174,24 +175,32 @@
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         this.submitFlag = true;
-                        saveTeam(this.form).then(res => {
-                            this.submitFlag = false;
-                            if(res.data.code === 200) {
-                                this.$message({
-                                    message: res.data.msg,
-                                    type: 'success'
-                                });
-                                this.$router.replace('/teamManage/list');
-                            } else {
-                                this.$message({
-                                    message: res.data.msg,
-                                    type: 'warning'
-                                })
-                            }
-                        }).catch(rej => {
-                            this.submitFlag = false;
-                            console.log('保存失败')
-                        })
+                        if(navigator.onLine){
+                            saveTeam(this.form).then(res => {
+                                this.submitFlag = false;
+                                if(res.data.code === 200) {
+                                    this.$message({
+                                        message: res.data.msg,
+                                        type: 'success'
+                                    });
+                                    this.$router.replace('/teamManage/list');
+                                } else {
+                                    this.$message({
+                                        message: res.data.msg,
+                                        type: 'warning'
+                                    })
+                                }
+                            }).catch(rej => {
+                                this.submitFlag = false;
+                                console.log('保存失败')
+                            })
+                        }else{
+                            console.log('离线')
+                            // 如果是离线状态，则保存到本地
+                            this.teamTable.open(() => {
+                                this.teamTable.set(this.form);
+                            })
+                        }
                     } else {
                         return false
                     }
