@@ -1,12 +1,6 @@
 <template>
     <div class="top-logo clearfix">
-        <div class="left">
-            <img src="http://t2.hddhhn.com/uploads/tu/201707/200/8.jpg" alt="">
-            <span>aaa</span>
-        </div>
-        <div class="right">
-            <slot></slot>
-        </div>
+        <img src="http://t2.hddhhn.com/uploads/tu/201707/200/8.jpg" alt="">
     </div>
 </template>
 <script>
@@ -19,21 +13,16 @@
 
 <style lang="scss" scoped>
     .top-logo {
+        width: 180px;
+        height: 73.98px;
+        background: #abc;
+        position: fixed;
+        top: 0;
+        left: 0;
         img {
-            width: 100px;
-            height: 60px;
+            width: 100%;
+            height: 100%;
             vertical-align: middle;
-        }
-        .left {
-            float: left;
-            span {
-                color: #409EFF;
-                font-size: 30px;
-                font-weight: 700;
-            }
-        }
-        .right {
-            float: right;
         }
     }
 </style>

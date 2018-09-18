@@ -13,7 +13,8 @@
     height: 100%;
     position: fixed;
     font-size: 0px;
-    top: 0;
+    //top: 0;
+    top: 73.98px;
     bottom: 0;
     left: 0;
     z-index: 1001;
@@ -46,8 +47,15 @@
     }
   }
   .hideSidebar {
+    .top-logo {
+      display: none;
+    }
+    .topNav {
+      left: 36px;
+    }
     .sidebar-container {
       width: 36px !important;
+      top: 0;
     }
     .main-container {
       margin-left: 36px;

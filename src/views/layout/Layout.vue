@@ -1,85 +1,92 @@
 <template>
-  <div class="app-wrapper" :class="classObj">
-    <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside"></div>
-    <sidebar class="sidebar-container"></sidebar>
-    <div class="main-container">
-      <div class="topNav">
-        <navbar></navbar>
-        <tags-view></tags-view>
-      </div>
-      <div class="bottom-content">
-        <app-main></app-main>
-      </div>
+    <div class="app-wrapper" :class="classObj">
+        <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside"></div>
+        <logoTip></logoTip>
+        <sidebar class="sidebar-container"></sidebar>
+        <div class="main-container">
+            <div class="topNav">
+                <navbar></navbar>
+                <tags-view></tags-view>
+            </div>
+            <div class="bottom-content">
+                <app-main></app-main>
+            </div>
+        </div>
     </div>
-  </div>
 </template>
 
 <script>
-import { Navbar, Sidebar, AppMain, TagsView } from './components'
-import ResizeMixin from './mixin/ResizeHandler'
+    import {Navbar, Sidebar, AppMain, TagsView} from './components'
+    import ResizeMixin from './mixin/ResizeHandler'
+    import logoTip from '@/components/logoTip'
 
-export default {
-  name: 'layout',
-  components: {
-    Navbar,
-    Sidebar,
-    AppMain,
-    TagsView
-  },
-  mixins: [ResizeMixin],
-  computed: {
-    sidebar() {
-      return this.$store.state.app.sidebar
-    },
-    device() {
-      return this.$store.state.app.device
-    },
-    classObj() {
-      return {
-        hideSidebar: !this.sidebar.opened,
-        openSidebar: this.sidebar.opened,
-        withoutAnimation: this.sidebar.withoutAnimation,
-        mobile: this.device === 'mobile'
-      }
+    export default {
+        name: 'layout',
+        components: {
+            Navbar,
+            Sidebar,
+            AppMain,
+            TagsView,
+            logoTip
+        },
+        mixins: [ResizeMixin],
+        computed: {
+            sidebar() {
+                return this.$store.state.app.sidebar
+            },
+            device() {
+                return this.$store.state.app.device
+            },
+            classObj() {
+                return {
+                    hideSidebar: !this.sidebar.opened,
+                    openSidebar: this.sidebar.opened,
+                    withoutAnimation: this.sidebar.withoutAnimation,
+                    mobile: this.device === 'mobile'
+                }
+            }
+        },
+        methods: {
+            handleClickOutside() {
+                this.$store.dispatch('closeSideBar', {withoutAnimation: false})
+            }
+        }
     }
-  },
-  methods: {
-    handleClickOutside() {
-      this.$store.dispatch('closeSideBar', { withoutAnimation: false })
-    }
-  }
-}
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
-  @import "src/styles/mixin.scss";
-  .app-wrapper {
-    @include clearfix;
-    position: relative;
-    height: 100%;
-    width: 100%;
-    &.mobile.openSidebar{
-      position: fixed;
-      top: 0;
+<style lang="scss" scoped>
+    @import "src/styles/mixin.scss";
+
+    .app-wrapper {
+        @include clearfix;
+        position: relative;
+        height: 100%;
+        width: 100%;
+        &.mobile.openSidebar {
+            position: fixed;
+            top: 0;
+        }
     }
-  }
-  .drawer-bg {
-    background: #000;
-    opacity: 0.3;
-    width: 100%;
-    top: 0;
-    height: 100%;
-    position: absolute;
-    z-index: 999;
-  }
-  .topNav {
-    position: fixed;
-    left: 180px;
-    right: 0;
-    z-index: 1000;
-    top: 0;
-  }
-  .bottom-content {
-    padding-top: 125px;
-  }
+
+    .drawer-bg {
+        background: #000;
+        opacity: 0.3;
+        width: 100%;
+        top: 0;
+        height: 100%;
+        position: absolute;
+        z-index: 999;
+    }
+
+    .topNav {
+        position: fixed;
+        left: 180px;
+        right: 0;
+        z-index: 1000;
+        top: 0;
+    }
+
+    .bottom-content {
+        padding-top: 125px;
+    }
 </style>
