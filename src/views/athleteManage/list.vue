@@ -67,7 +67,9 @@
                     <el-button size="mini" type="primary" @click="enteringData(scope.row)" style="width:30px;padding:7px 0"><i class="el-icon-plus"></i></el-button>
                 </template>
             </el-table-column>
-            <el-table-column align="center"  v-if="item.isShow" v-for="item in tableTitle" :label="item.title"
+            <el-table-column align="center"  v-if="item.isShow" v-for="item in tableTitle"
+                             :key="item.id"
+                             :label="item.title"
                              :width="item.columnName==='gender' || item.columnName==='age' || item.columnName==='height'?60
                              :item.columnName==='views'?100:''">
                 <template slot-scope="scope">
@@ -122,9 +124,9 @@
 
 
                 list: [
-                    {name: '45kg', views: '11', special: '165cm',gender: '男',age: '11',height:'175',telephone:'13333333333',REP:33,ready:45,sleep:'12',score: 80},
-                    {name: '45kg', views: '11', special: '165cm',gender: '男',age: '11',height:'175',telephone:'13333333333',REP:33,ready:45,sleep:'12',score: 80},
-                    {name: '45kg', views: '11', special: '165cm',gender: '男',age: '11',height:'175',telephone:'13333333333',REP:33,ready:45,sleep:'12',score: 80},
+                    {id:1,name: '45kg', views: '11', special: '165cm',gender: '男',age: '11',height:'175',telephone:'13333333333',REP:33,ready:45,sleep:'12',score: 80},
+                    {id:2,name: '45kg', views: '11', special: '165cm',gender: '男',age: '11',height:'175',telephone:'13333333333',REP:33,ready:45,sleep:'12',score: 80},
+                    {id:3,name: '45kg', views: '11', special: '165cm',gender: '男',age: '11',height:'175',telephone:'13333333333',REP:33,ready:45,sleep:'12',score: 80},
 
                 ],         // table列表
                 tableTitle: [

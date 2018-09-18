@@ -123,16 +123,16 @@
                 teamDetail(this.form.id).then(res => {
                     if (res.data.code === 200) {
                         const data = res.data.data;
-                        this.imgUrl =  data.logo;
+                        this.imgUrl = data.logo;
 
                         this.form.teamName = data.teamName;
-                        this.form.categoryId = data.categoryId.toString();;
+                        this.form.categoryId = data.categoryId.toString();
                         this.form.categoryName = data.categoryName;
-                        this.form.specialId = data.specialId.toString();;
+                        this.form.specialId = data.specialId.toString();
                         this.form.specialName = data.specialName;
-                        this.form.organizationId = data.organizationId.toString();;
+                        this.form.organizationId = data.organizationId.toString();
                         this.form.organizationName = data.organizationName;
-                        this.form.coachId = data.coachId.toString();;
+                        this.form.coachId = data.coachId.toString();
                         this.form.coachName = data.coachName;
                     } else {
                         this.$message({
@@ -175,10 +175,10 @@
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         this.submitFlag = true;
-                        if(navigator.onLine){
+                        if (navigator.onLine) {
                             saveTeam(this.form).then(res => {
                                 this.submitFlag = false;
-                                if(res.data.code === 200) {
+                                if (res.data.code === 200) {
                                     this.$message({
                                         message: res.data.msg,
                                         type: 'success'
@@ -194,7 +194,7 @@
                                 this.submitFlag = false;
                                 console.log('保存失败')
                             })
-                        }else{
+                        } else {
                             console.log('离线')
                             // 如果是离线状态，则保存到本地
                             this.teamTable.open(() => {
