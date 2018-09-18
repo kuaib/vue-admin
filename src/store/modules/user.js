@@ -480,8 +480,10 @@ const user = {
         // 前端 登出
         FedLogOut({commit}) {
             return new Promise(resolve => {
-                commit('SET_TOKEN', '')
-                removeToken()
+                commit('SET_ROLES', '');
+                Cookies.remove('realName');
+                Cookies.remove('userName');
+                Cookies.remove('roles');
                 resolve()
             })
         },

@@ -30,7 +30,6 @@ export const constantRouterMap = [
     {path: '/401', component: () => import('@/views/errorPage/401'), hidden: true},
     {
         path: '',
-        // component: Layout,
         component: Layout,
         redirect: 'dashboard',
         children: [{

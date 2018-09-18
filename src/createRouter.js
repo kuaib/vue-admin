@@ -19,7 +19,6 @@ const whiteList = ['/login', '/authredirect']// no redirect whitelist
 
 router.beforeEach((to, from, next) => {
     NProgress.start() // start progress bar
-    // if (getToken()) { //--------------------真正登陆的时候打开
     if (Cookies.get('roles')) { // determine if there has token
         if (to.path === '/login') {
             next({path: '/'})
@@ -30,6 +29,7 @@ router.beforeEach((to, from, next) => {
                     router.addRoutes(store.getters.user_addRouters) // 如果没有，动态添加可访问路由表
                     next({...to, replace: true}) // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
                 }).catch((err) => {
+                    // 清除前端有关登录的cookie信息
                     store.dispatch('FedLogOut').then(() => {
                         Message.error(err || 'Verification failed, please login again')
                         next({path: '/'})
