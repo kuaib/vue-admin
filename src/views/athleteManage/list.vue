@@ -124,9 +124,9 @@
 
 
                 list: [
-                    {id:1,name: '45kg', views: '11', special: '165cm',gender: '男',age: '11',height:'175',telephone:'13333333333',REP:33,ready:45,sleep:'12',score: 80},
-                    {id:2,name: '45kg', views: '11', special: '165cm',gender: '男',age: '11',height:'175',telephone:'13333333333',REP:33,ready:45,sleep:'12',score: 80},
-                    {id:3,name: '45kg', views: '11', special: '165cm',gender: '男',age: '11',height:'175',telephone:'13333333333',REP:33,ready:45,sleep:'12',score: 80},
+                    {id:1,name: '小明', views: '10', special: '赛艇',gender: '男',age: '20',height:'168',telephone:'15884423456',REP:40,ready:88,sleep:'80',score: 73},
+                    {id:2,name: '小李', views: '38', special: '皮划艇',gender: '女',age: '21',height:'165',telephone:'13325673456',REP:33,ready:85,sleep:'38',score: 95},
+                    {id:3,name: '小张', views: '45', special: '短道速滑',gender: '男',age: '18',height:'163',telephone:'15024522314',REP:51,ready:90,sleep:'77',score: 82},
 
                 ],         // table列表
                 tableTitle: [
@@ -135,7 +135,7 @@
                     {title:'专项',columnName: 'special',isShow: true},
                     {title:'性别',columnName: 'gender',isShow: true},
                     {title:'年龄',columnName: 'age',isShow: true},
-                    {title:'身高',columnName: 'height',isShow: true},
+                    {title:'身高(cm)',columnName: 'height',isShow: true},
                     {title:'电话',columnName: 'telephone',isShow: true},
                     {title:'自感疲劳PRE',columnName: 'REP',isShow: true},
                     {title:'准备度',columnName: 'ready',isShow: true},
