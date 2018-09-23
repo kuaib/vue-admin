@@ -89,7 +89,7 @@
         <!--分页-->
         <div class="pagination-container">
             <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                           :current-page="listQuery.current" :page-sizes="[10,20,30, 50]"
+                           :current-page="listQuery.currentPage" :page-sizes="[10,20,30, 50]"
                            :page-size="listQuery.pageSize" layout="total, sizes, prev, pager, next, jumper"
                            :total="total">
             </el-pagination>
@@ -101,9 +101,8 @@
 </template>
 
 <script>
-    // import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article'
     import { getAllDic } from '@/api/common'
-    import { getAthleteList } from '@/api/athlete'
+    import { getAthleteList, deleteAthlete } from '@/api/athlete'
     import { getTeamListAll } from '@/api/team'
     import waves from '@/directive/waves' // 水波纹指令
     import columnDialog from './components/columnDialog'
@@ -124,15 +123,15 @@
 
 
                 list: [
-                    {id:1,name: '小明', views: '10', special: '赛艇',gender: '男',age: '20',height:'168',telephone:'15884423456',REP:40,ready:88,sleep:'80',score: 73},
-                    {id:2,name: '小李', views: '38', special: '皮划艇',gender: '女',age: '21',height:'165',telephone:'13325673456',REP:33,ready:85,sleep:'38',score: 95},
-                    {id:3,name: '小张', views: '45', special: '短道速滑',gender: '男',age: '18',height:'163',telephone:'15024522314',REP:51,ready:90,sleep:'77',score: 82},
+                    {id:1,athleteName: '小明', views: '10', specialName: '赛艇',gender: '男',age: '20',height:'168',telephone:'15884423456',REP:40,ready:88,sleep:'80',score: 73},
+                    {id:2,athleteName: '小李', views: '38', specialName: '皮划艇',gender: '女',age: '21',height:'165',telephone:'13325673456',REP:33,ready:85,sleep:'38',score: 95},
+                    {id:3,athleteName: '小张', views: '45', specialName: '短道速滑',gender: '男',age: '18',height:'163',telephone:'15024522314',REP:51,ready:90,sleep:'77',score: 82},
 
                 ],         // table列表
                 tableTitle: [
-                    {title:'姓名',columnName: 'name',isShow: true},
+                    {title:'姓名',columnName: 'athleteName',isShow: true},
                     {title:'运动员看板',columnName: 'views',isShow: true},
-                    {title:'专项',columnName: 'special',isShow: true},
+                    {title:'专项',columnName: 'specialName',isShow: true},
                     {title:'性别',columnName: 'gender',isShow: true},
                     {title:'年龄',columnName: 'age',isShow: true},
                     {title:'身高(cm)',columnName: 'height',isShow: true},
@@ -145,10 +144,10 @@
 
                 total: null,        // 总条目数
                 listQuery: {
-                    current: 1,
+                    currentPage: 1,
                     pageSize: 10,
                     searchKey: null,
-                    teamId: null,       // 通过队伍查询队员的时候使用，队伍id
+                    teamId: 10,
                     specialId: null,
                     genderId: null,
                     organizationId: null,
@@ -209,15 +208,16 @@
             // 获取运动员列表
             getList() {
                 this.listLoading = true;
-                getAthleteList(this.listQuery.teamId).then(res => {
+                getAthleteList(this.listQuery).then(res => {
                     this.listLoading = false;
                     if(res.data.code === 200) {
                         if(res.data.data && res.data.data.length > 0) {
                             this.list = res.data.data;
+                            this.total = res.data.pagination.total;
                         }
                     } else {
                         this.$message({
-                            message: res.data.msg,
+                            message: res.msg,
                             type: 'warning'
                         })
                     }
@@ -235,11 +235,24 @@
                     type: 'warning',
                     center: true
                 }).then(() => {
-                    // 删除接口
-                    this.$message({
-                        type: 'success',
-                        message: '删除成功!'
-                    });
+                    this.listLoading = true;
+                    deleteAthlete(row.id).then(res => {
+                        this.listLoading = false;
+                        if(res.code === 200) {
+                            this.$message({
+                                type: 'success',
+                                message: res.msg
+                            });
+                        } else {
+                            this.$message({
+                                type: 'warning',
+                                message: res.msg
+                            });
+                        }
+                    }).catch(rej => {
+                        this.listLoading = false;
+                        console.log('删除运动员失败')
+                    })
                 }).catch(() => {
 
                 });
@@ -260,7 +273,7 @@
 
             // 跳转到指定页数
             handleCurrentChange(val) {
-                this.listQuery.current = val;
+                this.listQuery.currentPage = val;
                 this.getList()
             },
 
