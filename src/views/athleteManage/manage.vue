@@ -4,8 +4,8 @@
             <el-row :gutter="20">
                 <el-col :span="9">
                     <el-row>
-                        <el-form-item label="姓名" prop="athleteName1">
-                            <el-input v-model="form.athleteName1" placeholder="请输入姓名"></el-input>
+                        <el-form-item label="姓名" prop="athleteName">
+                            <el-input v-model="form.athleteName" placeholder="请输入姓名"></el-input>
                         </el-form-item>
                     </el-row>
                     <el-row>
@@ -42,7 +42,7 @@
                         </el-row>
                     </el-row>
                     <el-form-item label="是否跨项" prop="isCross">
-                        <el-radio-group v-model="form.isCross">
+                        <el-radio-group v-model="form.isCross" @change="crossChange">
                             <el-radio label="0">否</el-radio>
                             <el-radio label="1">是</el-radio>
                         </el-radio-group>
@@ -86,8 +86,8 @@
                         </el-form-item>
                     </el-row>
                     <el-row>
-                        <el-form-item label="微信" prop="weChart">
-                            <el-input v-model="form.weChart" placeholder="请输入微信"></el-input>
+                        <el-form-item label="微信" prop="wechat">
+                            <el-input v-model="form.wechat" placeholder="请输入微信"></el-input>
                         </el-form-item>
                     </el-row>
                 </el-col>
@@ -95,7 +95,7 @@
                     <div class="imgTitle">上传运动员照片</div>
                     <el-upload
                             class="avatar-uploader"
-                            action="/api/sports/sys/upload/teamLogo"
+                            action="/api/sports/sys/upload/athleteLogo"
                             :show-file-list="false"
                             :on-success="uploadSuccess"
                             :before-upload="beforeUpload">
@@ -118,7 +118,7 @@
 
 <script>
     import {getAllDic} from '@/api/common'
-    import {saveAthlete} from '@/api/athlete'
+    import {saveAthlete, athleteDetail} from '@/api/athlete'
 
     export default ({
         data() {
@@ -133,7 +133,7 @@
                 form: {
                     id: this.$route.query.id ? this.$route.query.id : '',
                     photo: null,        // 图片url
-                    athleteName1: null, // 姓名
+                    athleteName: null, // 姓名
 
                     teamId: null,        // 队伍Id
                     teamName: null,      // 队伍name
@@ -153,11 +153,11 @@
                     weight: null,     // 体重
                     idCard: null,     // 身份证
                     telephone: null,  // 电话
-                    weChart: null     // 微信
+                    wechat: null     // 微信
 
                 },
                 rules: { // 表单校验规则
-                    athleteName1: [
+                    athleteName: [
                         {required: true, message: '请输入姓名', trigger: 'blur'},
                     ],
                     teamId: [
@@ -179,6 +179,32 @@
         },
 
         methods: {
+            initPage() {
+                athleteDetail(this.form.id).then(res => {
+                    if (res.data.code === 200) {
+                        const data = res.data.data;
+                        this.imgUrl = data.logo;
+
+                        this.form.teamName = data.teamName;
+                        this.form.categoryId = data.categoryId.toString();
+                        this.form.categoryName = data.categoryName;
+                        this.form.specialId = data.specialId.toString();
+                        this.form.specialName = data.specialName;
+                        this.form.organizationId = data.organizationId.toString();
+                        this.form.organizationName = data.organizationName;
+                        this.form.coachId = data.coachId.toString();
+                        this.form.coachName = data.coachName;
+                    } else {
+                        this.$message({
+                            message: res.data.msg,
+                            type: 'warning'
+                        })
+                    }
+                }).catch(rej => {
+                    console.log('获取数据失败')
+                })
+            },
+
             // 获取所有下拉徐选项列表
             getSelectList() {
                 getAllDic().then(res => {
@@ -194,6 +220,12 @@
                             message: res.data.msg,
                             type: 'warning'
                         })
+                    }
+                }).then(() => {
+                    console.log(this.$route.query.athleleId)
+                    if (this.$route.query.athleleId) {
+                        this.form.id = this.$route.query.athleleId;
+                        this.initPage();
                     }
                 }).catch(rej => {
                     console.log('获取失败')
@@ -256,6 +288,13 @@
             // 重置表单
             resetForm(formName) {
                 this.$refs[formName].resetFields()
+            },
+
+            // 切换是否跨项目
+            crossChange(label) {
+                if(label == 0) {
+                    this.form.crossSince = null
+                }
             },
 
             // 图片上传成功回调函数

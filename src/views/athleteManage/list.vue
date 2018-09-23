@@ -80,7 +80,7 @@
 
             <el-table-column align="center" label="操作" width="130">
                 <template slot-scope="scope">
-                    <el-button type="primary" size="mini"><router-link :to="{path: '/athleteManage/manage',query: {id:scope.row.id}}"><i class="el-icon-edit"></i></router-link></el-button>
+                    <el-button type="primary" size="mini"><router-link :to="{path: '/athleteManage/manage',query: {athleleId:scope.row.id}}"><i class="el-icon-edit"></i></router-link></el-button>
                     <el-button size="mini" type="danger" @click="deleteData(scope.row)"><i class="el-icon-delete"></i></el-button>
                 </template>
             </el-table-column>
@@ -147,7 +147,7 @@
                     currentPage: 1,
                     pageSize: 10,
                     searchKey: null,
-                    teamId: 10,
+                    teamId: null,
                     specialId: null,
                     genderId: null,
                     organizationId: null,
@@ -211,13 +211,14 @@
                 getAthleteList(this.listQuery).then(res => {
                     this.listLoading = false;
                     if(res.data.code === 200) {
-                        if(res.data.data && res.data.data.length > 0) {
-                            this.list = res.data.data;
-                            this.total = res.data.pagination.total;
-                        }
+                        const data = res.data.data;
+                        this.list = data.list;
+                        this.total = data.pagination.total;
+                        this.listQuery.pageSize = data.pagination.pageSize;
+                        this.listQuery.currentPage = data.pagination.current;
                     } else {
                         this.$message({
-                            message: res.msg,
+                            message: res.data.msg,
                             type: 'warning'
                         })
                     }
@@ -241,12 +242,12 @@
                         if(res.code === 200) {
                             this.$message({
                                 type: 'success',
-                                message: res.msg
+                                message: res.data.msg
                             });
                         } else {
                             this.$message({
                                 type: 'warning',
-                                message: res.msg
+                                message: res.data.msg
                             });
                         }
                     }).catch(rej => {
