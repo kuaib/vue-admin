@@ -270,6 +270,25 @@ function reformRouters1(routersList) {
                 }
             ]
         },
+        {
+            path: '/athleteCentral',
+            component: Layout,
+            meta: {title: '运动员看板'},
+            children: [
+                {
+                    path: 'list',
+                    component: () => import('@/views/athleteCentral/list'),
+                    name: 'athleteCentral',
+                    meta: {title: '运动员看板'}
+                },
+                {
+                    path: 'add',
+                    component: () => import('@/views/athleteCentral/add'),
+                    name: 'athleteAdd',
+                    meta: {title: '新建运动员'}
+                }
+            ]
+        },
     ]
     // 后续会将接口中的数据转化为以下的数组形式
     return list
@@ -374,7 +393,8 @@ const user = {
                     if (response.data.code === 200) {
                         const res = response.data.data;
                         if (res && res.length > 0) { // 验证返回的菜单是否是一个非空数组
-                            let newRouters = reformRouters(res);
+                            // let newRouters = reformRouters(res);
+                            let newRouters = reformRouters1(res);
                             commit('SET_ROUTERS', newRouters);
                             resolve()
                         } else {

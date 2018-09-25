@@ -87,6 +87,6 @@
     }
 
     .bottom-content {
-        padding-top: 125px;
+        padding-top: 108px;
     }
 </style>
