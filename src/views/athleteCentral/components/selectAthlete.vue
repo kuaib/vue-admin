@@ -1,96 +1,72 @@
 <template>
     <div>
-        <!--搜索/筛选-->
-        <el-row>
-            <el-row style="margin-top: 40px">
-                <el-col>
-                    <div class="left"></div>
-                    <div class="right">
-                        <el-button class="filter-item" type="primary" icon="el-icon-plus" @click="addAthelet">新建运动员</el-button>
-                    </div>
-                </el-col>
-            </el-row>
-            <el-row>
-                <el-form label-width="100px">
-                    <el-row>
-                        <el-col :span="8">
-                            <el-form-item label="队伍" prop="saleOrderNum">
-                                <el-select clearable class="filter-item" v-model="listQuery.teamId" placeholder="请选择队伍">
-                                    <el-option v-for="item in teamList" :label="item.teamName" :value="item.teamId"
-                                               :key="item.teamId"></el-option>
-                                </el-select>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="8">
-                            <el-form-item label="专项" prop="orderDate">
-                                <el-select clearable class="filter-item" v-model="listQuery.specialId" placeholder="请选择专项">
-                                    <el-option v-for="item in specialList" :label="item.dicValue" :value="item.dicKey"
-                                               :key="item.dicKey"></el-option>
-                                </el-select>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="8">
-                            <el-form-item label="性别" prop="saleOrderNum">
-                                <el-select clearable class="filter-item" v-model="listQuery.genderId" placeholder="请选择性别">
-                                    <el-option v-for="item in genderList" :label="item.dicValue" :value="item.dicKey"
-                                               :key="item.dicKey"></el-option>
-                                </el-select>
-                            </el-form-item>
-                        </el-col>
-                    </el-row>
-                    <el-row>
-                        <el-col :span="8">
-                            <el-form-item label="损伤分数范围" prop="orderDate">
-                                <el-select clearable class="filter-item" v-model="listQuery.risk" placeholder="请选择损伤分数范围">
-                                    <el-option v-for="item in riskList" :key="item" :label="item" :value="item">
-                                    </el-option>
-                                </el-select>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="8">
-                            <el-form-item>
-                                <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="搜索" v-model="listQuery.searchKey">
-                                </el-input>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="4">
-                            <el-form-item>
-                                <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">搜索</el-button>
-                            </el-form-item>
-                        </el-col>
-                    </el-row>
-                </el-form>
+        <div class="row-item actBtn clearfix">
+            <el-button class="add" type="primary" @click="addAthelet">
+                <p>新建运动员</p>
+                <p>Create Athlete</p>
+            </el-button>
+            <el-button class="search" type="primary" v-waves icon="el-icon-search" @click="handleFilter">搜索 Search</el-button>
+        </div>
 
-            </el-row>
-            <el-row>
-                <el-table :data="list" v-loading="listLoading" border fit highlight-current-row
-                          style="width: 100%">
-                    <el-table-column align="center" label="姓名">
-                        <template slot-scope="scope">
-                            <span>{{scope.row.athleteName}}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column align="center" label="性别" width="100">
-                        <template slot-scope="scope">
-                            <span>{{scope.row.gender==1?'男':'女'}}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column align="center" label="队伍名称">
-                        <template slot-scope="scope">
-                            <span>{{scope.row.teamName}}</span>
-                        </template>
-                    </el-table-column>
-                </el-table>
+        <div class="row-item">
+            <el-select clearable v-model="listQuery.specialId" placeholder="请选择项目 Select Sport">
+                <el-option v-for="item in specialList" :label="item.dicValue" :value="item.dicKey"
+                           :key="item.dicKey"></el-option>
+            </el-select>
+        </div>
+        <div class="row-item">
+            <el-select clearable v-model="listQuery.teamId" placeholder="请选择队伍 Select Team">
+                <el-option v-for="item in teamList" :label="item.teamName" :value="item.teamId"
+                           :key="item.teamId"></el-option>
+            </el-select>
+        </div>
+        <div class="row-item">
+            <el-select clearable v-model="listQuery.genderId" placeholder="请选择性别 Select Gender">
+                <el-option v-for="item in genderList" :label="item.dicValue" :value="item.dicKey"
+                           :key="item.dicKey"></el-option>
+            </el-select>
+        </div>
+        <div class="row-item">
+            <el-select clearable v-model="listQuery.risk" placeholder="请选择损伤分数范围 Injury Score">
+                <el-option v-for="item in riskList" :key="item" :label="item" :value="item">
+                </el-option>
+            </el-select>
+        </div>
+        <div class="row-item">
+            <el-input @keyup.enter.native="handleFilter" style="width: 200px;" placeholder="请输入名字 Search Name" v-model="listQuery.searchKey">
+                </el-input>
+        </div>
 
-                <div class="pagination-container">
-                    <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                                   :current-page="listQuery.current" :page-sizes="[10,20,30, 50]"
-                                   :page-size="listQuery.pageSize" layout="total, sizes, prev, pager, next, jumper"
-                                   :total="total">
-                    </el-pagination>
-                </div>
-            </el-row>
-        </el-row>
+
+        <div class="row-item">
+            <div class="title">运动员列表 Athlete List</div>
+            <el-table :data="list" v-loading="listLoading" border fit highlight-current-row
+                      style="width: 100%">
+                <el-table-column align="center" label="姓名 Name">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.athleteName}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" label="项目 Sport">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.teamName}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" label="性别 Gender" width="50">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.gender==1?'男':'女'}}</span>
+                    </template>
+                </el-table-column>
+            </el-table>
+
+            <div class="pagination-container">
+                <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                               :current-page="listQuery.current" :page-sizes="[10,20,30, 50]"
+                               :page-size="listQuery.pageSize" layout="prev, pager, next, jumper"
+                               :total="total">
+                </el-pagination>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -211,14 +187,27 @@
 </script>
 
 <style lang="scss" scoped>
-    .title {
-        margin: 40px 0 20px;
-    }
-    .el-row, .select-item {
-        margin-bottom: 20px;
+    .row-item {
+        margin-bottom: 10px;
         &:last-child {
              margin-bottom: 0;
-         }
+        }
+        .el-input {
+            width: 100% !important;
+        }
+        .title {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+        }
+    }
+    .actBtn {
+        .add {
+            float: left;
+        }
+        .search {
+            float: right;
+        }
     }
 
 </style>

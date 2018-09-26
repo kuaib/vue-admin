@@ -1,13 +1,18 @@
 <template>
     <div>
-        <el-tabs v-model="activeTab" type="card" @tab-click="handleClick">
-            <el-tab-pane label="选择运动员" name="selectAthlete">
+        <el-row :gutter="40">
+            <el-col :span="6">
+                <h3 class="leftTitle">选择运动员 Select Athlete</h3>
                 <select-athlete></select-athlete>
-            </el-tab-pane>
-            <el-tab-pane label="运动员看板" name="athleteView">运动员看板</el-tab-pane>
-            <el-tab-pane label="运动员基本信息" name="athleteBio">运动员基本信息</el-tab-pane>
-            <el-tab-pane label="运动员测试" name="athleteTesting">运动员测试</el-tab-pane>
-        </el-tabs>
+            </el-col>
+            <el-col :span="18">
+                <el-tabs v-model="activeTab" type="card" @tab-click="handleClick">
+                    <el-tab-pane label="运动员看板 Athlete View" name="athleteView">运动员看板</el-tab-pane>
+                    <el-tab-pane label="运动员基本信息 Athlete Bio" name="athleteBio">运动员基本信息</el-tab-pane>
+                    <el-tab-pane label="运动员测试 Athlete Testing" name="athleteTesting">运动员测试</el-tab-pane>
+                </el-tabs>
+            </el-col>
+        </el-row>
     </div>
 </template>
 
@@ -20,8 +25,7 @@
         },
         data() {
             return {
-                activeTab: 'selectAthlete',
-
+                activeTab: 'athleteView',
             }
         },
         created() {
@@ -34,3 +38,9 @@
         }
     })
 </script>
+<style lang="scss" scoped>
+    .leftTitle {
+        text-align: center;
+        margin-bottom: 15px;
+    }
+</style>
