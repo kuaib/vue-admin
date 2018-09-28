@@ -9,7 +9,9 @@
                 <el-tabs v-model="activeTab" type="card" @tab-click="handleClick">
                     <el-tab-pane label="运动员看板 Athlete View" name="athleteView">运动员看板</el-tab-pane>
                     <el-tab-pane label="运动员基本信息 Athlete Bio" name="athleteBio">运动员基本信息</el-tab-pane>
-                    <el-tab-pane label="运动员测试 Athlete Testing" name="athleteTesting">运动员测试</el-tab-pane>
+                    <el-tab-pane label="运动员测试 Athlete Testing" name="athleteTesting">
+                        <athleth-test></athleth-test>
+                    </el-tab-pane>
                 </el-tabs>
             </el-col>
         </el-row>
@@ -18,10 +20,12 @@
 
 <script>
     import selectAthlete from './components/selectAthlete'
+    import athleteBio from './components/athleteBio'
+    import athlethTest from './components/athlethTest'
     export default ({
         name: 'athleteCentral',
         components: {
-            selectAthlete
+            selectAthlete, athleteBio, athlethTest
         },
         data() {
             return {
@@ -33,7 +37,7 @@
         },
         methods: {
             handleClick(tab, event) {
-                console.log(tab, event);
+                // console.log(tab, event);
             }
         }
     })
