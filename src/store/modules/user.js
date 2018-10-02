@@ -298,7 +298,7 @@ function reformRouters1(routersList) {
                     path: 'teamOverview',
                     component: () => import('@/views/teamOverview/teamOverview'),
                     name: 'teamOverview',
-                    meta: {title: '队伍员看板'}
+                    meta: {title: '队伍看板'}
                 }
             ]
         },

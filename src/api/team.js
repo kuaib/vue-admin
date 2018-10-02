@@ -6,15 +6,23 @@ import request from '@/utils/request'
 
 
 // 获取队伍列表信息(分页)
-export function getTeamList(currentPage, pageSize, keyWord) {
+// export function getTeamList(currentPage, pageSize, keyWord) {
+//     return request({
+//         url: '/sports/team/list',
+//         method: 'get',
+//         params: {
+//             currentPage: currentPage,
+//             pageSize: pageSize,
+//             keyWord: keyWord
+//         }
+//     })
+// }
+
+export function getTeamList(params) {
     return request({
         url: '/sports/team/list',
         method: 'get',
-        params: {
-            currentPage: currentPage,
-            pageSize: pageSize,
-            keyWord: keyWord
-        }
+        params
     })
 }
 
@@ -53,4 +61,15 @@ export function teamDetail(teamId) {
         }
     })
 }
+
+// 队伍看板(队伍信息⼀一览)
+export function getTeamAthlete(params) {
+    return request({
+        url: '/sports/team/allAthlete',
+        method: 'get',
+        params
+    })
+}
+
+
 

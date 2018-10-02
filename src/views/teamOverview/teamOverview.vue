@@ -10,7 +10,9 @@
                     <el-tab-pane label="队伍伤病测试 Team Injury Testing" name="injuryTesting">
                         <injury-test :teamRow="teamRow" v-if="teamRow"></injury-test>
                     </el-tab-pane>
-                    <el-tab-pane label="队伍信息一览 Team Overview" name="overview">运动员基本信息</el-tab-pane>
+                    <el-tab-pane label="队伍信息一览 Team Overview" name="overview">
+                        <overview :teamRow="teamRow"></overview>
+                    </el-tab-pane>
                 </el-tabs>
             </el-col>
         </el-row>
@@ -20,10 +22,11 @@
 <script>
     import selectTeam from './components/selectTeam'
     import injuryTest from './components/injuryTest'
+    import overview from './components/overview'
     export default ({
         name: 'teamOverview',
         components: {
-            selectTeam, injuryTest
+            selectTeam, injuryTest, overview
         },
         data() {
             return {

@@ -108,7 +108,15 @@
             // 获取队伍列表
             getList() {
                 this.listLoading = true;
-                getTeamList(this.listQuery.current, this.listQuery.pageSize, this.listQuery.keyWord).then(res => {
+                // getTeamList(this.listQuery.current, this.listQuery.pageSize, this.listQuery.keyWord).then(res => {
+                getTeamList({
+                    specialId: this.listQuery.specialId,
+                    orgId: this.listQuery.organizationId,
+                    cateId: this.listQuery.categoryId,
+                    currentPage: this.listQuery.current,
+                    pageSize: this.listQuery.pageSize,
+                    keyWord: this.listQuery.searchKey,
+                }).then(res => {
                     this.listLoading = false;
                     if (res.data.code === 200) {
                         const data = res.data.data;

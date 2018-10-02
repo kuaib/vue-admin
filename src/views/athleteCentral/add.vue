@@ -283,7 +283,7 @@
                                     message: res.data.msg,
                                     type: 'success'
                                 });
-                                this.$router.replace('/athleteManage/list');
+                                // this.$router.replace('/athleteManage/list');
                             } else {
                                 this.$message({
                                     message: res.data.msg,

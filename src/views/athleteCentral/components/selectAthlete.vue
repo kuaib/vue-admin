@@ -40,7 +40,7 @@
 
         <div class="row-item">
             <div class="title">运动员列表 Athlete List</div>
-            <el-table :data="list" v-loading="listLoading" border fit highlight-current-row
+            <el-table :data="list" v-loading="listLoading" border fit highlight-current-row @row-click="selectRow"
                       style="width: 100%">
                 <el-table-column align="center" label="姓名 Name">
                     <template slot-scope="scope">
@@ -49,7 +49,7 @@
                 </el-table-column>
                 <el-table-column align="center" label="项目 Sport">
                     <template slot-scope="scope">
-                        <span>{{scope.row.teamName}}</span>
+                        <span>{{scope.row.specialName}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="性别 Gender" width="50">
@@ -148,6 +148,7 @@
                         this.total = data.pagination.total;
                         this.listQuery.pageSize = data.pagination.pageSize;
                         this.listQuery.current = data.pagination.current;
+                        this.selectRow(this.list[0]) // 默认选择第一行数据
                     } else {
                         this.$message({
                             message: res.data.msg,
@@ -158,6 +159,11 @@
                     this.listLoading = false;
                     console.log('获取运动员列表失败');
                 })
+            },
+
+            // 点击行
+            selectRow(row) {
+                this.$emit('getAthleteInfo', row)
             },
 
             // 点击搜索
