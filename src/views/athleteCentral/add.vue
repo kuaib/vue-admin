@@ -86,7 +86,7 @@
                                                :key="item.dicKey"></el-option>
                                 </el-select>
                             </el-form-item>
-                            <el-form-item label="训练年限 Training Age" prop="trainingAge">
+                            <el-form-item label="训练年限 Training Age" prop="trainingAge" label-width="200px">
                                 <el-input v-model="form.trainingAge" placeholder="请输入训练年限 Enter Training Age"></el-input>
                             </el-form-item>
                         </el-col>

@@ -2,43 +2,43 @@
     <div>
         <el-table :data="list" v-loading="listLoading" border fit highlight-current-row
                   style="width: 100%;">
-            <el-table-column align="center" label="运动员姓名 Athlete Name">
+            <el-table-column align="center" :render-header="renderHeader" label="运动员姓名 Athlete Name">
                 <template slot-scope="scope">
                     <router-link class="teamName" tag="div" :to="{path:'/athleteManage/list',query:{teamId: scope.row.id}}">{{scope.row.teamName}}
                     </router-link>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="队伍 Team">
+            <el-table-column align="center" :render-header="renderHeader"label="队伍 Team">
                 <template slot-scope="scope">
                     <span>{{scope.row.specialName}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="身份证号 ID NO.">
+            <el-table-column align="center" :render-header="renderHeader" label="身份证号 ID NO.">
                 <template slot-scope="scope">
                     <span>{{scope.row.categoryName}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="身高 Height">
+            <el-table-column align="center" :render-header="renderHeader" label="身高 Height" width="70">
                 <template slot-scope="scope">
                     <span>{{scope.row.organizationName}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="体重 Weight">
+            <el-table-column align="center" :render-header="renderHeader" label="体重 Weight" width="70">
                 <template slot-scope="scope">
                     <span>{{scope.row.organizationName}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="落地动作分数 LESS Score">
+            <el-table-column align="center" :render-header="renderHeader" label="落地动作分数 LESS Score" width="120">
                 <template slot-scope="scope">
                     <span>{{scope.row.organizationName}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="双腿下蹲分数 Double Squat">
+            <el-table-column align="center" :render-header="renderHeader" label="双腿下蹲分数 Double Squat" width="120">
                 <template slot-scope="scope">
                     <span>{{scope.row.organizationName}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="单腿下蹲分数 Single Squat">
+            <el-table-column align="center" :render-header="renderHeader" label="单腿下蹲分数 Single Squat" width="120">
                 <template slot-scope="scope">
                     <span>{{scope.row.organizationName}}</span>
                 </template>
@@ -117,6 +117,12 @@
             handleFilter() {
                 this.listQuery.current = 1;
                 this.getList()
+            },
+
+            // 格式化表头
+            renderHeader(h, column) {
+                let title = column.column.label.split(' ');
+                return [h('p', {}, [title[0]]),h('p', {}, [title[1]])]
             },
         },
 

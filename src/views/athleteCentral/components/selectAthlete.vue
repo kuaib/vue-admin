@@ -42,17 +42,17 @@
             <div class="title">运动员列表 Athlete List</div>
             <el-table :data="list" v-loading="listLoading" border fit highlight-current-row @row-click="selectRow"
                       style="width: 100%">
-                <el-table-column align="center" label="姓名 Name">
+                <el-table-column align="center" :render-header="renderHeader" label="姓名 Name">
                     <template slot-scope="scope">
                         <span>{{scope.row.athleteName}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column align="center" label="项目 Sport">
+                <el-table-column align="center" :render-header="renderHeader" label="项目 Sport">
                     <template slot-scope="scope">
                         <span>{{scope.row.specialName}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column align="center" label="性别 Gender" width="50">
+                <el-table-column align="center" :render-header="renderHeader" label="性别 Gender" width="80">
                     <template slot-scope="scope">
                         <span>{{scope.row.gender==1?'男':'女'}}</span>
                     </template>
@@ -187,6 +187,12 @@
             // 跳转新建运动员
             addAthelet() {
                 this.$router.push({path: '/athleteCentral/add'})
+            },
+
+            // 格式化表头
+            renderHeader(h, column) {
+                let title = column.column.label.split(' ');
+                return [h('p', {}, [title[0]]),h('p', {}, [title[1]])]
             }
         }
     })

@@ -32,12 +32,12 @@
             <div class="title">队伍列表 Team List</div>
             <el-table :data="list" v-loading="listLoading" border fit highlight-current-row @row-click="selectRow"
                       style="width: 100%">
-                <el-table-column align="center" label="队名 Name">
+                <el-table-column align="center" :render-header="renderHeader" label="队名 Name">
                     <template slot-scope="scope">
                         <span>{{scope.row.teamName}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column align="center" label="项目 Sport">
+                <el-table-column align="center" :render-header="renderHeader" label="项目 Sport">
                     <template slot-scope="scope">
                         <span>{{scope.row.specialName}}</span>
                     </template>
@@ -158,6 +158,12 @@
             handleCurrentChange(val) {
                 this.listQuery.currentPage = val;
                 this.getList()
+            },
+
+            // 格式化表头
+            renderHeader(h, column) {
+                let title = column.column.label.split(' ');
+                return [h('p', {}, [title[0]]),h('p', {}, [title[1]])]
             }
         }
     })
