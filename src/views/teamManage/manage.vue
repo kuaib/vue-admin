@@ -125,6 +125,7 @@
                         const data = res.data.data;
                         this.imgUrl = data.logo;
 
+                        this.form.logo = data.logo.split('/img/')[1];
                         this.form.teamName = data.teamName;
                         this.form.categoryId = data.categoryId.toString();
                         this.form.categoryName = data.categoryName;
@@ -183,7 +184,7 @@
                                         message: res.data.msg,
                                         type: 'success'
                                     });
-                                    this.$router.replace('/teamManage/list');
+                                    // this.$router.replace('/teamManage/list');
                                 } else {
                                     this.$message({
                                         message: res.data.msg,

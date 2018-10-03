@@ -133,10 +133,11 @@ function eachRouter(route) {
         obj.path = route.path;
         obj.name = route.name;
         obj.component = () => import(`@/${route.component}`);
+        hidden: route.meta.hideInMenu;
         obj.meta = {
             title: route.meta.title,
             icon: route.meta.icon,
-            hidden: route.meta.hideInMenu
+            // hidden: route.meta.hideInMenu
         }
     }
     return obj;
@@ -146,111 +147,111 @@ function eachRouter(route) {
 // 将后台返回的路由数据的集合进行组装(成为路由的格式)
 function reformRouters1(routersList) {
     let list = [
-        {
-            path: '/salesManage',
-            component: Layout,
-            meta: {
-                title: '销售管理',
-                icon: 'lock'
-            },
-            children: [
-                {
-                    path: 'baseData',
-                    component: () => import('@/views/salesManage/baseData/index'),
-                    meta: {title: '基础数据'},
-                    children: [{
-                        path: 'clientFiles/list',
-                        component: () => import('@/views/salesManage/baseData/clientFiles/list'),
-                        name: 'clientFilesList',
-                        meta: {
-                            title: '客户档案列表',
-                            // roles: ['admin'] // or you can only set roles in sub nav
-                        }
-                    }, {
-                        path: 'clientFiles/add',
-                        component: () => import('@/views/salesManage/baseData/clientFiles/add'),
-                        name: 'clientFilesAdd',
-                        hidden: true,
-                        meta: {
-                            title: '新增客户档案',
-                            // roles: ['admin'] // or you can only set roles in sub nav
-                        }
-                    }, {
-                        path: 'directive',
-                        component: () => import('@/views/salesManage/baseData/clientFiles/add'),
-                        name: 'directivePermission',
-                        meta: {
-                            title: '合同管理'
-                            // if do not set roles, means: this page does not require permission
-                        }
-                    }]
-                },
-                {
-                    path: 'documents',
-                    component: () => import('@/views/salesManage/documents/index'), // Parent router-view
-                    name: 'documents',
-                    meta: {title: '单据'},
-                    // redirect: '/salesManage/documents/salesOrder/list',
-                    children: [
-                        {
-                            path: 'salesOrder/list',
-                            component: () => import('@/views/salesManage/documents/salesOrder/list'),
-                            name: 'salesOrderList',
-                            meta: {title: '销售订单列表'}
-                        },
-                        {
-                            path: 'salesOrder/add',
-                            component: () => import('@/views/salesManage/documents/salesOrder/add'),
-                            name: 'salesOrderAdd',
-                            hidden: true,
-                            meta: {title: '新增销售订单'}
-                        },
-                        {
-                            path: 'salesSendOrder/list',
-                            component: () => import('@/views/salesManage/documents/salesSendOrder/list'),
-                            name: 'salesSendOrderList',
-                            meta: {title: '销售发货单列表'}
-                        },
-                        {
-                            path: 'salesSendOrder/add',
-                            component: () => import('@/views/salesManage/documents/salesSendOrder/add'),
-                            name: 'salesSendOrderAdd',
-                            hidden: true,
-                            meta: {title: '新增销售订单'}
-                        },
-                    ]
-                },
-            ]
-        },
+        // {
+        //     path: '/salesManage',
+        //     component: Layout,
+        //     meta: {
+        //         title: '销售管理',
+        //         icon: 'lock'
+        //     },
+        //     children: [
+        //         {
+        //             path: 'baseData',
+        //             component: () => import('@/views/salesManage/baseData/index'),
+        //             meta: {title: '基础数据'},
+        //             children: [{
+        //                 path: 'clientFiles/list',
+        //                 component: () => import('@/views/salesManage/baseData/clientFiles/list'),
+        //                 name: 'clientFilesList',
+        //                 meta: {
+        //                     title: '客户档案列表',
+        //                     // roles: ['admin'] // or you can only set roles in sub nav
+        //                 }
+        //             }, {
+        //                 path: 'clientFiles/add',
+        //                 component: () => import('@/views/salesManage/baseData/clientFiles/add'),
+        //                 name: 'clientFilesAdd',
+        //                 hidden: true,
+        //                 meta: {
+        //                     title: '新增客户档案',
+        //                     // roles: ['admin'] // or you can only set roles in sub nav
+        //                 }
+        //             }, {
+        //                 path: 'directive',
+        //                 component: () => import('@/views/salesManage/baseData/clientFiles/add'),
+        //                 name: 'directivePermission',
+        //                 meta: {
+        //                     title: '合同管理'
+        //                     // if do not set roles, means: this page does not require permission
+        //                 }
+        //             }]
+        //         },
+        //         {
+        //             path: 'documents',
+        //             component: () => import('@/views/salesManage/documents/index'), // Parent router-view
+        //             name: 'documents',
+        //             meta: {title: '单据'},
+        //             // redirect: '/salesManage/documents/salesOrder/list',
+        //             children: [
+        //                 {
+        //                     path: 'salesOrder/list',
+        //                     component: () => import('@/views/salesManage/documents/salesOrder/list'),
+        //                     name: 'salesOrderList',
+        //                     meta: {title: '销售订单列表'}
+        //                 },
+        //                 {
+        //                     path: 'salesOrder/add',
+        //                     component: () => import('@/views/salesManage/documents/salesOrder/add'),
+        //                     name: 'salesOrderAdd',
+        //                     hidden: true,
+        //                     meta: {title: '新增销售订单'}
+        //                 },
+        //                 {
+        //                     path: 'salesSendOrder/list',
+        //                     component: () => import('@/views/salesManage/documents/salesSendOrder/list'),
+        //                     name: 'salesSendOrderList',
+        //                     meta: {title: '销售发货单列表'}
+        //                 },
+        //                 {
+        //                     path: 'salesSendOrder/add',
+        //                     component: () => import('@/views/salesManage/documents/salesSendOrder/add'),
+        //                     name: 'salesSendOrderAdd',
+        //                     hidden: true,
+        //                     meta: {title: '新增销售订单'}
+        //                 },
+        //             ]
+        //         },
+        //     ]
+        // },
 
-        {
-            path: '/home',
-            component: Layout,
-            // redirect: '/home/index',
-            children: [
-                {path: 'index', component: () => import('@/views/home/index'), name: 'home', meta: {title: '面板'}}
-            ]
-        },
-        {
-            path: '/athleteManage',
-            component: Layout,
-            meta: {title: '运动员管理'},
-            children: [
-                {
-                    path: 'list',
-                    component: () => import('@/views/athleteManage/list'),
-                    name: 'athleteList',
-                    meta: {title: '运动员列表'}
-                },
-                {
-                    path: 'manage',
-                    component: () => import('@/views/athleteManage/manage'),
-                    name: 'athleteManage',
-                    meta: {title: '运动员新增/维护'}
-                }
-
-            ]
-        },
+        // {
+        //     path: '/home',
+        //     component: Layout,
+        //     // redirect: '/home/index',
+        //     children: [
+        //         {path: 'index', component: () => import('@/views/home/index'), name: 'home', meta: {title: '面板'}}
+        //     ]
+        // },
+        // {
+        //     path: '/athleteManage',
+        //     component: Layout,
+        //     meta: {title: '运动员管理'},
+        //     children: [
+        //         {
+        //             path: 'list',
+        //             component: () => import('@/views/athleteManage/list'),
+        //             name: 'athleteList',
+        //             meta: {title: '运动员列表'}
+        //         },
+        //         {
+        //             path: 'manage',
+        //             component: () => import('@/views/athleteManage/manage'),
+        //             name: 'athleteManage',
+        //             meta: {title: '运动员新增/维护'}
+        //         }
+        //
+        //     ]
+        // },
         {
             path: '/teamManage',
             component: Layout,
@@ -285,6 +286,7 @@ function reformRouters1(routersList) {
                     path: 'add',
                     component: () => import('@/views/athleteCentral/add'),
                     name: 'athleteAdd',
+                    hidden: true,
                     meta: {title: '新建运动员'}
                 }
             ]
@@ -302,19 +304,19 @@ function reformRouters1(routersList) {
                 }
             ]
         },
-        {
-            path: '/teamTest',
-            component: Layout,
-            meta: {title: '队伍测试'},
-            children: [
-                {
-                    path: 'teamTest',
-                    component: () => import('@/views/teamTest/test'),
-                    name: 'teamTest',
-                    meta: {title: '队伍测试'}
-                }
-            ]
-        }
+        // {
+        //     path: '/teamTest',
+        //     component: Layout,
+        //     meta: {title: '队伍测试'},
+        //     children: [
+        //         {
+        //             path: 'teamTest',
+        //             component: () => import('@/views/teamTest/test'),
+        //             name: 'teamTest',
+        //             meta: {title: '队伍测试'}
+        //         }
+        //     ]
+        // }
     ]
     // 后续会将接口中的数据转化为以下的数组形式
     return list
