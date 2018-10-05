@@ -287,6 +287,7 @@
             return {
                 id: null,       // -1: 是一组新的测试；1：未完成的一组测试
                 step: 'less',   // 切换到哪个测试
+                idFlag: true,   // 只记录当前运动员初次时候的id
                 saveLoading: false,
                 saveAllLoading: false,  // 点击完成全部测试按钮
                 canSave: false,
@@ -375,7 +376,10 @@
                     if(res.data.code == 200) {
                         const data = res.data.data;
                         this.step = data.step;
-                        this.id = data.id;
+                        if(this.idFlag) {
+                            this.idFlag = false;
+                            this.id = data.id;
+                        }
                     } else {
                         this.$message({
                             message: res.data.msg,
@@ -432,7 +436,7 @@
                             right = this.getRequestItem(this.right);
                             if(this.canSave) {
                                 dataForm.singleForm = {single: single, left: left, right: right}
-                                this.saveTest(dataForm, 'lastTest');
+                                this.saveTest(dataForm);
                             }
                         }
                     }
@@ -445,13 +449,12 @@
                 saveAthleteTest(dataForm).then(res => {
                     this.saveLoading = false;
                     if(res.data.code == 200) {
+                        this.id = res.data.data.id;
                         this.$message({
                             message: res.data.msg,
                             type: 'success'
                         })
-                        if(!lastTest) {
-                            this.initTestStep();
-                        }
+                        this.initTestStep();
                     } else {
                         this.$message({
                             message: res.data.msg,
@@ -466,13 +469,6 @@
 
             // 点击完成全部测试按钮
             finishedAll() {
-                if(this.id == 1) {
-                    this.$message({
-                        message: '该运动员已经完成一次全部测试',
-                        type: 'warning'
-                    })
-                    return;
-                }
                 this.saveAllLoading = true;
                 testDone({'athleteId': this.athleteRow.id,id: this.id}).then(res => {
                     this.saveAllLoading = false;
@@ -526,10 +522,37 @@
                 }
                 return obj;
             },
+
+            // 重置页面(切换运动员的时候)
+            resetPage(testItem) {
+                for (let i = 0; i < testItem.length; i++) {
+                    let item = testItem[i];
+                    if(item.score) {
+                        testItem[i].score = null;
+                    }
+                    if(item.whichLeg) {
+                        testItem[i].whichLeg = null;
+                    }
+                    if(item.other) {
+                        testItem[i].other = null;
+                    }
+                }
+
+            }
         },
         watch: {
             athleteRow(val) {
                 if(val.id) {
+                    this.idFlag = true;
+                    this.resetPage(this.initialContact);
+                    this.resetPage(this.maximumFlexionPosition);
+                    this.resetPage(this.grade);
+                    this.resetPage(this.front);
+                    this.resetPage(this.flank);
+                    this.resetPage(this.behind);
+                    this.resetPage(this.single);
+                    this.resetPage(this.left);
+                    this.resetPage(this.right);
                     this.initTestStep();
                 }
             }
