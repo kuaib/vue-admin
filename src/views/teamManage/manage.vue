@@ -47,7 +47,7 @@
                     <div class="imgTitle">队伍logo上传</div>
                     <el-upload
                             class="avatar-uploader"
-                            action="/api/sports/sys/upload/teamLogo"
+                            action="/sports/sys/upload/teamLogo"
                             :show-file-list="false"
                             :on-success="uploadSuccess"
                             :before-upload="beforeUpload">

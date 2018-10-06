@@ -58,7 +58,7 @@
                         <el-form-item prop="photo">
                             <el-upload
                                     class="avatar-uploader"
-                                    action="/api/sports/sys/upload/athleteLogo"
+                                    action="/sports/sys/upload/athleteLogo"
                                     :show-file-list="false"
                                     :on-success="uploadSuccess"
                                     :before-upload="beforeUpload">
