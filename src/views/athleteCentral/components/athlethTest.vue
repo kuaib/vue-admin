@@ -33,15 +33,17 @@
                                     </p>
                                 </div>
                                 <div class="left three">
-                                    <p v-if="item.left">
-                                        <el-radio v-model="item.whichLeg" label="2">{{item.left}}</el-radio>
-                                    </p>
-                                    <p v-if="item.right">
-                                        <el-radio v-model="item.whichLeg" label="3">{{item.right}}</el-radio>
-                                    </p>
-                                    <p v-if="item.both">
-                                        <el-radio v-model="item.whichLeg" label="4">{{item.both}}</el-radio>
-                                    </p>
+                                    <template v-if="item.score==1">
+                                        <p v-if="item.left">
+                                            <el-radio v-model="item.whichLeg" label="2">{{item.left}}</el-radio>
+                                        </p>
+                                        <p v-if="item.right">
+                                            <el-radio v-model="item.whichLeg" label="3">{{item.right}}</el-radio>
+                                        </p>
+                                        <p v-if="item.both">
+                                            <el-radio v-model="item.whichLeg" label="4">{{item.both}}</el-radio>
+                                        </p>
+                                    </template>
                                 </div>
                             </li>
                         </ul>
@@ -67,15 +69,17 @@
                                     </p>
                                 </div>
                                 <div class="left three">
-                                    <p v-if="item.left">
-                                        <el-radio v-model="item.whichLeg" label="2">{{item.left}}</el-radio>
-                                    </p>
-                                    <p v-if="item.right">
-                                        <el-radio v-model="item.whichLeg" label="3">{{item.right}}</el-radio>
-                                    </p>
-                                    <p v-if="item.both">
-                                        <el-radio v-model="item.whichLeg" label="4">{{item.both}}</el-radio>
-                                    </p>
+                                    <template v-if="item.score==1">
+                                        <p v-if="item.left">
+                                            <el-radio v-model="item.whichLeg" label="2">{{item.left}}</el-radio>
+                                        </p>
+                                        <p v-if="item.right">
+                                            <el-radio v-model="item.whichLeg" label="3">{{item.right}}</el-radio>
+                                        </p>
+                                        <p v-if="item.both">
+                                            <el-radio v-model="item.whichLeg" label="4">{{item.both}}</el-radio>
+                                        </p>
+                                    </template>
                                     <p v-if="item.soft">
                                         <el-radio v-model="item.other" label="0">{{item.soft}}</el-radio>
                                     </p>
@@ -499,7 +503,7 @@
                 let obj = {};
                 for(let i = 0; i < item.length; i++) {
                     let str = '', val=item[i];
-                    if(val.score === null || val.whichLeg === null || val.other === null) {
+                    if(val.score === null || val.other === null || (val.score == 1 && val.whichLeg === null)) {
                         this.$message({
                             message: val.baseAct + 'is incomplete (' + val.china + '不完整)',
                             type: 'warning'
@@ -507,13 +511,13 @@
                         this.canSave = false;
                         break;
                     } else {
-                        if(val.score !== undefined) {
+                        if(val.score !== undefined && val.score !== null) {
                             str += val.score;
                         }
-                        if(val.whichLeg !== undefined) {
+                        if(val.whichLeg !== undefined && val.whichLeg !== null) {
                             str += val.whichLeg;
                         }
-                        if(val.other !== undefined) {
+                        if(val.other !== undefined && val.other !== null) {
                             str += val.other;
                         }
                         obj[val.name] = str;
