@@ -542,7 +542,7 @@
         },
         watch: {
             athleteRow(val) {
-                if(val.id) {
+                if(val && val.id) {
                     this.idFlag = true;
                     this.resetPage(this.initialContact);
                     this.resetPage(this.maximumFlexionPosition);

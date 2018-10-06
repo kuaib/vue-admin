@@ -356,7 +356,7 @@
         },
         watch: {
             athleteRow(val) {
-                if(val.id) {
+                if(val && val.id) {
                     this.form.id = val.id;
                     this.initPage(val.id);
                 }
