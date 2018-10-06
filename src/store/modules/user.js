@@ -261,12 +261,13 @@ function reformRouters1(routersList) {
                     path: 'list',
                     component: () => import('@/views/teamManage/list'),
                     name: 'teamList',
-                    meta: {title: '队伍列表'}
+                    meta: {title: '队伍管理'}
                 },
                 {
                     path: 'manage',
                     component: () => import('@/views/teamManage/manage'),
                     name: 'teamManage',
+                    hidden: true,
                     meta: {title: '队伍新增/维护'}
                 }
             ]

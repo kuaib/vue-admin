@@ -35,13 +35,15 @@
                             </el-select>
                         </el-form-item>
                     </el-row>
-                    <el-form-item label="教练" prop="coach">
-                        <el-select v-model="form.coachId" placeholder="请选择教练"
-                                   @change="handleChange(form.coachId,'coach')">
-                            <el-option v-for="item in coachList" :label="item.dicValue" :value="item.dicKey"
-                                       :key="item.dicKey"></el-option>
-                        </el-select>
-                    </el-form-item>
+                    <el-row>
+                        <el-form-item label="教练" prop="coachId">
+                            <el-select v-model="form.coachId" placeholder="请选择教练"
+                                       @change="handleChange(form.coachId,'coach')">
+                                <el-option v-for="item in coachList" :label="item.dicValue" :value="item.dicKey"
+                                           :key="item.dicKey"></el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-row>
                 </el-col>
                 <el-col :span="9" :offset="6">
                     <div class="imgTitle">队伍logo上传</div>
@@ -236,7 +238,9 @@
 
             // 重置表单
             resetForm(formName) {
-                this.$refs[formName].resetFields()
+                this.$refs[formName].resetFields();
+                this.imgUrl = null;
+                this.form.logo = null;
             },
 
             // 图片上传成功回调函数

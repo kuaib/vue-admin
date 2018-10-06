@@ -13,8 +13,6 @@
                 <div class="right">
                     <el-button class="filter-item" type="primary" icon="el-icon-plus" @click="toTeamManage">新建队伍
                     </el-button>
-                    <el-button class="filter-item" type="primary" icon="el-icon-plus" @click="toMemberManage">新建队员
-                    </el-button>
                 </div>
             </el-row>
         </div>
@@ -23,8 +21,7 @@
                   style="width: 100%;">
             <el-table-column align="center" label="队名">
                 <template slot-scope="scope">
-                    <router-link class="teamName" tag="div" :to="{path:'/athleteManage/list',query:{teamId: scope.row.id}}">{{scope.row.teamName}}
-                    </router-link>
+                    <span>{{scope.row.teamName}}</span>
                 </template>
             </el-table-column>
             <el-table-column align="center" label="专项">
@@ -94,7 +91,12 @@
             // 获取队伍列表
             getList() {
                 this.listLoading = true;
-                getTeamList(this.listQuery.current, this.listQuery.pageSize, this.listQuery.keyWord).then(res => {
+                getTeamList(
+                    {
+                        currentPage: this.listQuery.current,
+                        pageSize: this.listQuery.pageSize,
+                        keyWord: this.listQuery.keyWord
+                    }).then(res => {
                     this.listLoading = false;
                     if (res.data.code === 200) {
                         const data = res.data.data;
@@ -165,10 +167,6 @@
             // 跳转队伍管理页面
             toTeamManage() {
                 this.$router.push('/teamManage/manage');
-            },
-            // 跳转运动员管理页面
-            toMemberManage() {
-                this.$router.push('/athleteManage/manage');
             }
         }
     }

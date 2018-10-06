@@ -92,12 +92,11 @@
                         </el-col>
                         <el-col :span="12">
                             <el-form-item label="队伍 Team" prop="teamId">
-                                <el-select v-model="form.teamId" placeholder="请选择队伍 Enter Team" v-if="!isTeam"
+                                <el-select v-model="form.teamId" placeholder="请选择队伍 Select Team"
                                            @change="handleChange(form.teamId,'team')">
-                                    <el-option v-for="item in cateList" :label="item.dicValue" :value="item.dicKey"
-                                               :key="item.dicKey"></el-option>
+                                    <el-option v-for="item in teamList" :label="item.teamName" :value="item.teamId"
+                                               :key="item.teamId"></el-option>
                                 </el-select>
-                                <div v-else>{{form.teamName}}</div>
                             </el-form-item>
                         </el-col>
                     </el-col>
@@ -107,7 +106,7 @@
         <el-row class="btn-row">
             <el-button type="primary" v-show="!submitFlag" @click="submitForm('form')">保存 save</el-button>
             <el-button type="primary" v-show="submitFlag" :loading="true">提交中 submiting</el-button>
-            <el-button @click="resetForm('form')" style="margin-left: 50px;">重置 reset</el-button>
+            <!--<el-button @click="resetForm('form')" style="margin-left: 50px;">重置 reset</el-button>-->
         </el-row>
     </div>
 </template>
@@ -115,15 +114,15 @@
 <script>
     import {getAllDic} from '@/api/common'
     import {saveAthlete, athleteDetail} from '@/api/athlete'
+    import {getTeamListAll} from '@/api/team'
 
     export default ({
         data() {
             return {
                 imgUrl: null,         // 图片的预览地址
-                isTeam: false,  // 是否无队
 
                 submitFlag: false,  // 提交锁
-                cateList: [],       // 队伍选项
+                teamList: [],       // 队伍选项
                 specialList: [],    // 专项选项
                 provincesList: [],   // 省份选项
 
@@ -193,11 +192,7 @@
         },
         created() {
             this.getSelectList();
-            if(this.$route.query.teamId && this.$route.query.teamName) {
-                this.isTeam = true;
-                this.form.teamId = this.$route.query.teamId;
-                this.form.teamName = this.$route.query.teamName;
-            }
+            this.getTeamList();
         },
 
         props: ['athleteRow'],
@@ -224,7 +219,7 @@
                         this.form.telephone2 = tel[1];
                         this.form.specialId = data.specialId.toString();
                         this.form.specialName = data.specialName;
-                        this.form.teamId = data.teamId.toString();
+                        this.form.teamId = data.teamId;
                         this.form.teamName = data.teamName;
                         this.form.trainingAge = data.trainingAge;
                         this.form.photo = data.photo.split('/img/')[1];
@@ -244,7 +239,7 @@
                 getAllDic().then(res => {
                     if (res.data.code === 200) {
                         const data = res.data.data;
-                        this.cateList = data.cateList;
+                        // this.cateList = data.cateList;
                         this.specialList = data.specialList;
                         this.orgList = data.orgList;
                         this.provincesList = data.provincesList;
@@ -262,6 +257,22 @@
                     }
                 }).catch(rej => {
                     console.log('获取失败')
+                })
+            },
+
+            // 获取所有队伍信息
+            getTeamList() {
+                getTeamListAll().then(res => {
+                    if(res.data.code == 200) {
+                        this.teamList = res.data.data;
+                    } else {
+                        this.$message({
+                            message: res.data.msg,
+                            type: 'warning'
+                        })
+                    }
+                }).catch(rej => {
+                    console.log('获取队伍列表失败')
                 })
             },
 
@@ -299,11 +310,18 @@
             },
 
             // 转换数组集合(方便快速找出key对应的value)
-            arrToObj(arrList) {
-                return arrList.reduce((acc, cur) => {
-                    acc[cur.dicKey] = cur.dicValue;
-                    return acc
-                }, {})
+            arrToObj(arrList, type) {
+                if(type === 'team') {
+                    return arrList.reduce((acc, cur) => {
+                        acc[cur.teamId] = cur.teamName;
+                        return acc
+                    }, {})
+                } else {
+                    return arrList.reduce((acc, cur) => {
+                        acc[cur.dicKey] = cur.dicValue;
+                        return acc
+                    }, {})
+                }
             },
 
             // 改变下拉选项
@@ -311,7 +329,7 @@
                 console.log(val)
                 let obj = {};
                 if (type === 'team') {
-                    obj = this.arrToObj(this.cateList);
+                    obj = this.arrToObj(this.teamList, 'team');
                     this.form.teamName = obj[val];
                 } else if (type === 'special') {
                     obj = this.arrToObj(this.specialList);

@@ -18,6 +18,7 @@ import request from '@/utils/request'
 //     })
 // }
 
+// 获取队伍列表信息(分页)
 export function getTeamList(params) {
     return request({
         url: '/sports/team/list',

@@ -5,9 +5,9 @@
         <el-row class="right-menu">
             <el-button type="primary" v-if="$route.path.indexOf('/dashboard')!=-1">{{$t('navbar.allAthlete')}}
             </el-button>
-            <el-button type="primary">{{$t('navbar.teamManage')}}</el-button>
-            <el-button type="primary">{{$t('navbar.enterData')}}</el-button>
-            <el-button type="primary">{{$t('navbar.test')}}</el-button>
+            <!--<el-button type="primary">{{$t('navbar.teamManage')}}</el-button>-->
+            <!--<el-button type="primary">{{$t('navbar.enterData')}}</el-button>-->
+            <!--<el-button type="primary">{{$t('navbar.test')}}</el-button>-->
             <el-button type="primary" @click="logout">{{$t('navbar.logOut')}}</el-button>
         </el-row>
     </el-menu>
