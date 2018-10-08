@@ -1,6 +1,7 @@
 <template>
     <div class="athlete-test">
         <el-row class="mar-top-15">
+            <el-col :span="4"><div class="words">选择测试 Select Test：</div></el-col>
             <el-col :span="6">
                 <el-select v-model="step" placeholder="请选择测试项目 Choose Test Item"
                            @change="handleChange">
@@ -8,6 +9,7 @@
                                :key="item.dicKey"></el-option>
                 </el-select>
             </el-col>
+            <el-col :span="12"><div class="tips words">请根据被测人的落地动作选择是否有以下动作代偿</div></el-col>
         </el-row>
 
         <!--less测试-->
@@ -278,7 +280,7 @@
             <el-button type="primary" v-if="step=='double' && !saveLoading" @click="finishedItem('double')">完成双腿下蹲测试</el-button>
             <el-button type="primary" v-if="step=='single' && !saveLoading" @click="finishedItem('single')">完成单腿下蹲测试</el-button>
             <el-button type="primary" :loading="true" v-if="saveLoading">保存中</el-button>
-            <el-button type="primary" v-if="!saveAllLoading" @click="finishedAll">完成全部测试</el-button>
+            <el-button type="primary" v-if="!saveAllLoading" @click="finishedAll">完成全部测试进入下一个队员测试</el-button>
             <el-button type="primary" :loading="true" v-if="saveAllLoading">请稍后</el-button>
         </el-row>
     </div>
@@ -567,6 +569,14 @@
     .athlete-test {
         .mar-top-15 {
             margin-bottom: 15px !important;
+        }
+        .words {
+            line-height: 36px;
+        }
+        .tips {
+            color: red;
+            font-size: 12px;
+            margin-left: 20px;
         }
 
         h3 {

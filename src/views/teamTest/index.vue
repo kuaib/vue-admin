@@ -5,7 +5,7 @@
                 <athleteOfTeam @getAthleteInfo="getAthleteInfo"></athleteOfTeam>
             </el-col>
             <el-col :span="18">
-                <athleteOfTeamTest></athleteOfTeamTest>
+                <athleteOfTeamTest :athleteRow="athleteRow"></athleteOfTeamTest>
             </el-col>
         </el-row>
     </div>
@@ -22,7 +22,7 @@
             }
         },
         methods: {
-            getAthleteInfo() {
+            getAthleteInfo(row) {
                 this.athleteRow = row;
             }
         }
