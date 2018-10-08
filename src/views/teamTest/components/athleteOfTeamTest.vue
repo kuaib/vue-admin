@@ -301,7 +301,6 @@
                     {dicKey: 'single', dicValue: 'NC-Single Squat'},
                     // {dicKey: 4, dicValue: 'COC-Single Squat'}
                 ],
-                athleteName: true,  // 运动员名字
                 initialContact: [   // 落地之前
                     {name: 'kneeFlexionLess30', score: null, baseAct: 'Knee Flexion:', errorAct: '<30deg', china: '屈膝小于30度',noError: 'No Error(0)', error: 'Error(1)'},
                     {name: 'hipFlexion', score: null, whichLeg: null, baseAct: 'Hip Flexion:', errorAct: 'hips are NOT flexed', china: '没有屈髋',noError: 'No Error(0)', error: 'Error(1)', left: 'Left 左', right: 'Right 右', both: 'Both 两只'},
@@ -315,7 +314,7 @@
                     {name: 'stanceWidthGreaterThanShoulderWidth', score: null, baseAct: 'Stance Width:', errorAct: '>shoulder width', china: '两膝距离比肩宽',noError: 'No Error(0)', error: 'Error(1)'},
                     {name: 'stanceWidthLessThanShoulderWidth', score: null, baseAct: 'Stance Width', errorAct: ' <shoulder width', china: '两膝距离比肩窄',noError: 'No Error(0)', error: 'Error(1)'}
 
-                    ],
+                ],
                 maximumFlexionPosition: [   // 落地后直到稳定
                     {name: 'maxIRFootPosition', score: null, whichLeg: null, baseAct: 'Max IR Foot Position:', errorAct: 'Toes >30 deg. IR', china: '脚尖向内（内八字）超过30度',noError: 'No Error(0)', error: 'Error(1)', left: 'Left 左', right: 'Right 右', both: 'Both 两只'},
                     {name: 'maxERFootPosition', core: null, whichLeg: null, baseAct: 'Max ER Foot Position:', errorAct: 'Toes >30 deg. ER', china: '脚尖向外（外八字）超过30度',noError: 'No Error(0)', error: 'Error(1)', left: 'Left 左', right: 'Right 右', both: 'Both 两只'},
@@ -350,7 +349,7 @@
                 // 从后面观察（被测人双腿下蹲五次）
                 behind: [
                     {name: 'hipShift', score: null, baseAct: 'Hip Shift', china: '',noError: 'No Error(0)', error: 'Error(1)'},
-                    ],
+                ],
 
                 // 单腿（左腿或右腿）下蹲
                 single: [

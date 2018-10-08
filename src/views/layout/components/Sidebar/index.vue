@@ -33,64 +33,7 @@
             }
         },
         data() {
-            return {
-                menues: []
-            }
-        },
-        created() {
-            this.initMenue();
-        },
-        methods: {
-            initMenue() {
-                // 后台的数据返回后可以这样组装，不用管路由页面，路由该怎么写还是怎么写
-                // 这里的对象类似路由，但是不需要component和roles这些东西
-                // 后续permission.js中的动态路由也有可能不需要
-                this.menues = [
-                    {
-                        path: '/salesManage',
-                        meta: {
-                            title: '销售管理',
-                            icon: 'lock',
-                        },
-                        children: [
-                            {
-                                path: 'baseData',
-                                meta: {title: '基础数据'},
-                                children: [{
-                                    path: 'clientFiles/list',
-                                    name: 'clientFilesList',
-                                    meta: {
-                                        title: '客户档案列表',
-                                    }
-                                },{
-                                    path: 'directive',
-                                    name: 'directivePermission',
-                                    meta: {
-                                        title: '合同管理'
-                                    }
-                                }]
-                            },
-                            {
-                                path: 'documents',
-                                name: 'documents',
-                                meta: { title: '单据' },
-                                children: [
-                                    {
-                                        path: 'salesOrder/list',
-                                        name: 'salesOrderList',
-                                        meta: { title: '销售订单列表' }
-                                    },
-                                    {
-                                        path: 'salesSendOrder/list',
-                                        name: 'salesSendOrderList',
-                                        meta: { title: '销售发货单列表' }
-                                    }
-                                ]
-                            },
-                        ]
-                    },
-                ]
-            }
+            return {}
         }
     }
 </script>

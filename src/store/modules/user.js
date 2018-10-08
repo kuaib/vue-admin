@@ -305,19 +305,19 @@ function reformRouters1(routersList) {
                 }
             ]
         },
-        // {
-        //     path: '/teamTest',
-        //     component: Layout,
-        //     meta: {title: '队伍测试'},
-        //     children: [
-        //         {
-        //             path: 'teamTest',
-        //             component: () => import('@/views/teamTest/test'),
-        //             name: 'teamTest',
-        //             meta: {title: '队伍测试'}
-        //         }
-        //     ]
-        // }
+        {
+            path: '/teamTest',
+            component: Layout,
+            meta: {title: '队伍测试'},
+            children: [
+                {
+                    path: 'teamTest',
+                    component: () => import('@/views/teamTest/index'),
+                    name: 'teamTest',
+                    meta: {title: '队伍测试'}
+                }
+            ]
+        }
     ]
     // 后续会将接口中的数据转化为以下的数组形式
     return list
