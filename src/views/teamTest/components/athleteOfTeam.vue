@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="row-item">
-            <el-select clearable v-model="teamId" placeholder="请选择队伍 Select Team" @change="changeTeam">
+            <el-select v-model="teamId" placeholder="请选择队伍 Select Team" @change="changeTeam">
                 <el-option v-for="item in teamList" :label="item.teamName" :value="item.teamId"
                            :key="item.teamId"></el-option>
             </el-select>
@@ -36,12 +36,15 @@
                 </el-pagination>
             </div>
         </div>
+        <div class="row-item" style="text-align: center;">
+            <el-button type="primary" @click="finishAllAthleteByTeam">完成全部队员测试</el-button>
+        </div>
     </div>
 </template>
 
 <script>
     import { getTeamListAll } from '@/api/team'
-    import { getAthleteList } from '@/api/athlete'
+    import { getAthleteList, allAthleteDone } from '@/api/athlete'
     import bus from '@/utils/bus.js'
     export default ({
         data() {
@@ -66,10 +69,11 @@
         },
         mounted() {
             bus.$on('changeAthlete', (count) => {
+                this.list[count - 1].compCount = this.list[count - 1].compCount + 1; // 表格次数加1(接口请求成功)
                 if(this.total <= this.listQuery.pageSize) { // 只有一页数据
                     this.$refs.athleteTable.setCurrentRow(this.list[count])
-                    if(count + 1 >= this.total) {
-                        bus.$emit('resetCount') // -1是因为：重置之后直接++，不能获取到0索引数据
+                    if(count + 1 > this.total) {
+                        bus.$emit('resetCount')
                         bus.$emit('setAthleteRow', this.list[0]); // 将当前远动员数据行传递过去
                         this.$refs.athleteTable.setCurrentRow(this.list[0])
                     } else {
@@ -96,7 +100,6 @@
                     bus.$emit('setAthleteRow', this.list[count]); // 将当前远动员数据行传递过去
                 }
                 console.log('当前的运动员索引' + count)
-                // bus.$emit('setAthleteRow', this.list[count]); // 将当前远动员数据行传递过去
             })
         },
         methods: {
@@ -144,6 +147,25 @@
                 }).catch(rej => {
                     this.listLoading = false;
                     console.log('获取运动员列表失败');
+                })
+            },
+
+            // 完成当前队伍下所有队员的测试
+            finishAllAthleteByTeam() {
+                allAthleteDone(this.teamId).then(res => {
+                    if(res.data.code == 200) {
+                        this.$message({
+                            message: res.data.msg,
+                            type: 'success'
+                        })
+                    } else {
+                        this.$message({
+                            message: res.data.msg,
+                            type: 'warning'
+                        })
+                    }
+                }).catch(rej => {
+                    console.log('请求失败')
                 })
             },
 

@@ -63,12 +63,24 @@ export function saveAthleteTest (data) {
     })
 }
 
-// 完成全部测试
+// 单个队伍元完成全部测试（判断，未完成会有提示）
 export function testDone (data) {
     return request({
         url: '/sports/test/done',
         method: 'post',
         data
+    })
+}
+
+
+// 当前队伍下所有队员全部完成测试（判断，未完成会有提示）
+export function allAthleteDone(teamId) {
+    return request({
+        url: '/sports/test/allAthleteDone',
+        method: 'get',
+        params: {
+            teamId: teamId
+        }
     })
 }
 

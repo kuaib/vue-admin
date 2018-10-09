@@ -385,8 +385,6 @@
                 } else {
                     this.count = 0; // 根据运动员数目和页数
                 }
-                console.log('------------')
-                console.log(this.count)
             })
             bus.$on('setAthleteRow', (athleteRow) => {
                 this.athleteRow = athleteRow;
