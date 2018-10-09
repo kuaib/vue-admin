@@ -263,7 +263,7 @@
                                     message: res.data.msg,
                                     type: 'success'
                                 });
-                                // this.$router.replace('/athleteManage/list');
+                                this.resetForm('form');
                             } else {
                                 this.$message({
                                     message: res.data.msg,
@@ -313,7 +313,9 @@
 
             // 重置表单
             resetForm(formName) {
-                this.$refs[formName].resetFields()
+                this.$refs[formName].resetFields();
+                this.form.photo = null;
+                this.imgUrl = null;
             },
 
             // 切换是否跨项目

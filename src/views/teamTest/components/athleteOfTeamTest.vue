@@ -1,5 +1,6 @@
 <template>
     <div class="athlete-test">
+        <button @click="aaa">哈哈哈哈</button>
         <el-row class="mar-top-15">
             <el-col :span="4"><div class="words">选择测试 Select Test：</div></el-col>
             <el-col :span="6">
@@ -288,9 +289,12 @@
 
 <script>
     import { getAthleteTestStep, saveAthleteTest, testDone } from '@/api/athlete'
+    import bus from '@/utils/bus.js'
     export default ({
         data() {
             return {
+                athleteRow: null,   // 当前远动员行数据
+                count: 0,           // 当前运动员行在当前页面的索引值
                 id: null,       // -1: 是一组新的测试；1：未完成的一组测试
                 step: 'less',   // 切换到哪个测试
                 idFlag: true,   // 只记录当前运动员初次时候的id
@@ -368,13 +372,33 @@
                 // 右腿下蹲
                 right: [
                     {name: 'uncontrolledTunkMotion', score: null, baseAct: 'Uncontrolled Tunk Motion', china: '',noError: 'No Error(0)', error: 'Error(1)'},
-                ]
+                ],
             }
         },
 
-        props: ['athleteRow'],
+        // props: ['athleteRow'],
+
+        mounted() {
+            bus.$on('resetCount', (index) => {
+                if(index !== undefined) {
+                    this.count = index; // 当用户点击行的时候(切换到从当前行开始)
+                } else {
+                    this.count = 0; // 根据运动员数目和页数
+                }
+                console.log('------------')
+                console.log(this.count)
+            })
+            bus.$on('setAthleteRow', (athleteRow) => {
+                this.athleteRow = athleteRow;
+                console.log(this.athleteRow)
+            })
+        },
 
         methods: {
+            aaa() {
+                this.count++;
+                bus.$emit('changeAthlete', this.count)
+            },
             // 初始化当前运动员测试进度
             initTestStep() {
                 getAthleteTestStep(this.athleteRow.id).then((res) => {
@@ -472,7 +496,7 @@
                 })
             },
 
-            // 点击完成全部测试按钮
+            // 点击 完成全部测试进入下一队员测试 按钮
             finishedAll() {
                 this.saveAllLoading = true;
                 testDone({'athleteId': this.athleteRow.id,id: this.id}).then(res => {
@@ -482,6 +506,9 @@
                             message: res.data.msg,
                             type: 'success'
                         })
+                        // 自动跳到下一个运动员
+                        this.count++;
+                        bus.$emit('changeAthlete', this.count)
                     } else {
                         this.$message({
                             message: res.data.msg,
@@ -548,6 +575,7 @@
         watch: {
             athleteRow(val) {
                 if(val && val.id) {
+                    console.log('当前运动员id：'+val.id)
                     this.idFlag = true;
                     this.resetPage(this.initialContact);
                     this.resetPage(this.maximumFlexionPosition);

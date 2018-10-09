@@ -5,7 +5,9 @@
                 <athleteOfTeam @getAthleteInfo="getAthleteInfo"></athleteOfTeam>
             </el-col>
             <el-col :span="18">
-                <athleteOfTeamTest :athleteRow="athleteRow"></athleteOfTeamTest>
+                <athleteOfTeamTest
+                        :athleteRow="athleteRow"
+                ></athleteOfTeamTest>
             </el-col>
         </el-row>
     </div>
@@ -18,11 +20,11 @@
         components: {athleteOfTeam, athleteOfTeamTest},
         data() {
             return {
-                athleteRow: null       // 当前选中的运动员
+                athleteRow: null,       // 当前选中的运动员
             }
         },
         methods: {
-            getAthleteInfo(row) {
+            getAthleteInfo(row, athleteList) {
                 this.athleteRow = row;
             }
         }
