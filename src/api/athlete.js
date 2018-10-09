@@ -77,8 +77,8 @@ export function testDone (data) {
 export function allAthleteDone(teamId) {
     return request({
         url: '/sports/test/allAthleteDone',
-        method: 'get',
-        params: {
+        method: 'post',
+        data: {
             teamId: teamId
         }
     })

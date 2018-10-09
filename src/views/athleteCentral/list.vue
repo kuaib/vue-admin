@@ -7,7 +7,9 @@
             </el-col>
             <el-col :span="18">
                 <el-tabs v-model="activeTab" type="card" @tab-click="handleClick">
-                    <el-tab-pane label="运动员看板 Athlete View" name="athleteView">运动员看板</el-tab-pane>
+                    <el-tab-pane label="运动员看板 Athlete View" name="athleteView">
+                        <athlete-view :athleteRow="athleteRow"></athlete-view>
+                    </el-tab-pane>
                     <el-tab-pane label="运动员基本信息 Athlete Bio" name="athleteBio">
                         <athlete-bio :athleteRow="athleteRow"></athlete-bio>
                     </el-tab-pane>
@@ -22,12 +24,13 @@
 
 <script>
     import selectAthlete from './components/selectAthlete'
+    import athleteView from './components/athleteView'
     import athleteBio from './components/athleteBio'
     import athlethTest from './components/athlethTest'
     export default ({
         name: 'athleteCentral',
         components: {
-            selectAthlete, athleteBio, athlethTest
+            selectAthlete, athleteView, athleteBio, athlethTest
         },
         data() {
             return {

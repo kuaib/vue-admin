@@ -317,6 +317,19 @@ function reformRouters1(routersList) {
                     meta: {title: '队伍测试'}
                 }
             ]
+        },
+        {
+            path: '/report',
+            component: Layout,
+            meta: {title: '生成报告'},
+            children: [
+                {
+                    path: 'report',
+                    component: () => import('@/views/report/report'),
+                    name: 'report',
+                    meta: {title: '生成报告'}
+                }
+            ]
         }
     ]
     // 后续会将接口中的数据转化为以下的数组形式

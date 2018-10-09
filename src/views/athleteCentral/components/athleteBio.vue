@@ -98,6 +98,12 @@
                                                :key="item.teamId"></el-option>
                                 </el-select>
                             </el-form-item>
+                            <el-form-item label="损伤历史 Injury History" prop="injuryHistory" label-width="200px">
+                                <el-select v-model="form.injuryHistory" placeholder="请选择损伤历史 Select Injury History">
+                                    <el-option v-for="item in injuryHistoryList" :label="item.dicValue" :value="item.dicKey"
+                                               :key="item.dicKey"></el-option>
+                                </el-select>
+                            </el-form-item>
                         </el-col>
                     </el-col>
                 </el-row>
@@ -105,7 +111,7 @@
         </el-form>
         <el-row class="btn-row">
             <el-button type="primary" v-show="!submitFlag" @click="submitForm('form')">保存 save</el-button>
-            <el-button type="primary" v-show="submitFlag" :loading="true">提交中 submiting</el-button>
+            <el-button type="primary" v-show="submitFlag" :loading="true" style="width: 170px;">提交中 submiting</el-button>
             <!--<el-button @click="resetForm('form')" style="margin-left: 50px;">重置 reset</el-button>-->
         </el-row>
     </div>
@@ -125,6 +131,11 @@
                 teamList: [],       // 队伍选项
                 specialList: [],    // 专项选项
                 provincesList: [],   // 省份选项
+                injuryHistoryList: [
+                    {dicKey: 'None', dicValue: '无损伤'},
+                    {dicKey: 'Moderate', dicValue: '中等损伤'},
+                    {dicKey: 'Significant', dicValue: '严重损伤'},
+                ],  // 损伤历史选项
 
 
                 form: {
@@ -150,7 +161,8 @@
                     telephone: null,  // 电话
                     telephone1: null,  // 电话1
                     telephone2: null,  // 电话2
-                    wechat: null      // 微信
+                    wechat: null,      // 微信
+                    injuryHistory: null // 损伤历史
 
                 },
                 rules: { // 表单校验规则
@@ -159,6 +171,9 @@
                     ],
                     teamId: [
                         {required: true, message: '请选择队伍', trigger: 'blur'},
+                    ],
+                    injuryHistory: [
+                        {required: true, message: '请选择损伤历史', trigger: 'blur'},
                     ],
                     specialId: [
                         {required: true, message: '请选择运动项目 Please select Sport', trigger: 'blur'},
@@ -223,6 +238,7 @@
                         this.form.teamName = data.teamName;
                         this.form.trainingAge = data.trainingAge;
                         this.form.photo = data.photo.split('/img/')[1];
+                        this.form.injuryHistory = 'None';
                     } else {
                         this.$message({
                             message: res.data.msg,
@@ -278,6 +294,7 @@
 
             // 提交表单
             submitForm(formName) {
+                console.log(this.form)
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         this.submitFlag = true;

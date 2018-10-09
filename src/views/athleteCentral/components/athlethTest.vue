@@ -14,7 +14,7 @@
         <section class="less-test" v-show="step=='less'">
             <el-row :gutter="20" class="mar-top-15">
                 <el-col :span="12">
-                    <h3>I.初次落地瞬间 Initial Contact
+                    <h3>I.落地之前
                     </h3>
                     <div class="dataTable">
                         <ul>
@@ -50,7 +50,7 @@
                     </div>
                 </el-col>
                 <el-col :span="12">
-                    <h3>II.屈膝缓冲，屈膝最大时 Maximum Flexion Position
+                    <h3>II.落地后直到稳定
                     </h3>
                     <div class="dataTable">
                         <ul>
@@ -97,7 +97,7 @@
             </el-row>
             <el-row :gutter="20" class="mar-top-15">
                 <el-col :span="12">
-                    <h3>III.人工打分</h3>
+                    <h3>III.总体评分</h3>
                     <div class="dataTable">
                         <ul>
                             <li class="clearfix" v-for="(item, idx) in grade">
@@ -334,40 +334,40 @@
 
                 // 从前方观察（被测人双腿下蹲五次）
                 front: [
-                    {name: 'feetTurnOut', score: null, baseAct: 'Feet Turn Out', china: '',noError: 'No Error(0)', error: 'Error(1)'},
-                    {name: 'feetFlatten', score: null, baseAct: 'Feet Flatten', china: '',noError: 'No Error(0)', error: 'Error(1)'},
-                    {name: 'heelsRise', score: null, baseAct: 'Heels Rise', china: '',noError: 'No Error(0)', error: 'Error(1)'},
-                    {name: 'kneeMovesIn', score: null, baseAct: 'Knee Moves In', china: '',noError: 'No Error(0)', error: 'Error(1)'},
-                    {name: 'kneeMovesOut', score: null, baseAct: 'Knee Moves Out', china: '',noError: 'No Error(0)', error: 'Error(1)'},
+                    {name: 'feetTurnOut', score: null, baseAct: 'Feet Turn Out', china: '脚尖向外',noError: 'No Error(0)', error: 'Error(1)'},
+                    {name: 'feetFlatten', score: null, baseAct: 'Feet Flatten', china: '足弓压平',noError: 'No Error(0)', error: 'Error(1)'},
+                    {name: 'heelsRise', score: null, baseAct: 'Heels Rise', china: '抬起脚跟',noError: 'No Error(0)', error: 'Error(1)'},
+                    {name: 'kneeMovesIn', score: null, baseAct: 'Knee Moves In', china: '膝关节内扣',noError: 'No Error(0)', error: 'Error(1)'},
+                    {name: 'kneeMovesOut', score: null, baseAct: 'Knee Moves Out', china: '膝关节外展',noError: 'No Error(0)', error: 'Error(1)'},
                 ],
                 // 从侧面观察（被测人双腿下蹲五次）
                 flank: [
-                    {name: 'excessiveForwardLean', score: null, baseAct: 'Excessive Forward Lean', china: '',noError: 'No Error(0)', error: 'Error(1)'},
-                    {name: 'lowBackArches', score: null, baseAct: 'Low Back Arches', china: '',noError: 'No Error(0)', error: 'Error(1)'},
-                    {name: 'lowBackRounds', score: null, baseAct: 'Low Back Rounds', china: '',noError: 'No Error(0)', error: 'Error(1)'},
-                    {name: 'armsFallForward', score: null, baseAct: 'Arms Fall Forward', china: '',noError: 'No Error(0)', error: 'Error(1)'},
+                    {name: 'excessiveForwardLean', score: null, baseAct: 'Excessive Forward Lean', china: '躯干过度前倾',noError: 'No Error(0)', error: 'Error(1)'},
+                    {name: 'lowBackArches', score: null, baseAct: 'Low Back Arches', china: '下背部弓形（腰椎过伸）',noError: 'No Error(0)', error: 'Error(1)'},
+                    {name: 'lowBackRounds', score: null, baseAct: 'Low Back Rounds', china: '下背部拱起',noError: 'No Error(0)', error: 'Error(1)'},
+                    {name: 'armsFallForward', score: null, baseAct: 'Arms Fall Forward', china: '手臂前伸',noError: 'No Error(0)', error: 'Error(1)'},
                 ],
                 // 从后面观察（被测人双腿下蹲五次）
                 behind: [
                     {name: 'hipShift', score: null, baseAct: 'Hip Shift', china: '',noError: 'No Error(0)', error: 'Error(1)'},
-                    ],
+                ],
 
                 // 单腿（左腿或右腿）下蹲
                 single: [
-                    {name: 'footFlattens', score: null, baseAct: 'Foot Flattens', china: '',noError: 'No Error(0)', error: 'Error(1)'},
-                    {name: 'kneeMovesIn', score: null, baseAct: 'Knee Moves In', china: '',noError: 'No Error(0)', error: 'Error(1)'},
-                    {name: 'kneeMovesOut', score: null, baseAct: 'Knee Moves Out', china: '',noError: 'No Error(0)', error: 'Error(1)'},
-                    {name: 'hipDrop', score: null, baseAct: 'Hip Drop', china: '',noError: 'No Error(0)', error: 'Error(1)'},
-                    {name: 'hipHike', score: null, baseAct: 'Hip Hike', china: '',noError: 'No Error(0)', error: 'Error(1)'},
+                    {name: 'footFlattens', score: null, baseAct: 'Foot Flattens', china: '足弓压平',noError: 'No Error(0)', error: 'Error(1)'},
+                    {name: 'kneeMovesIn', score: null, baseAct: 'Knee Moves In', china: '膝关节内扣',noError: 'No Error(0)', error: 'Error(1)'},
+                    {name: 'kneeMovesOut', score: null, baseAct: 'Knee Moves Out', china: '膝关节外展',noError: 'No Error(0)', error: 'Error(1)'},
+                    {name: 'hipDrop', score: null, baseAct: 'Hip Drop', china: '臀部降低',noError: 'No Error(0)', error: 'Error(1)'},
+                    {name: 'hipHike', score: null, baseAct: 'Hip Hike', china: '臀部升高',noError: 'No Error(0)', error: 'Error(1)'},
                 ],
                 // 左腿下蹲
                 left: [
-                    {name: 'uncontrolledTunkMotion', score: null, baseAct: 'Uncontrolled Tunk Motion', china: '',noError: 'No Error(0)', error: 'Error(1)'},
+                    {name: 'uncontrolledTunkMotion', score: null, baseAct: 'Uncontrolled Tunk Motion', china: '躯干运动失控',noError: 'No Error(0)', error: 'Error(1)'},
                 ],
                 // 右腿下蹲
                 right: [
-                    {name: 'uncontrolledTunkMotion', score: null, baseAct: 'Uncontrolled Tunk Motion', china: '',noError: 'No Error(0)', error: 'Error(1)'},
-                ]
+                    {name: 'uncontrolledTunkMotion', score: null, baseAct: 'Uncontrolled Tunk Motion', china: '躯干运动失控',noError: 'No Error(0)', error: 'Error(1)'},
+                ],
             }
         },
 
