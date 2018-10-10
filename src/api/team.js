@@ -81,6 +81,11 @@ export function getLessScore(params) {
     })
 }
 
-
-
-
+// 队伍伤病测试(左侧饼图)
+export function teamInjuryDiskEvaluation(params) {
+    return request({
+        url: '/sports/test/teamInjuryDiskEvaluation',
+        method: 'get',
+        params
+    })
+}

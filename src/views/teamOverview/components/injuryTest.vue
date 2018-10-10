@@ -58,7 +58,7 @@
 </template>
 
 <script>
-    import { getLessScore } from '@/api/team'
+    import { getLessScore, teamInjuryDiskEvaluation } from '@/api/team'
     import echarts from 'echarts'
     export default ({
         data() {
@@ -72,22 +72,17 @@
                     pageSize: 10,
                     teamId: null
                 },
-                teamData: [{value:335, name:'High'},
-                    {value:310, name:'Low'},
-                    {value:234, name:'Moderate'},],  // 饼图1
+                teamData: [],  // 饼图1
                 changeData: [
-                    {value:335, name:'aaa'},
-                    {value:310, name:'邮件营销'},
-                    {value:234, name:'联盟广告'},
+                    {value:335, name:'↑'},
+                    {value:310, name:'↔'},
+                    {value:234, name:'↓'},
                 ],   // 饼图2
-                echartsFlag: true   // 是否是初始化页面
+                echartsFlag1: true,   // 是否是初始化页面(用来判断饼图1是否需要初始化)
+                echartsFlag2: true    // 是否是初始化页面(用来判断饼图2是否需要初始化)
             }
         },
         props: ['teamRow'], // 队伍行信息
-
-        mounted() {
-            this.aaa();
-        },
 
         methods: {
             bbb() {
@@ -98,30 +93,23 @@
                 this.oneEchart.setOption(data1)
             },
             // 饼图数据获取
-            aaa() {
-                this.initOne();
-                this.initTwo();
-                // bbb().then(res => {
-                //     if(res.data.code == 200) {
-                //         const data = res.data.data;
-                //         this.teamData = data.list1;
-                //         this.changeData = data.list2;
-                //         if(this.echartsFlag) { // 初始化
-                //             this.echartsFlag = false;
-                //             this.initOne();
-                //             this.initTwo();
-                //         } else {    // 切换队伍行数据（重新设置饼图数据）
-                //             let data1 = this.oneEchart.getOption();
-                //             let data2 = this.oneEchart.twoEchart();
-                //             data1.series[0].data = this.this.teamData;
-                //             data2.series[0].data = this.this.changeData;
-                //             this.oneEchart.setOption(data1);
-                //             this.oneEchart.setOption(data2)
-                //         }
-                //     }
-                // }).catch(rej => {
-                //     console.log('获取数据失败')
-                // })
+            getInjuryDiskEvaluation() {
+                teamInjuryDiskEvaluation({teamId: this.teamRow.id}).then(res => {
+                    if(res.data.code == 200) {
+                        const data = res.data.data;
+                        this.teamData = data;
+                        if(this.echartsFlag1) { // 初始化
+                            this.echartsFlag1 = false;
+                            this.initOne();
+                        } else {    // 切换队伍行数据（重新设置饼图数据）
+                            let data1 = this.oneEchart.getOption();
+                            data1.series[0].data = this.teamData;
+                            this.oneEchart.setOption(data1);
+                        }
+                    }
+                }).catch(rej => {
+                    console.log('获取数据失败')
+                })
             },
 
             // 获取队伍less分数
@@ -187,7 +175,8 @@
                                     labelLine:{show:false},
                                     label: {
                                         color: '#000',
-                                        position: 'inside'
+                                        position: 'inside',
+                                        formatter: '{b}\n{d}%'
                                     }
                                 }
                             }
@@ -242,7 +231,7 @@
                 if(val && val.id) {
                     this.listQuery.teamId = val.id;
                     this.getTeamLessScore();
-
+                    this.getInjuryDiskEvaluation();
                 }
             }
         }

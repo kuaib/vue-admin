@@ -14,8 +14,8 @@
                     </el-col>
                     <el-col :span="12">
                         <el-select v-model="athleteId" placeholder="请选择运动员 Choose Athlete">
-                            <el-option v-for="item in athleteList" :label="item.athleteName" :value="item.id"
-                                       :key="item.id"></el-option>
+                            <el-option v-for="item in athleteList" :label="item.athleteName" :value="item.athleteId"
+                                       :key="item.athleteId"></el-option>
                         </el-select>
                     </el-col>
                 </el-row>
@@ -74,7 +74,7 @@
 
 <script>
     import { getTeamListAll } from '@/api/team'
-    import { getAthleteList } from '@/api/athlete'
+    import { getAthleteListByTeam } from '@/api/athlete'
     export default ({
         data() {
             return {
@@ -111,12 +111,15 @@
 
             // 获取运动员列表
             getAthleteList() {
-                getAthleteList({teamId: this.teamId}).then(res => {
+                getAthleteListByTeam(this.teamId).then(res => {
                     if(res.data.code === 200) {
                         const data = res.data.data;
-                        if(data.list && data.list.length > 0) {
-                            this.athleteList = data.list;
-                            this.athleteId = data.list[0].id;
+                        console.log(data)
+                        if(data && data.length > 0) {
+
+                            this.athleteList = data;
+                            this.athleteId = data[0].athleteId;
+                            console.log(this.athleteId)
                         }
                     } else {
                         this.$message({

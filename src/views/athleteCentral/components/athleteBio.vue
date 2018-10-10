@@ -13,7 +13,7 @@
                                 </el-form-item>
                                 <el-form-item label="生日 Birthday" prop="birthday">
                                     <el-col :span="11" class="chooseDate">
-                                        <el-date-picker type="date" placeholder="选择日期 Select Birthday" v-model="form.birthday"
+                                        <el-date-picker type="date" placeholder="选择日期 Select Birthday" v-model="form.birthday1"
                                                         style="width: 100%;" value-format="yyyy-MM-dd"></el-date-picker>
                                     </el-col>
                                 </el-form-item>
@@ -154,11 +154,12 @@
 
                     gender: '1',       // 性别
                     trainingAge: null, // 训练年限
-                    birthday: null,   // 生日
-                    height: null,     // 身高
-                    weight: null,     // 体重
-                    idCard: null,     // 身份证
-                    telephone: null,  // 电话
+                    birthday1: null,   // 生日（两个生日的目的：解决日期控件的bug）
+                    birthday: null,    // 生日
+                    height: null,      // 身高
+                    weight: null,      // 体重
+                    idCard: null,      // 身份证
+                    telephone: null,   // 电话
                     telephone1: null,  // 电话1
                     telephone2: null,  // 电话2
                     wechat: null,      // 微信
@@ -184,7 +185,7 @@
                     trainingAge: [
                         {required: true, message: '请输入训练年限 Please enter Training Age', trigger: 'blur'},
                     ],
-                    birthday: [
+                    birthday1: [
                         {required: true, message: '请选择生日 Please select birthday', trigger: 'blur'},
                     ],
                     height: [
@@ -222,7 +223,7 @@
                         this.form.athleteName = data.athleteName;
                         this.form.gender = data.gender.toString();
                         let bir = data.birthday.split('-');
-                        this.form.birthday = new Date(bir[0], bir[1], bir[2]);
+                        this.form.birthday1 = new Date(bir[0], bir[1]-1, bir[2]);
                         this.form.height = data.height;
                         this.form.weight = data.weight;
                         this.form.idCard = data.idCard;
@@ -238,7 +239,7 @@
                         this.form.teamName = data.teamName;
                         this.form.trainingAge = data.trainingAge;
                         this.form.photo = data.photo.split('/img/')[1];
-                        this.form.injuryHistory = 'None';
+                        this.form.injuryHistory = data.injuryHistory;
                     } else {
                         this.$message({
                             message: res.data.msg,
@@ -294,13 +295,14 @@
 
             // 提交表单
             submitForm(formName) {
-                console.log(this.form)
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         this.submitFlag = true;
                         this.form.telephone = this.form.telephone2 ?
                             (this.form.telephone1 + ',' + this.form.telephone2) :
                             this.form.telephone1;
+                        let birthday = new Date(this.form.birthday1);
+                        this.form.birthday = birthday.getFullYear() + '-' + (birthday.getMonth() + 1) + '-' + birthday.getDate()
                         saveAthlete(this.form).then(res => {
                             this.submitFlag = false;
                             if(res.data.code === 200) {
