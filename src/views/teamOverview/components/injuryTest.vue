@@ -1,7 +1,6 @@
 <template>
     <div class="injury-wrapper">
         <!--饼图-->
-        <div @click="bbb">哈哈哈哈哈</div>
         <el-row :gutter="20">
             <el-col :span="12">
                 <div class="pie-item">
@@ -85,13 +84,6 @@
         props: ['teamRow'], // 队伍行信息
 
         methods: {
-            bbb() {
-                let data1 = this.oneEchart.getOption();
-                data1.series[0].data = [{value:20, name:'High'},
-                    {value:310, name:'Low'},
-                    {value:234, name:'Moderate'}];
-                this.oneEchart.setOption(data1)
-            },
             // 饼图数据获取
             getInjuryDiskEvaluation() {
                 teamInjuryDiskEvaluation({teamId: this.teamRow.id}).then(res => {
