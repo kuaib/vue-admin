@@ -8,7 +8,7 @@
             <el-col :span="18">
                 <el-tabs v-model="activeTab" type="card" @tab-click="handleClick">
                     <el-tab-pane label="队伍伤病测试 Team Injury Testing" name="injuryTesting">
-                        <injury-test :teamRow="teamRow" v-if="teamRow"></injury-test>
+                        <injury-test :teamRow="teamRow"></injury-test>
                     </el-tab-pane>
                     <el-tab-pane label="队伍信息一览 Team Overview" name="overview">
                         <overview :teamRow="teamRow"></overview>

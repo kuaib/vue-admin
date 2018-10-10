@@ -72,5 +72,15 @@ export function getTeamAthlete(params) {
     })
 }
 
+// 队伍伤病测试下的less分数列表
+export function getLessScore(params) {
+    return request({
+        url: '/sports/test/lessScore',
+        method: 'get',
+        params
+    })
+}
+
+
 
 

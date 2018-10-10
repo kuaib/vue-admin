@@ -1,5 +1,7 @@
 <template>
     <div class="injury-wrapper">
+        <!--饼图-->
+        <div @click="bbb">哈哈哈哈哈</div>
         <el-row :gutter="20">
             <el-col :span="12">
                 <div class="pie-item">
@@ -12,33 +14,35 @@
                 </div>
             </el-col>
         </el-row>
+
+        <!--表格-->
         <el-row>
             <h3 class="title">LESS Score for the Team</h3>
             <el-table :data="list" border fit highlight-current-row stripe
                       style="width: 100%;">
                 <el-table-column align="center" label="Last Name">
                     <template slot-scope="scope">
-                        <span>{{scope.row.aaa}}</span>
+                        <span>{{scope.row.athleteName}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="PRE1-Total Score17">
                     <template slot-scope="scope">
-                        <span>{{scope.row.bbb}}</span>
+                        <span>{{scope.row.pre1Score}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="PRE2-Total Score17">
                     <template slot-scope="scope">
-                        <span>{{scope.row.ccc}}</span>
+                        <span>{{scope.row.pre2Score}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="Total Score17 Change">
                     <template slot-scope="scope">
-                        <span>{{scope.row.ddd}}</span>
+                        <span>{{scope.row.scoreChange}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="Injury History">
                     <template slot-scope="scope">
-                        <span>{{scope.row.eee}}</span>
+                        <span>{{scope.row.injuryHistory}}</span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -50,37 +54,88 @@
                 </el-pagination>
             </div>
         </el-row>
-        <div>{{teamRow.id}}</div>
     </div>
 </template>
 
 <script>
+    import { getLessScore } from '@/api/team'
     import echarts from 'echarts'
     export default ({
         data() {
             return {
                 oneEchart: null,    // 第一个饼图
                 twoEchart: null,    // 第二个饼图
-                list: [
-                    {aaa: 1, bbb: 2, ccc: 3,ddd: 5,eee: 4},
-                    {aaa: 11, bbb: 22, ccc: 33,ddd :5, eee: 4},
-                ],
+                list: [],           // less分数表格
                 total: null,        // 总条目数
                 listQuery: {
                     current: 1,
                     pageSize: 10,
-                    teamId: ''
-                }
+                    teamId: null
+                },
+                teamData: [{value:335, name:'High'},
+                    {value:310, name:'Low'},
+                    {value:234, name:'Moderate'},],  // 饼图1
+                changeData: [
+                    {value:335, name:'aaa'},
+                    {value:310, name:'邮件营销'},
+                    {value:234, name:'联盟广告'},
+                ],   // 饼图2
+                echartsFlag: true   // 是否是初始化页面
             }
         },
         props: ['teamRow'], // 队伍行信息
 
         mounted() {
-            this.initOne()
-            this.initTwo()
+            this.aaa();
         },
 
         methods: {
+            bbb() {
+                let data1 = this.oneEchart.getOption();
+                data1.series[0].data = [{value:20, name:'High'},
+                    {value:310, name:'Low'},
+                    {value:234, name:'Moderate'}];
+                this.oneEchart.setOption(data1)
+            },
+            // 饼图数据获取
+            aaa() {
+                this.initOne();
+                this.initTwo();
+                // bbb().then(res => {
+                //     if(res.data.code == 200) {
+                //         const data = res.data.data;
+                //         this.teamData = data.list1;
+                //         this.changeData = data.list2;
+                //         if(this.echartsFlag) { // 初始化
+                //             this.echartsFlag = false;
+                //             this.initOne();
+                //             this.initTwo();
+                //         } else {    // 切换队伍行数据（重新设置饼图数据）
+                //             let data1 = this.oneEchart.getOption();
+                //             let data2 = this.oneEchart.twoEchart();
+                //             data1.series[0].data = this.this.teamData;
+                //             data2.series[0].data = this.this.changeData;
+                //             this.oneEchart.setOption(data1);
+                //             this.oneEchart.setOption(data2)
+                //         }
+                //     }
+                // }).catch(rej => {
+                //     console.log('获取数据失败')
+                // })
+            },
+
+            // 获取队伍less分数
+            getTeamLessScore() {
+                getLessScore(this.listQuery).then(res => {
+                    if(res.data.code == 200) {
+                        const data = res.data.data;
+                        this.list = data.list;
+                        this.total = data.pagination.total;
+                        this.listQuery.pageSize = data.pagination.pageSize;
+                        this.listQuery.current = data.pagination.current;
+                    }
+                })
+            },
 
             // 点击搜索
             handleFilter() {
@@ -108,11 +163,11 @@
                         x:'center',
                         left: '30%'
                     },
-                    color: ['#91c7ae','#749f83',  '#ca8622'],
+                    color: ['#bf0100','#71ad49', '#fdc100'],
                     legend: {
                         orient: 'vertical',
                         left: 'left',
-                        data: ['aaa','邮件营销','联盟广告']
+                        data: ['High','Low','Moderate']
                     },
                     series: [
                         {
@@ -121,12 +176,7 @@
                             radius : '55%',
                             center: ['60%', '45%'],
                             hoverAnimation: false,
-                            data:[
-                                {value:335, name:'aaa'},
-                                {value:310, name:'邮件营销'},
-                                {value:234, name:'联盟广告'},
-
-                            ],
+                            data: this.teamData,
                             itemStyle: {
                                 emphasis: {
                                     shadowBlur: 10,
@@ -166,12 +216,7 @@
                             radius : '55%',
                             center: ['60%', '45%'],
                             hoverAnimation: false,
-                            data:[
-                                {value:335, name:'aaa'},
-                                {value:310, name:'邮件营销'},
-                                {value:234, name:'联盟广告'},
-
-                            ],
+                            data: this.changeData,
                             itemStyle: {
                                 emphasis: {
                                     shadowBlur: 10,
@@ -190,6 +235,15 @@
                     ]
                 };
                 this.twoEchart.setOption(option);
+            }
+        },
+        watch: {
+            teamRow(val) {
+                if(val && val.id) {
+                    this.listQuery.teamId = val.id;
+                    this.getTeamLessScore();
+
+                }
             }
         }
     })
