@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="athlete-select">
         <div class="row-item actBtn clearfix">
             <el-button class="add" type="primary" @click="addAthelet">
                 <p>新建运动员</p>
@@ -199,6 +199,14 @@
 </script>
 
 <style lang="scss" scoped>
+    .athlete-select {
+        .add {
+            padding: 5px 10px;
+        }
+        .search {
+            padding: 10px;
+        }
+    }
     .row-item {
         margin-bottom: 10px;
         &:last-child {

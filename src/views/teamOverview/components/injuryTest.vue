@@ -4,12 +4,12 @@
         <el-row :gutter="20">
             <el-col :span="12">
                 <div class="pie-item">
-                    <div id="one" style="width: 400px;height:280px;"></div>
+                    <div id="one" style="width: 410px;height:280px;"></div>
                 </div>
             </el-col>
             <el-col :span="12">
                 <div class="pie-item">
-                    <div id="two" style="width: 400px;height:280px;"></div>
+                    <div id="two" style="width: 410px;height:280px;"></div>
                 </div>
             </el-col>
         </el-row>
@@ -71,14 +71,9 @@
                     pageSize: 10,
                     teamId: null
                 },
-                teamData: [],  // 饼图1
-                changeData: [
-                    {value:335, name:'↑'},
-                    {value:310, name:'↔'},
-                    {value:234, name:'↓'},
-                ],   // 饼图2
-                echartsFlag1: true,   // 是否是初始化页面(用来判断饼图1是否需要初始化)
-                echartsFlag2: true    // 是否是初始化页面(用来判断饼图2是否需要初始化)
+                teamData: [],        // 饼图1
+                changeData: [],      // 饼图2
+                echartsFlag: true,   // 是否是初始化页面(用来判断饼图是否需要初始化)
             }
         },
         props: ['teamRow'], // 队伍行信息
@@ -89,14 +84,19 @@
                 teamInjuryDiskEvaluation({teamId: this.teamRow.id}).then(res => {
                     if(res.data.code == 200) {
                         const data = res.data.data;
-                        this.teamData = data;
-                        if(this.echartsFlag1) { // 初始化
-                            this.echartsFlag1 = false;
+                        this.teamData = data.teamInjuryRiskEvaluation;
+                        this.changeData = this.reformData2(data.changInInjuryDisk);
+                        if(this.echartsFlag) { // 初始化
+                            this.echartsFlag = false;
                             this.initOne();
+                            this.initTwo();
                         } else {    // 切换队伍行数据（重新设置饼图数据）
                             let data1 = this.oneEchart.getOption();
+                            let data2 = this.twoEchart.getOption();
                             data1.series[0].data = this.teamData;
+                            data2.series[0].data = this.changeData;
                             this.oneEchart.setOption(data1);
+                            this.twoEchart.setOption(data2);
                         }
                     }
                 }).catch(rej => {
@@ -115,6 +115,23 @@
                         this.listQuery.current = data.pagination.current;
                     }
                 })
+            },
+
+            // 通过后台数据判断升降箭头的显示(饼图2)
+            reformData2(data) {
+                if(data && data.length > 0) {
+                    let arr = [];
+                    data.forEach((item) => {
+                        if(item.flag == 0) {
+                            arr.push({name: item.name, mark: '↔', value: item.rate.substr(0, item.rate.length - 1)});
+                        } else if(item.flag > 0) {
+                            arr.push({name: item.name, mark: '↑', value: item.rate.substr(0, item.rate.length - 1)});
+                        } else {
+                            arr.push({name: item.name, mark: '↓', value: item.rate.substr(0, item.rate.length - 1)});
+                        }
+                    })
+                    return arr;
+                }
             },
 
             // 点击搜索
@@ -151,7 +168,7 @@
                     },
                     series: [
                         {
-                            name: '访问来源',
+                            name: 'Team Injury Risk Evaluation',
                             type: 'pie',
                             radius : '55%',
                             center: ['60%', '45%'],
@@ -168,7 +185,8 @@
                                     label: {
                                         color: '#000',
                                         position: 'inside',
-                                        formatter: '{b}\n{d}%'
+                                        formatter: '{b}\n{d}%',
+                                        fontSize: '14'
                                     }
                                 }
                             }
@@ -185,14 +203,15 @@
                         x:'center',
                         left: '30%'
                     },
+                    color: ['#bf0100','#71ad49', '#fdc100'],
                     legend: {
                         orient: 'vertical',
                         left: 'left',
-                        data: ['aaa','邮件营销','联盟广告']
+                        data: ['High','Low','Moderate']
                     },
                     series: [
                         {
-                            name: '访问来源',
+                            name: 'Change In Injury Risk',
                             type: 'pie',
                             radius : '55%',
                             center: ['60%', '45%'],
@@ -208,7 +227,16 @@
                                     labelLine:{show:false},
                                     label: {
                                         color: '#000',
-                                        position: 'inside'
+                                        position: 'inside',
+                                        fontSize: '14',
+                                        formatter: (param) => {
+                                            let data = param.data;
+                                            return [
+                                                data.name,
+                                                data.mark,
+                                                data.value + '%'
+                                            ].join('\n')
+                                        }
                                     }
                                 }
                             }

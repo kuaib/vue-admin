@@ -1,11 +1,11 @@
 <template>
     <div class="createAthlete">
-        <el-form ref="form" :model="form" :rules="rules" label-width="160px">
+        <el-form ref="form" :model="form" :rules="rules" label-width="120px">
             <!--基本信息-->
             <div class="general">
                 <h3 class="mainTitle">基本信息 General</h3>
                 <el-row :gutter="20">
-                    <el-col :span="16">
+                    <el-col :span="18">
                         <el-row :gutter="20">
                             <el-col :span="12">
                                 <el-form-item label="姓名 Name" prop="athleteName">
@@ -53,7 +53,7 @@
                             </el-col>
                         </el-row>
                     </el-col>
-                    <el-col :span="6" :offset="2" class="upload-item">
+                    <el-col :span="5" class="upload-item">
                         <div class="imgTitle">上传运动员照片<br/>Upload File</div>
                         <el-form-item prop="photo">
                             <el-upload
@@ -77,7 +77,7 @@
             <div class="Sepcialty">
                 <h3 class="mainTitle">专项信息 Sepcialty</h3>
                 <el-row :gutter="20">
-                    <el-col :span="16">
+                    <el-col :span="20">
                         <el-col :span="12">
                             <el-form-item label="运动项目 Sport" prop="specialId">
                                 <el-select v-model="form.specialId" placeholder="请选择专项 Select Sport"
@@ -471,6 +471,9 @@
             .el-button {
                 width: 150px;
             }
+        }
+        .el-form-item__label {
+            font-size: 12px;
         }
     }
 </style>

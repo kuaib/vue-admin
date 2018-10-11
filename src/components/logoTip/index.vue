@@ -13,7 +13,7 @@
 
 <style lang="scss" scoped>
     .top-logo {
-        width: 180px;
+        width: 145px;
         height: 73.98px;
         background: #abc;
         position: fixed;

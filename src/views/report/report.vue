@@ -21,7 +21,7 @@
                 </el-row>
                 <el-row :gutter="20" class="item-row">
                     <el-col :span="8" class="wordTip">最近报告 Recent Report：</el-col>
-                    <el-col :span="16">
+                    <el-col :span="16" style="font-size:14px;">
                         Before
                         <el-date-picker type="date" placeholder="选择日期 Select date" v-model="time"
                                         style="width: 100%;" value-format="yyyy-MM-dd" class="time"></el-date-picker>
@@ -44,14 +44,14 @@
                     <el-button type="primary" @click="exportPdf">导出 Export</el-button>
                 </el-row>
                 <el-row :gutter="20" class="item-row">
-                    <el-col :span="18">损伤测试历史报告 Injury testing history report</el-col>
+                    <el-col :span="18" class="wordTip">损伤测试历史报告 Injury testing history report</el-col>
                 </el-row>
                 <el-row :gutter="20" class="item-row">
-                    <el-col :span="4">
+                    <el-col :span="5" class="label-words">
                         <p>选择时间段</p>
                         <p>Select Period</p>
                     </el-col>
-                    <el-col :span="20">
+                    <el-col :span="19">
                         <el-date-picker
                                 style="width: 100%;"
                                 v-model="timeRange"
@@ -155,6 +155,8 @@
         }
         .wordTip {
             line-height: 36px;
+            font-size: 14px;
+            font-weight: 700;
         }
         .time {
             width: 60% !important;
@@ -165,6 +167,14 @@
         }
         .el-range-separator {
             width: 50px !important;
+        }
+        .label-words {
+            p {
+                font-size: 14px;
+                &:first-child {
+                    margin-bottom: 5px;
+                }
+            }
         }
     }
 </style>

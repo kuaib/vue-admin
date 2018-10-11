@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-row :gutter="40">
+        <el-row :gutter="15">
             <el-col :span="6">
                 <h3 class="leftTitle">选择运动员 Select Athlete</h3>
                 <select-athlete @getAthleteInfo="getAthleteInfo"></select-athlete>
