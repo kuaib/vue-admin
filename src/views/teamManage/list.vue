@@ -4,7 +4,7 @@
             <el-row class="clearfix">
                 <div class="left">
                     <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item"
-                              placeholder="请输入查询条件" v-model="listQuery.keyWord">
+                              placeholder="请输入队名" v-model="listQuery.keyWord">
                     </el-input>
                     <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">
                         搜索

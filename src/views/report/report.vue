@@ -31,12 +31,12 @@
                 <el-row :gutter="20" class="item-row btn">
                     <el-col :span="12">
                         <el-checkbox-group v-model="checkList">
-                            <el-checkbox label="运动员基本信息 Athlete Basice Info"></el-checkbox>
+                            <el-checkbox label="1">运动员基本信息 Athlete Basice Info</el-checkbox>
                         </el-checkbox-group>
                     </el-col>
                     <el-col :span="12">
                         <el-checkbox-group v-model="checkList">
-                            <el-checkbox label="损伤测试 Injury Testing"></el-checkbox>
+                            <el-checkbox label="2">损伤测试 Injury Testing</el-checkbox>
                         </el-checkbox-group>
                     </el-col>
                 </el-row>

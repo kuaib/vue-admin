@@ -41,7 +41,7 @@
         <div class="row-item">
             <div class="title">运动员列表 Athlete List</div>
             <el-table :data="list" v-loading="listLoading" border fit highlight-current-row @row-click="selectRow"
-                      style="width: 100%">
+                      style="width: 100%" ref="athleteTable">
                 <el-table-column align="center" :render-header="renderHeader" label="姓名 Name">
                     <template slot-scope="scope">
                         <span>{{scope.row.athleteName}}</span>
@@ -148,7 +148,10 @@
                         this.total = data.pagination.total;
                         this.listQuery.pageSize = data.pagination.pageSize;
                         this.listQuery.current = data.pagination.current;
-                        this.selectRow(this.list[0]) // 默认选择第一行数据
+                        this.$nextTick(() => { // 默认选择第一行数据
+                            this.$refs.athleteTable.setCurrentRow(this.list[0])
+                            this.selectRow(this.list[0])
+                        })
                     } else {
                         this.$message({
                             message: res.data.msg,

@@ -111,7 +111,6 @@
                         const data = res.data.data;
                         this.list = data.list;
                         this.total = data.pagination.total;
-                        this.listQuery.pageSize = data.pagination.pageSize;
                         this.listQuery.current = data.pagination.current;
                     }
                 })
@@ -137,19 +136,19 @@
             // 点击搜索
             handleFilter() {
                 this.listQuery.current = 1;
-                this.getList()
+                this.getTeamLessScore()
             },
 
             // 改变每页显示条目数
             handleSizeChange(val) {
                 this.listQuery.pageSize = val;
-                this.getList()
+                this.getTeamLessScore()
             },
 
             // 跳转到指定页数
             handleCurrentChange(val) {
-                this.listQuery.currentPage = val;
-                this.getList()
+                this.listQuery.current = val;
+                this.getTeamLessScore()
             },
 
             initOne() {

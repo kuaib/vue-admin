@@ -137,7 +137,7 @@
                         this.$nextTick(() => { // 默认选择第一行数据
                             this.$refs.athleteTable.setCurrentRow(this.list[0])
                             this.selectRow(this.list[0])
-                        },0)
+                        })
                     } else {
                         this.$message({
                             message: res.data.msg,

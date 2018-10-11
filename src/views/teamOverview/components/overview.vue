@@ -86,7 +86,6 @@
                         const data = res.data.data;
                         this.list = data.list;
                         this.total = data.pagination.total;
-                        this.listQuery.pageSize = data.pagination.pageSize;
                         this.listQuery.current = data.pagination.current;
                     } else {
                         this.$message({
@@ -128,6 +127,7 @@
         watch: {
             teamRow(val) {
                 if(val && val.id) {
+                    this.listQuery.current = 1;
                     this.getList()
                 }
             }

@@ -261,7 +261,7 @@ function reformRouters1(routersList) {
                     path: 'list',
                     component: () => import('@/views/teamManage/list'),
                     name: 'teamList',
-                    meta: {title: '队伍管理'}
+                    meta: {title: '队伍管理',noCache: true}
                 },
                 {
                     path: 'manage',

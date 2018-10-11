@@ -214,8 +214,8 @@
                         {required: true, message: '请输入身份证 Please enter ID No.', trigger: 'blur'},
                     ],
                     photo: [
-                        {required: true, message: '请上传图片 Please upload image.', trigger: 'blur'},
-                    ],
+                        {required: true, message: '请上传图片 Please upload image', trigger: 'blur'},
+                    ]
                 }
             }
         },

@@ -47,18 +47,20 @@
                 </el-col>
                 <el-col :span="9" :offset="6">
                     <div class="imgTitle">队伍logo上传</div>
-                    <el-upload
-                            class="avatar-uploader"
-                            action="/sports/sys/upload/teamLogo"
-                            :show-file-list="false"
-                            :on-success="uploadSuccess"
-                            :before-upload="beforeUpload">
-                        <template v-if="imgUrl">
-                            <img :src="imgUrl" class="avatar">
-                            <i class="el-icon-delete avatar-delete-icon" @click.stop.prevent="imgUrl=null"></i>
-                        </template>
-                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                    </el-upload>
+                    <el-form-item prop="logo">
+                        <el-upload
+                                class="avatar-uploader"
+                                action="/sports/sys/upload/teamLogo"
+                                :show-file-list="false"
+                                :on-success="uploadSuccess"
+                                :before-upload="beforeUpload">
+                            <template v-if="imgUrl">
+                                <img :src="imgUrl" class="avatar">
+                                <i class="el-icon-delete avatar-delete-icon" @click.stop.prevent="imgUrl=null"></i>
+                            </template>
+                            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                        </el-upload>
+                    </el-form-item>
                 </el-col>
             </el-row>
         </el-form>
@@ -111,6 +113,15 @@
                     categoryId: [
                         {required: true, message: '请选择类别', trigger: 'blur'},
                     ],
+                    specialId: [
+                        {required: true, message: '请选择类别', trigger: 'blur'},
+                    ],
+                    organizationId: [
+                        {required: true, message: '请选择单位', trigger: 'blur'},
+                    ],
+                    logo: [
+                        {required: true, message: '请上传图片 Please upload image', trigger: 'blur'},
+                    ]
                 }
             }
         },
@@ -186,7 +197,7 @@
                                         message: res.data.msg,
                                         type: 'success'
                                     });
-                                    // this.$router.replace('/teamManage/list');
+                                    this.$router.replace('/teamManage/list');
                                 } else {
                                     this.$message({
                                         message: res.data.msg,
