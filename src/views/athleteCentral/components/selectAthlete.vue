@@ -41,7 +41,7 @@
         <div class="row-item">
             <div class="title">运动员列表 Athlete List</div>
             <el-table :data="list" v-loading="listLoading" border fit highlight-current-row @row-click="selectRow"
-                      style="width: 100%" ref="athleteTable">
+                      style="width: 100%" ref="athleteTable" :row-class-name="tableRowClassName">
                 <el-table-column align="center" :render-header="renderHeader" label="姓名 Name">
                     <template slot-scope="scope">
                         <span>{{scope.row.athleteName}}</span>
@@ -117,14 +117,11 @@
                         bus.$emit('setAthleteRow1', this.list[count]); // 将当前远动员数据行传递过去
                     }
                 } else { // 多页
-                    console.log(333)
                     // 不是最后一页
                     if(this.listQuery.currentPage * this.listQuery.pageSize < this.total) {
                         if(count +1 <= this.list.length) {
-                            console.log(123)
                             this.$refs.athleteTable.setCurrentRow(this.list[count])
                         } else {
-                            console.log(321)
                             bus.$emit('resetCount1');
                             this.listQuery.currentPage++
                             this.handleCurrentChange(this.listQuery.currentPage)
@@ -203,7 +200,9 @@
 
             // 点击行
             selectRow(row) {
-                this.$emit('getAthleteInfo', row)
+                bus.$emit('resetCount1', row.index); // 设置当前索引(服务于测试页面)
+                bus.$emit('setAthleteRow1', row);    // 传递当前运动员行信息(服务于测试页面)
+                this.$emit('getAthleteInfo', row);   // 服务于看板和基本信息页面
             },
 
             // 点击搜索
@@ -233,6 +232,11 @@
             renderHeader(h, column) {
                 let title = column.column.label.split(' ');
                 return [h('p', {}, [title[0]]),h('p', {}, [title[1]])]
+            },
+
+            // 把每一行的索引放进row(行的回调方法)
+            tableRowClassName({row, rowIndex}) {
+                row.index = rowIndex
             }
         }
     })

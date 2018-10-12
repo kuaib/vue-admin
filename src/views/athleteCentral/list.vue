@@ -14,7 +14,7 @@
                         <athlete-bio :athleteRow="athleteRow"></athlete-bio>
                     </el-tab-pane>
                     <el-tab-pane label="运动员测试 Athlete Testing" name="athleteTesting">
-                        <athleth-test :athleteRow="athleteRow"></athleth-test>
+                        <athleth-test></athleth-test>
                     </el-tab-pane>
                 </el-tabs>
             </el-col>

@@ -75,6 +75,7 @@
 <script>
     import { getTeamListAll } from '@/api/team'
     import { getAthleteListByTeam } from '@/api/athlete'
+    import { dowloadPdf } from '@/api/report'
     export default ({
         data() {
             return {
@@ -114,12 +115,13 @@
                 getAthleteListByTeam(this.teamId).then(res => {
                     if(res.data.code === 200) {
                         const data = res.data.data;
-                        console.log(data)
                         if(data && data.length > 0) {
-
                             this.athleteList = data;
                             this.athleteId = data[0].athleteId;
                             console.log(this.athleteId)
+                        } else {
+                            this.athleteList = [];
+                            this.athleteId = null;
                         }
                     } else {
                         this.$message({
@@ -132,12 +134,12 @@
                 })
             },
 
-            // 导出运动员基本信息/损伤测试报告
+            // 导出运动员基本信息/损伤测试报告(pdf)
             exportPdf() {
 
             },
 
-            // 损伤测试的历史报告
+            // 损伤测试的历史报告(excel)
             exportExcel() {
 
             }
