@@ -1,5 +1,6 @@
 <template>
     <div class="athlete-test">
+        <div @click="aaa">哈哈哈哈</div>
         <el-row class="mar-top-15">
             <el-col :span="6">
                 <el-select v-model="step" placeholder="请选择测试项目 Choose Test Item"
@@ -286,9 +287,12 @@
 
 <script>
     import { getAthleteTestStep, saveAthleteTest, testDone } from '@/api/athlete'
+    import bus from '@/utils/bus.js'
     export default ({
         data() {
             return {
+                athleteRow: null,   // 当前远动员行数据
+                count: 0,           // 当前运动员行在当前页面的索引值
                 id: null,       // -1: 是一组新的测试；1：未完成的一组测试
                 step: 'less',   // 切换到哪个测试
                 idFlag: true,   // 只记录当前运动员初次时候的id
@@ -371,9 +375,27 @@
             }
         },
 
-        props: ['athleteRow'],
+        // props: ['athleteRow'],
+
+        mounted() {
+            bus.$on('resetCount1', (index) => {
+                if(index !== undefined) {
+                    this.count = index; // 当用户点击行的时候(切换到从当前行开始)
+                } else {
+                    this.count = 0; // 根据运动员数目和页数
+                }
+            })
+            bus.$on('setAthleteRow1', (athleteRow) => {
+                this.athleteRow = athleteRow;
+                console.log(this.athleteRow)
+            })
+        },
 
         methods: {
+            aaa() {
+                this.count++;
+                bus.$emit('changeAthlete1', this.count)
+            },
             // 初始化当前运动员测试进度
             initTestStep() {
                 getAthleteTestStep(this.athleteRow.id).then((res) => {
@@ -449,7 +471,7 @@
             },
 
             // 保存单项测试
-            saveTest(dataForm, lastTest) {
+            saveTest(dataForm) {
                 saveAthleteTest(dataForm).then(res => {
                     this.saveLoading = false;
                     if(res.data.code == 200) {
@@ -481,6 +503,9 @@
                             message: res.data.msg,
                             type: 'success'
                         })
+                        // 自动跳到下一个运动员
+                        this.count++;
+                        bus.$emit('changeAthlete1', this.count)
                     } else {
                         this.$message({
                             message: res.data.msg,

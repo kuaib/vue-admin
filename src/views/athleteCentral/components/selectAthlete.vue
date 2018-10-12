@@ -61,7 +61,7 @@
 
             <div class="pagination-container">
                 <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                               :current-page="listQuery.current" :page-sizes="[10,20,30, 50]"
+                               :current-page="listQuery.currentPage" :page-sizes="[10,20,30, 50]"
                                :page-size="listQuery.pageSize" layout="prev, pager, next, jumper"
                                :total="total">
                 </el-pagination>
@@ -72,6 +72,7 @@
 
 <script>
     import waves from '@/directive/waves' // 水波纹指令
+    import bus from '@/utils/bus.js' // 总线
     import { getAllDic } from '@/api/common'
     import { getTeamListAll } from '@/api/team'
     import { getAthleteList } from '@/api/athlete'
@@ -86,7 +87,7 @@
 
                 total: null,        // 总条目数
                 listQuery: {
-                    current: 1,
+                    currentPage: 1,
                     pageSize: 10,
                     searchKey: null,
                     teamId: null,
@@ -103,6 +104,43 @@
            this.getAllTeam();   // 队伍列表
            this.getSelectList();// 其他下拉列表
            this.getList();      // 运动员列表
+        },
+        mounted() {
+            bus.$on('changeAthlete1', (count) => {
+                if(this.total <= this.listQuery.pageSize) { // 只有一页数据
+                    this.$refs.athleteTable.setCurrentRow(this.list[count])
+                    if(count + 1 > this.total) {
+                        bus.$emit('resetCount1')
+                        bus.$emit('setAthleteRow1', this.list[0]); // 将当前远动员数据行传递过去
+                        this.$refs.athleteTable.setCurrentRow(this.list[0])
+                    } else {
+                        bus.$emit('setAthleteRow1', this.list[count]); // 将当前远动员数据行传递过去
+                    }
+                } else { // 多页
+                    console.log(333)
+                    // 不是最后一页
+                    if(this.listQuery.currentPage * this.listQuery.pageSize < this.total) {
+                        if(count +1 <= this.list.length) {
+                            console.log(123)
+                            this.$refs.athleteTable.setCurrentRow(this.list[count])
+                        } else {
+                            console.log(321)
+                            bus.$emit('resetCount1');
+                            this.listQuery.currentPage++
+                            this.handleCurrentChange(this.listQuery.currentPage)
+                        }
+                    } else { // 最后一页
+                        this.$refs.athleteTable.setCurrentRow(this.list[count])
+                        if(count + 1 > this.total % this.listQuery.pageSize) {
+                            bus.$emit('resetCount1');
+                            this.listQuery.currentPage = 1;
+                            this.handleCurrentChange(1)
+                        }
+                    }
+                    bus.$emit('setAthleteRow1', this.list[count]); // 将当前远动员数据行传递过去
+                }
+                console.log('当前的运动员索引' + count)
+            })
         },
         methods: {
             // 获取下拉选项
@@ -146,8 +184,7 @@
                         const data = res.data.data;
                         this.list = data.list;
                         this.total = data.pagination.total;
-                        this.listQuery.pageSize = data.pagination.pageSize;
-                        this.listQuery.current = data.pagination.current;
+                        this.listQuery.currentPage = data.pagination.current;
                         this.$nextTick(() => { // 默认选择第一行数据
                             this.$refs.athleteTable.setCurrentRow(this.list[0])
                             this.selectRow(this.list[0])
@@ -171,7 +208,7 @@
 
             // 点击搜索
             handleFilter() {
-                this.listQuery.current = 1;
+                this.listQuery.currentPage = 1;
                 this.getList()
             },
 

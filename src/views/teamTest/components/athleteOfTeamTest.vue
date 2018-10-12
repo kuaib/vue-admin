@@ -472,7 +472,7 @@
             },
 
             // 保存单项测试
-            saveTest(dataForm, lastTest) {
+            saveTest(dataForm) {
                 saveAthleteTest(dataForm).then(res => {
                     this.saveLoading = false;
                     if(res.data.code == 200) {

@@ -2,12 +2,10 @@
     <div>
         <el-row :gutter="40">
             <el-col :span="6">
-                <athleteOfTeam @getAthleteInfo="getAthleteInfo"></athleteOfTeam>
+                <athleteOfTeam></athleteOfTeam>
             </el-col>
             <el-col :span="18">
-                <athleteOfTeamTest
-                        :athleteRow="athleteRow"
-                ></athleteOfTeamTest>
+                <athleteOfTeamTest></athleteOfTeamTest>
             </el-col>
         </el-row>
     </div>
@@ -19,14 +17,7 @@
     export default ({
         components: {athleteOfTeam, athleteOfTeamTest},
         data() {
-            return {
-                athleteRow: null,       // 当前选中的运动员
-            }
-        },
-        methods: {
-            getAthleteInfo(row, athleteList) {
-                this.athleteRow = row;
-            }
+            return {}
         }
     })
 </script>

@@ -65,7 +65,6 @@
         },
         created() {
             this.getAllTeam();
-
         },
         mounted() {
             bus.$on('changeAthlete', (count) => {
@@ -132,7 +131,6 @@
                         const data = res.data.data;
                         this.list = data.list;
                         this.total = data.pagination.total;
-                        this.listQuery.pageSize = data.pagination.pageSize;
                         this.listQuery.currentPage = data.pagination.current;
                         this.$nextTick(() => { // 默认选择第一行数据
                             this.$refs.athleteTable.setCurrentRow(this.list[0])
