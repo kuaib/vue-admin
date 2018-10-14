@@ -7,12 +7,20 @@
                 </el-row>
                 <el-row :gutter="20" class="item-row">
                     <el-col :span="12">
+                        <el-radio v-model="chooseType" label="1">选择队伍 Choose Team</el-radio>
+                    </el-col>
+                    <el-col :span="12">
+                        <el-radio v-model="chooseType" label="2">选择运动员 Choose Athlete</el-radio>
+                    </el-col>
+                </el-row>
+                <el-row :gutter="20" class="item-row">
+                    <el-col :span="12">
                         <el-select v-model="teamId" placeholder="请选择队伍 Choose Team" @change="getAthleteList">
                             <el-option v-for="item in teamList" :label="item.teamName" :value="item.teamId"
                                        :key="item.teamId"></el-option>
                         </el-select>
                     </el-col>
-                    <el-col :span="12">
+                    <el-col :span="12" v-show="chooseType=='2'">
                         <el-select v-model="athleteId" placeholder="请选择运动员 Choose Athlete">
                             <el-option v-for="item in athleteList" :label="item.athleteName" :value="item.athleteId"
                                        :key="item.athleteId"></el-option>
@@ -79,6 +87,7 @@
     export default ({
         data() {
             return {
+                chooseType: '1',    // 选择队伍还是运动员
                 teamList: [],       // 队伍
                 athleteList: [],    // 运动员
                 teamId: null,
@@ -112,36 +121,45 @@
 
             // 获取运动员列表
             getAthleteList() {
-                getAthleteListByTeam(this.teamId).then(res => {
-                    if(res.data.code === 200) {
-                        const data = res.data.data;
-                        if(data && data.length > 0) {
-                            this.athleteList = data;
-                            this.athleteId = data[0].athleteId;
-                            console.log(this.athleteId)
+                // 当选中运动员的时候才需要显示运动员下拉
+                if(this.chooseType == '2') {
+                    getAthleteListByTeam(this.teamId).then(res => {
+                        if(res.data.code === 200) {
+                            const data = res.data.data;
+                            if(data && data.length > 0) {
+                                this.athleteList = data;
+                                this.athleteId = data[0].athleteId;
+                            } else {
+                                this.athleteList = [];
+                                this.athleteId = null;
+                            }
                         } else {
-                            this.athleteList = [];
-                            this.athleteId = null;
+                            this.$message({
+                                message: res.data.msg,
+                                type: 'warning'
+                            })
                         }
-                    } else {
-                        this.$message({
-                            message: res.data.msg,
-                            type: 'warning'
-                        })
-                    }
-                }).catch(rej => {
-                    console.log('获取运动员列表失败');
-                })
+                    }).catch(rej => {
+                        console.log('获取运动员列表失败');
+                    })
+                }
             },
 
             // 导出运动员基本信息/损伤测试报告(pdf)
             exportPdf() {
-
+                console.log(this.timeRange)
             },
 
             // 损伤测试的历史报告(excel)
             exportExcel() {
 
+            }
+        },
+        watch: {
+            chooseType(val) {
+                if(val == '2') {
+                    this.getAthleteList()
+                }
             }
         }
     })
