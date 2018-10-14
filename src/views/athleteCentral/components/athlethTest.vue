@@ -1,6 +1,6 @@
 <template>
     <div class="athlete-test">
-        <div @click="aaa">哈哈哈哈</div>
+        <!--<div @click="aaa">哈哈哈哈</div>-->
         <el-row class="mar-top-15">
             <el-col :span="6">
                 <el-select v-model="step" placeholder="请选择测试项目 Choose Test Item"
@@ -392,10 +392,10 @@
         },
 
         methods: {
-            aaa() {
-                this.count++;
-                bus.$emit('changeAthlete1', this.count)
-            },
+            // aaa() {
+            //     this.count++;
+            //     bus.$emit('changeAthlete1', this.count)
+            // },
             // 初始化当前运动员测试进度
             initTestStep() {
                 getAthleteTestStep(this.athleteRow.id).then((res) => {

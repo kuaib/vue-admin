@@ -45,7 +45,7 @@
                         </el-form-item>
                     </el-row>
                 </el-col>
-                <el-col :span="9" :offset="6">
+                <el-col :span="9" :offset="6" class="upload-item">
                     <div class="imgTitle">队伍logo上传</div>
                     <el-form-item prop="logo">
                         <el-upload
@@ -318,7 +318,6 @@
     }
 
     .imgTitle {
-        width: 178px;
         text-align: center;
         padding-bottom: 30px;
         font-weight: 700;
@@ -331,5 +330,9 @@
         .el-button {
             width: 150px;
         }
+    }
+    .upload-item .el-form-item__content {
+        margin-left: 0 !important;
+        text-align: center;
     }
 </style>
