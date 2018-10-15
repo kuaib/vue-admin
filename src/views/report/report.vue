@@ -147,7 +147,16 @@
 
             // 导出运动员基本信息/损伤测试报告(pdf)
             exportPdf() {
-                console.log(this.timeRange)
+                dowloadPdf({athleteId: this.athleteId, beforeDate:this.time}).then(res => {
+                    console.log(res)
+                    // if(res.status == 200) {
+                    //     if(res.data) { // 有对应的pdf再去下载
+                    //         window.location.href = '/sports/sys/downloadPdf?athleteId=' + this.athleteId + '&beforeDate=' + this.time
+                    //     } else {
+                    //         console.log('没有pdf报告')
+                    //     }
+                    // }
+                })
             },
 
             // 损伤测试的历史报告(excel)

@@ -4,11 +4,11 @@
 
 import request from '@/utils/request'
 
-//
-export function dowloadPdf (data) {
+// 导出pdf
+export function dowloadPdf (params) {
     return request({
-        url: '/sports/sys/download2',
+        url: '/sports/sys/downloadPdf',
         method: 'get',
-        data
+        params
     })
 }
