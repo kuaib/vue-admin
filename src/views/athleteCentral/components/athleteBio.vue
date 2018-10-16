@@ -32,7 +32,7 @@
                                 </el-form-item>
                             </el-col>
                             <el-col :span="12">
-                                <el-form-item label="性别 Sex">
+                                <el-form-item label="性别 Sex" label-width="80px">
                                     <el-radio-group v-model="form.gender">
                                         <el-radio label="1">男 Mail</el-radio>
                                         <el-radio label="2">女 Femail</el-radio>

@@ -37,16 +37,10 @@
                     </el-col>
                 </el-row>
                 <el-row :gutter="20" class="item-row btn">
-                    <el-col :span="12">
-                        <el-checkbox-group v-model="checkList">
-                            <el-checkbox label="1">运动员基本信息 Athlete Basice Info</el-checkbox>
-                        </el-checkbox-group>
-                    </el-col>
-                    <el-col :span="12">
-                        <el-checkbox-group v-model="checkList">
-                            <el-checkbox label="2">损伤测试 Injury Testing</el-checkbox>
-                        </el-checkbox-group>
-                    </el-col>
+                    <el-checkbox-group v-model="exportType">
+                        <el-checkbox label="1">运动员基本信息 Athlete Basice Info</el-checkbox>
+                        <el-checkbox label="2">损伤测试 Injury Testing</el-checkbox>
+                    </el-checkbox-group>
                 </el-row>
                 <el-row :gutter="20" class="item-row btn">
                     <el-button type="primary" @click="exportPdf">导出 Export</el-button>
@@ -83,7 +77,7 @@
 <script>
     import { getTeamListAll } from '@/api/team'
     import { getAthleteListByTeam } from '@/api/athlete'
-    import { dowloadPdf } from '@/api/report'
+    import { canExport, dowloadPdf } from '@/api/report'
     export default ({
         data() {
             return {
@@ -93,7 +87,7 @@
                 teamId: null,
                 athleteId: null,
                 time: null,      // 最近报告时间
-                checkList: [],   // 最近报告项目
+                exportType: [],  // 最近报告项目选择
                 timeRange: null, // 时间段
             }
         },
@@ -147,20 +141,65 @@
 
             // 导出运动员基本信息/损伤测试报告(pdf)
             exportPdf() {
-                dowloadPdf({athleteId: this.athleteId, beforeDate:this.time}).then(res => {
-                    console.log(res)
-                    // if(res.status == 200) {
-                    //     if(res.data) { // 有对应的pdf再去下载
-                    //         window.location.href = '/sports/sys/downloadPdf?athleteId=' + this.athleteId + '&beforeDate=' + this.time
-                    //     } else {
-                    //         console.log('没有pdf报告')
-                    //     }
-                    // }
+                if(!this.time) {
+                    this.$message({
+                        message: '请选择报告截止日期',
+                        type: 'warning'
+                    });
+                    return;
+                }
+                if(this.exportType.length === 0) {
+                    this.$message({
+                        message: '请选择报告类型',
+                        type: 'warning'
+                    });
+                    return;
+                }
+                let data = {beforeDate: this.time};
+                if(this.exportType.length === 1) {
+                    data.exportType = parseInt(this.exportType[0], 10);
+                } else if(this.exportType.length === 2){
+                    data.exportType = 3;
+                }
+                if(this.athleteId) {
+                    data.athleteId = this.athleteId;
+
+                } else {
+                    data.teamId = this.teamId;
+                    data.beforeDate = this.time;
+                }
+                // console.log(data)
+                canExport(data).then(res => {
+                    if(res.data.code == 200) {
+                        if(res.data.data.canExport) {
+                            console.log(data.athleteId)
+                            if(data.athleteId) {
+                                window.location.href = '/sports/sys/downloadPdf?athleteId=' + data.athleteId + '&beforeDate=' + data.beforeDate + '&exportType=' + data.exportType;
+                            } else {
+                                window.location.href = '/sports/sys/downloadPdf?teamId=' + data.teamId + '&beforeDate=' + data.beforeDate + '&exportType=' + data.exportType;
+                            }
+                        } else {
+                            if(data.athleteId) {
+                                this.$alert('该运动员在' + data.beforeDate + '之前未生成该报告', '提示', {
+                                    confirmButtonText: '确定'
+                                });
+                            } else {
+                                this.$alert('该队伍在' + data.beforeDate + '之前未生成该报告', '提示', {
+                                    confirmButtonText: '确定'
+                                });
+                            }
+                        }
+                    }
                 })
             },
 
             // 损伤测试的历史报告(excel)
             exportExcel() {
+
+            },
+
+            // 导出pdf前的判断
+            examPdf() {
 
             }
         },
@@ -168,6 +207,8 @@
             chooseType(val) {
                 if(val == '2') {
                     this.getAthleteList()
+                } else {
+                    this.athleteId = null;
                 }
             }
         }
