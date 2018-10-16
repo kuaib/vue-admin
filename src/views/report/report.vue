@@ -37,10 +37,12 @@
                     </el-col>
                 </el-row>
                 <el-row :gutter="20" class="item-row btn">
-                    <el-checkbox-group v-model="exportType">
-                        <el-checkbox label="1">运动员基本信息 Athlete Basice Info</el-checkbox>
-                        <el-checkbox label="2">损伤测试 Injury Testing</el-checkbox>
-                    </el-checkbox-group>
+                    <!--<el-checkbox-group v-model="exportType">-->
+                        <!--<el-checkbox label="1">运动员基本信息 Athlete Basice Info</el-checkbox>-->
+                        <!--<el-checkbox label="2">损伤测试 Injury Testing</el-checkbox>-->
+                    <!--</el-checkbox-group>-->
+                    <el-radio v-model="exportType" label="1">运动员基本信息 Athlete Basice Info</el-radio>
+                    <el-radio v-model="exportType" label="2">损伤测试 Injury Testing</el-radio>
                 </el-row>
                 <el-row :gutter="20" class="item-row btn">
                     <el-button type="primary" @click="exportPdf">导出 Export</el-button>
@@ -86,9 +88,9 @@
                 athleteList: [],    // 运动员
                 teamId: null,
                 athleteId: null,
-                time: null,      // 最近报告时间
-                exportType: [],  // 最近报告项目选择
-                timeRange: null, // 时间段
+                time: null,         // 最近报告时间
+                exportType: null,   // 最近报告项目选择
+                timeRange: null,    // 时间段
             }
         },
         mounted() {
@@ -148,31 +150,23 @@
                     });
                     return;
                 }
-                if(this.exportType.length === 0) {
+                if(!this.exportType) {
                     this.$message({
                         message: '请选择报告类型',
                         type: 'warning'
                     });
                     return;
                 }
-                let data = {beforeDate: this.time};
-                if(this.exportType.length === 1) {
-                    data.exportType = parseInt(this.exportType[0], 10);
-                } else if(this.exportType.length === 2){
-                    data.exportType = 3;
-                }
+                let data = {beforeDate: this.time, exportType: this.exportType};
                 if(this.athleteId) {
                     data.athleteId = this.athleteId;
-
                 } else {
                     data.teamId = this.teamId;
-                    data.beforeDate = this.time;
                 }
                 // console.log(data)
                 canExport(data).then(res => {
                     if(res.data.code == 200) {
                         if(res.data.data.canExport) {
-                            console.log(data.athleteId)
                             if(data.athleteId) {
                                 window.location.href = '/sports/sys/downloadPdf?athleteId=' + data.athleteId + '&beforeDate=' + data.beforeDate + '&exportType=' + data.exportType;
                             } else {
