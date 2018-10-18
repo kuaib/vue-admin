@@ -204,9 +204,9 @@
                     if(res.data.code == 200) {
                         if(res.data.data.canExport) {
                             if(data.athleteId) {
-                                window.location.href = '/sports/sys/downloadExcel??athleteId=' + data.athleteId + '&startDate=' + data.startDate + '&endDate=' + data.endDate;
+                                window.location.href = '/sports/sys/downloadExcel?athleteId=' + data.athleteId + '&startDate=' + data.startDate + '&endDate=' + data.endDate;
                             } else {
-                                window.location.href = '/sports/sys/downloadExcel??teamId=' + data.teamId + '&startDate=' + data.startDate + '&endDate=' + data.endDate;
+                                window.location.href = '/sports/sys/downloadExcel?teamId=' + data.teamId + '&startDate=' + data.startDate + '&endDate=' + data.endDate;
                             }
                         } else {
                             if(data.athleteId) {
