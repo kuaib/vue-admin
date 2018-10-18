@@ -188,13 +188,39 @@
 
             // 损伤测试的历史报告(excel)
             exportExcel() {
-                console.log(this.timeRange);
                 if(!this.timeRange) {
                     this.$alert('请选择损伤测试时间段', '提示', {
                         confirmButtonText: '确定'
                     });
-
+                    return;
                 }
+                let data = {startDate: this.timeRange[0], endDate: this.timeRange[1]};
+                if(this.athleteId) {
+                    data.athleteId = this.athleteId;
+                } else {
+                    data.teamId = this.teamId;
+                }
+                canExport(data).then(res => {
+                    if(res.data.code == 200) {
+                        if(res.data.data.canExport) {
+                            if(data.athleteId) {
+                                window.location.href = '/sports/sys/downloadExcel??athleteId=' + data.athleteId + '&startDate=' + data.startDate + '&endDate=' + data.endDate;
+                            } else {
+                                window.location.href = '/sports/sys/downloadExcel??teamId=' + data.teamId + '&startDate=' + data.startDate + '&endDate=' + data.endDate;
+                            }
+                        } else {
+                            if(data.athleteId) {
+                                this.$alert('该运动员在' + data.startDate + '-' + data.endDate + '还未生成损伤测试历史报告', '提示', {
+                                    confirmButtonText: '确定'
+                                });
+                            } else {
+                                this.$alert('该队伍在' + data.startDate + '-' + data.endDate + '还未生成损伤测试历史报告', '提示', {
+                                    confirmButtonText: '确定'
+                                });
+                            }
+                        }
+                    }
+                })
             }
         },
         watch: {
