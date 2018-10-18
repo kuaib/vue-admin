@@ -163,7 +163,6 @@
                 } else {
                     data.teamId = this.teamId;
                 }
-                // console.log(data)
                 canExport(data).then(res => {
                     if(res.data.code == 200) {
                         if(res.data.data.canExport) {
@@ -189,12 +188,13 @@
 
             // 损伤测试的历史报告(excel)
             exportExcel() {
+                console.log(this.timeRange);
+                if(!this.timeRange) {
+                    this.$alert('请选择损伤测试时间段', '提示', {
+                        confirmButtonText: '确定'
+                    });
 
-            },
-
-            // 导出pdf前的判断
-            examPdf() {
-
+                }
             }
         },
         watch: {
