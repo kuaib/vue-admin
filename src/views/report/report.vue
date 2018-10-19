@@ -197,6 +197,7 @@
                 let data = {startDate: this.timeRange[0], endDate: this.timeRange[1]};
                 if(this.athleteId) {
                     data.athleteId = this.athleteId;
+                    data.teamId = this.teamId;
                 } else {
                     data.teamId = this.teamId;
                 }
@@ -204,7 +205,7 @@
                     if(res.data.code == 200) {
                         if(res.data.data.canExport) {
                             if(data.athleteId) {
-                                window.location.href = '/sports/sys/downloadExcel?athleteId=' + data.athleteId + '&startDate=' + data.startDate + '&endDate=' + data.endDate;
+                                window.location.href = '/sports/sys/downloadExcel?athleteId=' + data.athleteId + '&teamId=' + data.teamId + '&startDate=' + data.startDate + '&endDate=' + data.endDate;
                             } else {
                                 window.location.href = '/sports/sys/downloadExcel?teamId=' + data.teamId + '&startDate=' + data.startDate + '&endDate=' + data.endDate;
                             }
