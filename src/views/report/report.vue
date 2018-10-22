@@ -1,7 +1,7 @@
 <template>
     <div class="report">
         <el-row :gutter="20">
-            <el-col :span="12" :offset="6">
+            <el-col :span="14" :offset="6">
                 <el-row class="item-row">
                     <h3>报告输出 Report Export</h3>
                 </el-row>
@@ -32,7 +32,7 @@
                     <el-col :span="16" style="font-size:14px;">
                         Before
                         <el-date-picker type="date" placeholder="选择日期 Select date" v-model="time"
-                                        style="width: 100%;" value-format="yyyy-MM-dd" class="time"></el-date-picker>
+                                        style="width: 100%;" value-format="yyyy-MM-dd" :picker-options="pickerOptions" class="time"></el-date-picker>
                         之前
                     </el-col>
                 </el-row>
@@ -51,19 +51,37 @@
                     <el-col :span="18" class="wordTip">损伤测试历史报告 Injury testing history report</el-col>
                 </el-row>
                 <el-row :gutter="20" class="item-row">
-                    <el-col :span="5" class="label-words">
+                    <el-col :span="4" class="label-words">
                         <p>选择时间段</p>
                         <p>Select Period</p>
                     </el-col>
-                    <el-col :span="19">
-                        <el-date-picker
-                                style="width: 100%;"
-                                v-model="timeRange"
-                                type="daterange"
-                                value-format="yyyy-MM-dd"
-                                range-separator="至 To"
-                                start-placeholder="开始日期 Begin Time"
-                                end-placeholder="结束日期 End Time">
+                    <el-col :span="20">
+                        <!--<el-date-picker-->
+                                <!--style="width: 100%;"-->
+                                <!--v-model="timeRange"-->
+                                <!--type="daterange"-->
+                                <!--value-format="yyyy-MM-dd"-->
+                                <!--:picker-options="pickerOptions"-->
+                                <!--range-separator="至 To"-->
+                                <!--start-placeholder="开始日期 Begin Time"-->
+                                <!--end-placeholder="结束日期 End Time">-->
+                        <!--</el-date-picker>-->
+                        <el-date-picker type="date" style="width: 35% !important;"
+                                        class="time"
+                                        placeholder="开始日期 Begin Time"
+                                        v-model="beginDate"
+                                        value-format="yyyy-MM-dd"
+                                        :picker-options="pickerOptions1"
+                                       >
+                        </el-date-picker>
+                        <span>至 To</span>
+                        <el-date-picker type="date" style="width: 35% !important;"
+                                        class="time"
+                                        placeholder="结束日期 End Time"
+                                        v-model="endDate"
+                                        value-format="yyyy-MM-dd"
+                                        :picker-options="pickerOptions2"
+                        >
                         </el-date-picker>
                     </el-col>
                 </el-row>
@@ -90,7 +108,27 @@
                 athleteId: null,
                 time: null,         // 最近报告时间
                 exportType: null,   // 最近报告项目选择
-                timeRange: null,    // 时间段
+                beginDate: null,    // 开始时间
+                endDate: null,      // 结束时间
+                pickerOptions: {
+                    disabledDate(time) { // 最近报告时间（禁选日期）
+                        return time.getTime() > Date.now() - 8.64e6;
+                    }
+                },
+                pickerOptions1: {   // （禁选日期）
+                    disabledDate: (time) => {
+                        if (this.endDate) {
+                            return time.getTime() > new Date(this.endDate);
+                        } else {
+                            return time.getTime() > Date.now();
+                        }
+                    }
+                },
+                pickerOptions2: {   // 结束时间（禁选日期）
+                    disabledDate: (time) => {
+                        return time.getTime() > Date.now() || time.getTime() < new Date(this.beginDate) - 24*60*60*1000; // 后面的毫秒数是为了解决不能选择同一天的bug
+                    }
+                },
             }
         },
         mounted() {
@@ -188,13 +226,19 @@
 
             // 损伤测试的历史报告(excel)
             exportExcel() {
-                if(!this.timeRange) {
-                    this.$alert('请选择损伤测试时间段', '提示', {
+                if(!this.beginDate) {
+                    this.$alert('请选择损伤测试开始时间', '提示', {
                         confirmButtonText: '确定'
                     });
                     return;
                 }
-                let data = {startDate: this.timeRange[0], endDate: this.timeRange[1]};
+                if(!this.endDate) {
+                    this.$alert('请选择损伤测试结束时间', '提示', {
+                        confirmButtonText: '确定'
+                    });
+                    return;
+                }
+                let data = {startDate: this.beginDate, endDate: this.endDate};
                 if(this.athleteId) {
                     data.athleteId = this.athleteId;
                     data.teamId = this.teamId;
@@ -211,11 +255,11 @@
                             }
                         } else {
                             if(data.athleteId) {
-                                this.$alert('该运动员在' + data.startDate + '-' + data.endDate + '还未生成损伤测试历史报告', '提示', {
+                                this.$alert('该运动员在' + data.startDate + '至' + data.endDate + '还未生成损伤测试历史报告', '提示', {
                                     confirmButtonText: '确定'
                                 });
                             } else {
-                                this.$alert('该队伍在' + data.startDate + '-' + data.endDate + '还未生成损伤测试历史报告', '提示', {
+                                this.$alert('该队伍在' + data.startDate + '至' + data.endDate + '还未生成损伤测试历史报告', '提示', {
                                     confirmButtonText: '确定'
                                 });
                             }

@@ -34,8 +34,8 @@
                             <el-col :span="12">
                                 <el-form-item label="性别 Sex">
                                     <el-radio-group v-model="form.gender">
-                                        <el-radio label="1">男 Mail</el-radio>
-                                        <el-radio label="2">女 Femail</el-radio>
+                                        <el-radio label="1">男 Male</el-radio>
+                                        <el-radio label="2">女 Female</el-radio>
                                     </el-radio-group>
                                 </el-form-item>
                                 <el-form-item label="身高 Height (cm)" prop="height">

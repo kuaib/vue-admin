@@ -34,8 +34,8 @@
                             <el-col :span="12">
                                 <el-form-item label="性别 Sex" label-width="80px">
                                     <el-radio-group v-model="form.gender">
-                                        <el-radio label="1">男 Mail</el-radio>
-                                        <el-radio label="2">女 Femail</el-radio>
+                                        <el-radio label="1">男 Male</el-radio>
+                                        <el-radio label="2">女 Female</el-radio>
                                     </el-radio-group>
                                 </el-form-item>
                                 <el-form-item label="身高 Height (cm)" prop="height">
@@ -121,16 +121,18 @@
     import {getAllDic} from '@/api/common'
     import {saveAthlete, athleteDetail} from '@/api/athlete'
     import {getTeamListAll} from '@/api/team'
+    import bus from '@/utils/bus.js' // 总线
 
     export default ({
         data() {
             return {
+                athleteRow: null,     // 运动员行数据
                 imgUrl: null,         // 图片的预览地址
 
                 submitFlag: false,  // 提交锁
                 teamList: [],       // 队伍选项
                 specialList: [],    // 专项选项
-                provincesList: [],   // 省份选项
+                provincesList: [],  // 省份选项
                 injuryHistoryList: [
                     {dicKey: 'None', dicValue: '无损伤'},
                     {dicKey: 'Moderate', dicValue: '中等损伤'},
@@ -211,34 +213,46 @@
             this.getTeamList();
         },
 
-        props: ['athleteRow'],
+        mounted() {
+            bus.$on('getAthleteInfo', (row) => {
+                this.athleteRow = row;
+            })
+        },
+        // props: ['athleteRow'],
 
         methods: {
             initPage(id) {
                 athleteDetail(id).then(res => {
                     if (res.data.code == 200) {
                         const data = res.data.data;
-                        this.imgUrl = data.photo;
 
                         this.form.athleteName = data.athleteName;
                         this.form.gender = data.gender.toString();
-                        let bir = data.birthday.split('-');
-                        this.form.birthday1 = new Date(bir[0], bir[1]-1, bir[2]);
+                        if(data.birthday) {
+                            let bir = data.birthday.split('-');
+                            this.form.birthday1 = new Date(bir[0], bir[1]-1, bir[2]);
+                        }
                         this.form.height = data.height;
                         this.form.weight = data.weight;
                         this.form.idCard = data.idCard;
                         this.form.provinceId = data.provinceId;
                         this.form.provinceName = data.provinceName;
                         this.form.wechat = data.wechat;
-                        let tel = data.telephone.split(',');
-                        this.form.telephone1 = tel[0];
-                        this.form.telephone2 = tel[1];
-                        this.form.specialId = data.specialId.toString();
+                        if(data.telephone) {
+                            let tel = data.telephone.split(',');
+                            this.form.telephone1 = tel[0];
+                            this.form.telephone2 = tel[1];
+                        }
+                        this.form.specialId = data.specialId ? data.specialId.toString() : data.specialId;
                         this.form.specialName = data.specialName;
                         this.form.teamId = data.teamId;
                         this.form.teamName = data.teamName;
                         this.form.trainingAge = data.trainingAge;
-                        this.form.photo = data.photo.split('/img/')[1];
+                        let img = data.photo.split('/img/')[1];
+                        if(img !== 'null') {
+                            this.form.photo = img;
+                            this.imgUrl = data.photo;
+                        }
                         this.form.injuryHistory = data.injuryHistory;
                     } else {
                         this.$message({

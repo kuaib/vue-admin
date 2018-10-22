@@ -3,15 +3,15 @@
         <el-row :gutter="15">
             <el-col :span="6">
                 <h3 class="leftTitle">选择运动员 Select Athlete</h3>
-                <select-athlete @getAthleteInfo="getAthleteInfo"></select-athlete>
+                <select-athlete></select-athlete>
             </el-col>
             <el-col :span="18">
                 <el-tabs v-model="activeTab" type="card" @tab-click="handleClick">
                     <el-tab-pane label="运动员看板 Athlete View" name="athleteView">
-                        <athlete-view :athleteRow="athleteRow"></athlete-view>
+                        <athlete-view></athlete-view>
                     </el-tab-pane>
                     <el-tab-pane label="运动员基本信息 Athlete Bio" name="athleteBio">
-                        <athlete-bio :athleteRow="athleteRow"></athlete-bio>
+                        <athlete-bio></athlete-bio>
                     </el-tab-pane>
                     <el-tab-pane label="运动员测试 Athlete Testing" name="athleteTesting">
                         <athleth-test></athleth-test>
@@ -34,17 +34,10 @@
         },
         data() {
             return {
-                activeTab: 'athleteView',
-                athleteRow: null       // 当前选中的运动员
+                activeTab: 'athleteView'
             }
         },
-        created() {
-
-        },
         methods: {
-            getAthleteInfo(row) {
-                this.athleteRow = row;
-            },
             handleClick(tab, event) {
                 // console.log(tab, event);
             }

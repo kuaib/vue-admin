@@ -118,9 +118,6 @@
                     ],
                     organizationId: [
                         {required: true, message: '请选择单位', trigger: 'blur'},
-                    ],
-                    logo: [
-                        {required: true, message: '请上传图片 Please upload image', trigger: 'blur'},
                     ]
                 }
             }

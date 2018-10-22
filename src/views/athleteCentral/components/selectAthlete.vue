@@ -60,8 +60,9 @@
             </el-table>
 
             <div class="pagination-container">
-                <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                               :current-page="listQuery.currentPage" :page-sizes="[10,20,30, 50]"
+                <el-pagination background @current-change="handleCurrentChange"
+                               :current-page="listQuery.currentPage"
+                               :pager-count="5"
                                :page-size="listQuery.pageSize" layout="prev, pager, next, jumper"
                                :total="total">
                 </el-pagination>
@@ -112,15 +113,17 @@
                     if(count + 1 > this.total) {
                         bus.$emit('resetCount1')
                         bus.$emit('setAthleteRow1', this.list[0]); // 将当前远动员数据行传递过去
-                        this.$refs.athleteTable.setCurrentRow(this.list[0])
+                        this.$refs.athleteTable.setCurrentRow(this.list[0]);
+                        bus.$emit('getAthleteInfo', this.list[0]); // 服务于看板和基本信息页面(使其数据更新)
                     } else {
                         bus.$emit('setAthleteRow1', this.list[count]); // 将当前远动员数据行传递过去
+                        bus.$emit('getAthleteInfo', this.list[count]); // 服务于看板和基本信息页面(使其数据更新)
                     }
                 } else { // 多页
                     // 不是最后一页
                     if(this.listQuery.currentPage * this.listQuery.pageSize < this.total) {
                         if(count +1 <= this.list.length) {
-                            this.$refs.athleteTable.setCurrentRow(this.list[count])
+                            this.$refs.athleteTable.setCurrentRow(this.list[count]);
                         } else {
                             bus.$emit('resetCount1');
                             this.listQuery.currentPage++
@@ -135,6 +138,7 @@
                         }
                     }
                     bus.$emit('setAthleteRow1', this.list[count]); // 将当前远动员数据行传递过去
+                    bus.$emit('getAthleteInfo', this.list[count]); // 服务于看板和基本信息页面(使其数据更新)
                 }
                 console.log('当前的运动员索引' + count)
             })
@@ -202,18 +206,12 @@
             selectRow(row) {
                 bus.$emit('resetCount1', row.index); // 设置当前索引(服务于测试页面)
                 bus.$emit('setAthleteRow1', row);    // 传递当前运动员行信息(服务于测试页面)
-                this.$emit('getAthleteInfo', row);   // 服务于看板和基本信息页面
+                bus.$emit('getAthleteInfo', row);   // 服务于看板和基本信息页面
             },
 
             // 点击搜索
             handleFilter() {
                 this.listQuery.currentPage = 1;
-                this.getList()
-            },
-
-            // 改变每页显示条目数
-            handleSizeChange(val) {
-                this.listQuery.pageSize = val;
                 this.getList()
             },
 
