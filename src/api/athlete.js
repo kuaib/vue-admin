@@ -84,3 +84,12 @@ export function allAthleteDone(teamId) {
     })
 }
 
+// 获取运动员看板信息
+export function getAthletePanel(params) {
+    return request({
+        url: '/sports/athlete/panel',
+        method: 'get',
+        params
+    })
+}
+
