@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="select-team">
         <div class="row-item actBtn clearfix">
             <el-button class="search" type="primary" v-waves icon="el-icon-search" @click="handleFilter">搜索 Search</el-button>
         </div>
@@ -45,9 +45,9 @@
             </el-table>
 
             <div class="pagination-container">
-                <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                                :current-page="listQuery.current" :page-sizes="[10,20,30, 50]"
-                               :page-size="listQuery.pageSize" layout="prev, pager, next, jumper"
+                               :page-size="listQuery.pageSize" layout="prev, pager, next"
                                :total="total">
                 </el-pagination>
             </div>
@@ -171,27 +171,32 @@
     })
 </script>
 
-<style lang="scss" scoped>
-    .row-item {
-        margin-bottom: 10px;
-        &:last-child {
-             margin-bottom: 0;
+<style lang="scss">
+    .select-team {
+        .el-pager li {
+            min-width: 25.5px !important;
         }
-        .el-input {
-            width: 100% !important;
-        }
-        .title {
-            text-align: center;
-            color: #333;
+        .row-item {
             margin-bottom: 10px;
+            &:last-child {
+                margin-bottom: 0;
+            }
+            .el-input {
+                width: 100% !important;
+            }
+            .title {
+                text-align: center;
+                color: #333;
+                margin-bottom: 10px;
+            }
         }
-    }
-    .actBtn {
-        .add {
-            float: left;
-        }
-        .search {
-            float: right;
+        .actBtn {
+            .add {
+                float: left;
+            }
+            .search {
+                float: right;
+            }
         }
     }
 

@@ -1,5 +1,5 @@
 <template>
-    <div class="athleteView">
+    <div class="athleteView" v-if="athleteRow">
         <!--<el-row class="row-item">-->
             <!--<div class="img">-->
                 <!--<img :src="'/img/'+ athleteRow.photo" alt="">-->

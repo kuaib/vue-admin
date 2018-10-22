@@ -60,10 +60,10 @@
             </el-table>
 
             <div class="pagination-container">
-                <el-pagination background @current-change="handleCurrentChange"
+                <el-pagination @current-change="handleCurrentChange"
                                :current-page="listQuery.currentPage"
                                :pager-count="5"
-                               :page-size="listQuery.pageSize" layout="prev, pager, next, jumper"
+                               :page-size="listQuery.pageSize" layout="prev, pager, next"
                                :total="total">
                 </el-pagination>
             </div>
@@ -240,7 +240,7 @@
     })
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
     .athlete-select {
         .add {
             padding: 5px 10px;
@@ -248,28 +248,30 @@
         .search {
             padding: 10px;
         }
-    }
-    .row-item {
-        margin-bottom: 10px;
-        &:last-child {
-             margin-bottom: 0;
-        }
-        .el-input {
-            width: 100% !important;
-        }
-        .title {
-            text-align: center;
-            color: #333;
+        .row-item {
             margin-bottom: 10px;
+            &:last-child {
+                margin-bottom: 0;
+            }
+            .el-input {
+                width: 100% !important;
+            }
+            .title {
+                text-align: center;
+                color: #333;
+                margin-bottom: 10px;
+            }
+        }
+        .actBtn {
+            .add {
+                float: left;
+            }
+            .search {
+                float: right;
+            }
+        }
+        .el-pager li {
+            min-width: 25.5px !important;
         }
     }
-    .actBtn {
-        .add {
-            float: left;
-        }
-        .search {
-            float: right;
-        }
-    }
-
 </style>

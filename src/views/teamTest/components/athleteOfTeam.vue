@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="athlete-of-team">
         <div class="row-item">
             <el-select v-model="teamId" placeholder="请选择队伍 Select Team" @change="changeTeam">
                 <el-option v-for="item in teamList" :label="item.teamName" :value="item.teamId"
@@ -29,9 +29,9 @@
                 </el-table-column>
             </el-table>
             <div class="pagination-container">
-                <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                                :current-page="listQuery.currentPage" :page-sizes="[10,20,30,50]"
-                               :page-size="listQuery.pageSize" layout="prev, pager, next, jumper"
+                               :page-size="listQuery.pageSize" layout="prev, pager, next"
                                :total="total">
                 </el-pagination>
             </div>
@@ -205,19 +205,24 @@
     })
 </script>
 
-<style lang="scss" scoped>
-    .row-item {
-        margin-bottom: 50px;
-        &:last-child {
-            margin-bottom: 0;
+<style lang="scss">
+    .athlete-of-team {
+        .el-pager li {
+            min-width: 25.5px !important;
         }
-        .el-input {
-            width: 100% !important;
-        }
-        .title {
-            text-align: center;
-            color: #333;
-            margin-bottom: 10px;
+        .row-item {
+            margin-bottom: 50px;
+            &:last-child {
+                margin-bottom: 0;
+            }
+            .el-input {
+                width: 100% !important;
+            }
+            .title {
+                text-align: center;
+                color: #333;
+                margin-bottom: 10px;
+            }
         }
     }
 
