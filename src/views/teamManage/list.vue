@@ -24,7 +24,7 @@
                     <span>{{scope.row.teamName}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="专项">
+            <el-table-column align="center" label="项目">
                 <template slot-scope="scope">
                     <span>{{scope.row.specialName}}</span>
                 </template>
@@ -41,10 +41,11 @@
             </el-table-column>
             <el-table-column align="center" label="操作">
                 <template slot-scope="scope">
-                    <el-button type="primary" size="mini">
-                        <router-link :to="{path: '/teamManage/manage',query: {teamId:scope.row.id}}"><i
-                                class="el-icon-edit"></i></router-link>
-                    </el-button>
+                    <!--<el-button type="primary" size="mini">-->
+                        <!--<router-link :to="{path: '/teamManage/manage',query: {teamId:scope.row.id}}"><i-->
+                                <!--class="el-icon-edit"></i></router-link>-->
+                    <!--</el-button>-->
+                    <el-button size="mini" type="primary" @click="toEdit(scope.row)"><i class="el-icon-edit"></i></el-button>
                     <el-button size="mini" type="danger" @click="handleDelete(scope.row)"><i class="el-icon-delete"></i>
                     </el-button>
                 </template>
@@ -166,6 +167,11 @@
             // 跳转队伍管理页面
             toTeamManage() {
                 this.$router.push('/teamManage/manage');
+            },
+
+            // 编辑
+            toEdit(row) {
+                this.$router.push({path: '/teamManage/manage',query: {teamId: row.id}});
             }
         }
     }

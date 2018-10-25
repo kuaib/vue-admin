@@ -18,8 +18,8 @@
                         </el-form-item>
                     </el-row>
                     <el-row>
-                        <el-form-item label="专项" prop="specialId">
-                            <el-select v-model="form.specialId" placeholder="请选择专项"
+                        <el-form-item label="项目" prop="specialId">
+                            <el-select v-model="form.specialId" placeholder="请选择项目"
                                        @change="handleChange(form.specialId,'special')">
                                 <el-option v-for="item in specialList" :label="item.dicValue" :value="item.dicKey"
                                            :key="item.dicKey"></el-option>
@@ -83,7 +83,7 @@
                 teamTable: null,    // indexed
                 submitFlag: false,  // 提交锁
                 cateList: [],       // 类别选项
-                specialList: [],    // 专项选项
+                specialList: [],    // 项目选项
                 orgList: [],        // 单位选项
                 coachList: [],      // 教练选项
 
@@ -96,8 +96,8 @@
                     categoryId: null,        // 类别Id
                     categoryName: null,      // 类别name
 
-                    specialId: null,         // 专项id
-                    specialName: null,       // 专项name
+                    specialId: null,         // 项目id
+                    specialName: null,       // 项目name
 
                     organizationId: null,    // 单位id
                     organizationName: null,  // 单位name
