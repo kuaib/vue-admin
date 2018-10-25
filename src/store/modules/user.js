@@ -18,7 +18,7 @@ let aa = [
         "id": 1,
         "path": "/teamManage",  // 第一级菜单前面有斜杠： /
         "component": "Layout",
-        "name": "TeamSys",  // 可有可无，我用不到*****
+        "name": "",  // 可有可无，我用不到*****
         "title": "队伍管理",  // 可有可无，我用不到*****
         "icon": "ios-color-wand",
         "parentId": 0,
@@ -38,7 +38,7 @@ let aa = [
                 "path": "list", // children中的path：取我定义的（子菜单path前不加斜杠： /）
                 "component": "views/teamManage/list", // children中的component：取我定义的，最前面不加斜杠： /
                 "name": "teamList",     // children中的name：取我定义的
-                "title": "队伍列表",      // 可有可无*****
+                "title": "队伍管理",      // 可有可无*****
                 "icon": "ios-basket-outline",
                 "parentId": 1,
                 "enabled": 1,
@@ -46,9 +46,10 @@ let aa = [
                 "roles": null,
                 "meta": {
                     "access": null,
-                    "title": "队伍列表",    // children中的title：取我定义的
+                    "title": "队伍管理",    // children中的title：取我定义的
                     "icon": "ios-basket-outline",
-                    "hideInMenu": false
+                    "hideInMenu": false,
+                    "noCache": true     // 这个是新加的字段！！！！！！！！！！！！
                 },
                 "url": "",
                 "hideInMenu": false
@@ -63,45 +64,188 @@ let aa = [
                 "enabled": 1,
                 "children": null,
                 "roles": null,
-                "meta": {"access": null, "title": "队伍新增/维护", "icon": "ios-basket-outline", "hideInMenu": true},
+                "meta": {
+                    "access": null,
+                    "title": "队伍新增/维护",
+                    "icon": "ios-basket-outline",
+                    "hideInMenu": true
+                },
                 "url": "",
                 "hideInMenu": true
             }]
     },
     {
         "id": 2,
-        "path": "/athleteManage",
+        "path": "/athleteCentral",
         "component": "Layout",
-        "name": "MemberSys",
-        "title": "运动员管理",
+        "name": "",
+        "title": "运动员看板",
         "icon": "ios-create-outline",
         "parentId": 0,
         "enabled": 1,
         "roles": null,
-        "meta": {"access": null, "title": "运动员管理", "icon": "ios-create-outline", "hideInMenu": false},
+        "meta": {"access": null, "title": "运动员看板", "icon": "ios-create-outline", "hideInMenu": false},
         "url": "",
         "hideInMenu": false,
-        "children": [{
-            "id": 4,
-            "path": "list",
-            "component": "views/athleteManage/list",
-            "name": "athleteList",
-            "title": "运动员列表",
-            "icon": "ios-people-outline",
-            "parentId": 2,
-            "enabled": 1,
-            "children": null,
-            "roles": null,
-            "meta": {"access": null, "title": "运动员列表", "icon": "ios-people-outline", "hideInMenu": false},
-            "url": "",
+        "children": [
+            {
+                "id": 4,
+                "path": "list",
+                "component": "views/athleteCentral/list",
+                "name": "athleteCentral",
+                "title": "运动员看板",
+                "icon": "ios-people-outline",
+                "parentId": 2,
+                "enabled": 1,
+                "children": null,
+                "roles": null,
+                "meta": {"access": null, "title": "运动员列表", "icon": "ios-people-outline", "hideInMenu": false},
+                "url": "",
+                "hideInMenu": false
+            },
+            {
+                "id": 5,
+                "path": "add",
+                "component": "views/athleteCentral/add",
+                "name": "athleteAdd",
+                "title": "新建运动员",
+                "icon": "ios-people-outline",
+                "parentId": 2,
+                "enabled": 1,
+                "children": null,
+                "roles": null,
+                "meta": {
+                    "access": null,
+                    "title": "新建运动员",
+                    "icon": "ios-people-outline",
+                    "hideInMenu": true
+                },
+                "url": "",
+                "hideInMenu": true
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "path": "/teamOverview",  // 第一级菜单前面有斜杠： /
+        "component": "Layout",
+        "name": "",  // 可有可无，我用不到*****
+        "title": "队伍看板",  // 可有可无，我用不到*****
+        "icon": "ios-color-wand",
+        "parentId": 0,
+        "enabled": 1,
+        "roles": null,
+        "meta": {
+            "access": null,
+            "title": "队伍看板",        //  title取我定义的
+            "icon": "ios-color-wand",
             "hideInMenu": false
-        },{
-            path: 'manage',
-            component: 'views/athleteManage/manage',
-            name: 'athleteManage',
-            meta: {title: '运动员新增/维护'}
-        }]
-    }]
+        },
+        "url": "",
+        "hideInMenu": false,
+        "children": [
+            {
+                "id": 3,
+                "path": "teamOverview", // children中的path：取我定义的（子菜单path前不加斜杠： /）
+                "component": "views/teamOverview/teamOverview", // children中的component：取我定义的，最前面不加斜杠： /
+                "name": "teamOverview",     // children中的name：取我定义的
+                "title": "队伍管理",      // 可有可无*****
+                "icon": "ios-basket-outline",
+                "parentId": 1,
+                "enabled": 1,
+                "children": null,
+                "roles": null,
+                "meta": {
+                    "access": null,
+                    "title": "队伍看板",    // children中的title：取我定义的
+                    "icon": "ios-basket-outline",
+                    "hideInMenu": false
+                },
+                "url": "",
+                "hideInMenu": false
+            }]
+    },
+    {
+        "id": 4,
+        "path": "/teamTest",  // 第一级菜单前面有斜杠： /
+        "component": "Layout",
+        "name": "",  // 可有可无，我用不到*****
+        "title": "队伍测试",  // 可有可无，我用不到*****
+        "icon": "ios-color-wand",
+        "parentId": 0,
+        "enabled": 1,
+        "roles": null,
+        "meta": {
+            "access": null,
+            "title": "队伍测试",        //  title取我定义的
+            "icon": "ios-color-wand",
+            "hideInMenu": false
+        },
+        "url": "",
+        "hideInMenu": false,
+        "children": [
+            {
+                "id": 3,
+                "path": "teamTest", // children中的path：取我定义的（子菜单path前不加斜杠： /）
+                "component": "views/teamTest/index", // children中的component：取我定义的，最前面不加斜杠： /
+                "name": "teamTest",     // children中的name：取我定义的
+                "title": "队伍测试",      // 可有可无*****
+                "icon": "ios-basket-outline",
+                "parentId": 1,
+                "enabled": 1,
+                "children": null,
+                "roles": null,
+                "meta": {
+                    "access": null,
+                    "title": "队伍测试",    // children中的title：取我定义的
+                    "icon": "ios-basket-outline",
+                    "hideInMenu": false
+                },
+                "url": "",
+                "hideInMenu": false
+            }]
+        },
+    {
+        "id": 5,
+        "path": "/report",  // 第一级菜单前面有斜杠： /
+        "component": "Layout",
+        "name": "",  // 可有可无，我用不到*****
+        "title": "生成报告",  // 可有可无，我用不到*****
+        "icon": "ios-color-wand",
+        "parentId": 0,
+        "enabled": 1,
+        "roles": null,
+        "meta": {
+            "access": null,
+            "title": "生成报告",        //  title取我定义的
+            "icon": "ios-color-wand",
+            "hideInMenu": false
+        },
+        "url": "",
+        "hideInMenu": false,
+        "children": [
+            {
+                "id": 3,
+                "path": "report", // children中的path：取我定义的（子菜单path前不加斜杠： /）
+                "component": "views/report/report", // children中的component：取我定义的，最前面不加斜杠： /
+                "name": "report",     // children中的name：取我定义的
+                "title": "生成报告",      // 可有可无*****
+                "icon": "ios-basket-outline",
+                "parentId": 1,
+                "enabled": 1,
+                "children": null,
+                "roles": null,
+                "meta": {
+                    "access": null,
+                    "title": "生成报告",    // children中的title：取我定义的
+                    "icon": "ios-basket-outline",
+                    "hideInMenu": false
+                },
+                "url": "",
+                "hideInMenu": false
+            }]
+    },
+    ]
 
 
 // 遍历路由，重组字段(接口可以调通的时候启用)
@@ -118,7 +262,7 @@ function eachRouter(route) {
     let obj = {};
     if (route.children && route.children.length > 0) {
         obj.path = route.path;
-        obj.alwaysShow = true;  // 始终显示根目录
+        // obj.alwaysShow = true;  // 始终显示根目录(只有一个子菜单)
         obj.component = () => import('@/views/layout/Layout');
         obj.meta = {
             title: route.meta.title,
@@ -133,11 +277,12 @@ function eachRouter(route) {
         obj.path = route.path;
         obj.name = route.name;
         obj.component = () => import(`@/${route.component}`);
-        hidden: route.meta.hideInMenu;
+        obj.hidden = route.meta.hideInMenu;
         obj.meta = {
             title: route.meta.title,
             icon: route.meta.icon,
-            // hidden: route.meta.hideInMenu
+            hidden: route.meta.hideInMenu,
+            noCache: route.meta.noCache
         }
     }
     return obj;
@@ -252,6 +397,7 @@ function reformRouters1(routersList) {
         //
         //     ]
         // },
+
         {
             path: '/teamManage',
             component: Layout,
@@ -436,7 +582,8 @@ const user = {
                         const res = response.data.data;
                         if (res && res.length > 0) { // 验证返回的菜单是否是一个非空数组
                             // let newRouters = reformRouters(res);
-                            let newRouters = reformRouters1(res);
+                            // let newRouters = reformRouters1(res);
+                            let newRouters = reformRouters(aa);
                             commit('SET_ROUTERS', newRouters);
                             resolve()
                         } else {
