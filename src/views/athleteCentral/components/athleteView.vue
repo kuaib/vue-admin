@@ -76,25 +76,25 @@
                     <div class="neuromuscular main-section">
                         <div class="subTitle">神经肌肉分析 Neuromuscular Analysis</div>
                         <dl>
-                            <dt>
-                                <p>力输出可能较低的肌肉</p>
-                                <p>Muscles with Probable low Force Output</p>
+                            <dt>力输出可能较低的肌肉 Muscles with Probable low Force Output
+                                <!--<p>力输出可能较低的肌肉</p>-->
+                                <!--<p>Muscles with Probable low Force Output</p>-->
                             </dt>
                             <dd v-for="item in forceList"><i></i>{{item.cnName}} {{item.enName}}</dd>
                         </dl>
 
                         <dl>
-                            <dt>
-                                <p>可能活动受限的关节</p>
-                                <p>Joint Motion with Probale Restriction</p>
+                            <dt>可能活动受限的关节 Joint Motion with Probale Restriction
+                                <!--<p>可能活动受限的关节</p>-->
+                                <!--<p>Joint Motion with Probale Restriction</p>-->
                             </dt>
                             <dd v-for="item in jointList"><i></i>{{item.cnName}} {{item.enName}}</dd>
                         </dl>
 
                         <dl>
-                            <dt>
-                                <p>灵活性可能较差的肌肉</p>
-                                <p>Muscles with Probale low Flexibility</p>
+                            <dt>灵活性可能较差的肌肉 Muscles with Probale low Flexibility
+                                <!--<p>灵活性可能较差的肌肉</p>-->
+                                <!--<p>Muscles with Probale low Flexibility</p>-->
                             </dt>
                             <dd v-for="item in flexibilityList"><i></i>{{item.cnName}} {{item.enName}}</dd>
                         </dl>
@@ -178,6 +178,10 @@
             }
             .athlete-item {
                 margin-bottom: 10px;
+                color: #333;
+                p, span {
+                    color: #333;
+                }
             }
         }
 
@@ -223,9 +227,11 @@
                         }
                         .one {
                             left: 0;
+                            color: #333;
                         }
                         .two {
                             right: 0;
+                            color: #333;
                         }
                         .top {
                             width: 30px;
@@ -261,7 +267,7 @@
             }
             table td {
                 border: 1px solid #F3EDE9;
-                padding: 10px 0;
+                padding: 10px 5px;
                 text-align: center;
                 color: #333;
             }
@@ -269,22 +275,24 @@
                 padding-bottom: 20px;
                 border-bottom: 1px solid #ddd;
                 margin-bottom: 20px;
+                color: #333;
             }
             dl:last-child {
                 border: 0;
             }
-            dt p {
-                font-weight: 700;
-                font-size: 14px;
+            dt {
+                margin-bottom: 10px;
+                margin-left: 10px;
             }
-            dt dd {
-                color: #333;
+            dd {
+                margin-bottom: 5px;
+                margin-left: 20px;
             }
             dd i {
                 display: inline-block;
                 width: 5px;
                 height: 5px;
-                background: #000;
+                background: #333;
                 border-radius: 50%;
                 -moz-border-radius: 50%;
                 -ms-border-radius: 50%;

@@ -1,6 +1,6 @@
 <template>
     <div class="top-logo clearfix">
-        <img src="http://t2.hddhhn.com/uploads/tu/201707/200/8.jpg" alt="">
+        <img src="../../assets/logo.png" alt="">
     </div>
 </template>
 <script>

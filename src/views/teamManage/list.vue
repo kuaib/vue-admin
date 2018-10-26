@@ -29,7 +29,7 @@
                     <span>{{scope.row.specialName}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="级别">
+            <el-table-column align="center" label="类别">
                 <template slot-scope="scope">
                     <span>{{scope.row.categoryName}}</span>
                 </template>
