@@ -476,6 +476,19 @@ function reformRouters1(routersList) {
                     meta: {title: '生成报告'}
                 }
             ]
+        },
+        {
+            path: '/videoUpload',
+            component: Layout,
+            meta: {title: '视频上传'},
+            children: [
+                {
+                    path: 'videoUpload',
+                    component: () => import('@/views/videoUpload/index'),
+                    name: 'videoUpload',
+                    meta: {title: '视频上传'}
+                }
+            ]
         }
     ]
     // 后续会将接口中的数据转化为以下的数组形式
@@ -582,8 +595,8 @@ const user = {
                         const res = response.data.data;
                         if (res && res.length > 0) { // 验证返回的菜单是否是一个非空数组
                             // let newRouters = reformRouters(res);
-                            // let newRouters = reformRouters1(res);
-                            let newRouters = reformRouters(aa);
+                            let newRouters = reformRouters1(res);
+                            // let newRouters = reformRouters(aa);
                             commit('SET_ROUTERS', newRouters);
                             resolve()
                         } else {
