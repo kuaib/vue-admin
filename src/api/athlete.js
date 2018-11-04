@@ -93,3 +93,30 @@ export function getAthletePanel(params) {
     })
 }
 
+// 获取测试运动员信息
+export function getTestAthleteList(params) {
+    return request({
+        url: '/sports/athlete/getTestAthlete',
+        method: 'get',
+        params
+    })
+}
+
+// 运动员视频上传
+export function uploadTestVideo(data) {
+    return request({
+        url: '/sports/sys/uploadTestVideo',
+        method: 'post',
+        data
+    })
+}
+
+// 运动员视频上传
+export function finishTeamVideo(data) {
+    return request({
+        url: '/sports/test/teamVideo',
+        method: 'post',
+        data
+    })
+}
+

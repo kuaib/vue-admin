@@ -30,273 +30,280 @@
         </el-row>
 
 
-        <el-row v-show="flag">
-            <!--less-->
-            <el-row v-show="testKey==='less'">
-                <el-table :data="list" v-loading="listLoading" element-loading-text="" border fit highlight-current-row
-                          style="width: 100%"
-                          ref="athleteTable"
-                          :row-class-name="tableRowClassName">
-                    <el-table-column align="center" :render-header="renderHeader" label="English,Name">
-                        <template slot-scope="scope">
-                            <span>{{scope.row.enAthleteName}}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column align="center" :render-header="renderHeader" label="Chinese,Name">
-                        <template slot-scope="scope">
-                            <span>{{scope.row.athleteName}}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column v-if="testNo==1" align="center" :render-header="renderHeader" label="第一次动作,Trial 1">
-                        <template slot-scope="scope">
-                            <div class="upTag">
-                                <span class="up-btn" style="color:#67c23a">上传</span>
-                                <input type="file" @change="onFileChange" accept="video/avi,video/mp4,video/flv,video/3gp,video/swf">
-                            </div>
-                        </template>
-                    </el-table-column>
-                    <el-table-column v-if="testNo==2" align="center" :render-header="renderHeader" label="第二次动作,Trial 2">
-                        <template slot-scope="scope">
-                            <span style="color:#f56c6c">重新上传</span>
-                            <el-upload
-                                    class="avatar-uploader"
-                                    action="/api/sports/sys/upload/athleteLogo"
-                                    :show-file-list="false"
-                                    :on-success="uploadSuccess"
-                                    :before-upload="beforeUpload">
-                            </el-upload>
-                        </template>
-                    </el-table-column>
-                    <el-table-column v-if="testNo==3" align="center" :render-header="renderHeader" label="第三次动作,Trial 3">
-                        <template slot-scope="scope">
-                            <span style="color:#67c23a">上传</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column v-if="testNo==4" align="center" :render-header="renderHeader" label="第四次动作,Trial 4">
-                        <template slot-scope="scope">
-                            <span style="color:#67c23a">上传</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column v-if="testNo==5" align="center" :render-header="renderHeader" label="第五次动作,Trial 5">
-                        <template slot-scope="scope">
-                            <span style="color:#67c23a">上传</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column align="center" :render-header="renderHeader" label="确认,Sure">
-                        <template slot-scope="scope">
-                            <!--<span style="color:#f56c6c">提交</span>-->
-                            <span style="color:#8a8a8a">已提交</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column align="center" :render-header="renderHeader" label="LESS分数,LESS Score">
-                        <template slot-scope="scope">
-                            <span>{{scope.row.compCount}}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column align="center" :render-header="renderHeader" label="总分数,Total Score">
-                        <template slot-scope="scope">
-                            <span>{{scope.row.compCount}}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column align="center" :render-header="renderHeader" label="测试次数,Test No.">
-                        <template slot-scope="scope">
-                            <span>{{scope.row.compCount}}</span>
-                        </template>
-                    </el-table-column>
-                </el-table>
-                <div class="pagination-container">
-                    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                                   :current-page="listQuery.currentPage" :page-sizes="[10,20,30,50]"
-                                   :page-size="listQuery.pageSize" layout="prev, pager, next"
-                                   :total="total">
-                    </el-pagination>
-                </div>
-            </el-row>
-
-
-            <!--单腿-->
-            <el-row v-show="testKey==='single'">
-                <el-table :data="list" v-loading="listLoading" border fit highlight-current-row
-                          style="width: 100%"
-                          ref="athleteTable"
-                          :row-class-name="tableRowClassName">
-                    <el-table-column align="center" :render-header="renderHeader" label="English,Name">
-                        <template slot-scope="scope">
-                            <span>{{scope.row.enAthleteName}}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column align="center" :render-header="renderHeader" label="Chinese,Name">
-                        <template slot-scope="scope">
-                            <span>{{scope.row.athleteName}}</span>
-                        </template>
-                    </el-table-column>
-
-                    <template v-if="testNo==1">
-                        <el-table-column align="center" :render-header="renderHeader" label="第一次动作,(左腿蹲),Trial 1 Left">
-                            <template slot-scope="scope">
-                                <span style="color:#8a8a8a">已上传</span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column align="center" :render-header="renderHeader" label="第一次动作,(右腿蹲),Trial 1 Right">
-                            <template slot-scope="scope">
-                                <span style="color:#8a8a8a">已上传</span>
-                            </template>
-                        </el-table-column>
+        <!--less-->
+        <el-row v-show="testKey1==='less'">
+            <el-table :data="list" v-loading="listLoading" element-loading-text="" border fit highlight-current-row
+                      style="width: 100%"
+                      ref="athleteTable"
+                      :row-class-name="tableRowClassName">
+                <el-table-column align="center" :render-header="renderHeader" label="English,Name">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.enAthleteName}}</span>
                     </template>
-
-                    <template v-if="testNo==2">
-                        <el-table-column align="center" :render-header="renderHeader" label="第二次动作,(左腿蹲),Trial 2 Left">
-                            <template slot-scope="scope">
-                                <span style="color:#8a8a8a">已上传</span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column align="center" :render-header="renderHeader" label="第二次动作,(右腿蹲),Trial 2 Right">
-                            <template slot-scope="scope">
-                                <span style="color:#8a8a8a">已上传</span>
-                            </template>
-                        </el-table-column>
+                </el-table-column>
+                <el-table-column align="center" :render-header="renderHeader" label="Chinese,Name">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.athleteName}}</span>
                     </template>
-
-                    <template v-if="testNo==3">
-                        <el-table-column align="center" :render-header="renderHeader" label="第三次动作,(左腿蹲),Trial 3 Left">
-                            <template slot-scope="scope">
-                                <span style="color:#8a8a8a">已上传</span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column align="center" :render-header="renderHeader" label="第三次动作,(右腿蹲),Trial 3 Right">
-                            <template slot-scope="scope">
-                                <span style="color:#8a8a8a">已上传</span>
-                            </template>
-                        </el-table-column>
+                </el-table-column>
+                <el-table-column align="center" :render-header="renderHeader" label="第一次动作,Trial 1">
+                    <template slot-scope="scope">
+                        <div class="upTag">
+                            <span class="up-btn" style="color:#67c23a">上传</span>
+                            <input type="file" @change="onFileChange($event,scope.row.id)" accept="video/avi,video/mp4,video/flv,video/3gp,video/swf">
+                        </div>
                     </template>
-
-
-                    <template v-if="testNo==4">
-                        <el-table-column align="center" :render-header="renderHeader" label="第四次动作,(左腿蹲),Trial 4 Left">
-                            <template slot-scope="scope">
-                                <span style="color:#8a8a8a">已上传</span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column align="center" :render-header="renderHeader" label="第四次动作,(右腿蹲),Trial 4 Right">
-                            <template slot-scope="scope">
-                                <span style="color:#8a8a8a">已上传</span>
-                            </template>
-                        </el-table-column>
+                </el-table-column>
+                <el-table-column align="center" :render-header="renderHeader" label="第二次动作,Trial 2">
+                    <template slot-scope="scope">
+                        <!--<span style="color:#f56c6c" v-if="scope.row.trial[1]==1">重新上传</span>-->
+                        <!--<el-upload v-else-->
+                                <!--class="avatar-uploader"-->
+                                <!--action="/api/sports/sys/upload/athleteLogo"-->
+                                <!--:show-file-list="false"-->
+                                <!--:on-success="uploadSuccess"-->
+                                <!--:before-upload="beforeUpload">-->
+                        <!--</el-upload>-->
                     </template>
-
-                    <template v-if="testNo==5">
-                        <el-table-column align="center" :render-header="renderHeader" label="第五次动作,(左腿蹲),Trial 5 Left">
-                            <template slot-scope="scope">
-                                <span style="color:#8a8a8a">已上传</span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column align="center" :render-header="renderHeader" label="第五次动作,(右腿蹲),Trial 5 Right">
-                            <template slot-scope="scope">
-                                <span style="color:#8a8a8a">已上传</span>
-                            </template>
-                        </el-table-column>
+                </el-table-column>
+                <el-table-column align="center" :render-header="renderHeader" label="第三次动作,Trial 3">
+                    <template slot-scope="scope">
+                        <span class="up-btn" style="color:#67c23a">上传</span>
+                        <input type="file" @change="onFileChange" accept="video/avi,video/mp4,video/flv,video/3gp,video/swf">
                     </template>
+                </el-table-column>
+                <el-table-column align="center" :render-header="renderHeader" label="第四次动作,Trial 4">
+                    <template slot-scope="scope">
+                        <span style="color:#67c23a">上传</span>
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" :render-header="renderHeader" label="第五次动作,Trial 5">
+                    <template slot-scope="scope">
+                        <span style="color:#67c23a">上传</span>
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" :render-header="renderHeader" label="确认,Sure">
+                    <template slot-scope="scope">
+                        <!--<span style="color:#f56c6c">提交</span>-->
+                        <span style="color:#8a8a8a">已提交</span>
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" :render-header="renderHeader" label="LESS分数,LESS Score">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.compCount}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" :render-header="renderHeader" label="总分数,Total Score">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.compCount}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" :render-header="renderHeader" label="测试次数,Test No.">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.compCount}}</span>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <div class="pagination-container">
+                <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                               :current-page="listQuery.currentPage" :page-sizes="[10,20,30,50]"
+                               :page-size="listQuery.pageSize" layout="total, sizes, prev, pager, next, jumper"
+                               :total="total">
+                </el-pagination>
+            </div>
+        </el-row>
 
-                    <el-table-column align="center" :render-header="renderHeader" label="确认,Sure">
-                        <template slot-scope="scope">
-                            <span style="color:#f56c6c">提交</span>
-                            <span style="color:#8a8a8a">已提交</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column align="center" :render-header="renderHeader" label="SL Squat,单腿深蹲分数">
-                        <template slot-scope="scope">
-                            <span>{{scope.row.compCount}}</span>
-                        </template>
-                    </el-table-column>
-                </el-table>
-                <div class="pagination-container">
-                    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                                   :current-page="listQuery.currentPage" :page-sizes="[10,20,30,50]"
-                                   :page-size="listQuery.pageSize" layout="prev, pager, next"
-                                   :total="total">
-                    </el-pagination>
-                </div>
-            </el-row>
 
+        <!--单腿-->
+        <el-row v-show="testKey1==='single'">
+            <el-table :data="list" v-loading="listLoading" border fit highlight-current-row
+                      style="width: 100%"
+                      ref="athleteTable"
+                      :row-class-name="tableRowClassName">
+                <el-table-column align="center" :render-header="renderHeader" label="English,Name">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.enAthleteName}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" :render-header="renderHeader" label="Chinese,Name">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.athleteName}}</span>
+                    </template>
+                </el-table-column>
 
-            <!--双腿-->
-            <el-row v-show="testKey==='double'">
-                <el-table :data="list" v-loading="listLoading" border fit highlight-current-row
-                          style="width: 100%"
-                          ref="athleteTable"
-                          :row-class-name="tableRowClassName">
-                    <el-table-column align="center" :render-header="renderHeader" label="English,Name">
-                        <template slot-scope="scope">
-                            <span>{{scope.row.enAthleteName}}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column align="center" :render-header="renderHeader" label="Chinese,Name">
-                        <template slot-scope="scope">
-                            <span>{{scope.row.athleteName}}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column v-if="testNo==1" align="center" :render-header="renderHeader" label="第一次动作,Trial 1">
+                <template>
+                    <el-table-column align="center" :render-header="renderHeader" label="第一次动作,(左腿蹲),Trial 1 Left">
                         <template slot-scope="scope">
                             <span style="color:#8a8a8a">已上传</span>
                         </template>
                     </el-table-column>
-                    <el-table-column v-if="testNo==2" align="center" :render-header="renderHeader" label="第二次动作,Trial 2">
+                    <el-table-column align="center" :render-header="renderHeader" label="第一次动作,(右腿蹲),Trial 1 Right">
                         <template slot-scope="scope">
-                            <span style="color:#f56c6c">重新上传</span>
+                            <span style="color:#8a8a8a">已上传</span>
                         </template>
                     </el-table-column>
-                    <el-table-column v-if="testNo==3" align="center" :render-header="renderHeader" label="第三次动作,Trial 3">
-                        <template slot-scope="scope">
-                            <span style="color:#67c23a">上传</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column v-if="testNo==4" align="center" :render-header="renderHeader" label="第四次动作,Trial 4">
-                        <template slot-scope="scope">
-                            <span style="color:#67c23a">上传</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column v-if="testNo==5" align="center" :render-header="renderHeader" label="第五次动作,Trial 5">
-                        <template slot-scope="scope">
-                            <span style="color:#67c23a">上传</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column align="center" :render-header="renderHeader" label="确认,Sure">
-                        <template slot-scope="scope">
-                            <!--<span style="color:#f56c6c">提交</span>-->
-                            <span style="color:#8a8a8a">已提交</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column align="center" :render-header="renderHeader" label="DL Squat,双腿深蹲分数">
-                        <template slot-scope="scope">
-                            <span>{{scope.row.compCount}}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column align="center" :render-header="renderHeader" label="总分数,Total Score">
-                        <template slot-scope="scope">
-                            <span>{{scope.row.compCount}}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column align="center" :render-header="renderHeader" label="测试次数,Test No.">
-                        <template slot-scope="scope">
-                            <span>{{scope.row.compCount}}</span>
-                        </template>
-                    </el-table-column>
-                </el-table>
-                <div class="pagination-container">
-                    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                                   :current-page="listQuery.currentPage" :page-sizes="[10,20,30,50]"
-                                   :page-size="listQuery.pageSize" layout="prev, pager, next"
-                                   :total="total">
-                    </el-pagination>
-                </div>
-            </el-row>
+                </template>
 
-            <el-row style="text-align: center;margin-top: 20px;">
-                <el-button type="primary">完成本队视频上传</el-button>
-            </el-row>
+                <template>
+                    <el-table-column align="center" :render-header="renderHeader" label="第二次动作,(左腿蹲),Trial 2 Left">
+                        <template slot-scope="scope">
+                            <span style="color:#8a8a8a">已上传</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column align="center" :render-header="renderHeader" label="第二次动作,(右腿蹲),Trial 2 Right">
+                        <template slot-scope="scope">
+                            <span style="color:#8a8a8a">已上传</span>
+                        </template>
+                    </el-table-column>
+                </template>
+
+                <template>
+                    <el-table-column align="center" :render-header="renderHeader" label="第三次动作,(左腿蹲),Trial 3 Left">
+                        <template slot-scope="scope">
+                            <span style="color:#8a8a8a">已上传</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column align="center" :render-header="renderHeader" label="第三次动作,(右腿蹲),Trial 3 Right">
+                        <template slot-scope="scope">
+                            <span style="color:#8a8a8a">已上传</span>
+                        </template>
+                    </el-table-column>
+                </template>
+
+
+                <template>
+                    <el-table-column align="center" :render-header="renderHeader" label="第四次动作,(左腿蹲),Trial 4 Left">
+                        <template slot-scope="scope">
+                            <span style="color:#8a8a8a">已上传</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column align="center" :render-header="renderHeader" label="第四次动作,(右腿蹲),Trial 4 Right">
+                        <template slot-scope="scope">
+                            <span style="color:#8a8a8a">已上传</span>
+                        </template>
+                    </el-table-column>
+                </template>
+
+                <template>
+                    <el-table-column align="center" :render-header="renderHeader" label="第五次动作,(左腿蹲),Trial 5 Left">
+                        <template slot-scope="scope">
+                            <span style="color:#8a8a8a">已上传</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column align="center" :render-header="renderHeader" label="第五次动作,(右腿蹲),Trial 5 Right">
+                        <template slot-scope="scope">
+                            <span style="color:#8a8a8a">已上传</span>
+                        </template>
+                    </el-table-column>
+                </template>
+
+                <el-table-column align="center" :render-header="renderHeader" label="确认,Sure">
+                    <template slot-scope="scope">
+                        <span style="color:#f56c6c">提交</span>
+                        <span style="color:#8a8a8a">已提交</span>
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" :render-header="renderHeader" label="SL Squat,单腿深蹲分数">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.compCount}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" :render-header="renderHeader" label="总分数,Total Score">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.compCount}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" :render-header="renderHeader" label="测试次数,Test No.">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.compCount}}</span>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <div class="pagination-container">
+                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                               :current-page="listQuery.currentPage" :page-sizes="[10,20,30,50]"
+                               :page-size="listQuery.pageSize" layout="prev, pager, next"
+                               :total="total">
+                </el-pagination>
+            </div>
         </el-row>
 
 
+        <!--双腿-->
+        <el-row v-show="testKey1==='double'">
+            <el-table :data="list" v-loading="listLoading" border fit highlight-current-row
+                      style="width: 100%"
+                      ref="athleteTable"
+                      :row-class-name="tableRowClassName">
+                <el-table-column align="center" :render-header="renderHeader" label="English,Name">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.enAthleteName}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" :render-header="renderHeader" label="Chinese,Name">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.athleteName}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" :render-header="renderHeader" label="第一次动作,Trial 1">
+                    <template slot-scope="scope">
+                        <span style="color:#8a8a8a">已上传</span>
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" :render-header="renderHeader" label="第二次动作,Trial 2">
+                    <template slot-scope="scope">
+                        <span style="color:#f56c6c">重新上传</span>
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" :render-header="renderHeader" label="第三次动作,Trial 3">
+                    <template slot-scope="scope">
+                        <span style="color:#67c23a">上传</span>
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" :render-header="renderHeader" label="第四次动作,Trial 4">
+                    <template slot-scope="scope">
+                        <span style="color:#67c23a">上传</span>
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" :render-header="renderHeader" label="第五次动作,Trial 5">
+                    <template slot-scope="scope">
+                        <span style="color:#67c23a">上传</span>
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" :render-header="renderHeader" label="确认,Sure">
+                    <template slot-scope="scope">
+                        <!--<span style="color:#f56c6c">提交</span>-->
+                        <span style="color:#8a8a8a">已提交</span>
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" :render-header="renderHeader" label="DL Squat,双腿深蹲分数">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.compCount}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" :render-header="renderHeader" label="总分数,Total Score">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.compCount}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" :render-header="renderHeader" label="测试次数,Test No.">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.compCount}}</span>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <div class="pagination-container">
+                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                               :current-page="listQuery.currentPage" :page-sizes="[10,20,30,50]"
+                               :page-size="listQuery.pageSize" layout="prev, pager, next"
+                               :total="total">
+                </el-pagination>
+            </div>
+        </el-row>
+
+        <el-row style="text-align: center;margin-top: 20px;">
+            <el-button type="primary" @click="finishAllAthleteByTeam">完成本队视频上传</el-button>
+        </el-row>
 
 
         <video ref="video" :src="fileContent" controls="controls"></video>
@@ -306,7 +313,7 @@
 <script>
     import waves from '@/directive/waves' // 水波纹指令
     import { getTeamListAll } from '@/api/team'
-    import { getAthleteList, allAthleteDone } from '@/api/athlete'
+    import { getTestAthleteList, uploadTestVideo, finishTeamVideo, allAthleteDone,getAthleteList } from '@/api/athlete'
     export default ({
         directives: {waves},
         data() {
@@ -340,11 +347,19 @@
                 listQuery: {
                     currentPage: 1,
                     pageSize: 10,
-                    teamId: null    // 当前选中的队伍id
+                    teamId: null,    // 当前选中的队伍id
+                    type: 1,         // 测试类型 1:less，2: single，3:double
+                    testDate: null,  // 测试日期
+                    testCount: 1,    // 测试次数
+
+
                 },
 
-                flag: true,
-                fileContent: null
+                fileContent: null,
+
+
+                testKey1: 'less',   // 用来切换表格列（点击搜索再切换）
+                testNo1: '1'        // 用来切换表格列（点击搜索再切换）
             }
         },
 
@@ -378,21 +393,31 @@
                 this.listQuery.teamId = this.teamId;
                 this.listQuery.testDate = this.testDate;
                 this.listQuery.testNo = this.testNo;
-                this.flag = true;
                 this.getList()
             },
 
             // 视频上传
-            onFileChange(e) {
+            onFileChange(e, atheleteId) {
                 this.listLoading = true;
                 let files = e.target.files || e.dataTransfer.files;
                 if (!files.length) return;
                 console.log(files[0])
+                console.log(atheleteId)
 
                 var reader = new FileReader();
                 reader.readAsDataURL(files[0]);
                 reader.onload = () => {
-                    this.fileContent = reader.result;
+                    // this.fileContent = reader.result;
+                    uploadTestVideo({
+                        'teamId': atheleteId,
+                        'file': reader.result,
+                        'athleteId':1
+                    }).then(res => {
+                        this.listLoading = false;
+                    }).catch(() => {
+                        console.log('上传失败')
+                        this.listLoading = false;
+                    })
                 };
             },
 
@@ -417,21 +442,24 @@
             },
 
             // 切换条件
-            changeC() {
-                console.log(33)
-                this.flag = false;
-            },
+            changeC() {},
 
-            // 获取运动员列表
+            // 获取测试运动员列表
             getList() {
                 this.listLoading = true;
-                getAthleteList(this.listQuery).then(res => {
+                // getTestAthleteList(this.listQuery).then(res => {
+                        getAthleteList(this.listQuery).then(res => {
                     this.listLoading = false;
                     if(res.data.code === 200) {
                         const data = res.data.data;
                         this.list = data.list;
                         this.total = data.pagination.total;
                         this.listQuery.currentPage = data.pagination.current;
+
+
+                        // 改变表格显示隐藏的条件
+                        this.testKey1 = this.testKey;
+                        this.testNo1 = this.testNo;
                     } else {
                         this.$message({
                             message: res.data.msg,
@@ -444,9 +472,9 @@
                 })
             },
 
-            // 完成当前队伍下所有队员的测试
+            // 完成本队视频上传
             finishAllAthleteByTeam() {
-                allAthleteDone(this.teamId).then(res => {
+                finishTeamVideo({teamId: this.teamId, testCount: this.test.testNo}).then(res => {
                     if(res.data.code == 200) {
                         this.$message({
                             message: res.data.msg,
@@ -462,22 +490,6 @@
                     console.log('请求失败')
                 })
             },
-
-            // 点击行
-            selectRow(row) {
-
-            },
-
-            // 切换队伍/测试项目
-            // changeCondition(primaryKey) {
-            //     console.log(typeof primaryKey)
-            //     if(typeof primaryKey === 'number') {
-            //         this.listQuery.teamId = primaryKey;
-            //     } else {
-            //         this.listQuery.testKey = primaryKey;
-            //     }
-            //     this.getList();
-            // },
 
             // 格式化表头
             renderHeader(h, column) {
