@@ -50,7 +50,7 @@
                     <template slot-scope="scope">
                         <div class="upTag">
                             <span class="up-btn" style="color:#67c23a">上传</span>
-                            <input type="file" @change="onFileChange($event,scope.row.id)" accept="video/avi,video/mp4,video/flv,video/3gp,video/swf">
+                            <input type="file" @change="onFileChange($event,scope)" accept="video/avi,video/mp4,video/flv,video/3gp,video/swf">
                         </div>
                     </template>
                 </el-table-column>
@@ -134,7 +134,10 @@
                 <template>
                     <el-table-column align="center" :render-header="renderHeader" label="第一次动作,(左腿蹲),Trial 1 Left">
                         <template slot-scope="scope">
-                            <span style="color:#8a8a8a">已上传</span>
+                            <div class="upTag">
+                                <span class="up-btn" style="color:#67c23a">上传</span>
+                                <input type="file" @change="onFileChange($event,scope)" accept="video/avi,video/mp4,video/flv,video/3gp,video/swf">
+                            </div>
                         </template>
                     </el-table-column>
                     <el-table-column align="center" :render-header="renderHeader" label="第一次动作,(右腿蹲),Trial 1 Right">
@@ -247,7 +250,10 @@
                 </el-table-column>
                 <el-table-column align="center" :render-header="renderHeader" label="第一次动作,Trial 1">
                     <template slot-scope="scope">
-                        <span style="color:#8a8a8a">已上传</span>
+                        <div class="upTag">
+                            <span class="up-btn" style="color:#67c23a">上传</span>
+                            <input type="file" @change="onFileChange($event,scope)" accept="video/avi,video/mp4,video/flv,video/3gp,video/swf">
+                        </div>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" :render-header="renderHeader" label="第二次动作,Trial 2">
@@ -314,6 +320,7 @@
     import waves from '@/directive/waves' // 水波纹指令
     import { getTeamListAll } from '@/api/team'
     import { getTestAthleteList, uploadTestVideo, finishTeamVideo, allAthleteDone,getAthleteList } from '@/api/athlete'
+    import axios from 'axios'
     export default ({
         directives: {waves},
         data() {
@@ -329,7 +336,7 @@
                     // {dicKey: 4, dicValue: 'COC-Single Squat'}
                 ],
 
-                testDate: null,   // 测试日期
+                testDate: new Date(),   // 测试日期
 
                 testNo: '1',      // 测试次数
                 testNoList: [
@@ -397,29 +404,67 @@
             },
 
             // 视频上传
-            onFileChange(e, atheleteId) {
-                this.listLoading = true;
+            onFileChange(e, scope) {
+                if(!this.testDate) {
+                    this.$message({
+                        message: '请填写日期',
+                        type: 'warning'
+                    })
+                    return;
+                }
                 let files = e.target.files || e.dataTransfer.files;
                 if (!files.length) return;
+                this.listLoading = true;
                 console.log(files[0])
-                console.log(atheleteId)
 
-                var reader = new FileReader();
-                reader.readAsDataURL(files[0]);
-                reader.onload = () => {
-                    // this.fileContent = reader.result;
-                    uploadTestVideo({
-                        'teamId': atheleteId,
-                        'file': reader.result,
-                        'athleteId':1
-                    }).then(res => {
-                        this.listLoading = false;
+
+
+                let trialName = null, temp = scope.column.label.split(','), testDate = null;
+                if(this.testKey === 'single') {
+                    trialName = temp[2];
+                } else {
+                    trialName = temp[1];
+                }
+                if(this.testDate.toString().length > 10) { // 初次渲染的时间，格式许转换
+                    let time = new Date(this.testDate);
+                    let day = time.getDate().toString();
+                    testDate = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + (day.length == 1 ? ('0' + day) : day);
+                }
+
+
+                let param = new FormData(); //创建form对象
+                param.append('file',files[0]);//通过append向form对象添加数据
+
+                param.append('teamId', this.teamId);
+                param.append('athleteId', scope.row.id);
+                param.append('type', this.testKey == 'less' ? 1 : (this.testKey == 'single' ? 2 : 3));
+                param.append('testDate', testDate ? testDate : this.testDate);
+                param.append('testCount', parseInt(this.testNo));
+                param.append('trialName', trialName.toLowerCase().replace(/\s+/g, ''));
+                param.append('trialShowName', trialName);
+                param.append('sort', scope.$index);
+                let config = { //添加请求头
+                    headers:{'Content-Type':'multipart/form-data'}
+                };
+                axios.post('/api/sports/video/uploadTestVideo',param,config)
+                    .then(res => {
+                        console.log(res.data);
+                        if(res.data.code == 200) {
+                            this.listLoading = false;
+                            this.$message({
+                                message: '上传成功',
+                                type: 'success'
+                            })
+                        } else {
+                            this.$message({
+                                message: res.data.msg,
+                                type: 'warning'
+                            })
+                        }
                     }).catch(() => {
                         console.log('上传失败')
-                        this.listLoading = false;
                     })
-                };
-            },
+                },
 
             // 视频上传成功回调函数
             uploadSuccess(res, file) {
@@ -448,7 +493,7 @@
             getList() {
                 this.listLoading = true;
                 // getTestAthleteList(this.listQuery).then(res => {
-                        getAthleteList(this.listQuery).then(res => {
+                getAthleteList(this.listQuery).then(res => {
                     this.listLoading = false;
                     if(res.data.code === 200) {
                         const data = res.data.data;
@@ -494,7 +539,7 @@
             // 格式化表头
             renderHeader(h, column) {
                 let title = column.column.label.split(',');
-                return [h('p', {}, [title[0]]),h('p', {}, [title[1]])]
+                return [h('p', {}, [title[0]]),h('p', {}, [title[1]]),h('p', {}, [title[2]])]
             },
 
             // 改变每页显示条目数

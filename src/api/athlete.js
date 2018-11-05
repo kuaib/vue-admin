@@ -96,7 +96,7 @@ export function getAthletePanel(params) {
 // 获取测试运动员信息
 export function getTestAthleteList(params) {
     return request({
-        url: '/sports/athlete/getTestAthlete',
+        url: '/sports/video/getTestAthlete',
         method: 'get',
         params
     })
@@ -105,7 +105,7 @@ export function getTestAthleteList(params) {
 // 运动员视频上传
 export function uploadTestVideo(data) {
     return request({
-        url: '/sports/sys/uploadTestVideo',
+        url: '/sports/video/uploadTestVideo',
         method: 'post',
         data
     })
@@ -116,6 +116,14 @@ export function finishTeamVideo(data) {
     return request({
         url: '/sports/test/teamVideo',
         method: 'post',
+        transformRequest: [function (data) {
+            let ret = '';
+            for (let key in userInfo) {
+                ret += encodeURIComponent(key) + '=' + encodeURIComponent(data[key]) + '&'
+            }
+            return ret.substr(0, ret.length - 1)
+        }],
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         data
     })
 }
