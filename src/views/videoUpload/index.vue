@@ -174,7 +174,13 @@
                     </el-table-column>
                     <el-table-column align="center" :render-header="renderHeader" label="第一次动作,(右腿蹲),Trial 1 Right">
                         <template slot-scope="scope">
-                            <span style="color:#ccc">已上传</span>
+                            <div class="upTag" v-if="!scope.row.submit">
+                                <span class="up-btn" style="color:#67c23a">{{scope.row.trials[1]==1?'重新上传':'上传'}}</span>
+                                <input type="file" @change="onFileChange($event,scope)" accept="video/avi,video/mp4,video/flv,video/3gp,video/swf">
+                            </div>
+                            <div class="upTag" v-else>
+                                <span class="up-btn" style="color:#ccc">{{scope.row.trials[1]==1?'已上传':'上传'}}</span>
+                            </div>
                         </template>
                     </el-table-column>
                 </template>
@@ -182,12 +188,24 @@
                 <template>
                     <el-table-column align="center" :render-header="renderHeader" label="第二次动作,(左腿蹲),Trial 2 Left">
                         <template slot-scope="scope">
-                            <span style="color:#ccc">已上传</span>
+                            <div class="upTag" v-if="!scope.row.submit">
+                                <span class="up-btn" style="color:#67c23a">{{scope.row.trials[2]==1?'重新上传':'上传'}}</span>
+                                <input type="file" @change="onFileChange($event,scope)" accept="video/avi,video/mp4,video/flv,video/3gp,video/swf">
+                            </div>
+                            <div class="upTag" v-else>
+                                <span class="up-btn" style="color:#ccc">{{scope.row.trials[2]==1?'已上传':'上传'}}</span>
+                            </div>
                         </template>
                     </el-table-column>
                     <el-table-column align="center" :render-header="renderHeader" label="第二次动作,(右腿蹲),Trial 2 Right">
                         <template slot-scope="scope">
-                            <span style="color:#ccc">已上传</span>
+                            <div class="upTag" v-if="!scope.row.submit">
+                                <span class="up-btn" style="color:#67c23a">{{scope.row.trials[3]==1?'重新上传':'上传'}}</span>
+                                <input type="file" @change="onFileChange($event,scope)" accept="video/avi,video/mp4,video/flv,video/3gp,video/swf">
+                            </div>
+                            <div class="upTag" v-else>
+                                <span class="up-btn" style="color:#ccc">{{scope.row.trials[3]==1?'已上传':'上传'}}</span>
+                            </div>
                         </template>
                     </el-table-column>
                 </template>
@@ -195,12 +213,24 @@
                 <template>
                     <el-table-column align="center" :render-header="renderHeader" label="第三次动作,(左腿蹲),Trial 3 Left">
                         <template slot-scope="scope">
-                            <span style="color:#ccc">已上传</span>
+                            <div class="upTag" v-if="!scope.row.submit">
+                                <span class="up-btn" style="color:#67c23a">{{scope.row.trials[4]==1?'重新上传':'上传'}}</span>
+                                <input type="file" @change="onFileChange($event,scope)" accept="video/avi,video/mp4,video/flv,video/3gp,video/swf">
+                            </div>
+                            <div class="upTag" v-else>
+                                <span class="up-btn" style="color:#ccc">{{scope.row.trials[4]==1?'已上传':'上传'}}</span>
+                            </div>
                         </template>
                     </el-table-column>
                     <el-table-column align="center" :render-header="renderHeader" label="第三次动作,(右腿蹲),Trial 3 Right">
                         <template slot-scope="scope">
-                            <span style="color:#ccc">已上传</span>
+                            <div class="upTag" v-if="!scope.row.submit">
+                                <span class="up-btn" style="color:#67c23a">{{scope.row.trials[5]==1?'重新上传':'上传'}}</span>
+                                <input type="file" @change="onFileChange($event,scope)" accept="video/avi,video/mp4,video/flv,video/3gp,video/swf">
+                            </div>
+                            <div class="upTag" v-else>
+                                <span class="up-btn" style="color:#ccc">{{scope.row.trials[5]==1?'已上传':'上传'}}</span>
+                            </div>
                         </template>
                     </el-table-column>
                 </template>
@@ -209,12 +239,24 @@
                 <template>
                     <el-table-column align="center" :render-header="renderHeader" label="第四次动作,(左腿蹲),Trial 4 Left">
                         <template slot-scope="scope">
-                            <span style="color:#ccc">已上传</span>
+                            <div class="upTag" v-if="!scope.row.submit">
+                                <span class="up-btn" style="color:#67c23a">{{scope.row.trials[6]==1?'重新上传':'上传'}}</span>
+                                <input type="file" @change="onFileChange($event,scope)" accept="video/avi,video/mp4,video/flv,video/3gp,video/swf">
+                            </div>
+                            <div class="upTag" v-else>
+                                <span class="up-btn" style="color:#ccc">{{scope.row.trials[6]==1?'已上传':'上传'}}</span>
+                            </div>
                         </template>
                     </el-table-column>
                     <el-table-column align="center" :render-header="renderHeader" label="第四次动作,(右腿蹲),Trial 4 Right">
                         <template slot-scope="scope">
-                            <span style="color:#ccc">已上传</span>
+                            <div class="upTag" v-if="!scope.row.submit">
+                                <span class="up-btn" style="color:#67c23a">{{scope.row.trials[7]==1?'重新上传':'上传'}}</span>
+                                <input type="file" @change="onFileChange($event,scope)" accept="video/avi,video/mp4,video/flv,video/3gp,video/swf">
+                            </div>
+                            <div class="upTag" v-else>
+                                <span class="up-btn" style="color:#ccc">{{scope.row.trials[7]==1?'已上传':'上传'}}</span>
+                            </div>
                         </template>
                     </el-table-column>
                 </template>
@@ -222,35 +264,47 @@
                 <template>
                     <el-table-column align="center" :render-header="renderHeader" label="第五次动作,(左腿蹲),Trial 5 Left">
                         <template slot-scope="scope">
-                            <span style="color:#ccc">已上传</span>
+                            <div class="upTag" v-if="!scope.row.submit">
+                                <span class="up-btn" style="color:#67c23a">{{scope.row.trials[8]==1?'重新上传':'上传'}}</span>
+                                <input type="file" @change="onFileChange($event,scope)" accept="video/avi,video/mp4,video/flv,video/3gp,video/swf">
+                            </div>
+                            <div class="upTag" v-else>
+                                <span class="up-btn" style="color:#ccc">{{scope.row.trials[8]==1?'已上传':'上传'}}</span>
+                            </div>
                         </template>
                     </el-table-column>
                     <el-table-column align="center" :render-header="renderHeader" label="第五次动作,(右腿蹲),Trial 5 Right">
                         <template slot-scope="scope">
-                            <span style="color:#ccc">已上传</span>
+                            <div class="upTag" v-if="!scope.row.submit">
+                                <span class="up-btn" style="color:#67c23a">{{scope.row.trials[9]==1?'重新上传':'上传'}}</span>
+                                <input type="file" @change="onFileChange($event,scope)" accept="video/avi,video/mp4,video/flv,video/3gp,video/swf">
+                            </div>
+                            <div class="upTag" v-else>
+                                <span class="up-btn" style="color:#ccc">{{scope.row.trials[9]==1?'已上传':'上传'}}</span>
+                            </div>
                         </template>
                     </el-table-column>
                 </template>
 
                 <el-table-column align="center" :render-header="renderHeader" label="确认,Sure">
                     <template slot-scope="scope">
-                        <span style="color:#f56c6c">提交</span>
-                        <span style="color:#ccc">已提交</span>
+                        <span v-if="!scope.row.submit" style="color:#f56c6c">提交</span>
+                        <span v-else style="color:#ccc">已提交</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" :render-header="renderHeader" label="SL Squat,单腿深蹲分数">
                     <template slot-scope="scope">
-                        <span>{{scope.row.compCount}}</span>
+                        <span>{{scope.row.singleScore}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" :render-header="renderHeader" label="总分数,Total Score">
                     <template slot-scope="scope">
-                        <span>{{scope.row.compCount}}</span>
+                        <span>{{scope.row.totalScore}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" :render-header="renderHeader" label="测试次数,Test No.">
                     <template slot-scope="scope">
-                        <span>{{scope.row.compCount}}</span>
+                        <span>{{scope.row.testCount}}</span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -498,7 +552,7 @@
                 param.append('file',files[0]);//通过append向form对象添加数据
 
                 param.append('teamId', this.teamId);
-                param.append('athleteId', scope.row.id);
+                param.append('athleteId', scope.row.athleteId);
                 param.append('type', this.testKey == 'less' ? 1 : (this.testKey == 'single' ? 2 : 3));
                 param.append('testDate', testDate ? testDate : this.testDate);
                 param.append('testCount', parseInt(this.testNo));
