@@ -432,7 +432,6 @@
     import waves from '@/directive/waves' // 水波纹指令
     import { getTeamListAll } from '@/api/team'
     import { getTestAthleteList, uploadTestVideo, finishTeamVideo, submitOfCount } from '@/api/athlete'
-    import axios from 'axios'
     export default ({
         directives: {waves},
         data() {
@@ -518,22 +517,6 @@
                 this.getList()
             },
 
-            onFileChange1(e, scope) {
-                let testType, columnNum = scope.column.id, sort;
-                if(this.testKey == 'less') {
-                    testType = 1;
-                    sort = columnNum.substr(columnNum.length - 1, 1) - 3
-                } else if(this.testKey == 'double') {
-                    testType = 2;
-                    sort = columnNum.substr(columnNum.length - 2, 2) - 3 - 11; // 11是less的列数
-                } else {
-                    testType = 3;
-                    sort = columnNum.substr(columnNum.length - 2, 2) - 3 - 22; // 22是less+double的列数
-                }
-                console.log(testType);
-                console.log(sort);
-            },
-
             // 视频上传
             onFileChange(e, scope) {
                 if(!this.testDate) {
@@ -576,7 +559,6 @@
                     sort = columnNum.substr(columnNum.length - 2, 2) - 3 - 22; // 22是less+double的列数
                 }
 
-
                 param.append('teamId', this.teamId);
                 param.append('athleteId', scope.row.athleteId);
                 param.append('type', testType);
@@ -585,28 +567,26 @@
                 param.append('trialName', trialName.toLowerCase().replace(/\s+/g, ''));
                 param.append('trialShowName', trialName);
                 param.append('sort', sort);
-                let config = { //添加请求头
-                    headers:{'Content-Type':'multipart/form-data'}
-                };
-                axios.post('/api/sports/video/uploadTestVideo',param,config)
-                    .then(res => {
-                        this.listLoading = false;
-                        if(res.data.code == 200) {
-                            this.$set(this.list[scope.$index].trials, sort, 1);
-                            this.$message({
-                                message: '上传成功',
-                                type: 'success'
-                            })
-                        } else {
-                            this.$message({
-                                message: res.data.msg,
-                                type: 'warning'
-                            })
-                        }
-                    }).catch(() => {
-                        this.listLoading = false;
-                        console.log('上传失败')
-                    })
+
+
+                uploadTestVideo(param).then(res => {
+                    this.listLoading = false;
+                    if(res.data.code == 200) {
+                        this.$set(this.list[scope.$index].trials, sort, 1);
+                        this.$message({
+                            message: '上传成功',
+                            type: 'success'
+                        })
+                    } else {
+                        this.$message({
+                            message: res.data.msg,
+                            type: 'warning'
+                        })
+                    }
+                }).catch(() => {
+                    this.listLoading = false;
+                    console.log('上传失败')
+                })
             },
 
             // 提交运动员本次上传信息
@@ -626,6 +606,7 @@
                             message: res.data.msg,
                             type: 'success'
                         })
+                        this.$set(this.list[scope.$index], 'submit', 1);
                     } else {
                         this.$message({
                             message: res.data.msg,
