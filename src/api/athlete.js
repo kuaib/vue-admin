@@ -107,23 +107,26 @@ export function uploadTestVideo(data) {
     return request({
         url: '/sports/video/uploadTestVideo',
         method: 'post',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         data
     })
 }
 
-// 运动员视频上传
+// 提交本次运动员视频上传
+export function submitOfCount(data) {
+    return request({
+        url: '/sports/video/submit',
+        method: 'post',
+        data
+    })
+}
+
+
+// 完成本队运动员上传
 export function finishTeamVideo(data) {
     return request({
-        url: '/sports/test/teamVideo',
+        url: '/sports/video/teamDone',
         method: 'post',
-        transformRequest: [function (data) {
-            let ret = '';
-            for (let key in userInfo) {
-                ret += encodeURIComponent(key) + '=' + encodeURIComponent(data[key]) + '&'
-            }
-            return ret.substr(0, ret.length - 1)
-        }],
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         data
     })
 }

@@ -49,11 +49,11 @@
                 <el-table-column align="center" :render-header="renderHeader" label="第一次动作,Trial 1">
                     <template slot-scope="scope">
                         <div class="upTag" v-if="!scope.row.submit">
-                            <span class="up-btn" style="color:#67c23a">{{scope.row.trials[0]==1?'重新上传':'上传'}}</span>
+                            <span class="up-btn activeBtn">{{scope.row.trials[0]==1?'重新上传':'上传'}}</span>
                             <input type="file" @change="onFileChange($event,scope)" accept="video/avi,video/mp4,video/flv,video/3gp,video/swf">
                         </div>
                         <div class="upTag" v-else>
-                            <span class="up-btn" style="color:#ccc">{{scope.row.trials[0]==1?'已上传':'上传'}}</span>
+                            <span class="up-btn disableBtn">{{scope.row.trials[0]==1?'已上传':'上传'}}</span>
                         </div>
                     </template>
                 </el-table-column>
@@ -70,50 +70,50 @@
                     <!--</template>-->
                     <template slot-scope="scope">
                         <div class="upTag" v-if="!scope.row.submit">
-                            <span class="up-btn" style="color:#67c23a">{{scope.row.trials[1]==1?'重新上传':'上传'}}</span>
+                            <span class="up-btn activeBtn">{{scope.row.trials[1]==1?'重新上传':'上传'}}</span>
                             <input type="file" @change="onFileChange($event,scope)" accept="video/avi,video/mp4,video/flv,video/3gp,video/swf">
                         </div>
                         <div class="upTag" v-else>
-                            <span class="up-btn" style="color:#ccc">{{scope.row.trials[1]==1?'已上传':'上传'}}</span>
+                            <span class="up-btn disableBtn">{{scope.row.trials[1]==1?'已上传':'上传'}}</span>
                         </div>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" :render-header="renderHeader" label="第三次动作,Trial 3">
                     <template slot-scope="scope">
                         <div class="upTag" v-if="!scope.row.submit">
-                            <span class="up-btn" style="color:#67c23a">{{scope.row.trials[2]==1?'重新上传':'上传'}}</span>
+                            <span class="up-btn activeBtn">{{scope.row.trials[2]==1?'重新上传':'上传'}}</span>
                             <input type="file" @change="onFileChange($event,scope)" accept="video/avi,video/mp4,video/flv,video/3gp,video/swf">
                         </div>
                         <div class="upTag" v-else>
-                            <span class="up-btn" style="color:#ccc">{{scope.row.trials[2]==1?'已上传':'上传'}}</span>
+                            <span class="up-btn disableBtn">{{scope.row.trials[2]==1?'已上传':'上传'}}</span>
                         </div>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" :render-header="renderHeader" label="第四次动作,Trial 4">
                     <template slot-scope="scope">
                         <div class="upTag" v-if="!scope.row.submit">
-                            <span class="up-btn" style="color:#67c23a">{{scope.row.trials[3]==1?'重新上传':'上传'}}</span>
+                            <span class="up-btn activeBtn">{{scope.row.trials[3]==1?'重新上传':'上传'}}</span>
                             <input type="file" @change="onFileChange($event,scope)" accept="video/avi,video/mp4,video/flv,video/3gp,video/swf">
                         </div>
                         <div class="upTag" v-else>
-                            <span class="up-btn" style="color:#ccc">{{scope.row.trials[3]==1?'已上传':'上传'}}</span>
+                            <span class="up-btn disableBtn">{{scope.row.trials[3]==1?'已上传':'上传'}}</span>
                         </div>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" :render-header="renderHeader" label="第五次动作,Trial 5">
                     <template slot-scope="scope">
                         <div class="upTag" v-if="!scope.row.submit">
-                            <span class="up-btn" style="color:#67c23a">{{scope.row.trials[4]==1?'重新上传':'上传'}}</span>
+                            <span class="up-btn activeBtn">{{scope.row.trials[4]==1?'重新上传':'上传'}}</span>
                             <input type="file" @change="onFileChange($event,scope)" accept="video/avi,video/mp4,video/flv,video/3gp,video/swf">
                         </div>
                         <div class="upTag" v-else>
-                            <span class="up-btn" style="color:#ccc">{{scope.row.trials[4]==1?'已上传':'上传'}}</span>
+                            <span class="up-btn disableBtn">{{scope.row.trials[4]==1?'已上传':'上传'}}</span>
                         </div>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" :render-header="renderHeader" label="确认,Sure">
                     <template slot-scope="scope">
-                        <span v-if="!scope.row.submit" style="color:#f56c6c">提交</span>
+                        <span v-if="!scope.row.submit" class="submitBtn" @click="submitCount(scope)">提交</span>
                         <span v-else style="color:#ccc">已提交</span>
                     </template>
                 </el-table-column>
@@ -161,61 +161,61 @@
                 <el-table-column align="center" :render-header="renderHeader" label="第一次动作,Trial 1">
                     <template slot-scope="scope">
                         <div class="upTag" v-if="!scope.row.submit">
-                            <span class="up-btn" style="color:#67c23a">{{scope.row.trials[0]==1?'重新上传':'上传'}}</span>
+                            <span class="up-btn activeBtn">{{scope.row.trials[0]==1?'重新上传':'上传'}}</span>
                             <input type="file" @change="onFileChange($event,scope)" accept="video/avi,video/mp4,video/flv,video/3gp,video/swf">
                         </div>
                         <div class="upTag" v-else>
-                            <span class="up-btn" style="color:#ccc">{{scope.row.trials[0]==1?'已上传':'上传'}}</span>
+                            <span class="up-btn disableBtn">{{scope.row.trials[0]==1?'已上传':'上传'}}</span>
                         </div>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" :render-header="renderHeader" label="第二次动作,Trial 2">
                     <template slot-scope="scope">
                         <div class="upTag" v-if="!scope.row.submit">
-                            <span class="up-btn" style="color:#67c23a">{{scope.row.trials[1]==1?'重新上传':'上传'}}</span>
+                            <span class="up-btn activeBtn">{{scope.row.trials[1]==1?'重新上传':'上传'}}</span>
                             <input type="file" @change="onFileChange($event,scope)" accept="video/avi,video/mp4,video/flv,video/3gp,video/swf">
                         </div>
                         <div class="upTag" v-else>
-                            <span class="up-btn" style="color:#ccc">{{scope.row.trials[1]==1?'已上传':'上传'}}</span>
+                            <span class="up-btn disableBtn">{{scope.row.trials[1]==1?'已上传':'上传'}}</span>
                         </div>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" :render-header="renderHeader" label="第三次动作,Trial 3">
                     <template slot-scope="scope">
                         <div class="upTag" v-if="!scope.row.submit">
-                            <span class="up-btn" style="color:#67c23a">{{scope.row.trials[2]==1?'重新上传':'上传'}}</span>
+                            <span class="up-btn activeBtn">{{scope.row.trials[2]==1?'重新上传':'上传'}}</span>
                             <input type="file" @change="onFileChange($event,scope)" accept="video/avi,video/mp4,video/flv,video/3gp,video/swf">
                         </div>
                         <div class="upTag" v-else>
-                            <span class="up-btn" style="color:#ccc">{{scope.row.trials[2]==1?'已上传':'上传'}}</span>
+                            <span class="up-btn disableBtn">{{scope.row.trials[2]==1?'已上传':'上传'}}</span>
                         </div>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" :render-header="renderHeader" label="第四次动作,Trial 4">
                     <template slot-scope="scope">
                         <div class="upTag" v-if="!scope.row.submit">
-                            <span class="up-btn" style="color:#67c23a">{{scope.row.trials[3]==1?'重新上传':'上传'}}</span>
+                            <span class="up-btn activeBtn">{{scope.row.trials[3]==1?'重新上传':'上传'}}</span>
                             <input type="file" @change="onFileChange($event,scope)" accept="video/avi,video/mp4,video/flv,video/3gp,video/swf">
                         </div>
                         <div class="upTag" v-else>
-                            <span class="up-btn" style="color:#ccc">{{scope.row.trials[3]==1?'已上传':'上传'}}</span>
+                            <span class="up-btn disableBtn">{{scope.row.trials[3]==1?'已上传':'上传'}}</span>
                         </div>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" :render-header="renderHeader" label="第五次动作,Trial 5">
                     <template slot-scope="scope">
                         <div class="upTag" v-if="!scope.row.submit">
-                            <span class="up-btn" style="color:#67c23a">{{scope.row.trials[4]==1?'重新上传':'上传'}}</span>
+                            <span class="up-btn activeBtn">{{scope.row.trials[4]==1?'重新上传':'上传'}}</span>
                             <input type="file" @change="onFileChange($event,scope)" accept="video/avi,video/mp4,video/flv,video/3gp,video/swf">
                         </div>
                         <div class="upTag" v-else>
-                            <span class="up-btn" style="color:#ccc">{{scope.row.trials[4]==1?'已上传':'上传'}}</span>
+                            <span class="up-btn disableBtn">{{scope.row.trials[4]==1?'已上传':'上传'}}</span>
                         </div>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" :render-header="renderHeader" label="确认,Sure">
                     <template slot-scope="scope">
-                        <span v-if="!scope.row.submit" style="color:#f56c6c">提交</span>
+                        <span v-if="!scope.row.submit" class="submitBtn" @click="submitCount(scope)">提交</span>
                         <span v-else style="color:#ccc">已提交</span>
                     </template>
                 </el-table-column>
@@ -265,22 +265,22 @@
                     <el-table-column align="center" :render-header="renderHeader" label="第一次动作,(左腿蹲),Trial 1 Left">
                         <template slot-scope="scope">
                             <div class="upTag" v-if="!scope.row.submit">
-                                <span class="up-btn" style="color:#67c23a">{{scope.row.trials[0]==1?'重新上传':'上传'}}</span>
+                                <span class="up-btn activeBtn">{{scope.row.trials[0]==1?'重新上传':'上传'}}</span>
                                 <input type="file" @change="onFileChange($event,scope)" accept="video/avi,video/mp4,video/flv,video/3gp,video/swf">
                             </div>
                             <div class="upTag" v-else>
-                                <span class="up-btn" style="color:#ccc">{{scope.row.trials[0]==1?'已上传':'上传'}}</span>
+                                <span class="up-btn disableBtn">{{scope.row.trials[0]==1?'已上传':'上传'}}</span>
                             </div>
                         </template>
                     </el-table-column>
                     <el-table-column align="center" :render-header="renderHeader" label="第一次动作,(右腿蹲),Trial 1 Right">
                         <template slot-scope="scope">
                             <div class="upTag" v-if="!scope.row.submit">
-                                <span class="up-btn" style="color:#67c23a">{{scope.row.trials[1]==1?'重新上传':'上传'}}</span>
+                                <span class="up-btn activeBtn">{{scope.row.trials[1]==1?'重新上传':'上传'}}</span>
                                 <input type="file" @change="onFileChange($event,scope)" accept="video/avi,video/mp4,video/flv,video/3gp,video/swf">
                             </div>
                             <div class="upTag" v-else>
-                                <span class="up-btn" style="color:#ccc">{{scope.row.trials[1]==1?'已上传':'上传'}}</span>
+                                <span class="up-btn disableBtn">{{scope.row.trials[1]==1?'已上传':'上传'}}</span>
                             </div>
                         </template>
                     </el-table-column>
@@ -290,22 +290,22 @@
                     <el-table-column align="center" :render-header="renderHeader" label="第二次动作,(左腿蹲),Trial 2 Left">
                         <template slot-scope="scope">
                             <div class="upTag" v-if="!scope.row.submit">
-                                <span class="up-btn" style="color:#67c23a">{{scope.row.trials[2]==1?'重新上传':'上传'}}</span>
+                                <span class="up-btn activeBtn">{{scope.row.trials[2]==1?'重新上传':'上传'}}</span>
                                 <input type="file" @change="onFileChange($event,scope)" accept="video/avi,video/mp4,video/flv,video/3gp,video/swf">
                             </div>
                             <div class="upTag" v-else>
-                                <span class="up-btn" style="color:#ccc">{{scope.row.trials[2]==1?'已上传':'上传'}}</span>
+                                <span class="up-btn disableBtn">{{scope.row.trials[2]==1?'已上传':'上传'}}</span>
                             </div>
                         </template>
                     </el-table-column>
                     <el-table-column align="center" :render-header="renderHeader" label="第二次动作,(右腿蹲),Trial 2 Right">
                         <template slot-scope="scope">
                             <div class="upTag" v-if="!scope.row.submit">
-                                <span class="up-btn" style="color:#67c23a">{{scope.row.trials[3]==1?'重新上传':'上传'}}</span>
+                                <span class="up-btn activeBtn">{{scope.row.trials[3]==1?'重新上传':'上传'}}</span>
                                 <input type="file" @change="onFileChange($event,scope)" accept="video/avi,video/mp4,video/flv,video/3gp,video/swf">
                             </div>
                             <div class="upTag" v-else>
-                                <span class="up-btn" style="color:#ccc">{{scope.row.trials[3]==1?'已上传':'上传'}}</span>
+                                <span class="up-btn disableBtn">{{scope.row.trials[3]==1?'已上传':'上传'}}</span>
                             </div>
                         </template>
                     </el-table-column>
@@ -315,22 +315,22 @@
                     <el-table-column align="center" :render-header="renderHeader" label="第三次动作,(左腿蹲),Trial 3 Left">
                         <template slot-scope="scope">
                             <div class="upTag" v-if="!scope.row.submit">
-                                <span class="up-btn" style="color:#67c23a">{{scope.row.trials[4]==1?'重新上传':'上传'}}</span>
+                                <span class="up-btn activeBtn">{{scope.row.trials[4]==1?'重新上传':'上传'}}</span>
                                 <input type="file" @change="onFileChange($event,scope)" accept="video/avi,video/mp4,video/flv,video/3gp,video/swf">
                             </div>
                             <div class="upTag" v-else>
-                                <span class="up-btn" style="color:#ccc">{{scope.row.trials[4]==1?'已上传':'上传'}}</span>
+                                <span class="up-btn disableBtn">{{scope.row.trials[4]==1?'已上传':'上传'}}</span>
                             </div>
                         </template>
                     </el-table-column>
                     <el-table-column align="center" :render-header="renderHeader" label="第三次动作,(右腿蹲),Trial 3 Right">
                         <template slot-scope="scope">
                             <div class="upTag" v-if="!scope.row.submit">
-                                <span class="up-btn" style="color:#67c23a">{{scope.row.trials[5]==1?'重新上传':'上传'}}</span>
+                                <span class="up-btn activeBtn">{{scope.row.trials[5]==1?'重新上传':'上传'}}</span>
                                 <input type="file" @change="onFileChange($event,scope)" accept="video/avi,video/mp4,video/flv,video/3gp,video/swf">
                             </div>
                             <div class="upTag" v-else>
-                                <span class="up-btn" style="color:#ccc">{{scope.row.trials[5]==1?'已上传':'上传'}}</span>
+                                <span class="up-btn disableBtn">{{scope.row.trials[5]==1?'已上传':'上传'}}</span>
                             </div>
                         </template>
                     </el-table-column>
@@ -341,22 +341,22 @@
                     <el-table-column align="center" :render-header="renderHeader" label="第四次动作,(左腿蹲),Trial 4 Left">
                         <template slot-scope="scope">
                             <div class="upTag" v-if="!scope.row.submit">
-                                <span class="up-btn" style="color:#67c23a">{{scope.row.trials[6]==1?'重新上传':'上传'}}</span>
+                                <span class="up-btn activeBtn" style="color:#67c23a">{{scope.row.trials[6]==1?'重新上传':'上传'}}</span>
                                 <input type="file" @change="onFileChange($event,scope)" accept="video/avi,video/mp4,video/flv,video/3gp,video/swf">
                             </div>
                             <div class="upTag" v-else>
-                                <span class="up-btn" style="color:#ccc">{{scope.row.trials[6]==1?'已上传':'上传'}}</span>
+                                <span class="up-btn disableBtn">{{scope.row.trials[6]==1?'已上传':'上传'}}</span>
                             </div>
                         </template>
                     </el-table-column>
                     <el-table-column align="center" :render-header="renderHeader" label="第四次动作,(右腿蹲),Trial 4 Right">
                         <template slot-scope="scope">
                             <div class="upTag" v-if="!scope.row.submit">
-                                <span class="up-btn" style="color:#67c23a">{{scope.row.trials[7]==1?'重新上传':'上传'}}</span>
+                                <span class="up-btn activeBtn" style="color:#67c23a">{{scope.row.trials[7]==1?'重新上传':'上传'}}</span>
                                 <input type="file" @change="onFileChange($event,scope)" accept="video/avi,video/mp4,video/flv,video/3gp,video/swf">
                             </div>
                             <div class="upTag" v-else>
-                                <span class="up-btn" style="color:#ccc">{{scope.row.trials[7]==1?'已上传':'上传'}}</span>
+                                <span class="up-btn disableBtn">{{scope.row.trials[7]==1?'已上传':'上传'}}</span>
                             </div>
                         </template>
                     </el-table-column>
@@ -366,22 +366,22 @@
                     <el-table-column align="center" :render-header="renderHeader" label="第五次动作,(左腿蹲),Trial 5 Left">
                         <template slot-scope="scope">
                             <div class="upTag" v-if="!scope.row.submit">
-                                <span class="up-btn" style="color:#67c23a">{{scope.row.trials[8]==1?'重新上传':'上传'}}</span>
+                                <span class="up-btn activeBtn" style="color:#67c23a">{{scope.row.trials[8]==1?'重新上传':'上传'}}</span>
                                 <input type="file" @change="onFileChange($event,scope)" accept="video/avi,video/mp4,video/flv,video/3gp,video/swf">
                             </div>
                             <div class="upTag" v-else>
-                                <span class="up-btn" style="color:#ccc">{{scope.row.trials[8]==1?'已上传':'上传'}}</span>
+                                <span class="up-btn disableBtn">{{scope.row.trials[8]==1?'已上传':'上传'}}</span>
                             </div>
                         </template>
                     </el-table-column>
                     <el-table-column align="center" :render-header="renderHeader" label="第五次动作,(右腿蹲),Trial 5 Right">
                         <template slot-scope="scope">
                             <div class="upTag" v-if="!scope.row.submit">
-                                <span class="up-btn" style="color:#67c23a">{{scope.row.trials[9]==1?'重新上传':'上传'}}</span>
+                                <span class="up-btn activeBtn">{{scope.row.trials[9]==1?'重新上传':'上传'}}</span>
                                 <input type="file" @change="onFileChange($event,scope)" accept="video/avi,video/mp4,video/flv,video/3gp,video/swf">
                             </div>
                             <div class="upTag" v-else>
-                                <span class="up-btn" style="color:#ccc">{{scope.row.trials[9]==1?'已上传':'上传'}}</span>
+                                <span class="up-btn disableBtn">{{scope.row.trials[9]==1?'已上传':'上传'}}</span>
                             </div>
                         </template>
                     </el-table-column>
@@ -389,7 +389,7 @@
 
                 <el-table-column align="center" :render-header="renderHeader" label="确认,Sure">
                     <template slot-scope="scope">
-                        <span v-if="!scope.row.submit" style="color:#f56c6c">提交</span>
+                        <span v-if="!scope.row.submit" class="submitBtn" @click="submitCount(scope)">提交</span>
                         <span v-else style="color:#ccc">已提交</span>
                     </template>
                 </el-table-column>
@@ -431,7 +431,7 @@
 <script>
     import waves from '@/directive/waves' // 水波纹指令
     import { getTeamListAll } from '@/api/team'
-    import { getTestAthleteList, uploadTestVideo, finishTeamVideo, allAthleteDone,getAthleteList } from '@/api/athlete'
+    import { getTestAthleteList, uploadTestVideo, finishTeamVideo, submitOfCount } from '@/api/athlete'
     import axios from 'axios'
     export default ({
         directives: {waves},
@@ -607,32 +607,36 @@
                         this.listLoading = false;
                         console.log('上传失败')
                     })
-                },
-
-            // 视频上传成功回调函数
-            uploadSuccess(res, file) {
-                // this.imgUrl = URL.createObjectURL(file.raw);
-                // this.form.photo = res.data.fileName;
             },
 
-            // 上传前的校验
-            beforeUpload(file) {
-                // const isJPG = file.type === 'image/jpeg';
-                // const isLt2M = file.size / 1024 / 1024 < 2;
-                //
-                // if (!isJPG) {
-                //   this.$message.error('上传头像图片只能是 JPG 格式!');
-                // }
-                // if (!isLt2M) {
-                //   this.$message.error('上传头像图片大小不能超过 2MB!');
-                // }
-                // return isJPG && isLt2M;
+            // 提交运动员本次上传信息
+            submitCount(scope) {
+                this.listLoading = true;
+                let {teamId, type, testDate, testCount} = this.listQuery;
+                submitOfCount({
+                    teamId,
+                    type,
+                    testDate,
+                    testCount,
+                    athleteId: scope.row.athleteId
+                }).then(res => {
+                    this.listLoading = false;
+                    if(res.data.code == 200) {
+                        this.$message({
+                            message: res.data.msg,
+                            type: 'success'
+                        })
+                    } else {
+                        this.$message({
+                            message: res.data.msg,
+                            type: 'warning'
+                        })
+                    }
+                })
             },
 
             // 切换条件
-            changeC(e) {
-
-            },
+            changeC(e) {},
 
             // 获取测试运动员列表
             getList() {
@@ -643,7 +647,6 @@
                 }
                 this.listLoading = true;
                 getTestAthleteList(this.listQuery).then(res => {
-                // getAthleteList(this.listQuery).then(res => {
                     this.listLoading = false;
                     if(res.data.code === 200) {
                         const data = res.data.data;
@@ -669,7 +672,7 @@
 
             // 完成本队视频上传
             finishAllAthleteByTeam() {
-                finishTeamVideo({teamId: this.teamId, testCount: this.test.testNo}).then(res => {
+                finishTeamVideo({teamId: this.teamId, testCount: this.testNo}).then(res => {
                     if(res.data.code == 200) {
                         this.$message({
                             message: res.data.msg,
@@ -753,6 +756,18 @@
             z-index: 1;
             left: 0;
             top: 0;
+            cursor: pointer;
         }
+    }
+
+    .submitBtn {
+        color: #f56c6c;
+        cursor: pointer;
+    }
+    .activeBtn {
+        color: #67c23a;
+    }
+    .disableBtn {
+        color: #ccc;
     }
 </style>
