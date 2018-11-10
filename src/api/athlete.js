@@ -123,11 +123,11 @@ export function submitOfCount(data) {
 
 
 // 完成本队运动员上传
-export function finishTeamVideo(data) {
+export function finishTeamVideo(params) {
     return request({
         url: '/sports/video/teamDone',
-        method: 'post',
-        data
+        method: 'get',
+        params
     })
 }
 

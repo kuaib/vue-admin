@@ -519,13 +519,6 @@
 
             // 视频上传
             onFileChange(e, scope) {
-                if(!this.testDate) {
-                    this.$message({
-                        message: '请填写日期',
-                        type: 'warning'
-                    })
-                    return;
-                }
                 let files = e.target.files || e.dataTransfer.files;
                 if (!files.length) return;
                 this.listLoading = true;
@@ -653,12 +646,29 @@
 
             // 完成本队视频上传
             finishAllAthleteByTeam() {
-                finishTeamVideo({teamId: this.teamId, testCount: this.testNo}).then(res => {
+                let testDate = null;
+                if(this.testDate.toString().length > 10) { // 初次渲染的时间，格式许转换
+                    let time = new Date(this.testDate);
+                    let day = time.getDate().toString();
+                    testDate = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + (day.length == 1 ? ('0' + day) : day);
+                }
+                finishTeamVideo({
+                    teamId: this.teamId,
+                    testCount: parseInt(this.testNo),
+                    testDate: testDate ? testDate : this.testDate
+                }).then(res => {
                     if(res.data.code == 200) {
-                        this.$message({
-                            message: res.data.msg,
-                            type: 'success'
-                        })
+                        if(res.data.data == 0) {
+                            this.$message({
+                                message: '还有运动员未上传视频，请上传！',
+                                type: 'warning'
+                            })
+                        } else {
+                            this.$message({
+                                message: res.data.msg,
+                                type: 'success'
+                            })
+                        }
                     } else {
                         this.$message({
                             message: res.data.msg,
