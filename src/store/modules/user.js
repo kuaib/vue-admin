@@ -170,14 +170,14 @@ let aa = [
         "path": "/teamTest",  // 第一级菜单前面有斜杠： /
         "component": "Layout",
         "name": "",  // 可有可无，我用不到*****
-        "title": "队伍测试",  // 可有可无，我用不到*****
+        "title": "队伍测试(人工)",  // 可有可无，我用不到*****
         "icon": "ios-color-wand",
         "parentId": 0,
         "enabled": 1,
         "roles": null,
         "meta": {
             "access": null,
-            "title": "队伍测试",        //  title取我定义的
+            "title": "队伍测试(人工)",        //  title取我定义的
             "icon": "ios-color-wand",
             "hideInMenu": false
         },
@@ -189,7 +189,7 @@ let aa = [
                 "path": "teamTest", // children中的path：取我定义的（子菜单path前不加斜杠： /）
                 "component": "views/teamTest/index", // children中的component：取我定义的，最前面不加斜杠： /
                 "name": "teamTest",     // children中的name：取我定义的
-                "title": "队伍测试",      // 可有可无*****
+                "title": "队伍测试(人工)",      // 可有可无*****
                 "icon": "ios-basket-outline",
                 "parentId": 1,
                 "enabled": 1,
@@ -197,16 +197,56 @@ let aa = [
                 "roles": null,
                 "meta": {
                     "access": null,
-                    "title": "队伍测试",    // children中的title：取我定义的
+                    "title": "队伍测试(人工)",    // children中的title：取我定义的
                     "icon": "ios-basket-outline",
                     "hideInMenu": false
                 },
                 "url": "",
                 "hideInMenu": false
             }]
-        },
+    },
     {
         "id": 5,
+        "path": "/videoUpload",  // 第一级菜单前面有斜杠： /
+        "component": "Layout",
+        "name": "",  // 可有可无，我用不到*****
+        "title": "队伍测试(智能)",  // 可有可无，我用不到*****
+        "icon": "ios-color-wand",
+        "parentId": 0,
+        "enabled": 1,
+        "roles": null,
+        "meta": {
+            "access": null,
+            "title": "队伍测试(智能)",        //  title取我定义的
+            "icon": "ios-color-wand",
+            "hideInMenu": false
+        },
+        "url": "",
+        "hideInMenu": false,
+        "children": [
+            {
+                "id": 3,
+                "path": "videoUpload", // children中的path：取我定义的（子菜单path前不加斜杠： /）
+                "component": "views/videoUpload/index", // children中的component：取我定义的，最前面不加斜杠： /
+                "name": "videoUpload",     // children中的name：取我定义的
+                "title": "队伍测试(人工)",      // 可有可无*****
+                "icon": "ios-basket-outline",
+                "parentId": 1,
+                "enabled": 1,
+                "children": null,
+                "roles": null,
+                "meta": {
+                    "access": null,
+                    "title": "队伍测试(人工)",    // children中的title：取我定义的
+                    "icon": "ios-basket-outline",
+                    "hideInMenu": false
+                },
+                "url": "",
+                "hideInMenu": false
+            }]
+    },
+    {
+        "id": 6,
         "path": "/report",  // 第一级菜单前面有斜杠： /
         "component": "Layout",
         "name": "",  // 可有可无，我用不到*****
@@ -454,13 +494,27 @@ function reformRouters1(routersList) {
         {
             path: '/teamTest',
             component: Layout,
-            meta: {title: '队伍测试'},
+            meta: {title: '队伍测试(人工)'},
             children: [
                 {
                     path: 'teamTest',
                     component: () => import('@/views/teamTest/index'),
                     name: 'teamTest',
-                    meta: {title: '队伍测试'}
+                    meta: {title: '队伍测试(人工)'}
+                }
+            ]
+        },
+
+        {
+            path: '/videoUpload',
+            component: Layout,
+            meta: {title: '队伍测试(智能)'},
+            children: [
+                {
+                    path: 'videoUpload',
+                    component: () => import('@/views/videoUpload/index'),
+                    name: 'videoUpload',
+                    meta: {title: '队伍测试(智能)'}
                 }
             ]
         },
@@ -477,19 +531,6 @@ function reformRouters1(routersList) {
                 }
             ]
         },
-        {
-            path: '/videoUpload',
-            component: Layout,
-            meta: {title: '视频上传'},
-            children: [
-                {
-                    path: 'videoUpload',
-                    component: () => import('@/views/videoUpload/index'),
-                    name: 'videoUpload',
-                    meta: {title: '视频上传'}
-                }
-            ]
-        }
     ]
     // 后续会将接口中的数据转化为以下的数组形式
     return list
