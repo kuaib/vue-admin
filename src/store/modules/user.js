@@ -635,8 +635,8 @@ const user = {
                     if (response.data.code === 200) {
                         const res = response.data.data;
                         if (res && res.length > 0) { // 验证返回的菜单是否是一个非空数组
-                            // let newRouters = reformRouters(res);
-                            let newRouters = reformRouters1(res);
+                            let newRouters = reformRouters(res);
+                            // let newRouters = reformRouters1(res);
                             // let newRouters = reformRouters(aa);
                             commit('SET_ROUTERS', newRouters);
                             resolve()
