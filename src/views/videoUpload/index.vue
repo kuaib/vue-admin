@@ -46,7 +46,7 @@
                         <span>{{scope.row.athleteName}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column align="center" :render-header="renderHeader" label="第一次动作,Trial 1">
+                <el-table-column align="center" :render-header="renderHeader" label="正面,（第一次）,Front Trial 1">
                     <template slot-scope="scope">
                         <div class="upTag" v-if="!scope.row.submit">
                             <span class="up-btn activeBtn">{{scope.row.trials[0]==1?'重新上传':'上传'}}</span>
@@ -57,7 +57,7 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column align="center" :render-header="renderHeader" label="第二次动作,Trial 2">
+                <el-table-column align="center" :render-header="renderHeader" label=" 右侧面,（第一次）, Right Side Trial 1">
                     <!--<template slot-scope="scope">-->
                         <!--<span style="color:#f56c6c" v-if="scope.row.trial[1]==1">重新上传</span>-->
                         <!--<el-upload v-else-->
@@ -78,7 +78,7 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column align="center" :render-header="renderHeader" label="第三次动作,Trial 3">
+                <el-table-column align="center" :render-header="renderHeader" label="正面,（第二次）,Front Trial 2">
                     <template slot-scope="scope">
                         <div class="upTag" v-if="!scope.row.submit">
                             <span class="up-btn activeBtn">{{scope.row.trials[2]==1?'重新上传':'上传'}}</span>
@@ -89,7 +89,7 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column align="center" :render-header="renderHeader" label="第四次动作,Trial 4">
+                <el-table-column align="center" :render-header="renderHeader" label="右侧面,（第二次）,Right Side Trial 2">
                     <template slot-scope="scope">
                         <div class="upTag" v-if="!scope.row.submit">
                             <span class="up-btn activeBtn">{{scope.row.trials[3]==1?'重新上传':'上传'}}</span>
@@ -100,7 +100,7 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column align="center" :render-header="renderHeader" label="第五次动作,Trial 5">
+                <el-table-column align="center" :render-header="renderHeader" label=" 其他, ,Others">
                     <template slot-scope="scope">
                         <div class="upTag" v-if="!scope.row.submit">
                             <span class="up-btn activeBtn">{{scope.row.trials[4]==1?'重新上传':'上传'}}</span>
@@ -158,7 +158,7 @@
                         <span>{{scope.row.athleteName}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column align="center" :render-header="renderHeader" label="第一次动作,Trial 1">
+                <el-table-column align="center" :render-header="renderHeader" label="正面,(第一次),Front Trial 1">
                     <template slot-scope="scope">
                         <div class="upTag" v-if="!scope.row.submit">
                             <span class="up-btn activeBtn">{{scope.row.trials[0]==1?'重新上传':'上传'}}</span>
@@ -169,7 +169,7 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column align="center" :render-header="renderHeader" label="第二次动作,Trial 2">
+                <el-table-column align="center" :render-header="renderHeader" label="右侧面,(第一次),Right Side Trial 1">
                     <template slot-scope="scope">
                         <div class="upTag" v-if="!scope.row.submit">
                             <span class="up-btn activeBtn">{{scope.row.trials[1]==1?'重新上传':'上传'}}</span>
@@ -180,7 +180,7 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column align="center" :render-header="renderHeader" label="第三次动作,Trial 3">
+                <el-table-column align="center" :render-header="renderHeader" label="正面,(第二次),Front Trial 2">
                     <template slot-scope="scope">
                         <div class="upTag" v-if="!scope.row.submit">
                             <span class="up-btn activeBtn">{{scope.row.trials[2]==1?'重新上传':'上传'}}</span>
@@ -191,7 +191,7 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column align="center" :render-header="renderHeader" label="第四次动作,Trial 4">
+                <el-table-column align="center" :render-header="renderHeader" label="右侧面,(第二次),Right Side Trial 2">
                     <template slot-scope="scope">
                         <div class="upTag" v-if="!scope.row.submit">
                             <span class="up-btn activeBtn">{{scope.row.trials[3]==1?'重新上传':'上传'}}</span>
@@ -202,7 +202,7 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column align="center" :render-header="renderHeader" label="第五次动作,Trial 5">
+                <el-table-column align="center" :render-header="renderHeader" label="其他,Others">
                     <template slot-scope="scope">
                         <div class="upTag" v-if="!scope.row.submit">
                             <span class="up-btn activeBtn">{{scope.row.trials[4]==1?'重新上传':'上传'}}</span>
@@ -262,7 +262,7 @@
                 </el-table-column>
 
                 <template>
-                    <el-table-column align="center" :render-header="renderHeader" label="第一次动作,(左腿蹲),Trial 1 Left">
+                    <el-table-column align="center" :render-header="renderHeader" label="正面,(第一次),(左腿蹲),Front Trial 1 Left">
                         <template slot-scope="scope">
                             <div class="upTag" v-if="!scope.row.submit">
                                 <span class="up-btn activeBtn">{{scope.row.trials[0]==1?'重新上传':'上传'}}</span>
@@ -273,7 +273,7 @@
                             </div>
                         </template>
                     </el-table-column>
-                    <el-table-column align="center" :render-header="renderHeader" label="第一次动作,(右腿蹲),Trial 1 Right">
+                    <el-table-column align="center" :render-header="renderHeader" label="正面,(第一次),(右腿蹲),Front Trial 1 Right">
                         <template slot-scope="scope">
                             <div class="upTag" v-if="!scope.row.submit">
                                 <span class="up-btn activeBtn">{{scope.row.trials[1]==1?'重新上传':'上传'}}</span>
@@ -287,7 +287,7 @@
                 </template>
 
                 <template>
-                    <el-table-column align="center" :render-header="renderHeader" label="第二次动作,(左腿蹲),Trial 2 Left">
+                    <el-table-column align="center" :render-header="renderHeader" label="右侧面,(第一次),(左腿蹲),Right Side Trial 1 Left">
                         <template slot-scope="scope">
                             <div class="upTag" v-if="!scope.row.submit">
                                 <span class="up-btn activeBtn">{{scope.row.trials[2]==1?'重新上传':'上传'}}</span>
@@ -298,7 +298,7 @@
                             </div>
                         </template>
                     </el-table-column>
-                    <el-table-column align="center" :render-header="renderHeader" label="第二次动作,(右腿蹲),Trial 2 Right">
+                    <el-table-column align="center" :render-header="renderHeader" label="右侧面,(第一次),(右腿蹲),Right Side Trial 1 Right">
                         <template slot-scope="scope">
                             <div class="upTag" v-if="!scope.row.submit">
                                 <span class="up-btn activeBtn">{{scope.row.trials[3]==1?'重新上传':'上传'}}</span>
@@ -312,7 +312,7 @@
                 </template>
 
                 <template>
-                    <el-table-column align="center" :render-header="renderHeader" label="第三次动作,(左腿蹲),Trial 3 Left">
+                    <el-table-column align="center" :render-header="renderHeader" label="正面,(第二次),(左腿蹲),Front Trial 2 Left">
                         <template slot-scope="scope">
                             <div class="upTag" v-if="!scope.row.submit">
                                 <span class="up-btn activeBtn">{{scope.row.trials[4]==1?'重新上传':'上传'}}</span>
@@ -323,7 +323,7 @@
                             </div>
                         </template>
                     </el-table-column>
-                    <el-table-column align="center" :render-header="renderHeader" label="第三次动作,(右腿蹲),Trial 3 Right">
+                    <el-table-column align="center" :render-header="renderHeader" label="正面,(第二次),(右腿蹲),Front Trial 2 Right">
                         <template slot-scope="scope">
                             <div class="upTag" v-if="!scope.row.submit">
                                 <span class="up-btn activeBtn">{{scope.row.trials[5]==1?'重新上传':'上传'}}</span>
@@ -338,7 +338,7 @@
 
 
                 <template>
-                    <el-table-column align="center" :render-header="renderHeader" label="第四次动作,(左腿蹲),Trial 4 Left">
+                    <el-table-column align="center" :render-header="renderHeader" label="右侧面,(第二次),(左腿蹲), Right Side trial 2 Left">
                         <template slot-scope="scope">
                             <div class="upTag" v-if="!scope.row.submit">
                                 <span class="up-btn activeBtn" style="color:#67c23a">{{scope.row.trials[6]==1?'重新上传':'上传'}}</span>
@@ -349,7 +349,7 @@
                             </div>
                         </template>
                     </el-table-column>
-                    <el-table-column align="center" :render-header="renderHeader" label="第四次动作,(右腿蹲),Trial 4 Right">
+                    <el-table-column align="center" :render-header="renderHeader" label="右侧面,(第二次),(右腿蹲),Right Side trial 2 Right">
                         <template slot-scope="scope">
                             <div class="upTag" v-if="!scope.row.submit">
                                 <span class="up-btn activeBtn" style="color:#67c23a">{{scope.row.trials[7]==1?'重新上传':'上传'}}</span>
@@ -363,7 +363,7 @@
                 </template>
 
                 <template>
-                    <el-table-column align="center" :render-header="renderHeader" label="第五次动作,(左腿蹲),Trial 5 Left">
+                    <el-table-column align="center" :render-header="renderHeader" label="其他,,(左腿蹲),Others Left">
                         <template slot-scope="scope">
                             <div class="upTag" v-if="!scope.row.submit">
                                 <span class="up-btn activeBtn" style="color:#67c23a">{{scope.row.trials[8]==1?'重新上传':'上传'}}</span>
@@ -374,7 +374,7 @@
                             </div>
                         </template>
                     </el-table-column>
-                    <el-table-column align="center" :render-header="renderHeader" label="第五次动作,(右腿蹲),Trial 5 Right">
+                    <el-table-column align="center" :render-header="renderHeader" label="其他,,(右腿蹲),Others Right">
                         <template slot-scope="scope">
                             <div class="upTag" v-if="!scope.row.submit">
                                 <span class="up-btn activeBtn">{{scope.row.trials[9]==1?'重新上传':'上传'}}</span>
@@ -526,9 +526,9 @@
 
                 let trialName = null, temp = scope.column.label.split(','), testDate = null;
                 if(this.testKey === 'single') {
-                    trialName = temp[2];
+                    trialName = temp[3];
                 } else {
-                    trialName = temp[1];
+                    trialName = temp[2];
                 }
                 if(this.testDate.toString().length > 10) { // 初次渲染的时间，格式许转换
                     let time = new Date(this.testDate);
@@ -683,7 +683,7 @@
             // 格式化表头
             renderHeader(h, column) {
                 let title = column.column.label.split(',');
-                return [h('p', {}, [title[0]]),h('p', {}, [title[1]]),h('p', {}, [title[2]])]
+                return [h('p', {}, [title[0]]),h('p', {}, [title[1]]),h('p', {}, [title[2]]),h('p', {}, [title[3]])]
             },
 
             // 改变每页显示条目数
