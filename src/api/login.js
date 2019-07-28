@@ -22,11 +22,11 @@ export function loginByUsername(userInfo) {
 }
 
 // 获取左侧菜单（即：路由信息，路由全部需要动态返回）
-export function getUserMenue(roleCode) {
+export function getUserMenue(roleCode, sysId) {
     return request({
         url: '/sports/menu/list',
         method: 'get',
-        params: {roleCode}
+        params: {roleCode, sysId}
     })
 }
 

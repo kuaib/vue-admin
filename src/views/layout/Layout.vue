@@ -80,7 +80,7 @@
 
     .topNav {
         position: fixed;
-        left: 145px;
+        left: 181px;
         right: 0;
         z-index: 1000;
         top: 0;

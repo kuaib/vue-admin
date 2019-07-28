@@ -19,6 +19,10 @@ import './createRouter' // routers control
 import './mock' // simulation data
 
 import * as filters from './filters' // global filters
+// import mixin from './utils/mixins'
+import waves from '@/directive/waves' // 水波纹指令
+// Vue.mixin(mixin);
+Vue.use(waves);
 
 Vue.use(Element, {
     size: 'medium', // set element-ui default size
