@@ -97,7 +97,7 @@
                         saveJob({
                             jobName: this.addForm.name,
                             jobLevel: this.addForm.positionLevel,
-                            status: this.addForm.positionState,
+                            status: parseInt(this.addForm.positionState),
                             jobId: this.addForm.id,
                         }).then(res => {
                             if(res.data.code == 200) {

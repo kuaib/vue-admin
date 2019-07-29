@@ -22,27 +22,11 @@ export function getSportsList(params) {
     })
 }
 
-// 获取小项列表
-export function getSmallItem() {
+// 基础下拉
+export function getBaseInfo() {
     return request({
-        url: '/sports/dict/getAllDic',
-        method: 'get'
-    })
-}
-
-// 获取队伍列表
-export function getTeamItem() {
-    return request({
-        url: '/sports/dict/getAllDic',
-        method: 'get'
-    })
-}
-
-// 获取组列表
-export function getGroupItem() {
-    return request({
-        url: '/sports/dict/getAllDic',
-        method: 'get'
+        url: '/sports/sports_base/info',
+        method: 'post'
     })
 }
 

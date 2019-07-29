@@ -456,6 +456,92 @@ let aa = [
                 "url": "",
                 "hideInMenu": false
             },
+            {
+                "id": 3,
+                "path": "/personManage", // children中的path：取我定义的（子菜单path前不加斜杠： /）
+                "component": "views/accountAndPermission/personManage", // children中的component：取我定义的，最前面不加斜杠： /
+                "name": "personManage",     // children中的name：取我定义的
+                "title": "人员管理",      // 可有可无*****
+                "icon": "ios-basket-outline",
+                "parentId": 1,
+                "enabled": 1,
+                "children": [
+                    {
+                        "id": 3,
+                        "path": "list", // children中的path：取我定义的（子菜单path前不加斜杠： /）
+                        "component": "views/accountAndPermission/personManage/list", // children中的component：取我定义的，最前面不加斜杠： /
+                        "name": "personManageList",     // children中的name：取我定义的
+                        "title": "人员管理",      // 可有可无*****
+                        "icon": "ios-basket-outline",
+                        "parentId": 2,
+                        "enabled": 1,
+                        "children": null,
+                        "roles": null,
+                        "meta": {
+                            "access": null,
+                            "title": "人员管理",    // children中的title：取我定义的
+                            "icon": "ios-basket-outline",
+                            "hideInMenu": false,
+                            "noCache": true     // 这个是新加的字段！！！！！！！！！！！！
+                        },
+                        "url": "",
+                        "hideInMenu": false
+                    },
+                    {
+                        "id": 3,
+                        "path": "add", // children中的path：取我定义的（子菜单path前不加斜杠： /）
+                        "component": "views/accountAndPermission/personManage/add", // children中的component：取我定义的，最前面不加斜杠： /
+                        "name": "personManageAdd",     // children中的name：取我定义的
+                        "title": "创建人员",      // 可有可无*****
+                        "icon": "ios-basket-outline",
+                        "parentId": 2,
+                        "enabled": 1,
+                        "children": null,
+                        "roles": null,
+                        "meta": {
+                            "access": null,
+                            "title": "创建人员",    // children中的title：取我定义的
+                            "icon": "ios-basket-outline",
+                            "hideInMenu": true,
+                            "noCache": true     // 这个是新加的字段！！！！！！！！！！！！
+                        },
+                        "url": "",
+                        "hideInMenu": true
+                    },
+                    {
+                        "id": 3,
+                        "path": "add", // children中的path：取我定义的（子菜单path前不加斜杠： /）
+                        "component": "views/accountAndPermission/personManage/edit", // children中的component：取我定义的，最前面不加斜杠： /
+                        "name": "personManageEdit",     // children中的name：取我定义的
+                        "title": "编辑人员",      // 可有可无*****
+                        "icon": "ios-basket-outline",
+                        "parentId": 2,
+                        "enabled": 1,
+                        "children": null,
+                        "roles": null,
+                        "meta": {
+                            "access": null,
+                            "title": "编辑人员",    // children中的title：取我定义的
+                            "icon": "ios-basket-outline",
+                            "hideInMenu": true,
+                            "noCache": true     // 这个是新加的字段！！！！！！！！！！！！
+                        },
+                        "url": "",
+                        "hideInMenu": true
+                    },
+                ],
+                // "children": null,
+                "roles": null,
+                "meta": {
+                    "access": null,
+                    "title": "账号管理",    // children中的title：取我定义的
+                    "icon": "ios-basket-outline",
+                    "hideInMenu": false,
+                    "noCache": true     // 这个是新加的字段！！！！！！！！！！！！
+                },
+                "url": "",
+                "hideInMenu": false
+            },
         ]
     },
     {

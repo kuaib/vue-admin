@@ -35,7 +35,7 @@
         </el-form>
 
         <!--职位管理-搜索-->
-        <el-form :model="positionForm" ref="bigProjectForm" v-if="typeName==='position'">
+        <el-form :model="positionForm" ref="positionForm" v-if="typeName==='position'">
             <el-row :gutter="20" class="search-item">
                 <el-col :span="6">
                     <el-form-item prop="id">

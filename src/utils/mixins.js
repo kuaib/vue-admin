@@ -2,14 +2,11 @@
  * 混入
  */
 
-import {getSportsList} from '@/api/common'
+import {getSportsList, getBaseInfo} from '@/api/common'
 export default {
     data() {
         return {
-            bigList: [],      // 大项列表
-            smallList: [],    // 小项列表
-            teamList: [],     // 队伍列表
-            groupList: [],    // 分组列表
+            allBaseListObj: [],      // 基础下拉对象
         }
     },
 
@@ -78,37 +75,19 @@ export default {
             })
         },
 
-        // // 获取小项列表
-        // getSmallList() {
-        //     getSmallItem().then(res => {
-        //         if(res.code === 200) {
-        //             this.smallList = res.data.specialList;
-        //         } else {
-        //             this.$message.error(res.msg);
-        //         }
-        //     })
-        // },
-        //
-        // // 获取队伍列表
-        // getTeamList() {
-        //     getTeamItem().then(res => {
-        //         if(res.code === 200) {
-        //             this.teamList = res.data.orgList;
-        //         } else {
-        //             this.$message.error(res.msg);
-        //         }
-        //     })
-        // },
-        //
-        // // 获取组列表
-        // getGroupList() {
-        //     getGroupItem().then(res => {
-        //         if(res.code === 200) {
-        //             this.groupList = res.data.orgList;
-        //         } else {
-        //             this.$message.error(res.msg);
-        //         }
-        //     })
-        // },
+        // 基础下拉
+        getAllList() {
+            getBaseInfo().then(res => {
+                if(res.data.code == 200) {
+                    this.allBaseListObj = res.data.data;
+                } else {
+                    this.$message({
+                        message: '获取基础下拉列表失败',
+                        type: 'warning'
+                    });
+                }
+            })
+        }
+
     }
 }
