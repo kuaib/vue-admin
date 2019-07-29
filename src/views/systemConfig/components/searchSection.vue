@@ -39,24 +39,22 @@
             <el-row :gutter="20" class="search-item">
                 <el-col :span="6">
                     <el-form-item prop="id">
-                        <el-input placeholder="请输入大项ID" v-model="positionForm.id"></el-input>
+                        <el-input placeholder="请输入职位ID" v-model="positionForm.id"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
                     <el-form-item prop="account">
-                        <el-input placeholder="请输入大项名称" v-model="positionForm.name"></el-input>
+                        <el-input placeholder="请输入职位名称" v-model="positionForm.name"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
                     <el-form-item prop="accountState">
-                        <el-select v-model="positionForm.positiontState" placeholder="请选择职位状态">
-                            <el-option v-for="item in bigProjectStateList" :label="item.dicValue" :value="item.dicKey"
-                                       :key="item.dicKey"></el-option>
+                        <el-select v-model="positionForm.positionState" placeholder="请选择职位状态">
+                            <el-option label="已激活" value="1"></el-option>
+                            <el-option label="未激活" value="0"></el-option>
                         </el-select>
                     </el-form-item>
                 </el-col>
-            </el-row>
-            <el-row :gutter="20" class="search-item">
                 <el-col :span="3">
                     <el-form-item prop="name">
                         <el-button type="primary" v-waves icon="el-icon-search" @click="handleFilter">搜索 Search</el-button>

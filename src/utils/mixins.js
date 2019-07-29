@@ -16,9 +16,8 @@ export default {
     methods: {
         // 保存成功后跳转 / 点击页面的取消按钮，回到上一页面
         cancelAct(isSave) {
-            console.log(isSave)
             // 是否是保存成功后跳转
-            if(isSave) {
+            if(isSave === 'save') {
                 this.$store.dispatch('delVisitedViews', this.$route).then((views) => {
                     this.$router.go(-1)
                 })
@@ -40,7 +39,7 @@ export default {
 
         // 点击搜索
         handleFilter(formData) {
-            this.listQuery.current = 1;
+            this.listQuery.currentPage = 1;
             this.getList(formData)
         },
 
@@ -64,11 +63,17 @@ export default {
                 projectId: formData.id,
                 projectName: formData.name,
                 status: formData.bigProjectState,
+                currentPage:  this.listQuery.currentPage,
+                pageSize: listQuery.pageSize
             }).then(res => {
                 if(res.data.code == 200) {
                     this.list = res.data.data.list;
+                    this.total =  res.data.data.pagination.total;
                 } else {
-                    this.$message(res.data.msg);
+                    this.$message({
+                        message: res.data.msg,
+                        type: 'warning'
+                    });
                 }
             })
         },

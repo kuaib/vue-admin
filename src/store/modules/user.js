@@ -14,277 +14,277 @@ function filterPro(arr, proName) {
 }
 
 let aa = [
-    {
-        "id": 1,
-        "path": "/teamManage",  // 第一级菜单前面有斜杠： /
-        "component": "Layout",
-        "name": "",  // 可有可无，我用不到*****
-        "title": "队伍管理",  // 可有可无，我用不到*****
-        "icon": "ios-color-wand",
-        "parentId": 0,
-        "enabled": 1,
-        "roles": null,
-        "meta": {
-            "access": null,
-            "title": "队伍管理",        //  title取我定义的
-            "icon": "ios-color-wand",
-            "hideInMenu": false
-        },
-        "url": "",
-        "hideInMenu": false,
-        "children": [
-            {
-                "id": 3,
-                "path": "list", // children中的path：取我定义的（子菜单path前不加斜杠： /）
-                "component": "views/teamManage/list", // children中的component：取我定义的，最前面不加斜杠： /
-                "name": "teamList",     // children中的name：取我定义的
-                "title": "队伍管理",      // 可有可无*****
-                "icon": "ios-basket-outline",
-                "parentId": 1,
-                "enabled": 1,
-                "children": null,
-                "roles": null,
-                "meta": {
-                    "access": null,
-                    "title": "队伍管理",    // children中的title：取我定义的
-                    "icon": "ios-basket-outline",
-                    "hideInMenu": false,
-                    "noCache": true     // 这个是新加的字段！！！！！！！！！！！！
-                },
-                "url": "",
-                "hideInMenu": false
-            }, {
-                "id": 5,
-                "path": "manage",
-                "component": "views/teamManage/manage",
-                "name": "teamManage",
-                "title": "队伍新增/维护",
-                "icon": null,
-                "parentId": 1,
-                "enabled": 1,
-                "children": null,
-                "roles": null,
-                "meta": {
-                    "access": null,
-                    "title": "队伍新增/维护",
-                    "icon": "ios-basket-outline",
-                    "hideInMenu": true
-                },
-                "url": "",
-                "hideInMenu": true
-            }]
-    },
-    {
-        "id": 2,
-        "path": "/athleteCentral",
-        "component": "Layout",
-        "name": "",
-        "title": "运动员看板",
-        "icon": "ios-create-outline",
-        "parentId": 0,
-        "enabled": 1,
-        "roles": null,
-        "meta": {"access": null, "title": "运动员看板", "icon": "ios-create-outline", "hideInMenu": false},
-        "url": "",
-        "hideInMenu": false,
-        "children": [
-            {
-                "id": 4,
-                "path": "list",
-                "component": "views/athleteCentral/list",
-                "name": "athleteCentral",
-                "title": "运动员看板",
-                "icon": "ios-people-outline",
-                "parentId": 2,
-                "enabled": 1,
-                "children": null,
-                "roles": null,
-                "meta": {"access": null, "title": "运动员列表", "icon": "ios-people-outline", "hideInMenu": false},
-                "url": "",
-                "hideInMenu": false
-            },
-            {
-                "id": 5,
-                "path": "add",
-                "component": "views/athleteCentral/add",
-                "name": "athleteAdd",
-                "title": "新建运动员",
-                "icon": "ios-people-outline",
-                "parentId": 2,
-                "enabled": 1,
-                "children": null,
-                "roles": null,
-                "meta": {
-                    "access": null,
-                    "title": "新建运动员",
-                    "icon": "ios-people-outline",
-                    "hideInMenu": true
-                },
-                "url": "",
-                "hideInMenu": true
-            }
-        ]
-    },
-    {
-        "id": 3,
-        "path": "/teamOverview",  // 第一级菜单前面有斜杠： /
-        "component": "Layout",
-        "name": "",  // 可有可无，我用不到*****
-        "title": "队伍看板",  // 可有可无，我用不到*****
-        "icon": "ios-color-wand",
-        "parentId": 0,
-        "enabled": 1,
-        "roles": null,
-        "meta": {
-            "access": null,
-            "title": "队伍看板",        //  title取我定义的
-            "icon": "ios-color-wand",
-            "hideInMenu": false
-        },
-        "url": "",
-        "hideInMenu": false,
-        "children": [
-            {
-                "id": 3,
-                "path": "teamOverview", // children中的path：取我定义的（子菜单path前不加斜杠： /）
-                "component": "views/teamOverview/teamOverview", // children中的component：取我定义的，最前面不加斜杠： /
-                "name": "teamOverview",     // children中的name：取我定义的
-                "title": "队伍管理",      // 可有可无*****
-                "icon": "ios-basket-outline",
-                "parentId": 1,
-                "enabled": 1,
-                "children": null,
-                "roles": null,
-                "meta": {
-                    "access": null,
-                    "title": "队伍看板",    // children中的title：取我定义的
-                    "icon": "ios-basket-outline",
-                    "hideInMenu": false
-                },
-                "url": "",
-                "hideInMenu": false
-            }]
-    },
-    {
-        "id": 4,
-        "path": "/teamTest",  // 第一级菜单前面有斜杠： /
-        "component": "Layout",
-        "name": "",  // 可有可无，我用不到*****
-        "title": "队伍测试(人工)",  // 可有可无，我用不到*****
-        "icon": "ios-color-wand",
-        "parentId": 0,
-        "enabled": 1,
-        "roles": null,
-        "meta": {
-            "access": null,
-            "title": "队伍测试(人工)",        //  title取我定义的
-            "icon": "ios-color-wand",
-            "hideInMenu": false
-        },
-        "url": "",
-        "hideInMenu": false,
-        "children": [
-            {
-                "id": 3,
-                "path": "teamTest", // children中的path：取我定义的（子菜单path前不加斜杠： /）
-                "component": "views/teamTest/index", // children中的component：取我定义的，最前面不加斜杠： /
-                "name": "teamTest",     // children中的name：取我定义的
-                "title": "队伍测试(人工)",      // 可有可无*****
-                "icon": "ios-basket-outline",
-                "parentId": 1,
-                "enabled": 1,
-                "children": null,
-                "roles": null,
-                "meta": {
-                    "access": null,
-                    "title": "队伍测试(人工)",    // children中的title：取我定义的
-                    "icon": "ios-basket-outline",
-                    "hideInMenu": false
-                },
-                "url": "",
-                "hideInMenu": false
-            }]
-    },
-    {
-        "id": 5,
-        "path": "/videoUpload",  // 第一级菜单前面有斜杠： /
-        "component": "Layout",
-        "name": "",  // 可有可无，我用不到*****
-        "title": "队伍测试(智能)",  // 可有可无，我用不到*****
-        "icon": "ios-color-wand",
-        "parentId": 0,
-        "enabled": 1,
-        "roles": null,
-        "meta": {
-            "access": null,
-            "title": "队伍测试(智能)",        //  title取我定义的
-            "icon": "ios-color-wand",
-            "hideInMenu": false
-        },
-        "url": "",
-        "hideInMenu": false,
-        "children": [
-            {
-                "id": 3,
-                "path": "videoUpload", // children中的path：取我定义的（子菜单path前不加斜杠： /）
-                "component": "views/videoUpload/index", // children中的component：取我定义的，最前面不加斜杠： /
-                "name": "videoUpload",     // children中的name：取我定义的
-                "title": "队伍测试(人工)",      // 可有可无*****
-                "icon": "ios-basket-outline",
-                "parentId": 1,
-                "enabled": 1,
-                "children": null,
-                "roles": null,
-                "meta": {
-                    "access": null,
-                    "title": "队伍测试(人工)",    // children中的title：取我定义的
-                    "icon": "ios-basket-outline",
-                    "hideInMenu": false
-                },
-                "url": "",
-                "hideInMenu": false
-            }]
-    },
-    {
-        "id": 6,
-        "path": "/report",  // 第一级菜单前面有斜杠： /
-        "component": "Layout",
-        "name": "",  // 可有可无，我用不到*****
-        "title": "生成报告",  // 可有可无，我用不到*****
-        "icon": "ios-color-wand",
-        "parentId": 0,
-        "enabled": 1,
-        "roles": null,
-        "meta": {
-            "access": null,
-            "title": "生成报告",        //  title取我定义的
-            "icon": "ios-color-wand",
-            "hideInMenu": false
-        },
-        "url": "",
-        "hideInMenu": false,
-        "children": [
-            {
-                "id": 3,
-                "path": "report", // children中的path：取我定义的（子菜单path前不加斜杠： /）
-                "component": "views/report/report", // children中的component：取我定义的，最前面不加斜杠： /
-                "name": "report",     // children中的name：取我定义的
-                "title": "生成报告",      // 可有可无*****
-                "icon": "ios-basket-outline",
-                "parentId": 1,
-                "enabled": 1,
-                "children": null,
-                "roles": null,
-                "meta": {
-                    "access": null,
-                    "title": "生成报告",    // children中的title：取我定义的
-                    "icon": "ios-basket-outline",
-                    "hideInMenu": false
-                },
-                "url": "",
-                "hideInMenu": false
-            }]
-    },
+    // {
+    //     "id": 1,
+    //     "path": "/teamManage",  // 第一级菜单前面有斜杠： /
+    //     "component": "Layout",
+    //     "name": "",  // 可有可无，我用不到*****
+    //     "title": "队伍管理",  // 可有可无，我用不到*****
+    //     "icon": "ios-color-wand",
+    //     "parentId": 0,
+    //     "enabled": 1,
+    //     "roles": null,
+    //     "meta": {
+    //         "access": null,
+    //         "title": "队伍管理",        //  title取我定义的
+    //         "icon": "ios-color-wand",
+    //         "hideInMenu": false
+    //     },
+    //     "url": "",
+    //     "hideInMenu": false,
+    //     "children": [
+    //         {
+    //             "id": 3,
+    //             "path": "list", // children中的path：取我定义的（子菜单path前不加斜杠： /）
+    //             "component": "views/teamManage/list", // children中的component：取我定义的，最前面不加斜杠： /
+    //             "name": "teamList",     // children中的name：取我定义的
+    //             "title": "队伍管理",      // 可有可无*****
+    //             "icon": "ios-basket-outline",
+    //             "parentId": 1,
+    //             "enabled": 1,
+    //             "children": null,
+    //             "roles": null,
+    //             "meta": {
+    //                 "access": null,
+    //                 "title": "队伍管理",    // children中的title：取我定义的
+    //                 "icon": "ios-basket-outline",
+    //                 "hideInMenu": false,
+    //                 "noCache": true     // 这个是新加的字段！！！！！！！！！！！！
+    //             },
+    //             "url": "",
+    //             "hideInMenu": false
+    //         }, {
+    //             "id": 5,
+    //             "path": "manage",
+    //             "component": "views/teamManage/manage",
+    //             "name": "teamManage",
+    //             "title": "队伍新增/维护",
+    //             "icon": null,
+    //             "parentId": 1,
+    //             "enabled": 1,
+    //             "children": null,
+    //             "roles": null,
+    //             "meta": {
+    //                 "access": null,
+    //                 "title": "队伍新增/维护",
+    //                 "icon": "ios-basket-outline",
+    //                 "hideInMenu": true
+    //             },
+    //             "url": "",
+    //             "hideInMenu": true
+    //         }]
+    // },
+    // {
+    //     "id": 2,
+    //     "path": "/athleteCentral",
+    //     "component": "Layout",
+    //     "name": "",
+    //     "title": "运动员看板",
+    //     "icon": "ios-create-outline",
+    //     "parentId": 0,
+    //     "enabled": 1,
+    //     "roles": null,
+    //     "meta": {"access": null, "title": "运动员看板", "icon": "ios-create-outline", "hideInMenu": false},
+    //     "url": "",
+    //     "hideInMenu": false,
+    //     "children": [
+    //         {
+    //             "id": 4,
+    //             "path": "list",
+    //             "component": "views/athleteCentral/list",
+    //             "name": "athleteCentral",
+    //             "title": "运动员看板",
+    //             "icon": "ios-people-outline",
+    //             "parentId": 2,
+    //             "enabled": 1,
+    //             "children": null,
+    //             "roles": null,
+    //             "meta": {"access": null, "title": "运动员列表", "icon": "ios-people-outline", "hideInMenu": false},
+    //             "url": "",
+    //             "hideInMenu": false
+    //         },
+    //         {
+    //             "id": 5,
+    //             "path": "add",
+    //             "component": "views/athleteCentral/add",
+    //             "name": "athleteAdd",
+    //             "title": "新建运动员",
+    //             "icon": "ios-people-outline",
+    //             "parentId": 2,
+    //             "enabled": 1,
+    //             "children": null,
+    //             "roles": null,
+    //             "meta": {
+    //                 "access": null,
+    //                 "title": "新建运动员",
+    //                 "icon": "ios-people-outline",
+    //                 "hideInMenu": true
+    //             },
+    //             "url": "",
+    //             "hideInMenu": true
+    //         }
+    //     ]
+    // },
+    // {
+    //     "id": 3,
+    //     "path": "/teamOverview",  // 第一级菜单前面有斜杠： /
+    //     "component": "Layout",
+    //     "name": "",  // 可有可无，我用不到*****
+    //     "title": "队伍看板",  // 可有可无，我用不到*****
+    //     "icon": "ios-color-wand",
+    //     "parentId": 0,
+    //     "enabled": 1,
+    //     "roles": null,
+    //     "meta": {
+    //         "access": null,
+    //         "title": "队伍看板",        //  title取我定义的
+    //         "icon": "ios-color-wand",
+    //         "hideInMenu": false
+    //     },
+    //     "url": "",
+    //     "hideInMenu": false,
+    //     "children": [
+    //         {
+    //             "id": 3,
+    //             "path": "teamOverview", // children中的path：取我定义的（子菜单path前不加斜杠： /）
+    //             "component": "views/teamOverview/teamOverview", // children中的component：取我定义的，最前面不加斜杠： /
+    //             "name": "teamOverview",     // children中的name：取我定义的
+    //             "title": "队伍管理",      // 可有可无*****
+    //             "icon": "ios-basket-outline",
+    //             "parentId": 1,
+    //             "enabled": 1,
+    //             "children": null,
+    //             "roles": null,
+    //             "meta": {
+    //                 "access": null,
+    //                 "title": "队伍看板",    // children中的title：取我定义的
+    //                 "icon": "ios-basket-outline",
+    //                 "hideInMenu": false
+    //             },
+    //             "url": "",
+    //             "hideInMenu": false
+    //         }]
+    // },
+    // {
+    //     "id": 4,
+    //     "path": "/teamTest",  // 第一级菜单前面有斜杠： /
+    //     "component": "Layout",
+    //     "name": "",  // 可有可无，我用不到*****
+    //     "title": "队伍测试(人工)",  // 可有可无，我用不到*****
+    //     "icon": "ios-color-wand",
+    //     "parentId": 0,
+    //     "enabled": 1,
+    //     "roles": null,
+    //     "meta": {
+    //         "access": null,
+    //         "title": "队伍测试(人工)",        //  title取我定义的
+    //         "icon": "ios-color-wand",
+    //         "hideInMenu": false
+    //     },
+    //     "url": "",
+    //     "hideInMenu": false,
+    //     "children": [
+    //         {
+    //             "id": 3,
+    //             "path": "teamTest", // children中的path：取我定义的（子菜单path前不加斜杠： /）
+    //             "component": "views/teamTest/index", // children中的component：取我定义的，最前面不加斜杠： /
+    //             "name": "teamTest",     // children中的name：取我定义的
+    //             "title": "队伍测试(人工)",      // 可有可无*****
+    //             "icon": "ios-basket-outline",
+    //             "parentId": 1,
+    //             "enabled": 1,
+    //             "children": null,
+    //             "roles": null,
+    //             "meta": {
+    //                 "access": null,
+    //                 "title": "队伍测试(人工)",    // children中的title：取我定义的
+    //                 "icon": "ios-basket-outline",
+    //                 "hideInMenu": false
+    //             },
+    //             "url": "",
+    //             "hideInMenu": false
+    //         }]
+    // },
+    // {
+    //     "id": 5,
+    //     "path": "/videoUpload",  // 第一级菜单前面有斜杠： /
+    //     "component": "Layout",
+    //     "name": "",  // 可有可无，我用不到*****
+    //     "title": "队伍测试(智能)",  // 可有可无，我用不到*****
+    //     "icon": "ios-color-wand",
+    //     "parentId": 0,
+    //     "enabled": 1,
+    //     "roles": null,
+    //     "meta": {
+    //         "access": null,
+    //         "title": "队伍测试(智能)",        //  title取我定义的
+    //         "icon": "ios-color-wand",
+    //         "hideInMenu": false
+    //     },
+    //     "url": "",
+    //     "hideInMenu": false,
+    //     "children": [
+    //         {
+    //             "id": 3,
+    //             "path": "videoUpload", // children中的path：取我定义的（子菜单path前不加斜杠： /）
+    //             "component": "views/videoUpload/index", // children中的component：取我定义的，最前面不加斜杠： /
+    //             "name": "videoUpload",     // children中的name：取我定义的
+    //             "title": "队伍测试(人工)",      // 可有可无*****
+    //             "icon": "ios-basket-outline",
+    //             "parentId": 1,
+    //             "enabled": 1,
+    //             "children": null,
+    //             "roles": null,
+    //             "meta": {
+    //                 "access": null,
+    //                 "title": "队伍测试(人工)",    // children中的title：取我定义的
+    //                 "icon": "ios-basket-outline",
+    //                 "hideInMenu": false
+    //             },
+    //             "url": "",
+    //             "hideInMenu": false
+    //         }]
+    // },
+    // {
+    //     "id": 6,
+    //     "path": "/report",  // 第一级菜单前面有斜杠： /
+    //     "component": "Layout",
+    //     "name": "",  // 可有可无，我用不到*****
+    //     "title": "生成报告",  // 可有可无，我用不到*****
+    //     "icon": "ios-color-wand",
+    //     "parentId": 0,
+    //     "enabled": 1,
+    //     "roles": null,
+    //     "meta": {
+    //         "access": null,
+    //         "title": "生成报告",        //  title取我定义的
+    //         "icon": "ios-color-wand",
+    //         "hideInMenu": false
+    //     },
+    //     "url": "",
+    //     "hideInMenu": false,
+    //     "children": [
+    //         {
+    //             "id": 3,
+    //             "path": "report", // children中的path：取我定义的（子菜单path前不加斜杠： /）
+    //             "component": "views/report/report", // children中的component：取我定义的，最前面不加斜杠： /
+    //             "name": "report",     // children中的name：取我定义的
+    //             "title": "生成报告",      // 可有可无*****
+    //             "icon": "ios-basket-outline",
+    //             "parentId": 1,
+    //             "enabled": 1,
+    //             "children": null,
+    //             "roles": null,
+    //             "meta": {
+    //                 "access": null,
+    //                 "title": "生成报告",    // children中的title：取我定义的
+    //                 "icon": "ios-basket-outline",
+    //                 "hideInMenu": false
+    //             },
+    //             "url": "",
+    //             "hideInMenu": false
+    //         }]
+    // },
 
     {
         "id": 7,
@@ -565,13 +565,77 @@ let aa = [
             {
                 "id": 3,
                 "path": "/position", // children中的path：取我定义的（子菜单path前不加斜杠： /）
-                "component": "views/systemConfig/position/list", // children中的component：取我定义的，最前面不加斜杠： /
-                "name": "positionList",     // children中的name：取我定义的
+                "component": "views/systemConfig/position", // children中的component：取我定义的，最前面不加斜杠： /
+                "name": "position",     // children中的name：取我定义的
                 "title": "职位管理",      // 可有可无*****
                 "icon": "ios-basket-outline",
                 "parentId": 1,
                 "enabled": 1,
-                "children": null,
+                "children": [
+                    {
+                        "id": 3,
+                        "path": "list", // children中的path：取我定义的（子菜单path前不加斜杠： /）
+                        "component": "views/systemConfig/position/list", // children中的component：取我定义的，最前面不加斜杠： /
+                        "name": "positionList",     // children中的name：取我定义的
+                        "title": "职位管理",      // 可有可无*****
+                        "icon": "ios-basket-outline",
+                        "parentId": 2,
+                        "enabled": 1,
+                        "children": null,
+                        "roles": null,
+                        "meta": {
+                            "access": null,
+                            "title": "职位管理",    // children中的title：取我定义的
+                            "icon": "ios-basket-outline",
+                            "hideInMenu": false,
+                            "noCache": true     // 这个是新加的字段！！！！！！！！！！！！
+                        },
+                        "url": "",
+                        "hideInMenu": false
+                    },
+                    {
+                        "id": 3,
+                        "path": "add", // children中的path：取我定义的（子菜单path前不加斜杠： /）
+                        "component": "views/systemConfig/position/add", // children中的component：取我定义的，最前面不加斜杠： /
+                        "name": "positionAdd",     // children中的name：取我定义的
+                        "title": "创建职位",      // 可有可无*****
+                        "icon": "ios-basket-outline",
+                        "parentId": 2,
+                        "enabled": 1,
+                        "children": null,
+                        "roles": null,
+                        "meta": {
+                            "access": null,
+                            "title": "创建职位",    // children中的title：取我定义的
+                            "icon": "ios-basket-outline",
+                            "hideInMenu": true,
+                            "noCache": true     // 这个是新加的字段！！！！！！！！！！！！
+                        },
+                        "url": "",
+                        "hideInMenu": true
+                    },
+                    {
+                        "id": 3,
+                        "path": "edit", // children中的path：取我定义的（子菜单path前不加斜杠： /）
+                        "component": "views/systemConfig/position/edit", // children中的component：取我定义的，最前面不加斜杠： /
+                        "name": "positionEdit",     // children中的name：取我定义的
+                        "title": "编辑职位",      // 可有可无*****
+                        "icon": "ios-basket-outline",
+                        "parentId": 2,
+                        "enabled": 1,
+                        "children": null,
+                        "roles": null,
+                        "meta": {
+                            "access": null,
+                            "title": "编辑大项",    // children中的title：取我定义的
+                            "icon": "ios-basket-outline",
+                            "hideInMenu": true,
+                            "noCache": true     // 这个是新加的字段！！！！！！！！！！！！
+                        },
+                        "url": "",
+                        "hideInMenu": true
+                    },
+                ],
                 "roles": null,
                 "meta": {
                     "access": null,

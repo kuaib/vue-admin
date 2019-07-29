@@ -8,7 +8,7 @@
         <el-row>
             <div class="table-title clearfix">
                 <h3>账号列表</h3>
-                <el-button type="success" @click="createPro">创建大项</el-button>
+                <el-button type="success" @click="createItem">创建大项</el-button>
             </div>
             <el-table :data="list" v-loading="listLoading" border fit highlight-current-row
                       style="width: 100%;">
@@ -24,7 +24,8 @@
                 </el-table-column>
                 <el-table-column align="center" label="大项状态">
                     <template slot-scope="scope">
-                        <span>{{scope.row.status == 1?'已激活':'未激活'}}</span>
+                        <span v-if="scope.row.status == 1">已激活</span>
+                        <span v-if="scope.row.status == 0" style="color: red">未激活</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="操作">
@@ -36,7 +37,7 @@
 
             <div class="pagination-container">
                 <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                               :current-page="listQuery.current" :page-sizes="[10,20,30, 50]"
+                               :current-page="listQuery.currentPage" :page-sizes="[10,20,30, 50]"
                                :page-size="listQuery.pageSize" layout="total, sizes, prev, pager, next, jumper"
                                :total="total">
                 </el-pagination>
@@ -57,26 +58,30 @@
                 total: null,         // 总条目数
                 listLoading: false,  // 查询table的loading
                 listQuery: {
-                    current: 1,
+                    currentPage: 1,
                     pageSize: 10,
-                    keyWord: null
                 }
             }
         },
 
         created() {
-            this.getBigProList();
+            this.getList();
         },
 
         methods: {
             // 创建大项
-            createPro() {
+            createItem() {
                 this.$router.push('/bigProject/add')
             },
 
             // 编辑大项
             toDetail(row) {
                 this.$router.push({path: '/bigProject/edit', query: {id: row.projectId}})
+            },
+
+            // 获取列表（外面套一层getList是为了直接调用mixins里面的getList）
+            getList(formData) {
+                this.getBigProList(formData);
             }
         }
     }

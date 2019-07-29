@@ -1,25 +1,18 @@
-<!--编辑大项-->
+<!--编辑职位-->
 <template>
     <el-form :model="addForm" :rules="rules" ref="addForm" label-width="100px">
-        <el-row class="form-title">大项信息</el-row>
+        <el-row class="form-title">职位信息</el-row>
         <el-row>
             <el-col :span="8">
-                <el-form-item label="大项名称：" prop="name">
-                    <el-input placeholder="请输入大项名称" v-model="addForm.name"></el-input>
+                <el-form-item label="职位名称：" prop="name">
+                    <el-input placeholder="请输入职位名称" v-model="addForm.name"></el-input>
                 </el-form-item>
             </el-col>
         </el-row>
         <el-row>
             <el-col :span="8">
-                <el-form-item label="大项id：" prop="id">
-                    <span>{{addForm.id}}</span>
-                </el-form-item>
-            </el-col>
-        </el-row>
-        <el-row>
-            <el-col :span="8">
-                <el-form-item label="大项状态：" prop="bigProjectState">
-                    <el-select v-model="addForm.bigProjectState" placeholder="请选择大项状态">
+                <el-form-item label="职位状态：" prop="positionState">
+                    <el-select v-model="addForm.positionState" placeholder="请选择职位状态">
                         <el-option label="已激活" value="1"></el-option>
                         <el-option label="未激活" value="0"></el-option>
                     </el-select>
@@ -28,8 +21,15 @@
         </el-row>
         <el-row>
             <el-col :span="8">
-                <el-form-item label="关联小项：" prop="smallPro">
-                    <el-input placeholder="请输入关联小项目(逗号隔开)" v-model="addForm.smallPro"></el-input>
+                <el-form-item label="职位级别：" prop="positionLevel">
+                    <el-input placeholder="请输入职位级别(仅运动员需要填写)" v-model="addForm.positionLevel"></el-input>
+                </el-form-item>
+            </el-col>
+        </el-row>
+        <el-row>
+            <el-col :span="8">
+                <el-form-item label="职位id：" prop="id">
+                    <span>{{addForm.id}}</span>
                 </el-form-item>
             </el-col>
         </el-row>
@@ -43,7 +43,7 @@
 </template>
 
 <script>
-    import {saveProject, getProjectDetail} from '@/api/systemConfig'
+    import {saveJob, getJobDetail} from '@/api/systemConfig'
     import mixins from '@/utils/mixins'
     export default {
         mixins: [mixins],
@@ -53,18 +53,15 @@
                 addForm: {
                     id: this.$route.query.id,
                     name: null,
-                    bigProjectState: null,
-                    smallPro: null
+                    positionState: null,
+                    positionLevel: null
                 },
                 rules: {
                     name: [
-                        { required: true, message: '请输入大项名称', trigger: 'blur' }
+                        { required: true, message: '请输入职位名称', trigger: 'blur' }
                     ],
-                    bigProjectState: [
-                        { required: true, message: '请选择大项状态', trigger: 'change' }
-                    ],
-                    smallPro: [
-                        { required: true, message: '请输入关联小项', trigger: 'blur' }
+                    positionState: [
+                        { required: true, message: '请选择职位状态', trigger: 'change' }
                     ]
                 }
             }
@@ -75,14 +72,14 @@
         },
 
         methods: {
-            // 获取大项详情
+            // 获取职位详情
             getDetail() {
-                getProjectDetail({projectId: this.addForm.id}).then(res => {
+                getJobDetail({jobId: this.addForm.id}).then(res => {
                     if(res.data.code == 200) {
                         let resData = res.data.data;
-                        this.addForm.name = resData.projectName;
-                        this.addForm.bigProjectState = resData.status.toString();
-                        this.addForm.smallPro = resData.childProject;
+                        this.addForm.name = resData.jobName;
+                        this.addForm.positionState = resData.status.toString();
+                        this.addForm.positionLevel = resData.jobLevel;
                     } else {
                         this.$message({
                             message: res.data.msg,
@@ -92,16 +89,16 @@
                 })
             },
 
-            // 编辑
+            // 创建保存
             toSubmit(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         this.btnLoading = true;
-                        saveProject({
-                            projectId: this.addForm.id,
-                            projectName: this.addForm.name,
-                            status: this.addForm.bigProjectState,
-                            childProject: this.addForm.smallPro,
+                        saveJob({
+                            jobName: this.addForm.name,
+                            jobLevel: this.addForm.positionLevel,
+                            status: this.addForm.positionState,
+                            jobId: this.addForm.id,
                         }).then(res => {
                             if(res.data.code == 200) {
                                 this.$message({
@@ -123,9 +120,7 @@
                         return false;
                     }
                 });
-            },
-
-
+            }
         }
     }
 </script>
