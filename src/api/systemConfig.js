@@ -1,6 +1,15 @@
 import request from '@/utils/request'
 
 
+// 获取大项列表
+export function getSportsList(params) {
+    return request({
+        url: '/sports/sports_project/list',
+        method: 'get',
+        params
+    })
+}
+
 // 创建/编辑 大项
 export function saveProject(data) {
     return request({

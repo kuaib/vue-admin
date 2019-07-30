@@ -129,22 +129,22 @@
 
                 // 账号表单
                 accountForm: {
-                    id: '',
-                    account: '',       // 账号
-                    accountState: '',  // 账号状态
-                    phone: '',         // 电话
-                    name: '',          // 姓名
-                    role: '',          // 角色
+                    id: null,
+                    account: null,       // 账号
+                    accountState: null,  // 账号状态
+                    phone: null,         // 电话
+                    name: null,          // 姓名
+                    role: null,          // 角色
                 },
 
                 // 人员表单
                 personForm: {
-                    id: '',
-                    idCard: '',       // 身份证
-                    personState: '',  // 人员状态
-                    phone: '',         // 电话
-                    name: '',          // 姓名
-                    position: '',      // 职位
+                    id: null,
+                    idCard: null,       // 身份证
+                    personState: null,  // 人员状态
+                    phone: null,         // 电话
+                    name: null,          // 姓名
+                    position: null,      // 职位
                 },
             }
         },
@@ -160,10 +160,15 @@
         },
 
         methods: {
-
             // 搜索
             handleFilter() {
-                this.$emit('handleFilter', this.accountForm)
+                let formName;
+                if(this.typeName==='account') {
+                    formName = 'accountForm';
+                } else if(this.typeName==='person') {
+                    formName = 'personForm';
+                }
+                this.$emit('handleFilter', this[formName])
             }
         }
     })

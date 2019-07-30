@@ -13,20 +13,12 @@ export function getAllDic() {
     })
 }
 
-// 获取大项列表
-export function getSportsList(params) {
-    return request({
-        url: '/sports/sports_project/list',
-        method: 'get',
-        params
-    })
-}
 
 // 基础下拉
 export function getBaseInfo() {
     return request({
         url: '/sports/sports_base/info',
-        method: 'post'
+        method: 'get'
     })
 }
 

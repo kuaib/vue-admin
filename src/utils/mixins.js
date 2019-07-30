@@ -2,11 +2,15 @@
  * 混入
  */
 
-import {getSportsList, getBaseInfo} from '@/api/common'
+import {getBaseInfo} from '@/api/common'
 export default {
     data() {
         return {
-            allBaseListObj: [],      // 基础下拉对象
+            jobInfoList: [],      // 职位列表
+            levelInfoList: [],    // 职位等级列表
+            coachInfoList: [],    // 教练列表
+            provinceList: [],     // 省份列表
+            bigProjectInfo: [],   // 大项列表
         }
     },
 
@@ -54,32 +58,16 @@ export default {
 
         //--------------------- 公用接口--------------------------//
 
-        // 获取大项列表
-        getBigProList(formData = {}) {
-            getSportsList({
-                projectId: formData.id,
-                projectName: formData.name,
-                status: formData.bigProjectState,
-                currentPage:  this.listQuery.currentPage,
-                pageSize: listQuery.pageSize
-            }).then(res => {
-                if(res.data.code == 200) {
-                    this.list = res.data.data.list;
-                    this.total =  res.data.data.pagination.total;
-                } else {
-                    this.$message({
-                        message: res.data.msg,
-                        type: 'warning'
-                    });
-                }
-            })
-        },
-
         // 基础下拉
         getAllList() {
             getBaseInfo().then(res => {
                 if(res.data.code == 200) {
-                    this.allBaseListObj = res.data.data;
+                    let allObj = res.data.data;
+                    this.jobInfoList = allObj.jobInfo;      // 职位列表
+                    this.coachInfoList = allObj.coachInfo;  // 教练列表
+                    this.provinceList = allObj.placeInfo;   // 省份列表
+                    this.bigProjectInfo = allObj.projectInfo;  // 大项列表
+                    this.levelInfoList = allObj.levelInfo;  // 职位等级
                 } else {
                     this.$message({
                         message: '获取基础下拉列表失败',

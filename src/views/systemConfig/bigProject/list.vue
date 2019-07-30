@@ -49,6 +49,7 @@
 <script>
     import searchSection  from '../components/searchSection'
     import mixins from '@/utils/mixins'
+    import {getSportsList} from '@/api/systemConfig'
     export default {
         mixins: [mixins],
         components: {searchSection},
@@ -79,10 +80,35 @@
                 this.$router.push({path: '/bigProject/edit', query: {id: row.projectId}})
             },
 
-            // 获取列表（外面套一层getList是为了直接调用mixins里面的getList）
-            getList(formData) {
-                this.getBigProList(formData);
-            }
+            // // 获取列表（外面套一层getList是为了直接调用mixins里面的getList）
+            // getList(formData) {
+            //     this.getBigProList(formData);
+            // },
+
+            // 获取大项列表
+            getList(formData = {}) {
+                this.listLoading = true;
+                getSportsList({
+                    projectId: formData.id,
+                    projectName: formData.name,
+                    status: formData.bigProjectState,
+                    currentPage:  this.listQuery.currentPage,
+                    pageSize: this.listQuery.pageSize
+                }).then(res => {
+                    this.listLoading = false;
+                    if(res.data.code == 200) {
+                        this.list = res.data.data.list;
+                        this.total =  res.data.data.pagination.total;
+                    } else {
+                        this.$message({
+                            message: res.data.msg,
+                            type: 'warning'
+                        });
+                    }
+                }).catch(() => {
+                    this.listLoading = false;
+                })
+            },
         }
     }
 </script>

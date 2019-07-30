@@ -1,7 +1,7 @@
 <template>
     <div class="account-permission-wrapper">
         <!--搜索-->
-        <search-section></search-section>
+        <search-section typeName='account'></search-section>
 
         <!--表格-->
         <el-row>
