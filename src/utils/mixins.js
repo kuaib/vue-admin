@@ -2,15 +2,16 @@
  * 混入
  */
 
-import {getBaseInfo} from '@/api/common'
+import {getBaseInfo, childProject} from '@/api/common'
 export default {
     data() {
         return {
-            jobInfoList: [],      // 职位列表
-            levelInfoList: [],    // 职位等级列表
+            jobInfoList: [],      // 职位列表(无key值)
+            levelInfoList: [],    // 职位等级列表(无key值)
             coachInfoList: [],    // 教练列表
             provinceList: [],     // 省份列表
-            bigProjectInfo: [],   // 大项列表
+            bigProList: [],       // 大项列表
+            smallProList: [],     // 小项列表(无key值，通过大项获取小项)
         }
     },
 
@@ -63,11 +64,11 @@ export default {
             getBaseInfo().then(res => {
                 if(res.data.code == 200) {
                     let allObj = res.data.data;
-                    this.jobInfoList = allObj.jobInfo;      // 职位列表
+                    this.jobInfoList = allObj.jobInfo;      // 职位列表   (无key值)
+                    this.levelInfoList = allObj.levelInfo;  // 职位等级列表(无key值)
                     this.coachInfoList = allObj.coachInfo;  // 教练列表
                     this.provinceList = allObj.placeInfo;   // 省份列表
-                    this.bigProjectInfo = allObj.projectInfo;  // 大项列表
-                    this.levelInfoList = allObj.levelInfo;  // 职位等级
+                    this.bigProList = allObj.projectInfo;  // 大项列表
                 } else {
                     this.$message({
                         message: '获取基础下拉列表失败',
@@ -75,7 +76,20 @@ export default {
                     });
                 }
             })
-        }
+        },
 
+        // 通过大项获取小项
+        getSmallProList(projectId) {
+            childProject({projectId: projectId}).then(res => {
+                if(res.data.code == 200) {
+                    this.smallProList = res.data.data;
+                } else {
+                    this.$message({
+                        message: '获取小项失败',
+                        type: 'warning'
+                    });
+                }
+            })
+        }
     }
 }

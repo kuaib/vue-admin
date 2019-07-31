@@ -18,7 +18,7 @@
                         <el-form-item label="性别：" prop="sex">
                             <el-select v-model="personForm.sex" placeholder="请选择性别">
                                 <el-option label="男" value="1"></el-option>
-                                <el-option label="女" value="2"></el-option>
+                                <el-option label="女" value="0"></el-option>
                             </el-select>
                         </el-form-item>
                     </el-col>
@@ -40,12 +40,32 @@
                     </el-col>
                     <el-col :span="8">
                         <el-form-item label="身高：" prop="height">
-                            <el-input v-model="personForm.height" placeholder="请输入身高"></el-input>
+                            <el-input v-model="personForm.height" placeholder="请输入身高(cm)"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="8">
                         <el-form-item label="体重：" prop="weight">
-                            <el-input v-model="personForm.weight" placeholder="请输入体重"></el-input>
+                            <el-input v-model="personForm.weight" placeholder="请输入体重(kg)"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row :gutter="20">
+                    <el-col :span="8">
+                        <el-form-item label="籍贯：" prop="jg">
+                            <el-input v-model="personForm.jg" placeholder="请输入籍贯"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                        <el-form-item label="手机：" prop="phone">
+                            <el-input v-model="personForm.phone" placeholder="请输入手机"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                        <el-form-item label="性别：" prop="sex">
+                            <el-select v-model="personForm.sex" placeholder="请选择性别">
+                                <el-option label="男" value="1"></el-option>
+                                <el-option label="女" value="0"></el-option>
+                            </el-select>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -91,10 +111,10 @@
                         <el-form-item label="职位：" prop="job">
                             <el-select v-model="businessForm.job" placeholder="请选择职位">
                                 <el-option
-                                        v-for="item in jobInfoList"
-                                        :key="item.dicKey"
-                                        :label="item.dicValue"
-                                        :value="item.dicKey">
+                                        v-for="(item, idx) in jobInfoList"
+                                        :key="idx"
+                                        :label="item"
+                                        :value="item">
                                 </el-option>
                             </el-select>
                         </el-form-item>
@@ -103,19 +123,19 @@
                         <el-form-item label="职位等级：" prop="level">
                             <el-select v-model="businessForm.level" placeholder="请选择职位等级">
                                 <el-option
-                                        v-for="item in jobInfoList"
-                                        :key="item.dicKey"
-                                        :label="item.dicValue"
-                                        :value="item.dicKey">
+                                        v-for="(item, idx) in levelInfoList"
+                                        :key="idx"
+                                        :label="item"
+                                        :value="item">
                                 </el-option>
                             </el-select>
                         </el-form-item>
                     </el-col>
                     <el-col :span="8">
                         <el-form-item label="大项：" prop="bigPro">
-                            <el-select v-model="businessForm.bigPro" placeholder="请选择大项">
+                            <el-select v-model="businessForm.bigPro" placeholder="请选择大项" @change="getSmallProList">
                                 <el-option
-                                        v-for="item in bigProjectInfo"
+                                        v-for="item in bigProList"
                                         :key="item.dicKey"
                                         :label="item.dicValue"
                                         :value="item.dicKey">
@@ -127,7 +147,14 @@
                 <el-row :gutter="20">
                     <el-col :span="8">
                         <el-form-item label="小项：" prop="smallPro">
-                            <el-input v-model="businessForm.smallPro" placeholder="请输入小项"></el-input>
+                            <el-select v-model="businessForm.smallPro" placeholder="请选择小项">
+                                <el-option
+                                        v-for="(item, idx) in smallProList"
+                                        :key="idx"
+                                        :label="item"
+                                        :value="item">
+                                </el-option>
+                            </el-select>
                         </el-form-item>
                     </el-col>
                     <el-col :span="8">
@@ -157,10 +184,10 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="8">
-                        <el-form-item label="原项目：" prop="frontPro">
-                            <el-select v-model="businessForm.frontPro" placeholder="请选择原项目">
+                        <el-form-item label="原项目：" prop="oldPro">
+                            <el-select v-model="businessForm.oldPro" placeholder="请选择原项目">
                                 <el-option
-                                        v-for="item in jobInfoList"
+                                        v-for="item in bigProList"
                                         :key="item.dicKey"
                                         :label="item.dicValue"
                                         :value="item.dicKey">
@@ -169,8 +196,8 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="8">
-                        <el-form-item label="训练年限：" prop="trainYear">
-                            <el-input v-model="businessForm.trainYear" placeholder="请输入训练年限"></el-input>
+                        <el-form-item label="原项目训练年限：" prop="trainYear">
+                            <el-input v-model="businessForm.trainYear" placeholder="请输入原项目训练年限"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="8">
@@ -184,7 +211,7 @@
 
         <!--保存-->
         <el-row style="text-align: center;">
-            <el-button v-waves @click="cancelAct()" round style="padding: 12px 35px;">取 消</el-button>
+            <el-button v-waves @click="cancelAct('save')" round style="padding: 12px 35px;">取 消</el-button>
             <el-button v-waves type="primary" round @click="onSubmit" style="padding: 12px 35px;">保存</el-button>
         </el-row>
     </div>
@@ -197,6 +224,7 @@
         mixins: [mixins],
         data() {
             return {
+                smallProList: [],  // 小项列表(无key值)
                 imgUrl: null, // 图片预览地址
                 personForm: {  // 个人信息
                     name: null,
@@ -207,6 +235,7 @@
                     weight: null,
                     jg: null,
                     phone: null,
+                    status: null,
                     photo: null,  // 保存提交的对象
                 },
                 businessForm: {  // 业务信息
@@ -216,7 +245,7 @@
                     smallPro: null,
                     team: null,
                     coach: null,
-                    frontPro: null,
+                    oldPro: null,
                     trainYear: null,
                     joinDate: null,
                 },
@@ -231,11 +260,35 @@
             }
         },
 
+        created() {
+            this.getAllList(); // 获取基础下拉列表
+        },
+
         methods: {
             // 保存人员
             onSubmit() {
                 saveStaff({
+                    // 人员信息
+                    staffId: null, // 更新的时候使用
+                    staffName: this.personForm.name,
+                    gender: parseInt(this.personForm.sex),
+                    birthday: this.personForm.birthday, // ?????? 年月  还是 年月日
+                    height: parseInt(this.personForm.height),
+                    weight: parseInt(this.personForm.weight),
+                    nativePlace: this.personForm.jg,
+                    telphone: this.personForm.phone,
+                    photo: this.personForm.photo,
 
+                    // 业务信息
+                    jobName: this.businessForm.job,
+                    jboLevel: parseInt(this.businessForm.level),
+                    projectId: this.businessForm.bigPro,
+                    childProject: this.businessForm.smallPro,
+                    teamId: this.businessForm.team, // ??? 列表还没有（运动队）
+                    coachId: this.businessForm.coach,
+                    oldProjectId: this.businessForm.oldPro,
+                    oldProjectDuration: this.businessForm.trainYear,
+                    // status: '',  // 人员状态 ？？？？？在哪里
                 }).then(res => {
 
                 })
@@ -271,9 +324,9 @@
             cursor: pointer;
             position: relative;
             overflow: hidden;
-            width: 178px;
-            height: 178px;
-            line-height: 178px;
+            width: 128px;
+            height: 128px;
+            line-height: 128px;
             text-align: center;
         }
 

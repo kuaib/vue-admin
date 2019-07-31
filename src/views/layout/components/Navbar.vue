@@ -1,7 +1,7 @@
 <template>
     <el-menu class="navbar" mode="horizontal">
         <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
-        <div class="projectName">擎动科技</div>
+        <div class="projectName">11111</div>
         <el-row class="right-menu">
             <!--<el-button type="primary" v-if="$route.path.indexOf('/dashboard')!=-1">{{$t('navbar.allAthlete')}}-->
             <!--</el-button>-->

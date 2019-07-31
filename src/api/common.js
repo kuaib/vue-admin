@@ -22,3 +22,11 @@ export function getBaseInfo() {
     })
 }
 
+// 通过大项查找小项
+export function childProject(params) {
+    return request({
+        url: '/sports/sports_staff/childProject',
+        method: 'get',
+        params
+    })
+}
