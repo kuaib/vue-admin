@@ -284,7 +284,7 @@
                         this.personForm.photo = resData.staffName;
 
                         this.businessForm.job = resData.jobName;
-                        this.businessForm.level = resData.jboLevel;
+                        this.businessForm.level = resData.jobLevel;
                         this.businessForm.bigPro = resData.projectId;
                         this.businessForm.smallPro = resData.childProject;
                         this.businessForm.team = resData.teamId;
@@ -372,6 +372,15 @@
             beforeUpload(file) {
 
             }
+        },
+
+        watch: {
+            'businessForm.job': function(val) {
+                this.getLevel(val)
+            },
+            'businessForm.bigPro': function(val) {
+                this.getSmallProList(val)
+            }
         }
     }
 </script>
@@ -420,8 +429,8 @@
         }
 
         .avatar {
-            width: 178px;
-            height: 178px;
+            width: 128px;
+            height: 128px;
             display: block;
         }
     }

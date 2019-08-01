@@ -97,7 +97,21 @@
                 </el-col>
                 <el-col :span="6">
                     <el-form-item prop="name">
-                        <el-input placeholder="请输入姓名" v-model="personForm.name"></el-input>
+                        <el-select
+                                v-model="personForm.name"
+                                filterable
+                                remote
+                                reserve-keyword
+                                placeholder="请输入姓名"
+                                :remote-method="getPersonName"
+                                :loading="nameLoading">
+                            <el-option
+                                    v-for="item in options"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
+                            </el-option>
+                        </el-select>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
@@ -119,12 +133,15 @@
 
 <script>
     import mixin from '@/utils/mixins'
+    import {findStaffName} from '@/api/accountAndPermission'
     export default ({
         mixins: [mixin],
         data() {
             return {
                 roleList: [],   // 角色列表
-                yearList: [],   // 年度列表
+                nameLoading: false, // 搜索姓名时候的loading
+                nameList: [],  // 姓名列表
+                options: [],   // 远程搜索姓名时使用
 
                 // 账号表单
                 accountForm: {
@@ -168,6 +185,30 @@
                     formName = 'personForm';
                 }
                 this.$emit('handleFilter', this[formName])
+            },
+
+            // 人员管理模糊搜索姓名
+            getPersonName(query) {
+                if (query !== '') {
+                    this.nameLoading = true;
+                    findStaffName({staffName: query}).then(res => {
+                        if(res.data.code == 200) {
+                            this.nameLoading = false;
+
+                            this.nameList = res.data.data.map(item => {
+                                return { value: item, label: item };
+                            });
+                            this.options = this.nameList.filter(item => {
+                                return item.label.toLowerCase()
+                                    .indexOf(query.toLowerCase()) > -1;
+                            });
+                        }
+                    })
+
+
+                } else {
+                    this.options = [];
+                }
             }
         }
     })
