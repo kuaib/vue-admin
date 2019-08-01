@@ -7,7 +7,7 @@ export default {
     data() {
         return {
             jobInfoList: [],      // 职位列表(无key值)
-            levelInfoList: [],    // 职位等级列表(无key值)
+            teamInfoList: [],     // 队伍列表
             coachInfoList: [],    // 教练列表
             provinceList: [],     // 省份列表
             bigProList: [],       // 大项列表
@@ -24,7 +24,7 @@ export default {
                     this.$router.go(-1)
                 })
 
-            } else {
+            } else { // 点击取消
                 this.$confirm('离开后页面的信息将不能保存，确认离开吗？ ').then(() => {
                     this.$store.dispatch('delVisitedViews', this.$route).then((views) => {
                         this.$router.go(-1)
@@ -60,15 +60,16 @@ export default {
         //--------------------- 公用接口--------------------------//
 
         // 基础下拉
-        getAllList() {
+        getAllList(successCallback) {
             getBaseInfo().then(res => {
                 if(res.data.code == 200) {
                     let allObj = res.data.data;
-                    this.jobInfoList = allObj.jobInfo;      // 职位列表   (无key值)
-                    this.levelInfoList = allObj.levelInfo;  // 职位等级列表(无key值)
+                    this.jobInfoList = allObj.jobInfo;      // 职位列表(无key值)
+                    this.teamInfoList = allObj.teamInfo;    // 队伍列表
                     this.coachInfoList = allObj.coachInfo;  // 教练列表
                     this.provinceList = allObj.placeInfo;   // 省份列表
                     this.bigProList = allObj.projectInfo;  // 大项列表
+                    successCallback && successCallback();
                 } else {
                     this.$message({
                         message: '获取基础下拉列表失败',

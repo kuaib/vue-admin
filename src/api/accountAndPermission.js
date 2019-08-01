@@ -26,3 +26,12 @@ export function getStaffDetail(params) {
         params
     })
 }
+
+// 通过职位名称查找职级
+export function getLevelByName(params) {
+    return request({
+        url: '/sports/sports_base/getLevelByName',
+        method: 'get',
+        params
+    })
+}

@@ -78,18 +78,21 @@
                 </el-col>
                 <el-col :span="6">
                     <el-form-item prop="name">
-                        el-form-item prop="name">
                         <el-select v-model="teamForm.name" placeholder="请选择队伍名称">
-                            <el-option v-for="item in teamList" :label="item.dicValue" :value="item.dicKey"
-                                       :key="item.dicKey"></el-option>
+                            <el-option
+                                    v-for="(item,idx) in teamInfoList"
+                                    :label="item.dicValue"
+                                    :value="item.dicKey"
+                                    :key="idx">
+                            </el-option>
                         </el-select>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
                     <el-form-item prop="teamState">
                         <el-select v-model="teamForm.teamState" placeholder="请选择队伍状态">
-                            <el-option v-for="item in teamStateList" :label="item.dicValue" :value="item.dicKey"
-                                       :key="item.dicKey"></el-option>
+                            <el-option label="已激活" value="1"></el-option>
+                            <el-option label="未激活" value="0"></el-option>
                         </el-select>
                     </el-form-item>
                 </el-col>
@@ -97,17 +100,25 @@
             <el-row :gutter="20" class="search-item">
                 <el-col :span="6">
                     <el-form-item prop="coach">
-                        <el-select v-model="searchForm.coach" placeholder="请选择教练员">
-                            <el-option v-for="item in coachList" :label="item.dicValue" :value="item.dicKey"
-                                       :key="item.dicKey"></el-option>
+                        <el-select v-model="teamForm.coach" placeholder="请选择教练员">
+                            <el-option
+                                    v-for="(item,idx) in coachInfoList"
+                                    :label="item.dicValue"
+                                    :value="item.dicKey"
+                                    :key="idx">
+                            </el-option>
                         </el-select>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
                     <el-form-item prop="parentPro">
-                        <el-select v-model="searchForm.parentPro" placeholder="请选择隶属大项">
-                            <el-option v-for="item in bigProList" :label="item.dicValue" :value="item.dicKey"
-                                       :key="item.dicKey"></el-option>
+                        <el-select v-model="teamForm.parentPro" placeholder="请选择隶属大项">
+                            <el-option
+                                    v-for="(item,idx) in bigProList"
+                                    :label="item.dicValue"
+                                    :value="item.dicKey"
+                                    :key="idx">
+                            </el-option>
                         </el-select>
                     </el-form-item>
                 </el-col>
@@ -133,19 +144,13 @@
         mixins: [mixins],
         data() {
             return {
-                bigProjectStateList: [],  // 大项状态列表
-                positionStateList: [],    // 职位状态列表
-                teamStateList: [],        // 队伍状态列表
-                teamList: [],   // 队伍列表
-                coachList: [],  // 教练列表
-                bigProList: [], // 大项列表
-
                 // 大项表单
                 bigProjectForm: {
                     id: null,
                     name: null,           // 名称
                     bigProjectState: null // 大项状态
                 },
+
                 // 职位表单
                 positionForm: {
                     id: null,
@@ -168,6 +173,10 @@
             typeName: {  // 引用搜索组件的父组件
                 type: String
             }
+        },
+
+        created() {
+            this.getAllList(); // 获取基础下拉
         },
 
         methods: {

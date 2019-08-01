@@ -93,9 +93,7 @@
                         return false;
                     }
                 });
-            },
-
-
+            }
         }
     }
 </script>

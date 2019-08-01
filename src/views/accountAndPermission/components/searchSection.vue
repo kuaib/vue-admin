@@ -92,22 +92,23 @@
             <el-row :gutter="20" class="search-item">
                 <el-col :span="6">
                     <el-form-item prop="phone">
-                        <el-input placeholder="请输入手机" v-model="personForm.phone"></el-input>
+                        <el-input placeholder="请输入手机" maxlength="11" v-model="personForm.phone"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
                     <el-form-item prop="name">
-                        <el-select v-model="personForm.name" placeholder="请选择姓名">
-                            <el-option v-for="item in nameList" :label="item.dicValue" :value="item.dicKey"
-                                       :key="item.dicKey"></el-option>
-                        </el-select>
+                        <el-input placeholder="请输入姓名" v-model="personForm.name"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
                     <el-form-item prop="position">
                         <el-select v-model="personForm.position" placeholder="请选择职位">
-                            <el-option v-for="item in roleList" :label="item.dicValue" :value="item.dicKey"
-                                       :key="item.dicKey"></el-option>
+                            <el-option
+                                    v-for="(item, idx) in jobInfoList"
+                                    :key="idx"
+                                    :label="item"
+                                    :value="item">
+                            </el-option>
                         </el-select>
                     </el-form-item>
                 </el-col>
@@ -122,9 +123,7 @@
         mixins: [mixin],
         data() {
             return {
-                accountStateList: [],  // 账号状态列表
-                nameList: [],   // 姓名列表
-                roleList: [],  // 角色列表
+                roleList: [],   // 角色列表
                 yearList: [],   // 年度列表
 
                 // 账号表单

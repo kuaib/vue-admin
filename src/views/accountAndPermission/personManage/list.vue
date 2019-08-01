@@ -12,35 +12,36 @@
             </div>
             <el-table :data="list" v-loading="listLoading" border fit highlight-current-row
                       style="width: 100%;">
-                <el-table-column align="center" label="账号id">
+                <el-table-column align="center" label="人员id">
                     <template slot-scope="scope">
-                        <span>{{scope.row.teamName}}</span>
+                        <span>{{scope.row.staffId}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="姓名">
                     <template slot-scope="scope">
-                        <span>{{scope.row.specialName}}</span>
+                        <span>{{scope.row.staffName}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column align="center" label="角色">
+                <el-table-column align="center" label="职位">
                     <template slot-scope="scope">
-                        <span>{{scope.row.categoryName}}</span>
+                        <span>{{scope.row.jobName}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column align="center" label="账号">
+                <el-table-column align="center" label="手机">
                     <template slot-scope="scope">
-                        <span>{{scope.row.organizationName}}</span>
+                        <span>{{scope.row.telphone}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column align="center" label="账号状态">
+                <el-table-column align="center" label="人员状态">
                     <template slot-scope="scope">
-                        <span>{{scope.row.organizationName}}</span>
+                        <span v-if="scope.row.status == 1">已激活</span>
+                        <span v-if="scope.row.status == 0" style="color: red">未激活</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="操作">
                     <template slot-scope="scope">
-                        <el-button size="mini" type="primary" @click="toDetail(scope.row)">详情</el-button>
-                        <el-button size="mini" type="success" @click="toEdit(scope.row)">编辑</el-button>
+                        <!--<el-button size="mini" type="primary" @click="toDetail(scope.row)">详情</el-button>-->
+                        <el-button size="mini" type="primary" @click="toEdit(scope.row)">详情</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -92,7 +93,7 @@
                     status: formData.personState,
                     telphone: formData.phone,
                     staffName: formData.name,
-                    jobId: formData.position  // 职位id
+                    jobName: formData.position  // 职位名称
                 }).then(res => {
                     this.listLoading = false;
                     if (res.data.code === 200) {
@@ -117,7 +118,7 @@
 
             // 去详情
             toEdit(row) {
-                this.$emit('getTeamInfo', row)
+                this.$router.push({path: '/personManage/edit', query: {id: row.staffId}})
             },
         }
     }
