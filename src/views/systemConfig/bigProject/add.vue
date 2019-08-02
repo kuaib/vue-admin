@@ -22,7 +22,20 @@
             <el-row>
                 <el-col :span="8">
                     <el-form-item label="关联小项：" prop="smallPro">
-                        <el-input placeholder="请输入关联小项目(逗号隔开)" v-model="addForm.smallPro"></el-input>
+                        <el-select
+                                v-model="addForm.smallPro"
+                                multiple
+                                filterable
+                                allow-create
+                                default-first-option
+                                placeholder="请输入关联小项">
+                            <!--<el-option-->
+                                    <!--v-for="(item,idx) in addForm.smallPro"-->
+                                    <!--:key="idx"-->
+                                    <!--:label="item"-->
+                                    <!--:value="item">-->
+                            <!--</el-option>-->
+                        </el-select>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -46,7 +59,7 @@
                 addForm: {
                     name: null,
                     bigProjectState: null,
-                    smallPro: null
+                    smallPro: []
                 },
                 rules: {
                     name: [
@@ -56,7 +69,7 @@
                         { required: true, message: '请选择大项状态', trigger: 'change' }
                     ],
                     smallPro: [
-                        { required: true, message: '请输入关联小项', trigger: 'blur' }
+                        { required: true, message: '请输入关联小项', trigger: 'change' }
                     ]
                 }
             }
@@ -71,7 +84,7 @@
                         saveProject({
                             projectName: this.addForm.name,
                             status: this.addForm.bigProjectState,
-                            childProject: this.addForm.smallPro,
+                            childProject: this.addForm.smallPro.join(),
                         }).then(res => {
                             if(res.data.code == 200) {
                                 this.$message({
@@ -93,6 +106,11 @@
                         return false;
                     }
                 });
+            }
+        },
+        watch: {
+            'addForm.smallPro': function(val) {
+                console.log(val)
             }
         }
     }
