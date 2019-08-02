@@ -35,3 +35,12 @@ export function getLevelByName(params) {
         params
     })
 }
+
+// 队伍管理搜索中名字模糊查找
+export function findStaffName(params) {
+    return request({
+        url: '/sports/sports_staff/findStaffName',
+        method: 'get',
+        params
+    })
+}

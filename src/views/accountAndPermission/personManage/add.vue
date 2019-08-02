@@ -34,6 +34,7 @@
                             <el-date-picker
                                     v-model="personForm.birthday"
                                     type="date"
+                                    value-format="yyyy-MM-dd"
                                     placeholder="请选择出生年月日" style="width:100%">
                             </el-date-picker>
                         </el-form-item>
@@ -192,7 +193,13 @@
                     </el-col>
                     <el-col :span="8">
                         <el-form-item label="入队时间：" prop="joinDate">
-                            <el-date-picker type="date" placeholder="请选择入队时间" v-model="businessForm.joinDate" style="width: 100%;"></el-date-picker>
+                            <el-date-picker
+                                    type="date"
+                                    placeholder="请选择入队时间"
+                                    value-format="yyyy-MM-dd"
+                                    v-model="businessForm.joinDate"
+                                    style="width: 100%;">
+                            </el-date-picker>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -291,7 +298,8 @@
                             teamId: this.businessForm.team,
                             coachId: this.businessForm.coach,
                             oldProjectId: this.businessForm.oldPro,
-                            oldProjectDuration: this.businessForm.trainYear
+                            oldProjectDuration: this.businessForm.trainYear,
+                            joinDate: this.businessForm.joinDate
                         }).then(res => {
                             if(res.data.code == 200) {
                                 this.$message({
@@ -387,8 +395,8 @@
         }
 
         .avatar {
-            width: 178px;
-            height: 178px;
+            width: 128px;
+            height: 128px;
             display: block;
         }
     }
