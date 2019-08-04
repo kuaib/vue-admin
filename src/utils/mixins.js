@@ -12,6 +12,7 @@ export default {
             coachInfoList: [],    // 教练列表
             leaderInfoList: [],   // 项目负责人列表
             provinceList: [],     // 省份列表
+            roleInfoList: [],     // 角色列表
             bigProList: [],       // 大项列表
             smallProList: [],     // 小项列表(无key值，通过大项获取小项)
         }
@@ -69,9 +70,10 @@ export default {
                     this.jobInfoList = allObj.jobInfo;      // 职位列表(无key值)
                     this.teamInfoList = allObj.teamInfo;    // 队伍列表
                     this.coachInfoList = allObj.coachInfo;  // 教练列表
-                    this.leaderInfoList = allObj.leaderInfo;  // 教练列表
+                    this.leaderInfoList = allObj.leaderInfo;// 教练列表
                     this.provinceList = allObj.placeInfo;   // 省份列表
                     this.bigProList = allObj.projectInfo;   // 大项列表
+                    this.roleInfoList = allObj.roleInfo;    // 角色列表
                     successCallback && successCallback();
                 } else {
                     this.$message({

@@ -1,4 +1,4 @@
-<!--创建账号-->
+<!--编辑账号-->
 <template>
     <div class="account-permission-add-wrapper">
         <!--账号信息-->
@@ -38,7 +38,7 @@
                     </el-col>
                     <el-col :span="8">
                         <el-form-item label="密码" prop="password">
-                            <el-input v-model="myForm.password" placeholder="请输入密码"></el-input>
+                            <el-input v-model="myForm.password" disabled placeholder="请输入密码"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="8">
@@ -81,7 +81,7 @@
 <script>
     import mixins from '@/utils/mixins'
     import personInfoDetail from '../components/personInfoDetail'
-    import {saveUser, getFullInfo} from '@/api/accountAndPermission'
+    import {saveUser, getFullInfo, getUserDetail} from '@/api/accountAndPermission'
     export default {
         mixins: [mixins],
         components: {personInfoDetail},
@@ -91,11 +91,12 @@
                 personList: [], // 关联人员列表
                 btnLoading: false,
                 myForm: {
+                    accountId: this.$route.query.id,
                     account: null,
                     accountState: null,
                     role: null,
                     phone: null,
-                    password: null,
+                    password: '******',
                     person: null,
                 },
                 myFormRules: {
@@ -119,7 +120,7 @@
         },
 
         created() {
-            this.getAllList()
+            this.getAllList(this.getDetails)
         },
 
         methods: {
@@ -129,10 +130,11 @@
                     if (valid) {
                         this.btnLoading = true;
                         saveUser({
+                            accountId: this.myForm.accountId,
                             username: this.myForm.account,
                             telephone: this.myForm.phone,
                             enabled: this.myForm.accountState == '1' ? true : false,
-                            password: this.myForm.password,
+                            // password: this.myForm.password,  // 编辑暂时不传递
                             roleId: this.myForm.role,
                             relationStaffId: this.myForm.person,
                         }).then(res => {
@@ -181,6 +183,32 @@
             // 获取人员详情
             getPersonInfo(id) {
                 this.$refs.personInfo.getPersonInfo(id);
+            },
+
+            // 获取账号详情
+            getDetails() {
+                getUserDetail({accountId: this.myForm.accountId}).then(res => {
+                    if(res.data.code == 200) {
+                        let resData = res.data.data.sportsUser;
+                        this.myForm.account = resData.username;
+                        this.myForm.phone = resData.telephone;
+                        this.myForm.accountState = resData.enabled ? '1' : '0';
+                        // this.myForm.password = resData.password;
+                        this.myForm.role = resData.roleId.toString();
+                        this.myForm.person = resData.relationStaffId;
+
+                        if(res.data.data.sportsStaff) {
+                            this.personList = [res.data.data.sportsStaff];
+                            this.myForm.person = this.personList[0].staffId;
+                            this.getPersonInfo(this.myForm.person);
+                        }
+                    } else {
+                        this.$message({
+                            message: res.data.msg,
+                            type: 'warning'
+                        });
+                    }
+                })
             }
         }
     }
