@@ -2,13 +2,15 @@
  * 混入
  */
 
-import {getBaseInfo, childProject} from '@/api/common'
+import {getBaseInfo, childProject, getLevelByName} from '@/api/common'
 export default {
     data() {
         return {
             jobInfoList: [],      // 职位列表(无key值)
+            levelList: [],        // 职位级别列表(无key值)
             teamInfoList: [],     // 队伍列表
             coachInfoList: [],    // 教练列表
+            leaderInfoList: [],   // 项目负责人列表
             provinceList: [],     // 省份列表
             bigProList: [],       // 大项列表
             smallProList: [],     // 小项列表(无key值，通过大项获取小项)
@@ -67,8 +69,9 @@ export default {
                     this.jobInfoList = allObj.jobInfo;      // 职位列表(无key值)
                     this.teamInfoList = allObj.teamInfo;    // 队伍列表
                     this.coachInfoList = allObj.coachInfo;  // 教练列表
+                    this.leaderInfoList = allObj.leaderInfo;  // 教练列表
                     this.provinceList = allObj.placeInfo;   // 省份列表
-                    this.bigProList = allObj.projectInfo;  // 大项列表
+                    this.bigProList = allObj.projectInfo;   // 大项列表
                     successCallback && successCallback();
                 } else {
                     this.$message({
@@ -91,6 +94,20 @@ export default {
                     });
                 }
             })
-        }
+        },
+
+        // 通过职位名称查找职级
+        getLevel(jobName) {
+            getLevelByName({jobName: jobName}).then(res => {
+                if(res.data.code == 200) {
+                    this.levelList = res.data.data;
+                } else {
+                    this.$message({
+                        message: res.data.msg,
+                        type: 'warning'
+                    });
+                }
+            })
+        },
     }
 }

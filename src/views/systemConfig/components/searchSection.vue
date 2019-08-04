@@ -82,7 +82,7 @@
                             <el-option
                                     v-for="(item,idx) in teamInfoList"
                                     :label="item.dicValue"
-                                    :value="item.dicKey"
+                                    :value="item.dicValue"
                                     :key="idx">
                             </el-option>
                         </el-select>
@@ -100,9 +100,9 @@
             <el-row :gutter="20" class="search-item">
                 <el-col :span="6">
                     <el-form-item prop="coach">
-                        <el-select v-model="teamForm.coach" placeholder="请选择教练员">
+                        <el-select v-model="teamForm.leader" placeholder="请选择项目负责人">
                             <el-option
-                                    v-for="(item,idx) in coachInfoList"
+                                    v-for="(item,idx) in leaderInfoList"
                                     :label="item.dicValue"
                                     :value="item.dicKey"
                                     :key="idx">
@@ -163,7 +163,7 @@
                     id: null,
                     name: null,
                     teamState: null,
-                    coach: null,      // 教练
+                    leader: null,      // 项目负责人
                     parentPro: null   // 隶属大项
                 }
             }

@@ -27,15 +27,6 @@ export function getStaffDetail(params) {
     })
 }
 
-// 通过职位名称查找职级
-export function getLevelByName(params) {
-    return request({
-        url: '/sports/sports_base/getLevelByName',
-        method: 'get',
-        params
-    })
-}
-
 // 队伍管理搜索中名字模糊查找
 export function findStaffName(params) {
     return request({

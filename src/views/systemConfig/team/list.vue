@@ -14,12 +14,12 @@
                       style="width: 100%;">
                 <el-table-column align="center" label="队伍id">
                     <template slot-scope="scope">
-                        <span>{{scope.row.projectId}}</span>
+                        <span>{{scope.row.teamId}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="队伍名称">
                     <template slot-scope="scope">
-                        <span>{{scope.row.projectName}}</span>
+                        <span>{{scope.row.teamName}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="隶属大项">
@@ -27,9 +27,9 @@
                         <span>{{scope.row.projectName}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column align="center" label="教练员">
+                <el-table-column align="center" label="项目负责人">
                     <template slot-scope="scope">
-                        <span>{{scope.row.projectName}}</span>
+                        <span>{{scope.row.leaderName}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="状态">
@@ -59,7 +59,7 @@
 <script>
     import searchSection  from '../components/searchSection'
     import mixins from '@/utils/mixins'
-    import {getSportsList} from '@/api/systemConfig'
+    import {getTeamList} from '@/api/systemConfig'
     export default {
         mixins: [mixins],
         components: {searchSection},
@@ -80,28 +80,30 @@
         },
 
         methods: {
-            // 创建大项
+            // 创建队伍
             createItem() {
-                this.$router.push('/bigProject/add')
+                this.$router.push('/team/add')
             },
 
-            // 编辑大项
+            // 编辑队伍
             toDetail(row) {
-                this.$router.push({path: '/bigProject/edit', query: {id: row.projectId}})
+                this.$router.push({path: '/team/edit', query: {id: row.teamId}})
             },
 
-            // // 获取列表（外面套一层getList是为了直接调用mixins里面的getList）
-            // getList(formData) {
-            //     this.getBigProList(formData);
-            // },
+            // 解除关联
+            removeRelation() {
 
-            // 获取大项列表
+            },
+
+            // 获取队伍列表
             getList(formData = {}) {
                 this.listLoading = true;
-                getSportsList({
-                    projectId: formData.id,
-                    projectName: formData.name,
-                    status: formData.bigProjectState,
+                getTeamList({
+                    teamId: formData.id,
+                    teamName: formData.name,
+                    status: formData.teamState,
+                    leaderId: formData.leader,
+                    projectId: formData.parentPro,
                     currentPage:  this.listQuery.currentPage,
                     pageSize: this.listQuery.pageSize
                 }).then(res => {
