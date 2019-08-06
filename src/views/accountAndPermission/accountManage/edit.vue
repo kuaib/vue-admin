@@ -33,12 +33,13 @@
                 <el-row :gutter="20">
                     <el-col :span="8">
                         <el-form-item label="电话" prop="phone">
-                            <el-input v-model="myForm.phone" placeholder="请输入电话" maxlength="11"></el-input>
+                            <el-input v-model="myForm.phone" placeholder="请输入电话"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="8">
-                        <el-form-item label="密码" prop="password">
+                        <el-form-item label="密码" prop="password" class="password">
                             <el-input v-model="myForm.password" disabled placeholder="请输入密码"></el-input>
+                            <i class="el-icon-edit" @click="changePsw"></i>
                         </el-form-item>
                     </el-col>
                     <el-col :span="8">
@@ -75,16 +76,20 @@
         <el-row style="text-align: center;">
             <el-button type="primary" round @click="onSubmit('myForm')" :loading="btnLoading" style="padding: 12px 35px;">保存</el-button>
         </el-row>
+
+        <!--修改密码-->
+        <change-psw :accountId="myForm.accountId" ref="changPsw"></change-psw>
     </div>
 </template>
 
 <script>
     import mixins from '@/utils/mixins'
     import personInfoDetail from '../components/personInfoDetail'
+    import changePsw from '../components/changePsw'
     import {saveUser, getFullInfo, getUserDetail} from '@/api/accountAndPermission'
     export default {
         mixins: [mixins],
-        components: {personInfoDetail},
+        components: {personInfoDetail, changePsw},
         data() {
             return {
                 personLoading: false,
@@ -209,6 +214,11 @@
                         });
                     }
                 })
+            },
+
+            // 修改密码
+            changePsw() {
+                this.$refs.changPsw.dialogVisible = true;
             }
         }
     }
@@ -225,6 +235,19 @@
         .static-box {
             .el-form-item {
                 margin-bottom: 0 !important;
+            }
+        }
+        .password {
+            position: relative;
+            .el-icon-edit {
+                position: absolute;
+                right: 0;
+                top: 0;
+                cursor: pointer;
+                width: 30px;
+                height: 100%;
+                text-align: center;
+                line-height: 36px;
             }
         }
     }

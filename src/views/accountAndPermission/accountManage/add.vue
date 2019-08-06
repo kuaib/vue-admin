@@ -33,7 +33,7 @@
                 <el-row :gutter="20">
                     <el-col :span="8">
                         <el-form-item label="电话" prop="phone">
-                            <el-input v-model="myForm.phone" placeholder="请输入电话" maxlength="11"></el-input>
+                            <el-input v-model="myForm.phone" placeholder="请输入电话"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="8">

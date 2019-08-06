@@ -37,6 +37,15 @@ export function getFullInfo(params) {
     })
 }
 
+// 更改密码
+export function changePassword(data) {
+    return request({
+        url: '/sports/sports_user/changePassword',
+        method: 'post',
+        data
+    })
+}
+
 
 // 获取人员列表
 export function getStaffList(params) {
