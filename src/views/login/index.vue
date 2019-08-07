@@ -97,7 +97,7 @@
                             this.loading = false;
                             this.$router.push({path: '/'})
                         }).catch(() => {
-                            this.loading = false
+                            this.loading = false;
                         })
                     } else {
                         console.log('error submit!!')
