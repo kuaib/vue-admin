@@ -44,6 +44,14 @@ export default {
 
         // 点击搜索
         handleFilter(formData) {
+            // 防止属性值为''的属性也能作为参数传递到后台，导致搜索接口出错
+            if(formData) {
+                for(let key in formData) {
+                    if(formData[key] === '') {
+                        formData[key] = null;
+                    }
+                }
+            }
             this.listQuery.currentPage = 1;
             this.getList(formData)
         },

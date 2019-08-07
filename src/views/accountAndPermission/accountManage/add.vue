@@ -42,26 +42,19 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="8">
-                        <el-form-item label="关联人员" prop="person">
-                            <el-select
-                                    v-model="myForm.person"
-                                    filterable
-                                    remote
-                                    reserve-keyword
-                                    placeholder="请选择关联人员"
-                                    :remote-method="getPersonName"
-                                    :loading="personLoading"
-                                    @change="getPersonInfo">
-                                <el-option
-                                        v-for="item in personList"
-                                        :key="item.staffId"
-                                        :label="item.staffName"
-                                        :value="item.staffId">
-                                    <span style="margin-right: 15px;">{{ item.staffName }}</span>
+                        <el-form-item label="关联人员" prop="personName">
+                            <el-autocomplete style="width:100%"
+                                    v-model="myForm.personName"
+                                    :fetch-suggestions="getPersonName"
+                                    @select="getPersonInfo"
+                                    @blur="personBlur"
+                                    placeholder="请选择关联人员">
+                                <template slot-scope="{ item }">
+                                    <span style="margin-right: 15px;">{{ item.value }}</span>
                                     <span style="color: #8492a6; font-size: 13px">{{ item.identity }}</span>
                                     <span style="color: #8492a6; font-size: 13px">{{ item.jobName }}</span>
-                                </el-option>
-                            </el-select>
+                                </template>
+                            </el-autocomplete>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -96,7 +89,8 @@
                     role: null,
                     phone: null,
                     password: null,
-                    person: null,
+                    personName: null,
+                    personId: null
                 },
                 myFormRules: {
                     account: [
@@ -134,7 +128,7 @@
                             enabled: this.myForm.accountState == '1' ? true : false,
                             password: this.myForm.password,
                             roleId: this.myForm.role,
-                            relationStaffId: this.myForm.person,
+                            relationStaffId: this.myForm.personId,
                         }).then(res => {
                             if(res.data.code == 200) {
                                 this.$message({
@@ -157,30 +151,39 @@
             },
 
             // 模糊搜索关联人员
-            getPersonName(query) {
-                if (query !== '') {
-                    this.personLoading = true;
-                    getFullInfo({staffName: query}).then(res => {
-                        if(res.data.code == 200) {
-                            this.personLoading = false;
-                            this.personList = res.data.data
-                            this.personList = res.data.data;
-                            this.options = this.personList.filter(item => {
-                                return item.staffName.toLowerCase()
-                                    .indexOf(query.toLowerCase()) > -1;
-                            });
-                        } else {
+            getPersonName(queryString, cb) {
+                getFullInfo({staffName: queryString}).then(res => {
+                    if(res.data.code == 200) {
+                        let restaurants = res.data.data.map(item => {
+                            return {value: item.staffName, id: item.staffId, identity: item.identity, jobName: item.jobName}
+                        })
 
-                        }
-                    })
-                } else {
-                    this.options = [];
-                }
+                        let results = queryString ? restaurants .filter((queryString) => {
+                            return (state) => {
+                                return (state.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+                            };
+                        }) : restaurants ;
+                        cb(results);
+                    } else {
+                        this.$message({
+                            message: res.data.msg,
+                            type: 'warning'
+                        });
+                    }
+                })
             },
 
             // 获取人员详情
-            getPersonInfo(id) {
-                this.$refs.personInfo.getPersonInfo(id);
+            getPersonInfo(personItem) {
+                this.myForm.personId = personItem.id;
+                this.$refs.personInfo.getPersonInfo(personItem.id);
+            },
+
+            // 关联人员失去焦点
+            personBlur() {
+                if(this.myForm.personName && !this.myForm.personId) {
+                    this.myForm.personName = null;
+                }
             }
         }
     }
@@ -198,6 +201,9 @@
             .el-form-item {
                 margin-bottom: 0 !important;
             }
+        }
+        .el-autocomplete-suggestion {
+            width: 100%;
         }
     }
 </style>

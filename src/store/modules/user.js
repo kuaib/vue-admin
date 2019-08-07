@@ -1109,7 +1109,6 @@ const user = {
         // 获取用户菜单-路由(业务需求，菜单和路由需要在后端返回)
         GetUserMenue({commit, state}) {
             return new Promise((resolve, reject) => {
-                console.log(state.roles[0])
                 getUserMenue(state.roles[0], '2').then(response => {
                     if (response.data.code === 200) {
                         const res = response.data.data;

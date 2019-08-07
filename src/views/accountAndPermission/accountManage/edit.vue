@@ -44,25 +44,18 @@
                     </el-col>
                     <el-col :span="8">
                         <el-form-item label="关联人员" prop="person">
-                            <el-select
-                                    v-model="myForm.person"
-                                    filterable
-                                    remote
-                                    reserve-keyword
-                                    placeholder="请选择关联人员"
-                                    :remote-method="getPersonName"
-                                    :loading="personLoading"
-                                    @change="getPersonInfo">
-                                <el-option
-                                        v-for="item in personList"
-                                        :key="item.staffId"
-                                        :label="item.staffName"
-                                        :value="item.staffId">
-                                    <span style="margin-right: 15px;">{{ item.staffName }}</span>
+                            <el-autocomplete style="width:100%"
+                                             v-model="myForm.personName"
+                                             :fetch-suggestions="getPersonName"
+                                             @select="getPersonInfo"
+                                             @blur="personBlur"
+                                             placeholder="请选择关联人员">
+                                <template slot-scope="{ item }">
+                                    <span style="margin-right: 15px;">{{ item.value }}</span>
                                     <span style="color: #8492a6; font-size: 13px">{{ item.identity }}</span>
                                     <span style="color: #8492a6; font-size: 13px">{{ item.jobName }}</span>
-                                </el-option>
-                            </el-select>
+                                </template>
+                            </el-autocomplete>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -102,7 +95,8 @@
                     role: null,
                     phone: null,
                     password: '******',
-                    person: null,
+                    personName: null,
+                    personId: null
                 },
                 myFormRules: {
                     account: [
@@ -141,7 +135,7 @@
                             enabled: this.myForm.accountState == '1' ? true : false,
                             // password: this.myForm.password,  // 编辑暂时不传递
                             roleId: this.myForm.role,
-                            relationStaffId: this.myForm.person,
+                            relationStaffId: this.myForm.personId,
                         }).then(res => {
                             if(res.data.code == 200) {
                                 this.$message({
@@ -164,30 +158,37 @@
             },
 
             // 模糊搜索关联人员
-            getPersonName(query) {
-                if (query !== '') {
-                    this.personLoading = true;
-                    getFullInfo({staffName: query}).then(res => {
-                        if(res.data.code == 200) {
-                            this.personLoading = false;
-                            this.personList = res.data.data
-                            this.personList = res.data.data;
-                            this.options = this.personList.filter(item => {
-                                return item.staffName.toLowerCase()
-                                    .indexOf(query.toLowerCase()) > -1;
-                            });
-                        } else {
+            getPersonName(queryString, cb) {
+                getFullInfo({staffName: queryString}).then(res => {
+                    if(res.data.code == 200) {
+                        let restaurants = res.data.data.map(item => {
+                            return {value: item.staffName, id: item.staffId, identity: item.identity, jobName: item.jobName}
+                        })
 
-                        }
-                    })
-                } else {
-                    this.options = [];
-                }
+                        let results = queryString ? restaurants .filter((queryString) => {
+                            return (state) => {
+                                return (state.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+                            };
+                        }) : restaurants ;
+                        cb(results);
+                    } else {
+                        this.$message({
+                            message: res.data.msg,
+                            type: 'warning'
+                        });
+                    }
+                })
             },
 
             // 获取人员详情
-            getPersonInfo(id) {
-                this.$refs.personInfo.getPersonInfo(id);
+            getPersonInfo(personItem) {
+                // 两个地方需要调用：搜索选择、初始化渲染页面
+                if(typeof personItem === 'string') {
+                    this.$refs.personInfo.getPersonInfo(personItem);
+                } else {
+                    this.myForm.personId = personItem.id;
+                    this.$refs.personInfo.getPersonInfo(personItem.id);
+                }
             },
 
             // 获取账号详情
@@ -204,8 +205,9 @@
 
                         if(res.data.data.sportsStaff) {
                             this.personList = [res.data.data.sportsStaff];
-                            this.myForm.person = this.personList[0].staffId;
-                            this.getPersonInfo(this.myForm.person);
+                            this.myForm.personId = this.personList[0].staffId;
+                            this.myForm.personName = this.personList[0].staffName;
+                            this.getPersonInfo(this.myForm.personId);
                         }
                     } else {
                         this.$message({
@@ -214,6 +216,13 @@
                         });
                     }
                 })
+            },
+
+            // 关联人员失去焦点
+            personBlur() {
+                if(this.myForm.personName && !this.myForm.personId) {
+                    this.myForm.personName = null;
+                }
             },
 
             // 修改密码

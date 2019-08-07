@@ -30,21 +30,11 @@
                 </el-col>
                 <el-col :span="6">
                     <el-form-item prop="name">
-                        <el-select
+                        <el-autocomplete
                                 v-model="accountForm.name"
-                                filterable
-                                remote
-                                reserve-keyword
+                                :fetch-suggestions="getPersonName"
                                 placeholder="请输入姓名"
-                                :remote-method="getPersonName"
-                                :loading="nameLoading">
-                            <el-option
-                                    v-for="item in options"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
-                            </el-option>
-                        </el-select>
+                        ></el-autocomplete>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
@@ -108,21 +98,11 @@
                 </el-col>
                 <el-col :span="6">
                     <el-form-item prop="name">
-                        <el-select
-                                v-model="personForm.name"
-                                filterable
-                                remote
-                                reserve-keyword
+                        <el-autocomplete
+                                v-model="accountForm.name"
+                                :fetch-suggestions="getPersonName"
                                 placeholder="请输入姓名"
-                                :remote-method="getPersonName"
-                                :loading="nameLoading">
-                            <el-option
-                                    v-for="item in options"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
-                            </el-option>
-                        </el-select>
+                        ></el-autocomplete>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
@@ -189,7 +169,6 @@
         methods: {
             // 搜索
             handleFilter() {
-                console.log(this.typeName)
                 let formName;
                 if(this.typeName === 'account') {
                     formName = 'accountForm';
@@ -200,27 +179,26 @@
             },
 
             // 模糊搜索姓名
-            getPersonName(query) {
-                if (query !== '') {
-                    this.nameLoading = true;
-                    findStaffName({staffName: query}).then(res => {
-                        if(res.data.code == 200) {
-                            this.nameLoading = false;
+            getPersonName(queryString, cb) {
+                findStaffName({staffName: queryString}).then(res => {
+                    if(res.data.code == 200) {
+                        let restaurants = res.data.data.map(item => {
+                            return {value: item}
+                        })
 
-                            this.nameList = res.data.data.map(item => {
-                                return { value: item, label: item };
-                            });
-                            this.options = this.nameList.filter(item => {
-                                return item.label.toLowerCase()
-                                    .indexOf(query.toLowerCase()) > -1;
-                            });
-                        }
-                    })
-
-
-                } else {
-                    this.options = [];
-                }
+                        let results = queryString ? restaurants .filter((queryString) => {
+                            return (state) => {
+                                return (state.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+                            };
+                        }) : restaurants ;
+                        cb(results);
+                    } else {
+                        this.$message({
+                            message: res.data.msg,
+                            type: 'warning'
+                        });
+                    }
+                })
             }
         }
     })
