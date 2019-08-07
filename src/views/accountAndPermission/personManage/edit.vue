@@ -292,6 +292,11 @@
                         this.businessForm.oldPro = resData.oldProjectId;
                         this.businessForm.trainYear = resData.oldProjectDuration;
                         this.businessForm.joinDate = resData.joinDate;
+                    } else {
+                        this.$message({
+                            message: res.data.msg,
+                            type: 'warning'
+                        });
                     }
                 })
             },

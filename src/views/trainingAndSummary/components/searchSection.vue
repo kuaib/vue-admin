@@ -1,107 +1,136 @@
+<!--年、月、周训练计划搜索-->
 <template>
-    <el-form :model="searchForm" ref="searchForm">
-        <el-row :gutter="20" class="search-item">
-            <el-col :span="6">
-                <el-form-item prop="id">
-                    <el-input placeholder="idPlaceholder" v-model="searchForm.id"></el-input>
-                </el-form-item>
-            </el-col>
-            <el-col :span="6">
-                <el-form-item prop="sport">
-                    <el-select v-model="searchForm.sport" placeholder="请选择项目 Select Sport">
-                        <el-option v-for="item in sportItem" :label="item.dicValue" :value="item.dicKey"
-                                   :key="item.dicKey"></el-option>
-                    </el-select>
-                </el-form-item>
-            </el-col>
-            <el-col :span="6">
-                <el-form-item prop="team">
-                    <el-select v-model="searchForm.team" placeholder="选择队伍 Select Team">
-                        <el-option v-for="item in teamList" :label="item.dicValue" :value="item.dicKey"
-                                   :key="item.dicKey"></el-option>
-                    </el-select>
-                </el-form-item>
-            </el-col>
-            <el-col :span="6" v-if="typeName">
-                <el-button type="success" @click="createAct" style="float: right;">{{actBtnName}}</el-button>
-            </el-col>
-        </el-row>
-        <el-row :gutter="20" class="search-item">
-            <el-col :span="6">
-                <el-form-item prop="coach">
-                    <el-select v-model="searchForm.coach" placeholder="请选择教练 Select Coach">
-                        <el-option v-for="item in coachList" :label="item.dicValue" :value="item.dicKey"
-                                   :key="item.dicKey"></el-option>
-                    </el-select>
-                </el-form-item>
-            </el-col>
-            <el-col :span="6">
-                <el-form-item prop="year">
-                    <el-select v-model="searchForm.year" placeholder="请选择训练年度 Select Year">
-                        <el-option v-for="item in yearList" :label="item.dicValue" :value="item.dicKey"
-                                   :key="item.dicKey"></el-option>
-                    </el-select>
-                </el-form-item>
-            </el-col>
-            <el-col :span="3">
-                <el-form-item prop="name">
-                    <el-button type="primary" v-waves icon="el-icon-search" @click="handleFilter">搜索 Search</el-button>
-                </el-form-item>
-            </el-col>
-            <el-col :span="3">
-                <el-form-item prop="name">
-                    <el-button class="search" type="info" v-waves @click="resetForm('searchForm')">重置 Reset</el-button>
-                </el-form-item>
-            </el-col>
-        </el-row>
-    </el-form>
+    <div>
+        <el-form :model="searchForm" ref="searchForm">
+            <el-row :gutter="20" class="search-item">
+                <el-col :span="6">
+                    <el-form-item prop="id">
+                        <el-input :placeholder="'请输入'+typeName+'id'" v-model="searchForm.id"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                    <el-form-item prop="project">
+                        <el-select v-model="searchForm.project" placeholder="请选择项目">
+                            <el-option
+                                    v-for="item in bigProList"
+                                    :label="item.dicValue"
+                                    :value="item.dicKey"
+                                    :key="item.dicKey">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                    <el-form-item prop="team">
+                        <el-select v-model="searchForm.team" placeholder="请选择队伍">
+                            <el-option
+                                    v-for="item in teamInfoList"
+                                    :label="item.dicValue"
+                                    :value="item.dicKey"
+                                    :key="item.dicKey">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <el-row :gutter="20" class="search-item">
+                <el-col :span="6">
+                    <el-form-item prop="coach">
+                        <el-select v-model="searchForm.coach" placeholder="请选择教练">
+                            <el-option
+                                    v-for="item in coachInfoList"
+                                    :label="item.dicValue"
+                                    :value="item.dicKey"
+                                    :key="item.dicKey">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                    <el-form-item prop="team">
+                        <el-date-picker
+                                v-model="searchForm.trainYear"
+                                type="year"
+                                placeholder="请选择训练年度">
+                        </el-date-picker>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="3">
+                    <el-form-item prop="name">
+                        <el-button type="primary" v-waves icon="el-icon-search" @click="handleFilter">搜索 Search</el-button>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="3">
+                    <el-form-item prop="name">
+                        <el-button class="search" type="info" v-waves @click="resetForm('searchForm')">重置 Reset</el-button>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+        </el-form>
+
+    </div>
 </template>
 
 <script>
     import mixin from '@/utils/mixins'
+    import {findStaffName} from '@/api/accountAndPermission'
     export default ({
         mixins: [mixin],
-        props: {
-            idPlaceholder: {  // id的placeHolder
-                type: String,
-                default: '输入ID'
-            },
-            actBtnName: {  // 操作按钮的名字
-                type: String,
-                default: '创建'
-            },
-            typeName: { // 类型名称（年/月/周）
-                type: String,
-                default: ''
-            }
-        },
         data() {
             return {
-                sportItem: [],  // 项目列表
-                teamList: [],   // 队伍列表
-                coachList: [],  // 教练列表
-                yearList: [],   // 年度列表
+                roleList: [],   // 角色列表
+                nameLoading: false, // 搜索姓名时候的loading
+                nameList: [],  // 姓名列表
+                options: [],   // 远程搜索姓名时使用
+
                 searchForm: {
-                    id: '',
-                    sport: '',
-                    team: '',
-                    coach: '',
-                    year: ''
-                },
+                    id: null,
+                    project: null,
+                    team: null,
+                    coach: null,
+                    trainYear: null,
+                }
+            }
+        },
+
+        created() {
+            this.getAllList(); // 获取基础下拉
+        },
+
+        props: {
+            typeName: {  // 引用搜索组件的父组件
+                type: String
             }
         },
 
         methods: {
-            // 如果有创建按钮
-            createAct() {
-                if(this.typeName === '年') {
-                    this.$router.push('/yearTraining/details');
-                }
-            },
-
             // 搜索
             handleFilter() {
                 this.$emit('handleFilter', this.searchForm)
+            },
+
+            // 人员管理模糊搜索姓名
+            getPersonName(query) {
+                if (query !== '') {
+                    this.nameLoading = true;
+                    findStaffName({staffName: query}).then(res => {
+                        if(res.data.code == 200) {
+                            this.nameLoading = false;
+
+                            this.nameList = res.data.data.map(item => {
+                                return { value: item, label: item };
+                            });
+                            this.options = this.nameList.filter(item => {
+                                return item.label.toLowerCase()
+                                    .indexOf(query.toLowerCase()) > -1;
+                            });
+                        }
+                    })
+
+
+                } else {
+                    this.options = [];
+                }
             }
         }
     })
