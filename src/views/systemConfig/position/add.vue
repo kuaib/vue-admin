@@ -1,38 +1,38 @@
 <!--创建职位-->
 <template>
-        <el-form :model="addForm" :rules="rules" ref="addForm" label-width="100px">
-            <el-row class="form-title">职位信息</el-row>
-            <el-row>
-                <el-col :span="8">
-                    <el-form-item label="职位名称：" prop="name">
-                        <el-input placeholder="请输入职位名称" v-model="addForm.name"></el-input>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row>
-                <el-col :span="8">
-                    <el-form-item label="职位状态：" prop="positionState">
-                        <el-select v-model="addForm.positionState" placeholder="请选择职位状态">
-                            <el-option label="已激活" value="1"></el-option>
-                            <el-option label="未激活" value="0"></el-option>
-                        </el-select>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row>
-                <el-col :span="8">
-                    <el-form-item label="职位级别：" prop="positionLevel">
-                        <el-input placeholder="请输入职位级别(仅运动员需要填写)" v-model="addForm.positionLevel"></el-input>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row>
-                <el-col :span="8" style="text-align:center;">
-                    <el-button v-waves @click="cancelAct">取 消</el-button>
-                    <el-button v-waves type="primary" :loading="btnLoading" @click="toSubmit('addForm')">保 存</el-button>
-                </el-col>
-            </el-row>
-        </el-form>
+    <el-form :model="addForm" :rules="rules" ref="addForm" label-width="100px">
+        <el-row class="form-title">职位信息</el-row>
+        <el-row>
+            <el-col :span="8">
+                <el-form-item label="职位名称：" prop="name">
+                    <el-input placeholder="请输入职位名称" v-model="addForm.name"></el-input>
+                </el-form-item>
+            </el-col>
+        </el-row>
+        <el-row>
+            <el-col :span="8">
+                <el-form-item label="职位状态：" prop="positionState">
+                    <el-select v-model="addForm.positionState" placeholder="请选择职位状态">
+                        <el-option label="已激活" value="1"></el-option>
+                        <el-option label="未激活" value="0"></el-option>
+                    </el-select>
+                </el-form-item>
+            </el-col>
+        </el-row>
+        <el-row>
+            <el-col :span="8">
+                <el-form-item label="职位级别：" prop="positionLevel">
+                    <el-input placeholder="请输入职位级别(仅运动员需要填写)" v-model="addForm.positionLevel"></el-input>
+                </el-form-item>
+            </el-col>
+        </el-row>
+        <el-row>
+            <el-col :span="8" style="text-align:center;">
+                <el-button v-waves @click="cancelAct">取 消</el-button>
+                <el-button v-waves type="primary" :loading="btnLoading" @click="toSubmit('addForm')">保 存</el-button>
+            </el-col>
+        </el-row>
+    </el-form>
 </template>
 
 <script>

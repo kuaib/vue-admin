@@ -216,13 +216,12 @@
 
 <script>
     import mixins from '@/utils/mixins'
-    import {saveStaff, getLevelByName} from '@/api/accountAndPermission'
+    import {saveStaff} from '@/api/accountAndPermission'
     export default {
         mixins: [mixins],
         data() {
             return {
                 btnLoading: false,
-                levelList: [],  // 职位级别列表(无key值)
                 imgUrl: null, // 图片预览地址
                 personForm: {  // 个人信息
                     name: null,
@@ -321,20 +320,6 @@
                         return false;
                     }
                 });
-            },
-
-            // 通过职位名称查找职级
-            getLevel(jobName) {
-                getLevelByName({jobName: jobName}).then(res => {
-                    if(res.data.code == 200) {
-                        this.levelList = res.data.data;
-                    } else {
-                        this.$message({
-                            message: res.data.msg,
-                            type: 'warning'
-                        });
-                    }
-                })
             },
 
             // 图片上传成功回调函数

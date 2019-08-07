@@ -1,7 +1,8 @@
+<!--账号管理--列表-->
 <template>
     <div class="account-permission-wrapper">
         <!--搜索-->
-        <search-section typeName='account'></search-section>
+        <search-section typeName='account' @handleFilter="handleFilter"></search-section>
 
         <!--表格-->
         <el-row>
@@ -13,33 +14,33 @@
                       style="width: 100%;">
                 <el-table-column align="center" label="账号id">
                     <template slot-scope="scope">
-                        <span>{{scope.row.teamName}}</span>
+                        <span>{{scope.row.accountId}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="姓名">
                     <template slot-scope="scope">
-                        <span>{{scope.row.specialName}}</span>
+                        <span>{{scope.row.staffName}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="角色">
                     <template slot-scope="scope">
-                        <span>{{scope.row.categoryName}}</span>
+                        <span>{{scope.row.roleName}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="账号">
                     <template slot-scope="scope">
-                        <span>{{scope.row.organizationName}}</span>
+                        <span>{{scope.row.username}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="账号状态">
                     <template slot-scope="scope">
-                        <span>{{scope.row.organizationName}}</span>
+                        <span v-if="scope.row.enabled == 1">已激活</span>
+                        <span v-if="scope.row.enabled == 0" style="color: red">未激活</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="操作">
                     <template slot-scope="scope">
                         <el-button size="mini" type="primary" @click="toDetail(scope.row)">详情</el-button>
-                        <el-button size="mini" type="success" @click="toEdit(scope.row)">编辑</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -58,6 +59,7 @@
 <script>
     import searchSection from '../components/searchSection'
     import mixins from '@/utils/mixins'
+    import {getUserList} from '@/api/accountAndPermission'
     export default {
         components: {searchSection},
         mixins: [mixins],
@@ -75,36 +77,39 @@
         },
 
         created() {
-            // this.getList();
+            this.getList();
         },
 
         methods: {
             // 获取账号列表
-            getList(formData) {
-                console.log(formData)
+            getList(formData = {}) {
                 this.listLoading = true;
-                // getTeamList(
-                //     {
-                //         currentPage: this.listQuery.current,
-                //         pageSize: this.listQuery.pageSize,
-                //         keyWord: this.listQuery.keyWord
-                //     }).then(res => {
-                //     this.listLoading = false;
-                //     if (res.data.code === 200) {
-                //         const data = res.data.data;
-                //         this.list = data.list;
-                //         this.total = data.pagination.total;
-                //         this.listQuery.current = data.pagination.current;
-                //     } else {
-                //         this.$message({
-                //             message: res.data.msg,
-                //             type: 'warning'
-                //         })
-                //     }
-                // }).catch(rej => {
-                //     this.listLoading = false;
-                //     console.log('获取队伍列表失败')
-                // })
+                getUserList({
+                    currentPage: this.listQuery.current,
+                    pageSize: this.listQuery.pageSize,
+                    accountId: formData.id,
+                    username: formData.account,
+                    enabled: formData.accountState,
+                    telephone: formData.phone,
+                    staffName: formData.name,
+                    roleId: formData.role,
+                }).then(res => {
+                    this.listLoading = false;
+                    if (res.data.code === 200) {
+                        const data = res.data.data;
+                        this.list = data.list;
+                        this.total = data.pagination.total;
+                        this.listQuery.current = data.pagination.current;
+                    } else {
+                        this.$message({
+                            message: res.data.msg,
+                            type: 'warning'
+                        })
+                    }
+                }).catch(rej => {
+                    this.listLoading = false;
+                    console.log('获取队伍列表失败')
+                })
             },
 
             // 创建账号
@@ -113,8 +118,8 @@
             },
 
             // 去详情
-            toEdit(row) {
-                this.$emit('getTeamInfo', row)
+            toDetail(row) {
+                this.$router.push({path: '/accountManage/edit', query: {id: row.accountId}})
             },
         }
     }

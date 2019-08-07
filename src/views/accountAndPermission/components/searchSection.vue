@@ -25,21 +25,32 @@
             <el-row :gutter="20" class="search-item">
                 <el-col :span="6">
                     <el-form-item prop="phone">
-                        <el-input placeholder="请输入电话" v-model="accountForm.phone"></el-input>
+                        <el-input placeholder="请输入电话" v-model="accountForm.phone" maxlength="11"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
                     <el-form-item prop="name">
-                        <el-select v-model="accountForm.name" placeholder="请选择姓名">
-                            <el-option v-for="item in nameList" :label="item.dicValue" :value="item.dicKey"
-                                       :key="item.dicKey"></el-option>
+                        <el-select
+                                v-model="accountForm.name"
+                                filterable
+                                remote
+                                reserve-keyword
+                                placeholder="请输入姓名"
+                                :remote-method="getPersonName"
+                                :loading="nameLoading">
+                            <el-option
+                                    v-for="item in options"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
+                            </el-option>
                         </el-select>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
                     <el-form-item prop="role">
                         <el-select v-model="accountForm.role" placeholder="请选择角色">
-                            <el-option v-for="item in roleList" :label="item.dicValue" :value="item.dicKey"
+                            <el-option v-for="item in roleInfoList" :label="item.dicValue" :value="item.dicKey"
                                        :key="item.dicKey"></el-option>
                         </el-select>
                     </el-form-item>
@@ -178,16 +189,17 @@
         methods: {
             // 搜索
             handleFilter() {
+                console.log(this.typeName)
                 let formName;
-                if(this.typeName==='account') {
+                if(this.typeName === 'account') {
                     formName = 'accountForm';
-                } else if(this.typeName==='person') {
+                } else if(this.typeName === 'person') {
                     formName = 'personForm';
                 }
                 this.$emit('handleFilter', this[formName])
             },
 
-            // 人员管理模糊搜索姓名
+            // 模糊搜索姓名
             getPersonName(query) {
                 if (query !== '') {
                     this.nameLoading = true;
