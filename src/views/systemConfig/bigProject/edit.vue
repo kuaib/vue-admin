@@ -37,12 +37,6 @@
                             allow-create
                             default-first-option
                             placeholder="请输入关联小项">
-                        <!--<el-option-->
-                        <!--v-for="(item,idx) in addForm.smallPro"-->
-                        <!--:key="idx"-->
-                        <!--:label="item"-->
-                        <!--:value="item">-->
-                        <!--</el-option>-->
                     </el-select>
                 </el-form-item>
             </el-col>

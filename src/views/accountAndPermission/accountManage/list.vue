@@ -108,7 +108,7 @@
                     }
                 }).catch(rej => {
                     this.listLoading = false;
-                    console.log('获取队伍列表失败')
+                    console.log('获取账号列表失败')
                 })
             },
 
