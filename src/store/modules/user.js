@@ -1228,7 +1228,10 @@ const user = {
                             commit('SET_ROUTERS', newRouters);
                             resolve()
                         } else {
-                            reject('getInfo: routers must be a non-null array !')
+                            let newRouters = reformRouters(aa);
+                            commit('SET_ROUTERS', newRouters);
+                            resolve()
+                            // reject('getInfo: routers must be a non-null array !')
                         }
                     } else {
                         Vue.prototype.$message({

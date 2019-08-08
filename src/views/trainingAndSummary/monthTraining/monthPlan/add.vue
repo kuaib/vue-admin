@@ -10,29 +10,29 @@
                 <el-row :gutter="20">
                     <el-col :span="8">
                         <el-form-item label="项目：">
-                            <span>花样滑冰</span>
+                            <span>{{baseForm.project}}</span>
                         </el-form-item>
                     </el-col>
                     <el-col :span="8">
                         <el-form-item label="教练：">
-                            <span>花样滑冰</span>
+                            <span>{{baseForm.coach}}</span>
                         </el-form-item>
                     </el-col>
                     <el-col :span="8">
                         <el-form-item label="队伍：">
-                            <span>花样滑冰</span>
+                            <span>{{baseForm.team}}</span>
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="8">
                         <el-form-item label="训练年度：">
-                            <span>花样滑冰</span>
+                            <span>{{baseForm.trainYear}}</span>
                         </el-form-item>
                     </el-col>
                     <el-col :span="8">
                         <el-form-item label="状态：">
-                            <span>花样滑冰</span>
+                            <span>{{baseForm.status=='1'?'已提交':'未提交'}}</span>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -42,11 +42,17 @@
 </template>
 
 <script>
+    import trainPlan from './components/trainPlan'
     export default {
+        components: {trainPlan},
         data() {
             return {
                 baseForm: {
-
+                    project: null,
+                    coach: null,
+                    team: null,
+                    trainYear: null,
+                    status: '0',
                 }
             }
         }

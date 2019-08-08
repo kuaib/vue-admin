@@ -44,12 +44,12 @@
                     <span>{{scope.row.coachName}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="训练目标">
+            <el-table-column align="center" label="训练目标" :show-overflow-tooltip="true">
                 <template slot-scope="scope">
                     <span>{{scope.row.trainTarget}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="训练内容">
+            <el-table-column align="center" label="训练内容" :show-overflow-tooltip="true">
                 <template slot-scope="scope">
                     <span>{{scope.row.trainContent}}</span>
                 </template>
