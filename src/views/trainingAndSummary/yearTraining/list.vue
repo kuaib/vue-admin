@@ -1,7 +1,7 @@
 <template>
     <div class="year-training-wrapper">
         <!--搜索-->
-        <search-section typeName="年训练" @handleFilter="handleFilter"></search-section>
+        <search-section typeName="年计划" @handleFilter="handleFilter"></search-section>
 
         <!--表格-->
         <el-row>
@@ -36,6 +36,17 @@
                         <span>{{scope.row.coachName}}</span>
                     </template>
                 </el-table-column>
+                <el-table-column align="center" label="状态">
+                    <template slot-scope="scope">
+                        <span v-if="scope.row.status==0" style="color:red;">未提交</span>
+                        <span v-if="scope.row.status==1">已提交</span>
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" label="提交时间">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.updatedTime}}</span>
+                    </template>
+                </el-table-column>
                 <el-table-column align="center" label="操作">
                     <template slot-scope="scope">
                         <el-button size="mini" type="primary" @click="toEdit(scope.row)">详情</el-button>
@@ -63,13 +74,12 @@
         components: {searchSection},
         data() {
             return {
-                list: null,          // table列表
+                list: [],            // table列表
                 total: null,         // 总条目数
                 listLoading: false,  // 查询table的loading
                 listQuery: {
                     currentPage: 1,
-                    pageSize: 10,
-                    keyWord: null
+                    pageSize: 10
                 }
             }
         },
@@ -89,7 +99,7 @@
                     projectId: formData.project,
                     teamId: formData.team,
                     coachId: formData.coach,
-                    trainYear: formData.trainYear,
+                    trainYear: formData.trainYear && (formData.trainYear[0] + ',' + formData.trainYear[1]),
                 }).then(res => {
                     this.listLoading = false;
                     if (res.data.code === 200) {
@@ -114,13 +124,13 @@
 
             // 去详情
             toEdit(row) {
-                this.$router.push({path: '/yearTraining/edit', query: {id: row.staffId}})
+                this.$router.push({path: '/yearTraining/edit', query: {id: row.trainId, status: row.status}})
             },
         }
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
     .year-training-wrapper {
         .table-title {
             margin-top: 20px;
@@ -133,6 +143,12 @@
             button {
                 float: right;
             }
+        }
+        .el-date-editor .el-range-separator {
+            padding: 0 !important;
+        }
+        .el-date-editor .el-range-input {
+            width: 60%;
         }
     }
 </style>

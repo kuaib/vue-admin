@@ -15,6 +15,8 @@ export default {
             roleInfoList: [],     // 角色列表
             bigProList: [],       // 大项列表
             smallProList: [],     // 小项列表(无key值，通过大项获取小项)
+
+            searchFormData: {},   // 搜索条件
         }
     },
 
@@ -40,6 +42,7 @@ export default {
         // 重置表单
         resetForm(formName) {
             this.$refs[formName].resetFields();
+            this.searchFormData = {};
         },
 
         // 点击搜索
@@ -51,6 +54,7 @@ export default {
                         formData[key] = null;
                     }
                 }
+                this.searchFormData = formData;
             }
             this.listQuery.currentPage = 1;
             this.getList(formData)
@@ -59,13 +63,13 @@ export default {
         // 改变每页显示条目数
         handleSizeChange(val) {
             this.listQuery.pageSize = val;
-            this.getList()
+            this.getList(this.searchFormData)
         },
 
         // 跳转到指定页数
         handleCurrentChange(val) {
             this.listQuery.currentPage = val;
-            this.getList()
+            this.getList(this.searchFormData)
         },
 
         //--------------------- 公用接口--------------------------//

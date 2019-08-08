@@ -1,5 +1,6 @@
+<!--创建年计划-->
 <template>
-    <div class="year-train-edit-wrapper">
+    <div class="year-train-add-wrapper">
         <!--基础信息-->
         <el-card class="static-box card-box">
             <div slot="header" class="clearfix">
@@ -74,23 +75,34 @@
             </el-form>
         </el-card>
 
+        <!--行程详情-->
+        <el-card class="static-box card-box">
+            <div slot="header" class="clearfix">
+                <span class="section-title">行程详情</span>
+            </div>
+            <trip-detail @validateBaseForm="validateBaseForm" ref="tripDetail"></trip-detail>
+        </el-card>
+
         <!--保存-->
         <el-row style="text-align: center;">
-            <el-button type="primary" round @click="onSubmit('baseForm')" :loading="btnLoading" style="padding: 12px 35px;">保存</el-button>
+            <el-button type="primary" round @click="onSubmit('baseForm','0')" :loading="btnLoading" style="padding: 12px 35px;">保存草稿</el-button>
+            <el-button type="primary" round @click="onSubmit('baseForm','1')" :loading="btnLoading" style="padding: 12px 35px;">提 交</el-button>
         </el-row>
     </div>
 </template>
 
 <script>
+    import tripDetail from  './components/tripDetail'
     import mixins from '@/utils/mixins'
     import {saveYearTrain} from '@/api/trainingAndSummary'
     export default {
+        components: {tripDetail},
         mixins: [mixins],
         data() {
             return {
-                value1: '',
                 btnLoading: false,
                 baseForm: {
+                    trainId: this.$route.query.id,
                     bigPro: null,
                     team: null,
                     coach: null,
@@ -123,18 +135,20 @@
 
         methods: {
             // 提交
-            onSubmit(formName) {
-                console.log(this.baseForm)
+            onSubmit(formName, types) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         this.btnLoading = true;
+                        let detail = this.formateList(this.$refs.tripDetail.list);
                         saveYearTrain({
-                            trainId: null,
-                            trainYear: this.baseForm.trainYear[0] + ',' + this.baseForm.trainYear[1],
+                            trainId: this.baseForm.trainId,
+                            trainYear: this.baseForm.trainYear[0] + '~' + this.baseForm.trainYear[1],
                             teamId: this.baseForm.team,
                             projectId: this.baseForm.bigPro,
                             leaderId: this.baseForm.leader,
-                            coachId: this.baseForm.leader,
+                            coachId: this.baseForm.coach,
+                            status: parseInt(types),
+                            detail: detail
                         }).then(res => {
                             if(res.data.code == 200) {
                                 this.$message({
@@ -154,15 +168,51 @@
                         })
                     }
                 })
+            },
+
+            // 增加行程先判断主表单是否已填写
+            validateBaseForm(rowIdx) {
+                this.$refs.baseForm.validate((valid) => {
+                    if (valid) {
+                        this.$refs.tripDetail.dialogVisible = true;
+                        // 通过编辑进入dialog
+                        if(rowIdx !== undefined) {
+                            this.$refs.tripDetail.getTripDetail(rowIdx);
+                        }
+                    }
+                })
+            },
+
+            // 格式化行程列表
+            formateList(list) {
+                let arr = [];
+                list.forEach(item => {
+                    let obj = {};
+                    obj.journeyName = item.tripName;
+                    obj.trainType = parseInt(item.trainType);
+                    obj.startDate = item.startDate;
+                    obj.endDate = item.endDate;
+                    obj.country = item.country;
+                    obj.city = item.city;
+                    obj.coachId = item.coach;
+                    obj.coachName = item.coachName;
+                    obj.trainPurpose = item.trainTarget;
+                    obj.trainContent = item.trainContent;
+                    arr.push(obj);
+                });
+                return JSON.stringify(arr)
             }
         }
     }
 </script>
 
 <style lang="scss">
-    .year-train-edit-wrapper {
+    .year-train-add-wrapper {
         .el-date-editor .el-range-separator {
             padding: 0 !important;
+        }
+        .card-box {
+            margin-bottom: 25px;
         }
     }
 </style>

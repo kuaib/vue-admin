@@ -46,12 +46,15 @@
                         </el-select>
                     </el-form-item>
                 </el-col>
-                <el-col :span="6">
+                <el-col :span="8">
                     <el-form-item prop="team">
                         <el-date-picker
                                 v-model="searchForm.trainYear"
-                                type="year"
-                                placeholder="请选择训练年度">
+                                type="monthrange"
+                                value-format="yyyy-MM"
+                                range-separator="至"
+                                start-placeholder="训练年度开始年月"
+                                end-placeholder="训练年度结束年月">
                         </el-date-picker>
                     </el-form-item>
                 </el-col>

@@ -18,3 +18,12 @@ export function saveYearTrain(data) {
         data
     })
 }
+
+// 获取年计划详情
+export function getYearDetail(params) {
+    return request({
+        url: '/sports/sports_train_year/detail',
+        method: 'get',
+        params
+    })
+}
