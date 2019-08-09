@@ -139,7 +139,7 @@
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         this.btnLoading = true;
-                        let detail = this.formateList(this.$refs.tripDetail.list);
+                        let detail = this.formatList(this.$refs.tripDetail.list);
                         saveYearTrain({
                             trainId: this.baseForm.trainId,
                             trainYear: this.baseForm.trainYear[0] + '~' + this.baseForm.trainYear[1],
@@ -184,11 +184,11 @@
             },
 
             // 格式化行程列表
-            formateList(list) {
+            formatList(list) {
                 let arr = [];
-                list.forEach(item => {
+                list.forEach((item, idx) => {
                     let obj = {};
-                    obj.journeyName = item.tripName;
+                    obj.journeyName = '行程' + (idx + 1);
                     obj.trainType = parseInt(item.trainType);
                     obj.startDate = item.startDate;
                     obj.endDate = item.endDate;

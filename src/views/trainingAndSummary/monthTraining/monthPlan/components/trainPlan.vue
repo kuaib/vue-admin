@@ -1,9 +1,10 @@
 <!--月训练计划 -- 训练计划列表-->
 <template>
     <div class="month-plan-train-wrapper">
-        <el-table :data="list" v-loading="listLoading" border fit highlight-current-row empty-text="暂无训练计划"
+        <el-table :data="list" border fit highlight-current-row empty-text="暂无训练计划"
                   style="width: 100%;">
             <el-table-column
+                    align="center"
                     label="序号"
                     type="index"
                     width="50">
@@ -15,17 +16,17 @@
             </el-table-column>
             <el-table-column align="center" label="训练内容">
                 <template slot-scope="scope">
-                    <span>{{scope.row.country}}</span>
+                    <span>{{scope.row.trainContent}}</span>
                 </template>
             </el-table-column>
             <el-table-column align="center" label="训练目的">
                 <template slot-scope="scope">
-                    <span>{{scope.row.city}}</span>
+                    <span>{{scope.row.trainPurposeSelectedName}}</span>
                 </template>
             </el-table-column>
             <el-table-column align="center" label="短板">
                 <template slot-scope="scope">
-                    <span>{{scope.row.coachName}}</span>
+                    <span>{{scope.row.shortBoard}}</span>
                 </template>
             </el-table-column>
             <el-table-column align="center" label="期望目标" :show-overflow-tooltip="true">
@@ -35,26 +36,21 @@
             </el-table-column>
             <el-table-column align="center" label="操作" v-if="id&&status=='0' || !id&&!status">
                 <template slot-scope="scope">
-                    <el-button size="mini" type="primary" @click="validateBaseForm(scope.$index)">详情</el-button>
+                    <el-button size="mini" type="primary" @click="validateBaseForm(scope.$index)">编辑</el-button>
                 </template>
             </el-table-column>
         </el-table>
         <div class="add-btn" v-if="status!='1'"><span @click="validateBaseForm">增加训练计划>></span></div>
 
-        <!--创建行程dialog-->
+        <!--创建dialog-->
         <el-dialog
                 :show-close="false"
-                title="训练行程"
+                title="训练计划"
                 :visible.sync="dialogVisible"
                 width="60%"
                 center>
             <el-form :model="addForm" :rules="rules" ref="addForm" label-width="120px">
                 <el-row :gutter="20">
-                    <el-col :span="12">
-                        <el-form-item label="训练内容" prop="tripName">
-                            <el-input v-model="addForm.trainContent" placeholder="请输入训练内容"></el-input>
-                        </el-form-item>
-                    </el-col>
                     <el-col :span="12">
                         <el-form-item label="训练类型" prop="trainType">
                             <el-select v-model="addForm.trainType" placeholder="请选择训练类型">
@@ -63,8 +59,13 @@
                             </el-select>
                         </el-form-item>
                     </el-col>
+                    <el-col :span="12">
+                        <el-form-item label="训练内容" prop="trainContent">
+                            <el-input v-model="addForm.trainContent" placeholder="请输入训练内容"></el-input>
+                        </el-form-item>
+                    </el-col>
                 </el-row>
-                <el-row>
+                <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item label="短板" prop="shortBoard">
                             <el-input v-model="addForm.shortBoard" placeholder="请输入短板"></el-input>
@@ -73,15 +74,19 @@
                 </el-row>
 
                 <el-row :gutter="20">
-                    <el-form-item label="训练目的" prop="trainPurpose">
-                        <div>
-
-                        </div>
-                    </el-form-item>
+                    <el-col :span="24">
+                        <el-form-item label="训练目的" prop="trainPurposeSelected">
+                            <el-transfer
+                                    v-model="addForm.trainPurposeSelected"
+                                    :data="addForm.trainPurpose"
+                                    :titles="['点选可关联','已选训练目的']">
+                            </el-transfer>
+                        </el-form-item>
+                    </el-col>
                 </el-row>
                 <el-row>
                     <el-form-item label="期望目标" prop="trainTarget">
-                        <el-input type="textarea" v-model="addForm.trainPurpose" placeholder="请输入期望目标"></el-input>
+                        <el-input type="textarea" v-model="addForm.trainTarget" placeholder="请输入期望目标"></el-input>
                     </el-form-item>
                 </el-row>
             </el-form>
@@ -99,55 +104,44 @@
         mixins: [mixins],
         data() {
             return {
-                tripIdx: null,       // 编辑计划时候，当前点击的行索引
-                isEditTrip: false,   // 判断当前当前打开dialog是否是编辑计划
-                list: [],
-                listLoading: false,
-                dialogVisible: false,
+                rowIdx: null,          // 编辑行时候，当前点击的行索引
+                isEditDialog: false,   // 判断当前当前打开dialog是否是编辑
+                list: [],              // 行数据列表
+                dialogVisible: false,   // 是否显示行数据编辑dialog对话框
                 id: this.$route.query.id,
                 status: this.$route.query.status,
 
                 addForm: {
-                    tripName: null,
-                    startDate: null,
-                    endDate: null,
+                    trainContent: null,
                     trainType: null,
                     trainTypeName: null,
-                    country: null,
-                    city: null,
-                    coach: null,
-                    coachName: null,
-                    trainTarget: null,
-                    trainContent: null,
+                    shortBoard: null,
+                    trainPurpose: [
+                        {key: 0, label: '选项一', disabled: false},
+                        {key: 1, label: '选项二', disabled: false},
+                        {key: 2, label: '选项三', disabled: false},
+                    ],
+                    trainPurposeSelected: [],        // 选中的训练目的
+                    trainPurposeSelectedName: null,  // 选中的训练目的名称(、分割，列表中需要这样显示)
+                    trainTarget: null
                 },
                 rules: {
-                    tripName: [
-                        { required: true, message: '请输入行程名称', trigger: 'blur' }
-                    ],
-                    startDate: [
-                        { required: true, message: '请选择开始时间', trigger: 'change' }
-                    ],
-                    endDate: [
-                        { required: true, message: '请选择结束时间', trigger: 'change' }
-                    ],
                     trainType: [
                         { required: true, message: '请选择训练类型', trigger: 'change' }
                     ],
-                    country: [
-                        { required: true, message: '请选择国家', trigger: 'change' }
-                    ],
-                    city: [
-                        { required: true, message: '请选择城市', trigger: 'change' }
-                    ],
-                    coach: [
-                        { required: true, message: '请选择主要执行教练', trigger: 'change' }
-                    ],
-                    trainTarget: [
-                        { required: true, message: '请输入训练目标', trigger: 'blur' }
-                    ],
                     trainContent: [
                         { required: true, message: '请输入训练内容', trigger: 'blur' }
-                    ]
+                    ],
+                    shortBoard: [
+                        { required: true, message: '请输入短板', trigger: 'blur' }
+                    ],
+                    trainPurposeSelected: [
+                        { required: true, message: '请选择训练目的', trigger: 'change' }
+                    ],
+                    trainTarget: [
+                        { required: true, message: '请输入期望目标', trigger: 'blur' }
+                    ],
+
                 }
             }
         },
@@ -160,9 +154,9 @@
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         this.dialogVisible = false;
-                        if(this.isEditTrip) { // 编辑行程
-                            this.list.splice(this.tripIdx, 1, JSON.parse(JSON.stringify(this.addForm)))
-                        } else {    // 新增行程
+                        if(this.isEditDialog) { // 编辑
+                            this.list.splice(this.rowIdx, 1, JSON.parse(JSON.stringify(this.addForm)))
+                        } else {    // 新增
                             this.list.push(JSON.parse(JSON.stringify(this.addForm)));
                         }
                         this.resetForm(formName);
@@ -170,31 +164,28 @@
                 })
             },
 
-            // 点击添加计划/编辑计划
+            // 点击添加/编辑
             validateBaseForm(rowIdx) {
                 if(typeof rowIdx === 'number') {
-                    this.tripIdx = rowIdx;
-                    this.$emit('validateBaseForm', rowIdx)
-                } else {
-                    this.$emit('validateBaseForm')
+                    this.rowIdx = rowIdx;
+                    this.dialogVisible = true;
+                    this.getRowDetail(rowIdx);
                 }
+                this.dialogVisible = true;
             },
 
-            // 编辑时渲染计划信息
-            getTripDetail(rowIdx) {
-                this.isEditTrip = true;
+            // 编辑时渲染信息
+            getRowDetail(rowIdx) {
+                this.isEditDialog = true;
                 let rowData = this.list[rowIdx];
-                this.addForm.tripName = rowData.tripName;
-                this.addForm.startDate = rowData.startDate;
-                this.addForm.endDate = rowData.endDate;
+                this.addForm.trainContent = rowData.trainContent;
                 this.addForm.trainType = rowData.trainType;
                 this.addForm.trainTypeName = rowData.trainTypeName;
-                this.addForm.country = rowData.country;
-                this.addForm.city = rowData.city;
-                this.addForm.coach = rowData.coach;
-                this.addForm.coachName = rowData.coachName;
+                this.addForm.shortBoard = rowData.shortBoard;
+
+                this.addForm.trainPurposeSelected = rowData.trainPurposeSelected;
+                this.addForm.trainPurposeSelectedName = rowData.trainPurposeSelectedName;
                 this.addForm.trainTarget = rowData.trainTarget;
-                this.addForm.trainContent = rowData.trainContent;
             }
         },
 
@@ -204,18 +195,23 @@
                     this.addForm.trainTypeName = val === '1' ? '国内训练' : '国外训练';
                 }
             },
-            'addForm.coach': function(val) {
+            'addForm.trainPurposeSelected': function(val) {
                 if(val) {
-                    this.coachInfoList.forEach(item => {
-                        if(item.dicKey == val) {
-                            this.addForm.coachName = item.dicValue;
-                        }
-                    })
+                    let str = '';
+                    this.addForm.trainPurpose.forEach(item => {
+                        this.addForm.trainPurposeSelected.forEach(sel => {
+                            if(sel === item.key) {
+                                str += '、' + item.label;
+                            }
+                        });
+                    });
+                    this.addForm.trainPurposeSelectedName = str.substr(1);
                 }
             },
             dialogVisible: function(val) {
                 if(!val) { // dialog关闭的时候
-                    this.isEditTrip = false;
+                    this.isEditDialog = false;
+                    this.$refs.addForm.resetFields();
                 }
             }
         }
@@ -231,6 +227,9 @@
             span {
                 cursor: pointer;
             }
+        }
+        .el-transfer-panel__item.el-checkbox {
+            display: block;
         }
     }
 </style>

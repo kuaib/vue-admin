@@ -27,3 +27,23 @@ export function getYearDetail(params) {
         params
     })
 }
+
+//==================================== 月=====================//
+
+// 获取月计划列表
+export function getMonthTrainPlanList(params) {
+    return request({
+        url: '/sports/sports_train_month/list',
+        method: 'get',
+        params
+    })
+}
+
+// 创建月计划
+export function saveMonthTrainPlan(data) {
+    return request({
+        url: '/sports/sports_train_month/save',
+        method: 'post',
+        data
+    })
+}

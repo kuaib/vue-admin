@@ -213,7 +213,7 @@
                     if (valid) {
                         this.$refs.tripDetail.dialogVisible = true;
                         // 通过编辑进入dialog
-                        if(rowIdx !== undefined) {
+                        if(typeof rowIdx === 'number') {
                             this.$refs.tripDetail.getTripDetail(rowIdx);
                         }
                     }
@@ -223,9 +223,9 @@
             // 格式化行程列表(传递给后台)
             formateList(list) {
                 let arr = [];
-                list.forEach(item => {
+                list.forEach((item, idx) => {
                     let obj = {};
-                    obj.journeyName = item.tripName;
+                    obj.journeyName = '行程' + (idx + 1);
                     obj.trainType = parseInt(item.trainType);
                     obj.startDate = item.startDate;
                     obj.endDate = item.endDate;
@@ -245,7 +245,6 @@
                 let arr = [];
                 list.forEach(item => {
                     let obj = {};
-                    obj.tripName = item.journeyName;
                     obj.trainType = item.trainType.toString();
                     obj.startDate = item.startDate;
                     obj.endDate = item.endDate;

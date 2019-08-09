@@ -486,6 +486,95 @@ let aa = [
                         "url": "",
                         "hideInMenu": true
                     },
+
+                    {
+                        "id": 3,
+                        "path": "/monthSummary", // children中的path：取我定义的（子菜单path前不加斜杠： /）
+                        "component": "views/trainingAndSummary/monthTraining/monthPlan", // children中的component：取我定义的，最前面不加斜杠： /
+                        "name": "monthSummary",     // children中的name：取我定义的
+                        "title": "月训练总结",      // 可有可无*****
+                        "icon": "ios-basket-outline",
+                        "parentId": 2,
+                        "enabled": 1,
+                        "children": [
+                            {
+                                "id": 3,
+                                "path": "list", // children中的path：取我定义的（子菜单path前不加斜杠： /）
+                                "component": "views/trainingAndSummary/monthTraining/monthPlan/list", // children中的component：取我定义的，最前面不加斜杠： /
+                                "name": "monthTrainingSummaryList",     // children中的name：取我定义的
+                                "title": "月训练总结",      // 可有可无*****
+                                "icon": "ios-basket-outline",
+                                "parentId": 2,
+                                "enabled": 1,
+                                "children": null,
+                                "roles": null,
+                                "meta": {
+                                    "access": null,
+                                    "title": "月训练总结",    // children中的title：取我定义的
+                                    "icon": "ios-basket-outline",
+                                    "hideInMenu": false,
+                                    "noCache": true,     // 这个是新加的字段！！！！！！！！！！！！
+                                    "isPublic": "月训练总结"
+                                },
+                                "url": "",
+                                "hideInMenu": false
+                            },
+                            {
+                                "id": 3,
+                                "path": "add", // children中的path：取我定义的（子菜单path前不加斜杠： /）
+                                "component": "views/trainingAndSummary/monthTraining/monthPlan/add", // children中的component：取我定义的，最前面不加斜杠： /
+                                "name": "monthTrainingSummaryAdd",     // children中的name：取我定义的
+                                "title": "月训练总结",      // 可有可无*****
+                                "icon": "ios-basket-outline",
+                                "parentId": 2,
+                                "enabled": 1,
+                                "children": null,
+                                "roles": null,
+                                "meta": {
+                                    "access": null,
+                                    "title": "月训练总结",    // children中的title：取我定义的
+                                    "icon": "ios-basket-outline",
+                                    "hideInMenu": true,
+                                    "noCache": true,     // 这个是新加的字段！！！！！！！！！！！！
+                                    "isPublic": "月训练总结"
+                                },
+                                "url": "",
+                                "hideInMenu": true
+                            },
+                            {
+                                "id": 3,
+                                "path": "edit", // children中的path：取我定义的（子菜单path前不加斜杠： /）
+                                "component": "views/trainingAndSummary/monthTraining/monthPlan/edit", // children中的component：取我定义的，最前面不加斜杠： /
+                                "name": "monthTrainingSummaryEdit",     // children中的name：取我定义的
+                                "title": "月训练总结",      // 可有可无*****
+                                "icon": "ios-basket-outline",
+                                "parentId": 2,
+                                "enabled": 1,
+                                "children": null,
+                                "roles": null,
+                                "meta": {
+                                    "access": null,
+                                    "title": "月训练总结",    // children中的title：取我定义的
+                                    "icon": "ios-basket-outline",
+                                    "hideInMenu": true,
+                                    "noCache": true,     // 这个是新加的字段！！！！！！！！！！！！
+                                    "isPublic": "月训练总结"
+                                },
+                                "url": "",
+                                "hideInMenu": true
+                            },
+                        ],
+                        "roles": null,
+                        "meta": {
+                            "access": null,
+                            "title": "月训练总结",    // children中的title：取我定义的
+                            "icon": "ios-basket-outline",
+                            "hideInMenu": true,
+                            "noCache": true     // 这个是新加的字段！！！！！！！！！！！！
+                        },
+                        "url": "",
+                        "hideInMenu": true
+                    },
                 ],
                 "roles": null,
                 "meta": {
@@ -1010,7 +1099,8 @@ function eachRouter(route) {
             title: route.meta.title,
             icon: route.meta.icon,
             hidden: route.meta.hideInMenu,
-            noCache: route.meta.noCache
+            noCache: route.meta.noCache,
+            isPublic: route.meta.isPublic // 月计划用来判断是训练还是总结
         }
     }
     return obj;

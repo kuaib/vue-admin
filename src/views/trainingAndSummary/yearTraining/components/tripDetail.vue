@@ -9,11 +9,6 @@
                     type="index"
                     :index="indexMethod">
             </el-table-column>
-            <el-table-column align="center" label="行程名称">
-                <template slot-scope="scope">
-                    <span>{{scope.row.tripName}}</span>
-                </template>
-            </el-table-column>
             <el-table-column align="center" label="训练类型">
                 <template slot-scope="scope">
                     <span>{{scope.row.trainType=='1'?'国内训练':'国外训练'}}</span>
@@ -72,11 +67,6 @@
             <el-form :model="addForm" :rules="rules" ref="addForm" label-width="120px">
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item label="行程名称" prop="tripName">
-                            <el-input v-model="addForm.tripName" placeholder="请输入行程名称"></el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
                         <el-form-item label="训练类型" prop="trainType">
                             <el-select v-model="addForm.trainType" placeholder="请选择训练类型">
                                 <el-option label="国内训练" value="1"></el-option>
@@ -84,8 +74,19 @@
                             </el-select>
                         </el-form-item>
                     </el-col>
+                    <el-col :span="12">
+                        <el-form-item label="主要执行教练" prop="coach">
+                            <el-select v-model="addForm.coach" placeholder="请选择主要执行教练">
+                                <el-option v-for="(item,idx) in coachInfoList"
+                                           :label="item.dicValue"
+                                           :value="item.dicKey"
+                                           :key="idx">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-col>
                 </el-row>
-                <el-row>
+                <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item label="开始时间" prop="startDate">
                             <el-date-picker
@@ -136,19 +137,6 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-row :gutter="20">
-                    <el-col :span="12">
-                        <el-form-item label="主要执行教练" prop="coach">
-                            <el-select v-model="addForm.coach" placeholder="请选择主要执行教练">
-                                <el-option v-for="(item,idx) in coachInfoList"
-                                           :label="item.dicValue"
-                                           :value="item.dicKey"
-                                           :key="idx">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
                 <el-row>
                     <el-form-item label="训练目标" prop="trainTarget">
                         <el-input type="textarea" v-model="addForm.trainTarget" placeholder="请输入训练目标"></el-input>
@@ -196,9 +184,6 @@
                     trainContent: null,
                 },
                 rules: {
-                    tripName: [
-                        { required: true, message: '请输入行程名称', trigger: 'blur' }
-                    ],
                     startDate: [
                         { required: true, message: '请选择开始时间', trigger: 'change' }
                     ],
@@ -264,7 +249,6 @@
             getTripDetail(rowIdx) {
                 this.isEditTrip = true;
                 let rowData = this.list[rowIdx];
-                this.addForm.tripName = rowData.tripName;
                 this.addForm.startDate = rowData.startDate;
                 this.addForm.endDate = rowData.endDate;
                 this.addForm.trainType = rowData.trainType;
@@ -306,6 +290,7 @@
             dialogVisible: function(val) {
                 if(!val) { // dialog关闭的时候
                     this.isEditTrip = false;
+                    this.$refs.addForm.resetFields();
                 }
             }
         }

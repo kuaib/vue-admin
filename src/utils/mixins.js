@@ -97,10 +97,11 @@ export default {
         },
 
         // 通过大项获取小项
-        getSmallProList(projectId) {
+        getSmallProList(projectId, successCallback) {
             childProject({projectId: projectId}).then(res => {
                 if(res.data.code == 200) {
                     this.smallProList = res.data.data;
+                    successCallback && successCallback(res.data.data);
                 } else {
                     this.$message({
                         message: '获取小项失败',

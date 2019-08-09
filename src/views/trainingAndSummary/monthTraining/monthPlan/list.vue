@@ -1,7 +1,7 @@
 <template>
     <div class="year-training-wrapper">
         <!--搜索-->
-        <search-section typeName="月计划" @handleFilter="handleFilter"></search-section>
+        <search-section typeName="月计划" @handleFilter="handleFilter" :isSummary="isSummary"></search-section>
 
         <!--表格-->
         <el-row>
@@ -16,6 +16,11 @@
                         <span>{{scope.row.trainId}}</span>
                     </template>
                 </el-table-column>
+                <el-table-column align="center" label="训练年度">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.trainYear}}</span>
+                    </template>
+                </el-table-column>
                 <el-table-column align="center" label="项目">
                     <template slot-scope="scope">
                         <span>{{scope.row.projectName}}</span>
@@ -24,11 +29,6 @@
                 <el-table-column align="center" label="队伍">
                     <template slot-scope="scope">
                         <span>{{scope.row.teamName}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column align="center" label="训练年度">
-                    <template slot-scope="scope">
-                        <span>{{scope.row.trainYear}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="教练员">
@@ -42,9 +42,10 @@
                         <span v-if="scope.row.status==1">已提交</span>
                     </template>
                 </el-table-column>
-                <el-table-column align="center" label="提交时间">
+                <el-table-column align="center" label="是否总结" v-if="isSummary">
                     <template slot-scope="scope">
-                        <span>{{scope.row.updatedTime}}</span>
+                        <span v-if="scope.row.status==0">是</span>
+                        <span v-if="scope.row.status==1">否</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="操作">
@@ -68,12 +69,13 @@
 <script>
     import mixins from '@/utils/mixins'
     import searchSection from '../../components/searchSection'
-    import {getYearTrainList} from '@/api/trainingAndSummary'
+    import {getMonthTrainPlanList} from '@/api/trainingAndSummary'
     export default {
         mixins: [mixins],
         components: {searchSection},
         data() {
             return {
+                isSummary: false,    // 是否是月训练总结(计划与总结页面公用)
                 list: [],            // table列表
                 total: null,         // 总条目数
                 listLoading: false,  // 查询table的loading
@@ -92,14 +94,14 @@
             // 获取月计划列表
             getList(formData = {}) {
                 this.listLoading = true;
-                getYearTrainList({
+                getMonthTrainPlanList({
                     currentPage: this.listQuery.currentPage,
                     pageSize: this.listQuery.pageSize,
-                    trainId: formData.id,
+                    trainMonthId: formData.id,
                     projectId: formData.project,
                     teamId: formData.team,
                     coachId: formData.coach,
-                    trainYear: formData.trainYear && (formData.trainYear[0] + ',' + formData.trainYear[1]),
+                    trainMonth: formData.trainYear && (formData.trainYear[0] + ',' + formData.trainYear[1]),
                 }).then(res => {
                     this.listLoading = false;
                     if (res.data.code === 200) {
@@ -126,6 +128,14 @@
             toEdit(row) {
                 this.$router.push({path: '/monthPlan/edit', query: {id: row.trainId}})
             },
+        },
+
+        beforeRouteEnter (to, from, next) {
+            next(vm => {
+                if(to.meta.isPublic === '月训练总结') {
+                    vm.isSummary = true
+                }
+            })
         }
     }
 </script>
