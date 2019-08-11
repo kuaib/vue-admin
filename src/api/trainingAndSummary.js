@@ -47,3 +47,25 @@ export function saveMonthTrainPlan(data) {
         data
     })
 }
+
+
+
+//==================================== 周计划 =====================//
+
+// 获取周计划列表
+export function getWeekTrainPlanList(params) {
+  return request({
+    url: '/sports/sports_train_week/list',
+    method: 'get',
+    params
+  })
+}
+
+// 创建周计划
+export function saveWeekTrainPlan(data) {
+  return request({
+    url: '/sports/sports_train_week/save',
+    method: 'post',
+    data
+  })
+}

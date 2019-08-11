@@ -587,6 +587,203 @@ let aa = [
                 "url": "",
                 "hideInMenu": false
             },
+
+           {
+            "id": 3,
+            "path": "/weekTraining", // children中的path：取我定义的（子菜单path前不加斜杠： /）
+            "component": "views/trainingAndSummary/weekTraining/index", // children中的component：取我定义的，最前面不加斜杠： /
+            "name": "weekTraining",     // children中的name：取我定义的
+            "title": "周训练管理",      // 可有可无*****
+            "icon": "ios-basket-outline",
+            "parentId": 1,
+            "enabled": 1,
+            "children": [
+              {
+                "id": 3,
+                "path": "/weekPlan", // children中的path：取我定义的（子菜单path前不加斜杠： /）
+                "component": "views/trainingAndSummary/weekTraining/weekPlan", // children中的component：取我定义的，最前面不加斜杠： /
+                "name": "weekPlan",     // children中的name：取我定义的
+                "title": "周训练计划",      // 可有可无*****
+                "icon": "ios-basket-outline",
+                "parentId": 2,
+                "enabled": 1,
+                "children": [
+                  {
+                    "id": 3,
+                    "path": "list", // children中的path：取我定义的（子菜单path前不加斜杠： /）
+                    "component": "views/trainingAndSummary/weekTraining/weekPlan/list", // children中的component：取我定义的，最前面不加斜杠： /
+                    "name": "weekTrainingPlanList",     // children中的name：取我定义的
+                    "title": "周训练计划",      // 可有可无*****
+                    "icon": "ios-basket-outline",
+                    "parentId": 2,
+                    "enabled": 1,
+                    "children": null,
+                    "roles": null,
+                    "meta": {
+                      "access": null,
+                      "title": "周训练计划",    // children中的title：取我定义的
+                      "icon": "ios-basket-outline",
+                      "hideInMenu": false,
+                      "noCache": true     // 这个是新加的字段！！！！！！！！！！！！
+                    },
+                    "url": "",
+                    "hideInMenu": false
+                  },
+                  {
+                    "id": 3,
+                    "path": "add", // children中的path：取我定义的（子菜单path前不加斜杠： /）
+                    "component": "views/trainingAndSummary/weekTraining/weekPlan/add", // children中的component：取我定义的，最前面不加斜杠： /
+                    "name": "weekTrainingPlanAdd",     // children中的name：取我定义的
+                    "title": "创建周训练计划",      // 可有可无*****
+                    "icon": "ios-basket-outline",
+                    "parentId": 2,
+                    "enabled": 1,
+                    "children": null,
+                    "roles": null,
+                    "meta": {
+                      "access": null,
+                      "title": "创建周训练计划",    // children中的title：取我定义的
+                      "icon": "ios-basket-outline",
+                      "hideInMenu": true,
+                      "noCache": true     // 这个是新加的字段！！！！！！！！！！！！
+                    },
+                    "url": "",
+                    "hideInMenu": true
+                  },
+                  {
+                    "id": 3,
+                    "path": "edit", // children中的path：取我定义的（子菜单path前不加斜杠： /）
+                    "component": "views/trainingAndSummary/weekTraining/weekPlan/edit", // children中的component：取我定义的，最前面不加斜杠： /
+                    "name": "weekTrainingPlanEdit",     // children中的name：取我定义的
+                    "title": "编辑周训练计划",      // 可有可无*****
+                    "icon": "ios-basket-outline",
+                    "parentId": 2,
+                    "enabled": 1,
+                    "children": null,
+                    "roles": null,
+                    "meta": {
+                      "access": null,
+                      "title": "编辑周训练计划",    // children中的title：取我定义的
+                      "icon": "ios-basket-outline",
+                      "hideInMenu": true,
+                      "noCache": true     // 这个是新加的字段！！！！！！！！！！！！
+                    },
+                    "url": "",
+                    "hideInMenu": true
+                  },
+                ],
+                "roles": null,
+                "meta": {
+                  "access": null,
+                  "title": "周训练计划",    // children中的title：取我定义的
+                  "icon": "ios-basket-outline",
+                  "hideInMenu": true,
+                  "noCache": true     // 这个是新加的字段！！！！！！！！！！！！
+                },
+                "url": "",
+                "hideInMenu": true
+              },
+
+              {
+                "id": 3,
+                "path": "/weekSummary", // children中的path：取我定义的（子菜单path前不加斜杠： /）
+                "component": "views/trainingAndSummary/weekTraining/weekPlan", // children中的component：取我定义的，最前面不加斜杠： /
+                "name": "weekSummary",     // children中的name：取我定义的
+                "title": "周训练总结",      // 可有可无*****
+                "icon": "ios-basket-outline",
+                "parentId": 2,
+                "enabled": 1,
+                "children": [
+                  {
+                    "id": 3,
+                    "path": "list", // children中的path：取我定义的（子菜单path前不加斜杠： /）
+                    "component": "views/trainingAndSummary/weekTraining/weekPlan/list", // children中的component：取我定义的，最前面不加斜杠： /
+                    "name": "weekTrainingSummaryList",     // children中的name：取我定义的
+                    "title": "周训练总结",      // 可有可无*****
+                    "icon": "ios-basket-outline",
+                    "parentId": 2,
+                    "enabled": 1,
+                    "children": null,
+                    "roles": null,
+                    "meta": {
+                      "access": null,
+                      "title": "周训练总结",    // children中的title：取我定义的
+                      "icon": "ios-basket-outline",
+                      "hideInMenu": false,
+                      "noCache": true,     // 这个是新加的字段！！！！！！！！！！！！
+                      "isPublic": "周训练总结"
+                    },
+                    "url": "",
+                    "hideInMenu": false
+                  },
+                  {
+                    "id": 3,
+                    "path": "add", // children中的path：取我定义的（子菜单path前不加斜杠： /）
+                    "component": "views/trainingAndSummary/weekTraining/weekPlan/add", // children中的component：取我定义的，最前面不加斜杠： /
+                    "name": "weekTrainingSummaryAdd",     // children中的name：取我定义的
+                    "title": "周训练总结",      // 可有可无*****
+                    "icon": "ios-basket-outline",
+                    "parentId": 2,
+                    "enabled": 1,
+                    "children": null,
+                    "roles": null,
+                    "meta": {
+                      "access": null,
+                      "title": "周训练总结",    // children中的title：取我定义的
+                      "icon": "ios-basket-outline",
+                      "hideInMenu": true,
+                      "noCache": true,     // 这个是新加的字段！！！！！！！！！！！！
+                      "isPublic": "周训练总结"
+                    },
+                    "url": "",
+                    "hideInMenu": true
+                  },
+                  {
+                    "id": 3,
+                    "path": "edit", // children中的path：取我定义的（子菜单path前不加斜杠： /）
+                    "component": "views/trainingAndSummary/weekTraining/weekPlan/edit", // children中的component：取我定义的，最前面不加斜杠： /
+                    "name": "weekTrainingSummaryEdit",     // children中的name：取我定义的
+                    "title": "周训练总结",      // 可有可无*****
+                    "icon": "ios-basket-outline",
+                    "parentId": 2,
+                    "enabled": 1,
+                    "children": null,
+                    "roles": null,
+                    "meta": {
+                      "access": null,
+                      "title": "周训练总结",    // children中的title：取我定义的
+                      "icon": "ios-basket-outline",
+                      "hideInMenu": true,
+                      "noCache": true,     // 这个是新加的字段！！！！！！！！！！！！
+                      "isPublic": "周训练总结"
+                    },
+                    "url": "",
+                    "hideInMenu": true
+                  },
+                ],
+                "roles": null,
+                "meta": {
+                  "access": null,
+                  "title": "周训练总结",    // children中的title：取我定义的
+                  "icon": "ios-basket-outline",
+                  "hideInMenu": true,
+                  "noCache": true     // 这个是新加的字段！！！！！！！！！！！！
+                },
+                "url": "",
+                "hideInMenu": true
+              },
+            ],
+            "roles": null,
+            "meta": {
+              "access": null,
+              "title": "周训练管理",    // children中的title：取我定义的
+              "icon": "ios-basket-outline",
+              "hideInMenu": false,
+              "noCache": true     // 这个是新加的字段！！！！！！！！！！！！
+            },
+            "url": "",
+            "hideInMenu": false
+          },
         ]
     },
     {
@@ -1058,6 +1255,112 @@ let aa = [
             },
         ]
     },
+    {
+    "id": 10,
+    "path": "/trainingBriefing",  // 第一级菜单前面有斜杠： /
+    "component": "Layout",
+    "name": "",  // 可有可无，我用不到*****
+    "title": "集训简报管理",  // 可有可无，我用不到*****
+    "icon": "ios-color-wand",
+    "parentId": 0,
+    "enabled": 1,
+    "roles": null,
+    "meta": {
+      "access": null,
+      "title": "集训简报管理",        //  title取我定义的
+      "icon": "ios-color-wand",
+      "hideInMenu": false
+    },
+    "url": "",
+    "hideInMenu": false,
+    "children": [
+      {
+        "id": 3,
+        "path": "/trainingBriefing", // children中的path：取我定义的（子菜单path前不加斜杠： /）
+        "component": "views/trainingBriefing/trainingBriefingRecord", // children中的component：取我定义的，最前面不加斜杠： /
+        "name": "bigProject",     // children中的name：取我定义的
+        "title": "简报记录",      // 可有可无*****
+        "icon": "ios-basket-outline",
+        "parentId": 1,
+        "enabled": 1,
+        "children": [
+          {
+            "id": 3,
+            "path": "list", // children中的path：取我定义的（子菜单path前不加斜杠： /）
+            "component": "views/trainingBriefing/trainingBriefingRecord/list", // children中的component：取我定义的，最前面不加斜杠： /
+            "name": "trainingBriefingList",     // children中的name：取我定义的
+            "title": "简报记录",      // 可有可无*****
+            "icon": "ios-basket-outline",
+            "parentId": 2,
+            "enabled": 1,
+            "children": null,
+            "roles": null,
+            "meta": {
+              "access": null,
+              "title": "简报记录",    // children中的title：取我定义的
+              "icon": "ios-basket-outline",
+              "hideInMenu": false,
+              "noCache": true     // 这个是新加的字段！！！！！！！！！！！！
+            },
+            "url": "",
+            "hideInMenu": false
+          },
+          {
+            "id": 3,
+            "path": "addBriefPlan", // children中的path：取我定义的（子菜单path前不加斜杠： /）
+            "component": "views/trainingBriefing/trainingBriefingRecord/addBriefPlan", // children中的component：取我定义的，最前面不加斜杠： /
+            "name": "trainingBriefingAddBriefPlan",     // children中的name：取我定义的
+            "title": "创建集训计划",      // 可有可无*****
+            "icon": "ios-basket-outline",
+            "parentId": 2,
+            "enabled": 1,
+            "children": null,
+            "roles": null,
+            "meta": {
+              "access": null,
+              "title": "创建集训计划",    // children中的title：取我定义的
+              "icon": "ios-basket-outline",
+              "hideInMenu": true,
+              "noCache": true     // 这个是新加的字段！！！！！！！！！！！！
+            },
+            "url": "",
+            "hideInMenu": true
+          },
+          {
+            "id": 3,
+            "path": "addBriefSummary", // children中的path：取我定义的（子菜单path前不加斜杠： /）
+            "component": "views/trainingBriefing/trainingBriefingRecord/addBriefSummary", // children中的component：取我定义的，最前面不加斜杠： /
+            "name": "trainingBriefingAddBriefSummary",     // children中的name：取我定义的
+            "title": "创建集训小结",      // 可有可无*****
+            "icon": "ios-basket-outline",
+            "parentId": 2,
+            "enabled": 1,
+            "children": null,
+            "roles": null,
+            "meta": {
+              "access": null,
+              "title": "创建集训小结",    // children中的title：取我定义的
+              "icon": "ios-basket-outline",
+              "hideInMenu": true,
+              "noCache": true     // 这个是新加的字段！！！！！！！！！！！！
+            },
+            "url": "",
+            "hideInMenu": true
+          }
+        ],
+        "roles": null,
+        "meta": {
+          "access": null,
+          "title": "简报记录",    // children中的title：取我定义的
+          "icon": "ios-basket-outline",
+          "hideInMenu": false,
+          "noCache": true     // 这个是新加的字段！！！！！！！！！！！！
+        },
+        "url": "",
+        "hideInMenu": false
+      }
+    ]
+  },
     ]
 
 
