@@ -7,18 +7,18 @@
         <el-row>
             <div class="table-title clearfix">
                 <h3>月计划列表</h3>
-                <el-button type="success" @click="addNew">创建月计划</el-button>
+                <el-button type="success" @click="addNew" v-show="extInfo.canOperate">创建月计划</el-button>
             </div>
             <el-table :data="list" v-loading="listLoading" border fit highlight-current-row
                       style="width: 100%;">
                 <el-table-column align="center" label="月计划id">
                     <template slot-scope="scope">
-                        <span>{{scope.row.trainId}}</span>
+                        <span>{{scope.row.trainMonthId}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="训练年度">
                     <template slot-scope="scope">
-                        <span>{{scope.row.trainYear}}</span>
+                        <span>{{scope.row.trainMonth}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="项目">
@@ -82,7 +82,8 @@
                 listQuery: {
                     currentPage: 1,
                     pageSize: 10
-                }
+                },
+                extInfo: {}  // 账号的权限
             }
         },
 
@@ -107,6 +108,7 @@
                     if (res.data.code === 200) {
                         const data = res.data.data;
                         this.list = data.list;
+                        this.extInfo = data.extInfo;
                         this.total = data.pagination.total;
                     } else {
                         this.$message({
@@ -121,12 +123,12 @@
 
             // 创建月计划
             addNew() {
-                this.$router.push('/monthPlan/add');
+                this.$router.push({path: '/monthPlan/add', query: {userInfo: this.extInfo.useInfo}});
             },
 
             // 去详情
             toEdit(row) {
-                this.$router.push({path: '/monthPlan/edit', query: {id: row.trainId}})
+                this.$router.push({path: '/monthPlan/edit', query: {id: row.trainMonthId}})
             },
         },
 

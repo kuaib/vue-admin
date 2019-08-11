@@ -117,7 +117,7 @@
                         <el-form-item label="参赛运动员" prop="athleteSelected">
                             <el-transfer
                                     v-model="addForm.athleteSelected"
-                                    :data="addForm.athlete"
+                                    :data="athleteList"
                                     :titles="['点选可关联','已选训练目的']">
                             </el-transfer>
                         </el-form-item>
@@ -186,6 +186,7 @@
 
         created() {
             this.getAllList();
+            this.getAthleteList(this.formatAthlete); // 获取运动员列表
         },
         methods: {
             // 点击大项目
@@ -233,6 +234,13 @@
                 this.addForm.smallPro = rowData.smallPro;
                 this.addForm.athleteSelected = rowData.athleteSelected;
                 this.addForm.athleteSelectedName = rowData.athleteSelectedName;
+            },
+
+            // 重新组装运动员列表
+            formatAthlete() {
+                this.athleteList = this.athleteList.map(item => {
+                    return {key: item.dicKey, label: item.dicValue, disabled: false}
+                })
             }
         },
 
@@ -248,7 +256,7 @@
                 console.log(val)
                 if(val) {
                     let str = '';
-                    this.addForm.athlete.forEach(item => {
+                    this.athleteList.forEach(item => {
                         this.addForm.athleteSelected.forEach(sel => {
                             if(sel === item.key) {
                                 str += '、' + item.label;

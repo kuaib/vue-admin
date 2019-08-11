@@ -6,7 +6,7 @@
             <div slot="header" class="clearfix">
                 <span class="section-title">基础信息</span>
             </div>
-            <el-form :model="baseForm" ref="baseForm" label-width="150px">
+            <el-form :model="baseForm" ref="baseForm" :rules="rules" label-width="150px">
                 <el-row :gutter="20">
                     <el-col :span="8">
                         <el-form-item label="项目：">
@@ -26,12 +26,19 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="8">
-                        <el-form-item label="训练年度：">
-                            <span>{{baseForm.trainYear}}</span>
+                        <el-form-item label="训练年度：" prop="trainYear">
+                            <el-date-picker
+                                    v-model="baseForm.trainYear"
+                                    type="monthrange"
+                                    value-format="yyyy-MM"
+                                    range-separator="至"
+                                    start-placeholder="训练年度开始年月"
+                                    end-placeholder="训练年度结束年月">
+                            </el-date-picker>
                         </el-form-item>
                     </el-col>
                     <el-col :span="8">
-                        <el-form-item label="状态：">
+                        <el-form-item label="状态：" v-if="$route.query.status!==undefined">
                             <span>{{baseForm.status=='1'?'已提交':'未提交'}}</span>
                         </el-form-item>
                     </el-col>
@@ -67,10 +74,13 @@
     import trainPlan from './components/trainPlan'
     import competitionPlan from './components/competitionPlan'
     import {saveMonthTrainPlan} from '@/api/trainingAndSummary'
+    import mixins from '@/utils/mixins'
     export default {
+        mixins: [mixins],
         components: {trainPlan, competitionPlan},
         data() {
             return {
+                userInfo: this.$route.query.userInfo,
                 btnLoading: false,
                 baseForm: {
                     project: null,
@@ -78,27 +88,38 @@
                     team: null,
                     trainYear: null,
                     status: '0',
+                },
+                rules: {
+                    trainYear: [
+                        { required: true, message: '请选择训练年度', trigger: 'change' }
+                    ],
                 }
             }
+        },
+
+        created() {
+            console.log(this.userInfo)
+            this.baseForm.project = this.userInfo.projectName;
+            this.baseForm.team = this.userInfo.teamName;
+            this.baseForm.coach = this.userInfo.staffName;
         },
 
         methods: {
             // 提交
             onSubmit(formName, types) {
                 this.btnLoading = true;
-                let trainPlan = this.formatList(this.$refs.trainPlan.list, 'train');
-                let matchPlan = this.formatList(this.$refs.competitionPlan.list, 'match');
+                let trainPlans = this.formatList(this.$refs.trainPlan.list, 'train');
+                let matchPlans = this.formatList(this.$refs.competitionPlan.list, 'match');
                 saveMonthTrainPlan({
-                    projectName: this.baseForm.project,
-                    projectId: this.baseForm.project,
-                    coachName: this.baseForm.project,
-                    coachId: this.baseForm.project,
-                    teamId: this.baseForm.project,
-                    teamName: this.baseForm.project,
-                    trainMonth: this.baseForm.trainYear,
+                    projectName: this.userInfo.projectName,
+                    coachName: this.userInfo.staffName,
+                    coachId: this.userInfo.staffId,
+                    teamId: this.userInfo.teamId,
+                    teamName: this.userInfo.teamName,
+                    trainMonth: this.baseForm.trainYear.join(),
                     status: parseInt(types),
-                    trainPlan: trainPlan,
-                    matchPlan: matchPlan,
+                    trainPlans: trainPlans,
+                    matchPlans: matchPlans,
                 }).then(res => {
                     if(res.data.code == 200) {
                         this.$message({
@@ -124,11 +145,10 @@
                 if(typeName === 'train') {  // 训练计划
                     list.forEach((item, idx) => {
                         let obj = {};
-                        obj.serialNumber = idx + 1;
                         obj.shortBoard = item.shortBoard;
                         obj.trainType = item.trainType;
-                        obj.trainTypeName = item.trainTypeName;
-                        obj.trainPurpose = item.trainPurposeSelected.join();
+                        // obj.trainPurpose = item.trainPurposeSelected.join(); // 后续是字典项的时候使用
+                        obj.trainPurpose = item.trainPurposeSelectedName;
                         obj.trainContent = item.trainContent;
                         obj.target = item.trainTarget;
                         arr.push(obj);
@@ -136,13 +156,12 @@
                 } else {   // 比赛计划
                     list.forEach((item, idx) => {
                         let obj = {};
-                        obj.serialNumber = idx + 1;
                         obj.matchName = item.compName;
                         obj.matchDate = item.comDate;
                         obj.matchCountry = item.country;
                         obj.matchCity = item.city;
-                        obj.matchProject = item.bigPro;
-                        obj.matchSmall = item.smallPro.join();
+                        obj.matchProjetId = item.bigPro;
+                        obj.matchProjectInfo = item.smallPro.join();
                         obj.matchAthlete = item.athleteSelected.join();
                         arr.push(obj);
                     });
@@ -157,6 +176,13 @@
     .month-train-plan-add-wrapper {
         .card-box {
             margin-bottom: 25px;
+        }
+
+        .el-date-editor--monthrange.el-input, .el-date-editor--monthrange.el-input__inner {
+            width: 320px;
+        }
+        .el-date-editor .el-range-separator {
+            padding: 0;
         }
     }
 </style>

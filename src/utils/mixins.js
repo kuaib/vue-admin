@@ -2,7 +2,7 @@
  * 混入
  */
 
-import {getBaseInfo, childProject, getLevelByName} from '@/api/common'
+import {getBaseInfo, childProject, getLevelByName, getAthlete} from '@/api/common'
 export default {
     data() {
         return {
@@ -15,6 +15,7 @@ export default {
             roleInfoList: [],     // 角色列表
             bigProList: [],       // 大项列表
             smallProList: [],     // 小项列表(无key值，通过大项获取小项)
+            athleteList: [],      // 运动员列表
 
             searchFormData: {},   // 搜索条件
         }
@@ -124,5 +125,20 @@ export default {
                 }
             })
         },
+
+        // 获取运动员列表
+        getAthleteList(successCallback) {
+            getAthlete().then(res => {
+                if(res.data.code == 200) {
+                    this.athleteList = res.data.data;
+                    successCallback && successCallback(res.data.data);
+                } else {
+                    this.$message({
+                        message: res.data.msg,
+                        type: 'warning'
+                    });
+                }
+            })
+        }
     }
 }

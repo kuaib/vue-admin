@@ -11,7 +11,7 @@
             </el-table-column>
             <el-table-column align="center" label="训练类型">
                 <template slot-scope="scope">
-                    <span>{{scope.row.trainType=='1'?'国内训练':'国外训练'}}</span>
+                    <span>{{scope.row.trainType}}</span>
                 </template>
             </el-table-column>
             <el-table-column align="center" label="训练内容">
@@ -53,10 +53,11 @@
                 <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item label="训练类型" prop="trainType">
-                            <el-select v-model="addForm.trainType" placeholder="请选择训练类型">
-                                <el-option label="国内训练" value="1"></el-option>
-                                <el-option label="国外训练" value="2"></el-option>
-                            </el-select>
+                            <!--<el-select v-model="addForm.trainType" placeholder="请选择训练类型">-->
+                                <!--<el-option label="国内训练" value="1"></el-option>-->
+                                <!--<el-option label="国外训练" value="2"></el-option>-->
+                            <!--</el-select>-->
+                            <el-input v-model="addForm.trainType" placeholder="请输入训练类型"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
@@ -114,12 +115,11 @@
                 addForm: {
                     trainContent: null,
                     trainType: null,
-                    trainTypeName: null,
                     shortBoard: null,
                     trainPurpose: [
-                        {key: 0, label: '选项一', disabled: false},
-                        {key: 1, label: '选项二', disabled: false},
-                        {key: 2, label: '选项三', disabled: false},
+                        {key: '目的一', label: '目的一', disabled: false},
+                        {key: '目的二', label: '目的二', disabled: false},
+                        {key: '目的三', label: '目的三', disabled: false},
                     ],
                     trainPurposeSelected: [],        // 选中的训练目的
                     trainPurposeSelectedName: null,  // 选中的训练目的名称(、分割，列表中需要这样显示)
@@ -127,7 +127,7 @@
                 },
                 rules: {
                     trainType: [
-                        { required: true, message: '请选择训练类型', trigger: 'change' }
+                        { required: true, message: '请选输入训练类型', trigger: 'blur' }
                     ],
                     trainContent: [
                         { required: true, message: '请输入训练内容', trigger: 'blur' }
@@ -180,7 +180,6 @@
                 let rowData = this.list[rowIdx];
                 this.addForm.trainContent = rowData.trainContent;
                 this.addForm.trainType = rowData.trainType;
-                this.addForm.trainTypeName = rowData.trainTypeName;
                 this.addForm.shortBoard = rowData.shortBoard;
 
                 this.addForm.trainPurposeSelected = rowData.trainPurposeSelected;
@@ -190,11 +189,6 @@
         },
 
         watch: {
-            'addForm.trainType': function(val) {
-                if(val) {
-                    this.addForm.trainTypeName = val === '1' ? '国内训练' : '国外训练';
-                }
-            },
             'addForm.trainPurposeSelected': function(val) {
                 if(val) {
                     let str = '';

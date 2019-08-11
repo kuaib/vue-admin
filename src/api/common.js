@@ -39,3 +39,12 @@ export function getLevelByName(params) {
         params
     })
 }
+
+// 获取运动员列表
+export function getAthlete(params) {
+    return request({
+        url: '/sports/sports_base/getAthlete',
+        method: 'get',
+        params
+    })
+}
