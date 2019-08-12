@@ -57,6 +57,7 @@ export default {
                 }
                 this.searchFormData = formData;
             }
+            console.log(formData)
             this.listQuery.currentPage = 1;
             this.getList(formData)
         },

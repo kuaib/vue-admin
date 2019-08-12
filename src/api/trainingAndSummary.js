@@ -47,3 +47,21 @@ export function saveMonthTrainPlan(data) {
         data
     })
 }
+
+// 获取月计划详情
+export function getMonthTrainDetail(params) {
+    return request({
+        url: '/sports/sports_train_month/detail',
+        method: 'get',
+        params
+    })
+}
+
+// 总结计划
+export function saveMonthSummary(data) {
+    return request({
+        url: '/sports/sports_train_month/summary',
+        method: 'post',
+        data
+    })
+}

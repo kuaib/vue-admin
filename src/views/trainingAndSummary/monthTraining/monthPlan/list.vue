@@ -1,5 +1,8 @@
 <template>
-    <div class="year-training-wrapper">
+    <div class="month-training-wrapper">
+        <!--tab切换-->
+        <change-tab-bar :isSummary="isSummary"></change-tab-bar>
+
         <!--搜索-->
         <search-section typeName="月计划" @handleFilter="handleFilter" :isSummary="isSummary"></search-section>
 
@@ -7,7 +10,7 @@
         <el-row>
             <div class="table-title clearfix">
                 <h3>月计划列表</h3>
-                <el-button type="success" @click="addNew" v-show="extInfo.canOperate">创建月计划</el-button>
+                <el-button type="success" @click="addNew" v-show="extInfo.canOperate&&!isSummary">创建月计划</el-button>
             </div>
             <el-table :data="list" v-loading="listLoading" border fit highlight-current-row
                       style="width: 100%;">
@@ -44,8 +47,8 @@
                 </el-table-column>
                 <el-table-column align="center" label="是否总结" v-if="isSummary">
                     <template slot-scope="scope">
-                        <span v-if="scope.row.status==0">是</span>
-                        <span v-if="scope.row.status==1">否</span>
+                        <span v-if="scope.row.summary==0">否</span>
+                        <span v-if="scope.row.summary==1">是</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="操作">
@@ -69,10 +72,11 @@
 <script>
     import mixins from '@/utils/mixins'
     import searchSection from '../../components/searchSection'
+    import changeTabBar from './components/changeTabBar'
     import {getMonthTrainPlanList} from '@/api/trainingAndSummary'
     export default {
         mixins: [mixins],
-        components: {searchSection},
+        components: {searchSection, changeTabBar},
         data() {
             return {
                 isSummary: false,    // 是否是月训练总结(计划与总结页面公用)
@@ -103,6 +107,7 @@
                     teamId: formData.team,
                     coachId: formData.coach,
                     trainMonth: formData.trainYear && (formData.trainYear[0] + ',' + formData.trainYear[1]),
+                    summary: formData.summary && parseInt(formData.summary)
                 }).then(res => {
                     this.listLoading = false;
                     if (res.data.code === 200) {
@@ -123,12 +128,25 @@
 
             // 创建月计划
             addNew() {
-                this.$router.push({path: '/monthPlan/add', query: {userInfo: this.extInfo.useInfo}});
+                let path;
+                if(this.isSummary) {
+                    path = '/monthSummary/add'
+                } else {
+                    path = '/monthPlan/add'
+                }
+                this.$router.push({path: path, query: {userInfo: this.extInfo.useInfo}});
             },
 
             // 去详情
             toEdit(row) {
-                this.$router.push({path: '/monthPlan/edit', query: {id: row.trainMonthId}})
+                let path, updatedTime;
+                if(this.isSummary) {
+                    path = '/monthSummary/edit';
+                    updatedTime = row.updatedTime;
+                } else {
+                    path = '/monthPlan/edit'
+                }
+                this.$router.push({path: path, query: {id: row.trainMonthId, status: row.status, updatedTime: updatedTime}})
             },
         },
 
@@ -143,7 +161,25 @@
 </script>
 
 <style lang="scss">
-    .year-training-wrapper {
+    .month-training-wrapper {
+        .item-tab-section {
+            margin-bottom: 20px;
+            span {
+                display: inline-block;
+                font-size: 18px;
+                font-weight: 700;
+                padding: 0 15px 15px 15px;
+                cursor: pointer;
+                &:hover {
+                    color: #66b1ff;
+                    border-bottom: 2px solid #66b1ff;
+                }
+            }
+            .act-item {
+                color: #66b1ff;
+                border-bottom: 2px solid #66b1ff;
+            }
+        }
         .table-title {
             margin-top: 20px;
             margin-bottom: 10px;
