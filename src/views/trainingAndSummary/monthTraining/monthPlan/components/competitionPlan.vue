@@ -44,13 +44,24 @@
                     <span>{{scope.row.athleteSelectedName}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="操作" v-if="id&&status=='0' || !id&&!status">
+            <el-table-column align="center" label="是否总结" v-if="isSummary">
+                <template slot-scope="scope">
+                    <span>{{scope.row.summary==1?'已总结':'未总结'}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column align="center" label="操作" v-if="id&&isSummary">
+                <template slot-scope="scope">
+                    <el-button v-if="scope.row.summary==1" size="mini" type="primary" @click="toSummary(scope.row)">详情</el-button>
+                    <el-button v-if="scope.row.summary==0" size="mini" type="primary" @click="toSummary(scope.row)">总结</el-button>
+                </template>
+            </el-table-column>
+            <el-table-column align="center" label="操作" v-if="(id&&status=='0' || !id&&!status)&&!isSummary">
                 <template slot-scope="scope">
                     <el-button size="mini" type="primary" @click="validateBaseForm(scope.$index)">编辑</el-button>
                 </template>
             </el-table-column>
         </el-table>
-        <div class="add-btn" v-if="status!='1'"><span @click="validateBaseForm">增加比赛计划>></span></div>
+        <div class="add-btn" v-if="status!='1'&&!isSummary"><span @click="validateBaseForm">增加比赛计划>></span></div>
 
         <!--创建dialog-->
         <el-dialog
@@ -73,7 +84,7 @@
                                     v-model="addForm.compDate"
                                     type="date"
                                     placeholder="请选择比赛日期"
-                                    value-format="yyyy-MM">
+                                    value-format="yyyy-MM-dd">
                             </el-date-picker>
                         </el-form-item>
                     </el-col>
@@ -97,7 +108,7 @@
                             <el-row>
                                 <el-col :span="9">
                                     <ul class="big-pro item-box">
-                                        <li v-for="item in bigProList" @click="changeBigPro(item)" :class="{'active-li':addForm.bigPro===item.dicKey}">{{item.dicValue}}</li>
+                                        <li v-for="item in bigProList" @click="changeBigPro(item.dicKey)" :class="{'active-li':addForm.bigPro===item.dicKey}">{{item.dicValue}}</li>
                                     </ul>
                                 </el-col>
                                 <el-col :span="9" v-show="addForm.bigPro">
@@ -129,13 +140,17 @@
                 <el-button type="primary" @click="onSubmit('addForm')">提 交</el-button>
             </span>
         </el-dialog>
+
+        <competition-summary ref="competitionSummary"></competition-summary>
     </div>
 </template>
 
 <script>
     import mixins from '@/utils/mixins'
+    import competitionSummary from './competitionSummary'
     export default {
         mixins: [mixins],
+        components: {competitionSummary},
         data() {
             return {
                 rowIdx: null,          // 编辑行时候，当前点击的行索引
@@ -153,12 +168,8 @@
                     bigPro: null,
                     bigProName: null,
                     smallPro: [],
-                    athlete: [
-                        {key: 0, label: '运动员A', disabled: false},
-                        {key: 1, label: '运动员B', disabled: false},
-                        {key: 2, label: '运动员C', disabled: false},
-                    ],
-                    athleteSelected: [],      // 选中的参赛运动员
+                    athlete: [],
+                    athleteSelected: [],        // 选中的参赛运动员
                     athleteSelectedName: null,  // 选中的参赛运动员名称(、分割，列表中需要这样显示)
                 },
                 rules: {
@@ -184,16 +195,25 @@
             }
         },
 
+        props: {
+            isSummary: {  // 是否是月总结页面
+                type: Boolean,
+                default: false
+            }
+        },
+
         created() {
             this.getAllList();
             this.getAthleteList(this.formatAthlete); // 获取运动员列表
         },
         methods: {
-            // 点击大项目
-            changeBigPro(item) {
-                this.getSmallProList(item.dicKey, (res) => {
-                    this.addForm.bigPro = item.dicKey;
-                    this.addForm.smallPro = [];
+            // 点击大项目 / 编辑渲染时
+            changeBigPro(proId, isEdit) {
+                this.getSmallProList(proId, (res) => {
+                    if(!isEdit) { // 编辑时不能清空已选择的小项
+                        this.addForm.smallPro = [];
+                        this.addForm.bigPro = proId;
+                    }
                     this.smallProList = res[0].split(',');
                 });
             },
@@ -241,19 +261,28 @@
                 this.athleteList = this.athleteList.map(item => {
                     return {key: item.dicKey, label: item.dicValue, disabled: false}
                 })
+            },
+
+            // 点击总结/详情
+            toSummary(item) {
+                console.log(item)
+                this.$refs.competitionSummary.baseForm = item;
+                this.$refs.competitionSummary.dialogVisible = true;
             }
         },
 
         watch: {
             'addForm.bigPro': function(val) {
-                this.bigProList.forEach(item => {
-                    if(item.dicKey == val) {
-                        this.addForm.bigProName = item.dicValue;
-                    }
-                })
+                if(val) {
+                    this.bigProList.forEach(item => {
+                        if(item.dicKey == val) {
+                            this.addForm.bigProName = item.dicValue;
+                        }
+                    })
+                    this.changeBigPro(val, 'isEdit');
+                }
             },
             'addForm.athleteSelected': function(val) {
-                console.log(val)
                 if(val) {
                     let str = '';
                     this.athleteList.forEach(item => {
@@ -269,9 +298,16 @@
             dialogVisible: function(val) {
                 if(!val) { // dialog关闭的时候
                     this.isEditDialog = false;
-                    this.$refs.addForm.resetFields();
+                    this.addForm.compName = null;
+                    this.addForm.compDate = null;
+                    this.addForm.country = null;
+                    this.addForm.city = null;
                     this.addForm.bigPro = null;
-                    this.addForm.bigPro = [];
+                    this.addForm.bigProName = null;
+                    this.addForm.smallPro = [];
+                    this.addForm.athlete = [];
+                    this.addForm.athleteSelected = [];
+                    this.addForm.athleteSelectedName = null;
                 }
             }
         }

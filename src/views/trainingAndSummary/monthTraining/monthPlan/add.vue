@@ -1,6 +1,9 @@
 <!--创建月计划-->
 <template>
     <div class="month-train-plan-add-wrapper">
+        <!--tab切换-->
+        <change-tab-bar :isSummary="isSummary"></change-tab-bar>
+
         <!--基础信息-->
         <el-card class="static-box card-box">
             <div slot="header" class="clearfix">
@@ -37,8 +40,8 @@
                             </el-date-picker>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="8">
-                        <el-form-item label="状态：" v-if="$route.query.status!==undefined">
+                    <el-col :span="8" :offset="6">
+                        <el-form-item label="状态：">
                             <span>{{baseForm.status=='1'?'已提交':'未提交'}}</span>
                         </el-form-item>
                     </el-col>
@@ -73,13 +76,15 @@
 <script>
     import trainPlan from './components/trainPlan'
     import competitionPlan from './components/competitionPlan'
+    import changeTabBar from './components/changeTabBar'
     import {saveMonthTrainPlan} from '@/api/trainingAndSummary'
     import mixins from '@/utils/mixins'
     export default {
         mixins: [mixins],
-        components: {trainPlan, competitionPlan},
+        components: {trainPlan, competitionPlan, changeTabBar},
         data() {
             return {
+                isSummary: false,    // 是否是月训练总结(计划与总结页面公用)
                 userInfo: this.$route.query.userInfo,
                 btnLoading: false,
                 baseForm: {
@@ -168,6 +173,13 @@
                 }
                 return JSON.stringify(arr)
             }
+        },
+        beforeRouteEnter (to, from, next) {
+            next(vm => {
+                if(to.meta.isPublic === '月训练总结') {
+                    vm.isSummary = true
+                }
+            })
         }
     }
 </script>

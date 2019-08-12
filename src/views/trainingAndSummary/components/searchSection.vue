@@ -60,17 +60,24 @@
                 </el-col>
                 <el-col :span="3">
                     <el-form-item prop="name">
-                        <el-button type="primary" v-waves icon="el-icon-search" @click="handleFilter">搜索 Search</el-button>
+                        <el-button type="primary" v-waves icon="el-icon-search" @click="handleFilter">搜索</el-button>
                     </el-form-item>
                 </el-col>
                 <el-col :span="3">
                     <el-form-item prop="name">
-                        <el-button class="search" type="info" v-waves @click="resetForm('searchForm')">重置 Reset</el-button>
+                        <el-button class="search" type="info" v-waves @click="resetForm('searchForm')">重置</el-button>
                     </el-form-item>
                 </el-col>
             </el-row>
+            <el-row :gutter="20">
+                <el-col :span="6" v-if="isSummary">
+                    <el-select v-model="searchForm.summary" placeholder="是否总结">
+                        <el-option label="否" value="0"></el-option>
+                        <el-option label="是" value="1"></el-option>
+                    </el-select>
+                </el-col>
+            </el-row>
         </el-form>
-
     </div>
 </template>
 
@@ -92,6 +99,7 @@
                     team: null,
                     coach: null,
                     trainYear: null,
+                    summary: null
                 }
             }
         },
@@ -103,6 +111,10 @@
         props: {
             typeName: {  // 引用搜索组件的父组件
                 type: String
+            },
+            isSummary: { // 是否是月训练总结页面
+                type: Boolean,
+                default: false
             }
         },
 

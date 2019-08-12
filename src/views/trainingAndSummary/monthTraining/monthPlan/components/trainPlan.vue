@@ -34,13 +34,24 @@
                     <span>{{scope.row.trainTarget}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="操作" v-if="id&&status=='0' || !id&&!status">
+            <el-table-column align="center" label="是否总结" v-if="isSummary">
+                <template slot-scope="scope">
+                    <span>{{scope.row.summary==1?'已总结':'未总结'}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column align="center" label="操作" v-if="id&&isSummary">
+                <template slot-scope="scope">
+                    <el-button v-if="scope.row.summary==1" size="mini" type="primary" @click="toSummary(scope.row)">详情</el-button>
+                    <el-button v-if="scope.row.summary==0" size="mini" type="primary" @click="toSummary(scope.row)">总结</el-button>
+                </template>
+            </el-table-column>
+            <el-table-column align="center" label="操作" v-if="(id&&status=='0' || !id&&!status)&&!isSummary">
                 <template slot-scope="scope">
                     <el-button size="mini" type="primary" @click="validateBaseForm(scope.$index)">编辑</el-button>
                 </template>
             </el-table-column>
         </el-table>
-        <div class="add-btn" v-if="status!='1'"><span @click="validateBaseForm">增加训练计划>></span></div>
+        <div class="add-btn" v-if="status!='1'&&!isSummary"><span @click="validateBaseForm">增加训练计划>></span></div>
 
         <!--创建dialog-->
         <el-dialog
@@ -96,13 +107,18 @@
                 <el-button type="primary" @click="onSubmit('addForm')">提 交</el-button>
             </span>
         </el-dialog>
+
+        <!--月总结窗口-->
+        <train-summary ref="trainSummary"></train-summary>
     </div>
 </template>
 
 <script>
     import mixins from '@/utils/mixins'
+    import trainSummary from './trainSummary'
     export default {
         mixins: [mixins],
+        components: {trainSummary},
         data() {
             return {
                 rowIdx: null,          // 编辑行时候，当前点击的行索引
@@ -127,7 +143,7 @@
                 },
                 rules: {
                     trainType: [
-                        { required: true, message: '请选输入训练类型', trigger: 'blur' }
+                        { required: true, message: '请输入训练类型', trigger: 'blur' }
                     ],
                     trainContent: [
                         { required: true, message: '请输入训练内容', trigger: 'blur' }
@@ -145,8 +161,15 @@
                 }
             }
         },
+        props: {
+            isSummary: {  // 是否是月总结页面
+                type: Boolean,
+                default: false
+            }
+        },
         created() {
             this.getAllList();
+            console.log(this.$route.path.indexOf('/monthSummary') !== -1)
         },
         methods: {
             // 提交
@@ -185,6 +208,12 @@
                 this.addForm.trainPurposeSelected = rowData.trainPurposeSelected;
                 this.addForm.trainPurposeSelectedName = rowData.trainPurposeSelectedName;
                 this.addForm.trainTarget = rowData.trainTarget;
+            },
+
+            // 点击总结/详情
+            toSummary(item) {
+                this.$refs.trainSummary.baseForm = item;
+                this.$refs.trainSummary.dialogVisible = true;
             }
         },
 
