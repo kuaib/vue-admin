@@ -584,7 +584,6 @@ let aa = [
                 "url": "",
                 "hideInMenu": false
             },
-
             {
                 "id": 3,
                 "path": "/weekTraining", // children中的path：取我定义的（子菜单path前不加斜杠： /）
@@ -1249,6 +1248,9 @@ let aa = [
             },
         ]
     },
+
+
+
     {
         "id": 10,
         "path": "/trainingBriefing",  // 第一级菜单前面有斜杠： /
