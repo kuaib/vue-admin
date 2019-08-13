@@ -2,7 +2,7 @@
 <template>
     <div class="month-train-plan-add-wrapper">
         <!--tab切换-->
-        <change-tab-bar :isSummary="isSummary"></change-tab-bar>
+        <change-tab-bar :isSummary="isSummary" sectionItem="month"></change-tab-bar>
 
         <!--基础信息-->
         <el-card class="static-box card-box">
@@ -76,7 +76,7 @@
 <script>
     import trainPlan from './components/trainPlan'
     import competitionPlan from './components/competitionPlan'
-    import changeTabBar from './components/changeTabBar'
+    import changeTabBar from '../../components/changeTabBar'
     import {saveMonthTrainPlan} from '@/api/trainingAndSummary'
     import mixins from '@/utils/mixins'
     export default {
@@ -85,7 +85,7 @@
         data() {
             return {
                 isSummary: this.$route.path.indexOf('/monthSummary') !== -1,    // 是否是月训练总结(计划与总结页面公用)
-                userInfo: JSON.parse(localStorage.getItem('trainAndSumUser')),
+                userInfo: JSON.parse(localStorage.getItem('trainAndSumUserMonth')),
                 btnLoading: false,
                 baseForm: {
                     project: null,

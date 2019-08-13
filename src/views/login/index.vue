@@ -107,7 +107,8 @@
             }
         },
         created() {
-            localStorage.removeItem('trainAndSumUser'); // 清空月训练管理中的缓存
+            localStorage.removeItem('trainAndSumUserMonth'); // 清空月训练管理中的缓存
+            localStorage.removeItem('trainAndSumUserWeek'); // 清空周训练管理中的缓存
         }
     }
 </script>

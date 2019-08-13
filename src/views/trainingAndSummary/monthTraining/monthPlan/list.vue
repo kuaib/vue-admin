@@ -1,7 +1,7 @@
 <template>
     <div class="month-training-wrapper">
         <!--tab切换-->
-        <change-tab-bar :isSummary="isSummary"></change-tab-bar>
+        <change-tab-bar :isSummary="isSummary" sectionItem="month"></change-tab-bar>
 
         <!--搜索-->
         <search-section typeName="月计划" @handleFilter="handleFilter" :isSummary="isSummary"></search-section>
@@ -72,7 +72,7 @@
 <script>
     import mixins from '@/utils/mixins'
     import searchSection from '../../components/searchSection'
-    import changeTabBar from './components/changeTabBar'
+    import changeTabBar from '../../components/changeTabBar'
     import {getMonthTrainPlanList} from '@/api/trainingAndSummary'
     export default {
         mixins: [mixins],
@@ -134,7 +134,7 @@
                 } else {
                     path = '/monthPlan/add'
                 }
-                localStorage.setItem('trainAndSumUser', JSON.stringify(this.extInfo.useInfo));
+                localStorage.setItem('trainAndSumUserMonth', JSON.stringify(this.extInfo.useInfo));
                 this.$router.push({path: path});
             },
 

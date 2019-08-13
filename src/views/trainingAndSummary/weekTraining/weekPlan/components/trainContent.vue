@@ -1,95 +1,84 @@
-<!--月训练计划 -- 训练计划列表-->
+<!--周训练计划 -- 增加每天的训练内容-->
 <template>
-    <div class="month-plan-train-wrapper">
-        <el-table :data="list" border fit highlight-current-row empty-text="暂无训练计划"
-                  style="width: 100%;">
-            <el-table-column
-                    align="center"
-                    label="序号"
-                    type="index"
-                    width="50">
-            </el-table-column>
-            <el-table-column align="center" label="训练类型">
-                <template slot-scope="scope">
-                    <span>{{scope.row.trainType=='1'?'国内训练':'国外训练'}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column align="center" label="训练内容">
-                <template slot-scope="scope">
-                    <span>{{scope.row.trainContent}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column align="center" label="训练目的">
-                <template slot-scope="scope">
-                    <span>{{scope.row.trainPurposeSelectedName}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column align="center" label="短板">
-                <template slot-scope="scope">
-                    <span>{{scope.row.shortBoard}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column align="center" label="期望目标" :show-overflow-tooltip="true">
-                <template slot-scope="scope">
-                    <span>{{scope.row.trainTarget}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column align="center" label="操作" v-if="id&&status=='0' || !id&&!status">
-                <template slot-scope="scope">
-                    <el-button size="mini" type="primary" @click="validateBaseForm(scope.$index)">编辑</el-button>
-                </template>
-            </el-table-column>
-        </el-table>
-        <div class="add-btn" v-if="status!='1'"><span @click="validateBaseForm">增加训练计划>></span></div>
-
-        <!--创建dialog-->
+    <div class="week-plan-train-wrapper">
+        <!--一周的列表-->
+        <el-row class="week-item">
+            <el-col>
+                <el-row :gutter="20">
+                    <el-col :span="3" class="week-title">0523(周一)</el-col>
+                    <el-col :span="3">
+                        <p>09:00~10:30</p>
+                        <p>专项训练</p>
+                    </el-col>
+                    <el-col :span="3">
+                        <p>09:00~10:30</p>
+                        <p>专项训练</p>
+                    </el-col>
+                    <el-col :span="3">
+                        <p>09:00~10:30</p>
+                        <p>专项训练</p>
+                    </el-col>
+                    <el-col :span="3">
+                        <p>09:00~10:30</p>
+                        <p>专项训练</p>
+                    </el-col>
+                    <el-col :span="3">
+                        <p>09:00~10:30</p>
+                        <p>专项训练</p>
+                    </el-col>
+                    <el-col :span="3">
+                        <p>09:00~10:30</p>
+                        <p>专项训练</p>
+                    </el-col>
+                    <el-col :span="3" class="week-btn">详情</el-col>
+                </el-row>
+            </el-col>
+        </el-row>
         <el-dialog
                 :show-close="false"
-                title="训练计划"
+                title="训练内容"
                 :visible.sync="dialogVisible"
                 width="60%"
                 center>
-            <el-form :model="addForm" :rules="rules" ref="addForm" label-width="120px">
-                <el-row :gutter="20">
-                    <el-col :span="12">
-                        <el-form-item label="训练类型" prop="trainType">
-                            <el-select v-model="addForm.trainType" placeholder="请选择训练类型">
-                                <el-option label="国内训练" value="1"></el-option>
-                                <el-option label="国外训练" value="2"></el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                        <el-form-item label="训练内容" prop="trainContent">
-                            <el-input v-model="addForm.trainContent" placeholder="请输入训练内容"></el-input>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-                <el-row :gutter="20">
-                    <el-col :span="12">
-                        <el-form-item label="短板" prop="shortBoard">
-                            <el-input v-model="addForm.shortBoard" placeholder="请输入短板"></el-input>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-
-                <el-row :gutter="20">
-                    <el-col :span="24">
-                        <el-form-item label="训练目的" prop="trainPurposeSelected">
-                            <el-transfer
-                                    v-model="addForm.trainPurposeSelected"
-                                    :data="addForm.trainPurpose"
-                                    :titles="['点选可关联','已选训练目的']">
-                            </el-transfer>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-                <el-row>
-                    <el-form-item label="期望目标" prop="trainTarget">
-                        <el-input type="textarea" v-model="addForm.trainTarget" placeholder="请输入期望目标"></el-input>
-                    </el-form-item>
-                </el-row>
-            </el-form>
+            <el-table :data="list" border fit highlight-current-row empty-text="暂无训练计划"
+                      style="width: 100%;">
+                <el-table-column
+                        align="center"
+                        label="序号"
+                        type="index"
+                        width="50">
+                </el-table-column>
+                <el-table-column align="center" label="训练类型">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.trainType=='1'?'国内训练':'国外训练'}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" label="训练内容">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.trainContent}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" label="训练目的">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.trainPurposeSelectedName}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" label="短板">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.shortBoard}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" label="期望目标" :show-overflow-tooltip="true">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.trainTarget}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" label="操作" v-if="id&&status=='0' || !id&&!status">
+                    <template slot-scope="scope">
+                        <el-button size="mini" type="primary" @click="validateBaseForm(scope.$index)">编辑</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible = false">取 消</el-button>
                 <el-button type="primary" @click="onSubmit('addForm')">提 交</el-button>
@@ -219,7 +208,7 @@
 </script>
 
 <style lang="scss">
-    .month-plan-train-wrapper {
+    .week-plan-train-wrapper {
         .add-btn {
             margin: 15px auto;
             color: #409EFF;
@@ -228,8 +217,19 @@
                 cursor: pointer;
             }
         }
-        .el-transfer-panel__item.el-checkbox {
-            display: block;
+        .el-card__body {
+            padding: 5px !important;
+        }
+        .week-item {
+            margin-bottom: 12px;
+            font-size: 13px;
+            text-align: center;
+            .week-title {
+                font-weight: 700;
+            }
+            .week-btn {
+                color: #409EFF;
+            }
         }
     }
 </style>

@@ -2,7 +2,7 @@
 <template>
     <div class="month-train-plan-edit-wrapper">
         <!--tab切换-->
-        <change-tab-bar :isSummary="isSummary"></change-tab-bar>
+        <change-tab-bar :isSummary="isSummary" sectionItem="month"></change-tab-bar>
 
         <!--基础信息-->
         <el-card class="static-box card-box">
@@ -91,7 +91,7 @@
 <script>
     import trainPlan from './components/trainPlan'
     import competitionPlan from './components/competitionPlan'
-    import changeTabBar from './components/changeTabBar'
+    import changeTabBar from '../../components/changeTabBar'
     import {saveMonthTrainPlan, getMonthTrainDetail} from '@/api/trainingAndSummary'
     import mixins from '@/utils/mixins'
     export default {
