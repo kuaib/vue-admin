@@ -513,8 +513,7 @@ let aa = [
                                     "title": "月训练总结",    // children中的title：取我定义的
                                     "icon": "ios-basket-outline",
                                     "hideInMenu": false,
-                                    "noCache": true,     // 这个是新加的字段！！！！！！！！！！！！
-                                    "isPublic": "月训练总结"
+                                    "noCache": true     // 这个是新加的字段！！！！！！！！！！！！
                                 },
                                 "url": "",
                                 "hideInMenu": false
@@ -536,7 +535,6 @@ let aa = [
                                     "icon": "ios-basket-outline",
                                     "hideInMenu": true,
                                     "noCache": true,     // 这个是新加的字段！！！！！！！！！！！！
-                                    "isPublic": "月训练总结"
                                 },
                                 "url": "",
                                 "hideInMenu": true
@@ -558,7 +556,6 @@ let aa = [
                                     "icon": "ios-basket-outline",
                                     "hideInMenu": true,
                                     "noCache": true,     // 这个是新加的字段！！！！！！！！！！！！
-                                    "isPublic": "月训练总结"
                                 },
                                 "url": "",
                                 "hideInMenu": true
@@ -1099,8 +1096,7 @@ function eachRouter(route) {
             title: route.meta.title,
             icon: route.meta.icon,
             hidden: route.meta.hideInMenu,
-            noCache: route.meta.noCache,
-            isPublic: route.meta.isPublic // 月计划用来判断是训练还是总结
+            noCache: route.meta.noCache
         }
     }
     return obj;

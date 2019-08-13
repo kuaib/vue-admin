@@ -84,7 +84,7 @@
         components: {trainPlan, competitionPlan, changeTabBar},
         data() {
             return {
-                isSummary: false,    // 是否是月训练总结(计划与总结页面公用)
+                isSummary: this.$route.path.indexOf('/monthSummary') !== -1,    // 是否是月训练总结(计划与总结页面公用)
                 userInfo: this.$route.query.userInfo,
                 btnLoading: false,
                 baseForm: {
@@ -103,7 +103,6 @@
         },
 
         created() {
-            console.log(this.userInfo)
             this.baseForm.project = this.userInfo.projectName;
             this.baseForm.team = this.userInfo.teamName;
             this.baseForm.coach = this.userInfo.staffName;
@@ -173,13 +172,6 @@
                 }
                 return JSON.stringify(arr)
             }
-        },
-        beforeRouteEnter (to, from, next) {
-            next(vm => {
-                if(to.meta.isPublic === '月训练总结') {
-                    vm.isSummary = true
-                }
-            })
         }
     }
 </script>

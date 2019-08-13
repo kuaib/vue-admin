@@ -170,7 +170,7 @@
                     smallPro: [],
                     athlete: [],
                     athleteSelected: [],        // 选中的参赛运动员
-                    athleteSelectedName: null,  // 选中的参赛运动员名称(、分割，列表中需要这样显示)
+                    athleteSelectedName: null,  // 选中的参赛运动员名称(,分割，列表中需要这样显示)
                 },
                 rules: {
                     compName: [
@@ -265,7 +265,6 @@
 
             // 点击总结/详情
             toSummary(item) {
-                console.log(item)
                 this.$refs.competitionSummary.baseForm = item;
                 this.$refs.competitionSummary.dialogVisible = true;
             }
@@ -288,7 +287,7 @@
                     this.athleteList.forEach(item => {
                         this.addForm.athleteSelected.forEach(sel => {
                             if(sel === item.key) {
-                                str += '、' + item.label;
+                                str += ',' + item.label;
                             }
                         });
                     });

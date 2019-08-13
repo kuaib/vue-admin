@@ -99,7 +99,7 @@
         components: {trainPlan, competitionPlan, changeTabBar},
         data() {
             return {
-                isSummary: false,    // 是否是月训练总结(计划与总结页面公用)
+                isSummary: this.$route.path.indexOf('/monthSummary') !== -1,  // 是否是月训练总结(计划与总结页面公用)
                 updatedTime: this.$route.query.updatedTime,
                 id: this.$route.query.id,
                 status: this.$route.query.status,
@@ -246,8 +246,10 @@
                         obj.country = item.matchCountry;
                         obj.city = item.matchCity;
                         obj.bigPro = item.matchProjetId;
+                        obj.bigProName = item.matchProjetName;
                         obj.smallPro = item.matchProjectInfo.split(',');
                         obj.athleteSelected = item.matchAthlete.split(',');
+                        obj.athleteSelectedName = item.matchAthleteList;
 
                         // 月总结使用的
                         obj.id = item.id;
@@ -259,13 +261,6 @@
                 }
                 return arr;
             }
-        },
-        beforeRouteEnter (to, from, next) {
-            next(vm => {
-                if(to.meta.isPublic === '月训练总结') {
-                    vm.isSummary = true
-                }
-            })
         }
     }
 </script>

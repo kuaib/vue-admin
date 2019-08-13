@@ -79,7 +79,7 @@
         components: {searchSection, changeTabBar},
         data() {
             return {
-                isSummary: false,    // 是否是月训练总结(计划与总结页面公用)
+                isSummary: this.$route.path.indexOf('/monthSummary') !== -1, // 是否是月训练总结(计划与总结页面公用)
                 list: [],            // table列表
                 total: null,         // 总条目数
                 listLoading: false,  // 查询table的loading
@@ -148,14 +148,6 @@
                 }
                 this.$router.push({path: path, query: {id: row.trainMonthId, status: row.status, updatedTime: updatedTime}})
             },
-        },
-
-        beforeRouteEnter (to, from, next) {
-            next(vm => {
-                if(to.meta.isPublic === '月训练总结') {
-                    vm.isSummary = true
-                }
-            })
         }
     }
 </script>
