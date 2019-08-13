@@ -47,7 +47,7 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                    <el-form-item prop="team">
+                    <el-form-item prop="trainYear">
                         <el-date-picker
                                 v-model="searchForm.trainYear"
                                 type="monthrange"
@@ -71,10 +71,12 @@
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="6" v-if="isSummary">
-                    <el-select v-model="searchForm.summary" placeholder="是否总结">
-                        <el-option label="否" value="0"></el-option>
-                        <el-option label="是" value="1"></el-option>
-                    </el-select>
+                    <el-form-item prop="summary">
+                        <el-select v-model="searchForm.summary" placeholder="是否总结">
+                            <el-option label="否" value="0"></el-option>
+                            <el-option label="是" value="1"></el-option>
+                        </el-select>
+                    </el-form-item>
                 </el-col>
             </el-row>
         </el-form>
