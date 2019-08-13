@@ -2,41 +2,26 @@
 <template>
     <div class="week-plan-train-wrapper">
         <!--一周的列表-->
-        <el-row class="week-item">
-            <el-col>
+        <el-row class="week-item" v-for="(item,idx) in dateArrList" :key="idx">
+            <el-col :span="3">
+                <div :span="3" class="week-title">{{item.weekDay}}</div>
+            </el-col>
+            <el-col :span="18">
                 <el-row :gutter="20">
-                    <el-col :span="3" class="week-title">0523(周一)</el-col>
-                    <el-col :span="3">
-                        <p>09:00~10:30</p>
-                        <p>专项训练</p>
+                    <el-col :span="4" v-if="item.trainList&&item.trainList.length>0">
+                        <p>{{item.trainList && item.trainList.time}}</p>
+                        <p>{{item.trainList && item.trainList.trainType}}</p>
                     </el-col>
-                    <el-col :span="3">
-                        <p>09:00~10:30</p>
-                        <p>专项训练</p>
-                    </el-col>
-                    <el-col :span="3">
-                        <p>09:00~10:30</p>
-                        <p>专项训练</p>
-                    </el-col>
-                    <el-col :span="3">
-                        <p>09:00~10:30</p>
-                        <p>专项训练</p>
-                    </el-col>
-                    <el-col :span="3">
-                        <p>09:00~10:30</p>
-                        <p>专项训练</p>
-                    </el-col>
-                    <el-col :span="3">
-                        <p>09:00~10:30</p>
-                        <p>专项训练</p>
-                    </el-col>
-                    <el-col :span="3" class="week-btn">详情</el-col>
+                    <el-col :span="4" v-else>&nbsp;</el-col>
                 </el-row>
             </el-col>
+            <el-col :span="3" class="week-btn" @click="editRow(item,idx)">{{item.trainList&&item.trainList.length>0?'详情':'编辑'}}</el-col>
         </el-row>
+
+
         <el-dialog
                 :show-close="false"
-                title="训练内容"
+                :title="currentWeekDay+'训练内容'"
                 :visible.sync="dialogVisible"
                 width="60%"
                 center>
@@ -91,8 +76,15 @@
     import mixins from '@/utils/mixins'
     export default {
         mixins: [mixins],
+        props: {
+        },
         data() {
             return {
+                dateArrList: [],       // 周区间
+                currentWeekDay: null,  // 当前点击的行的日期
+
+
+
                 rowIdx: null,          // 编辑行时候，当前点击的行索引
                 isEditDialog: false,   // 判断当前当前打开dialog是否是编辑
                 list: [],              // 行数据列表
@@ -105,14 +97,6 @@
                     trainType: null,
                     trainTypeName: null,
                     shortBoard: null,
-                    trainPurpose: [
-                        {key: 0, label: '选项一', disabled: false},
-                        {key: 1, label: '选项二', disabled: false},
-                        {key: 2, label: '选项三', disabled: false},
-                    ],
-                    trainPurposeSelected: [],        // 选中的训练目的
-                    trainPurposeSelectedName: null,  // 选中的训练目的名称(、分割，列表中需要这样显示)
-                    trainTarget: null
                 },
                 rules: {
                     trainType: [
@@ -120,16 +104,7 @@
                     ],
                     trainContent: [
                         { required: true, message: '请输入训练内容', trigger: 'blur' }
-                    ],
-                    shortBoard: [
-                        { required: true, message: '请输入短板', trigger: 'blur' }
-                    ],
-                    trainPurposeSelected: [
-                        { required: true, message: '请选择训练目的', trigger: 'change' }
-                    ],
-                    trainTarget: [
-                        { required: true, message: '请输入期望目标', trigger: 'blur' }
-                    ],
+                    ]
 
                 }
             }
@@ -138,6 +113,44 @@
             this.getAllList();
         },
         methods: {
+            // 点击每一天的详情/编辑
+            editRow(item, idx) {
+                this.currentWeekDay = item.weekDay;
+
+            },
+
+            // 获取所选时间的区间数组
+            getDateComplete(year, dateRange) {
+                year = year.slice(0, 5);
+                let startDate = new Date(year + dateRange[0]);
+                let endDate = new Date(year + dateRange[1]);
+                let dataArr = [];
+                let weeks = ['日', '一', '二', '三', '四', '五', '六'];
+                while((endDate.getTime() - startDate.getTime()) >= 0) {
+                    var month = (startDate.getMonth() + 1).toString().length == 1 ? "0" + (startDate.getMonth() + 1).toString() : (startDate.getMonth() + 1);
+                    var day = startDate.getDate().toString().length == 1 ? "0" + startDate.getDate() : startDate.getDate();
+                    var week = weeks[startDate.getDay()];
+                    dataArr.push({weekDay: month + day + '（周' + week + '）'});
+                    startDate.setDate(startDate.getDate() + 1);
+                }
+                this.dateArrList = dataArr;
+            },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             // 提交
             onSubmit(formName) {
                 this.$refs[formName].validate((valid) => {
@@ -175,28 +188,13 @@
                 this.addForm.trainPurposeSelected = rowData.trainPurposeSelected;
                 this.addForm.trainPurposeSelectedName = rowData.trainPurposeSelectedName;
                 this.addForm.trainTarget = rowData.trainTarget;
-            }
+            },
+
+
         },
 
         watch: {
-            'addForm.trainType': function(val) {
-                if(val) {
-                    this.addForm.trainTypeName = val === '1' ? '国内训练' : '国外训练';
-                }
-            },
-            'addForm.trainPurposeSelected': function(val) {
-                if(val) {
-                    let str = '';
-                    this.addForm.trainPurpose.forEach(item => {
-                        this.addForm.trainPurposeSelected.forEach(sel => {
-                            if(sel === item.key) {
-                                str += '、' + item.label;
-                            }
-                        });
-                    });
-                    this.addForm.trainPurposeSelectedName = str.substr(1);
-                }
-            },
+
             dialogVisible: function(val) {
                 if(!val) { // dialog关闭的时候
                     this.isEditDialog = false;
@@ -217,13 +215,11 @@
                 cursor: pointer;
             }
         }
-        .el-card__body {
-            padding: 5px !important;
-        }
         .week-item {
-            margin-bottom: 12px;
             font-size: 13px;
             text-align: center;
+            border-bottom: 1px solid #EBEEF5;
+            padding: 15px 0;
             .week-title {
                 font-weight: 700;
             }

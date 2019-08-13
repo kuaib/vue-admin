@@ -1,5 +1,6 @@
+<!--周训练管理列表-->
 <template>
-    <div class="year-training-wrapper">
+    <div class="week-training-wrapper">
         <!--搜索-->
         <search-section typeName="周计划" @handleFilter="handleFilter" :isSummary="isSummary"></search-section>
 
@@ -7,7 +8,7 @@
         <el-row>
             <div class="table-title clearfix">
                 <h3>周计划列表</h3>
-                <el-button type="success" @click="addNew" v-show="">创建周计划</el-button>
+                <el-button type="success" @click="addNew" v-if="extInfo.canOperate&&!isSummary">创建周计划</el-button>
             </div>
             <el-table :data="list" v-loading="listLoading" border fit highlight-current-row
                       style="width: 100%;">
@@ -68,14 +69,15 @@
         components: {searchSection},
         data() {
             return {
-                isSummary: false,    // 是否是月训练总结(计划与总结页面公用)
+                isSummary: this.$route.path.indexOf('/weekSummary') !== -1,    // 是否是周训练总结(计划与总结页面公用)
                 list: [],            // table列表
                 total: null,         // 总条目数
                 listLoading: false,  // 查询table的loading
                 listQuery: {
                     currentPage: 1,
                     pageSize: 10
-                }
+                },
+                extInfo: {}  // 账号的权限
             }
         },
 
@@ -100,6 +102,7 @@
                     if (res.data.code === 200) {
                         const data = res.data.data;
                         this.list = data.list;
+                        this.extInfo = data.extInfo;
                         this.total = data.pagination.total;
                     } else {
                         this.$message({
@@ -114,27 +117,20 @@
 
             // 创建周计划
             addNew() {
+                localStorage.setItem('trainAndSumUserWeek', JSON.stringify(this.extInfo.useInfo));
                 this.$router.push('/weekPlan/add');
             },
 
             // 去详情
             toEdit(row) {
-                this.$router.push({path: '/weekPlan/edit', query: {id: row.trainId}})
+                // this.$router.push({path: '/weekPlan/edit', query: {id: row.trainId}})
             },
-        },
-
-        beforeRouteEnter (to, from, next) {
-            next(vm => {
-                if(to.meta.isPublic === '周训练总结') {
-                    vm.isSummary = true
-                }
-            })
         }
     }
 </script>
 
 <style lang="scss">
-    .year-training-wrapper {
+    .week-training-wrapper {
         .table-title {
             margin-top: 20px;
             margin-bottom: 10px;
