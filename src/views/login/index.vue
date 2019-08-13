@@ -105,6 +105,9 @@
                     }
                 })
             }
+        },
+        created() {
+            localStorage.removeItem('trainAndSumUser'); // 清空月训练管理中的缓存
         }
     }
 </script>

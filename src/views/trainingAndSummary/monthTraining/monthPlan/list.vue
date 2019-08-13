@@ -10,7 +10,7 @@
         <el-row>
             <div class="table-title clearfix">
                 <h3>月计划列表</h3>
-                <el-button type="success" @click="addNew" v-show="extInfo.canOperate&&!isSummary">创建月计划</el-button>
+                <el-button type="success" @click="addNew" v-if="extInfo.canOperate&&!isSummary">创建月计划</el-button>
             </div>
             <el-table :data="list" v-loading="listLoading" border fit highlight-current-row
                       style="width: 100%;">
@@ -134,7 +134,8 @@
                 } else {
                     path = '/monthPlan/add'
                 }
-                this.$router.push({path: path, query: {userInfo: this.extInfo.useInfo}});
+                localStorage.setItem('trainAndSumUser', JSON.stringify(this.extInfo.useInfo));
+                this.$router.push({path: path});
             },
 
             // 去详情
@@ -146,7 +147,13 @@
                 } else {
                     path = '/monthPlan/edit'
                 }
-                this.$router.push({path: path, query: {id: row.trainMonthId, status: row.status, updatedTime: updatedTime}})
+                this.$router.push(
+                    {path: path, query: {
+                        id: row.trainMonthId,
+                        status: row.status,
+                        updatedTime: updatedTime,
+                        canOperate: this.extInfo.canOperate}
+                    })
             },
         }
     }

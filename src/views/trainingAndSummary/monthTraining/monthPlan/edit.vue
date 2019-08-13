@@ -78,10 +78,10 @@
         </el-card>
 
         <!--保存-->
-        <el-row style="text-align: center;" v-if="status==1&&!isSummary">
+        <el-row style="text-align: center;" v-if="!canOperate || (status==1&&!isSummary)">
             <el-button type="primary" round style="padding: 12px 35px;" @click="cancelAct('save')">关 闭</el-button>
         </el-row>
-        <el-row style="text-align: center;"  v-if="status!=1&&!isSummary">
+        <el-row style="text-align: center;"  v-if="status!=1&&!isSummary&&canOperate">
             <el-button type="primary" round @click="onSubmit('baseForm','0')" :loading="btnLoading" style="padding: 12px 35px;">保存草稿</el-button>
             <el-button type="primary" round @click="onSubmit('baseForm','1')" :loading="btnLoading" style="padding: 12px 35px;">提 交</el-button>
         </el-row>
@@ -103,6 +103,7 @@
                 updatedTime: this.$route.query.updatedTime,
                 id: this.$route.query.id,
                 status: this.$route.query.status,
+                canOperate: this.$route.query.canOperate,
                 btnLoading: false,
                 baseForm: {
                     project: null,
@@ -122,6 +123,7 @@
         },
 
         created() {
+            console.log(this.canOperate)
             this.getDetails();
         },
 

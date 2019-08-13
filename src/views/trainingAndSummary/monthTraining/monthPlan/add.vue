@@ -85,7 +85,7 @@
         data() {
             return {
                 isSummary: this.$route.path.indexOf('/monthSummary') !== -1,    // 是否是月训练总结(计划与总结页面公用)
-                userInfo: this.$route.query.userInfo,
+                userInfo: JSON.parse(localStorage.getItem('trainAndSumUser')),
                 btnLoading: false,
                 baseForm: {
                     project: null,
