@@ -523,7 +523,7 @@ let aa = [
                                 "path": "add", // children中的path：取我定义的（子菜单path前不加斜杠： /）
                                 "component": "views/trainingAndSummary/monthTraining/monthPlan/add", // children中的component：取我定义的，最前面不加斜杠： /
                                 "name": "monthTrainingSummaryAdd",     // children中的name：取我定义的
-                                "title": "月训练总结",      // 可有可无*****
+                                "title": "创建月训练总结",      // 可有可无*****
                                 "icon": "ios-basket-outline",
                                 "parentId": 2,
                                 "enabled": 1,
@@ -531,7 +531,7 @@ let aa = [
                                 "roles": null,
                                 "meta": {
                                     "access": null,
-                                    "title": "月训练总结",    // children中的title：取我定义的
+                                    "title": "创建月训练总结",    // children中的title：取我定义的
                                     "icon": "ios-basket-outline",
                                     "hideInMenu": true,
                                     "noCache": true,     // 这个是新加的字段！！！！！！！！！！！！
@@ -544,7 +544,7 @@ let aa = [
                                 "path": "edit", // children中的path：取我定义的（子菜单path前不加斜杠： /）
                                 "component": "views/trainingAndSummary/monthTraining/monthPlan/edit", // children中的component：取我定义的，最前面不加斜杠： /
                                 "name": "monthTrainingSummaryEdit",     // children中的name：取我定义的
-                                "title": "月训练总结",      // 可有可无*****
+                                "title": "编辑月训练总结",      // 可有可无*****
                                 "icon": "ios-basket-outline",
                                 "parentId": 2,
                                 "enabled": 1,
@@ -552,7 +552,7 @@ let aa = [
                                 "roles": null,
                                 "meta": {
                                     "access": null,
-                                    "title": "月训练总结",    // children中的title：取我定义的
+                                    "title": "编辑月训练总结",    // children中的title：取我定义的
                                     "icon": "ios-basket-outline",
                                     "hideInMenu": true,
                                     "noCache": true,     // 这个是新加的字段！！！！！！！！！！！！
@@ -716,7 +716,7 @@ let aa = [
                                 "path": "add", // children中的path：取我定义的（子菜单path前不加斜杠： /）
                                 "component": "views/trainingAndSummary/weekTraining/weekPlan/add", // children中的component：取我定义的，最前面不加斜杠： /
                                 "name": "weekTrainingSummaryAdd",     // children中的name：取我定义的
-                                "title": "周训练总结",      // 可有可无*****
+                                "title": "创建周训练总结",      // 可有可无*****
                                 "icon": "ios-basket-outline",
                                 "parentId": 2,
                                 "enabled": 1,
@@ -724,7 +724,7 @@ let aa = [
                                 "roles": null,
                                 "meta": {
                                     "access": null,
-                                    "title": "周训练总结",    // children中的title：取我定义的
+                                    "title": "创建周训练总结",    // children中的title：取我定义的
                                     "icon": "ios-basket-outline",
                                     "hideInMenu": true,
                                     "noCache": true     // 这个是新加的字段！！！！！！！！！！！！
@@ -737,7 +737,7 @@ let aa = [
                                 "path": "edit", // children中的path：取我定义的（子菜单path前不加斜杠： /）
                                 "component": "views/trainingAndSummary/weekTraining/weekPlan/edit", // children中的component：取我定义的，最前面不加斜杠： /
                                 "name": "weekTrainingSummaryEdit",     // children中的name：取我定义的
-                                "title": "周训练总结",      // 可有可无*****
+                                "title": "编辑周训练总结",      // 可有可无*****
                                 "icon": "ios-basket-outline",
                                 "parentId": 2,
                                 "enabled": 1,
@@ -745,7 +745,7 @@ let aa = [
                                 "roles": null,
                                 "meta": {
                                     "access": null,
-                                    "title": "周训练总结",    // children中的title：取我定义的
+                                    "title": "编辑周训练总结",    // children中的title：取我定义的
                                     "icon": "ios-basket-outline",
                                     "hideInMenu": true,
                                     "noCache": true     // 这个是新加的字段！！！！！！！！！！！！
@@ -1608,11 +1608,11 @@ const user = {
                     if (response.data.code === 200) {
                         const res = response.data.data;
                         if (res && res.length > 0) { // 验证返回的菜单是否是一个非空数组
-                            // let newRouters = reformRouters(res);
+                            let newRouters = reformRouters(res);
                             // console.log(res)
                             // console.log(aa)
                             // let newRouters = reformRouters1(res);
-                            let newRouters = reformRouters(aa);
+                            // let newRouters = reformRouters(aa);
                             commit('SET_ROUTERS', newRouters);
                             resolve()
                         } else {

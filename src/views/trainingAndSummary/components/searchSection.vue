@@ -50,11 +50,9 @@
                     <el-form-item prop="trainYear">
                         <el-date-picker
                                 v-model="searchForm.trainYear"
-                                type="monthrange"
+                                type="month"
                                 value-format="yyyy-MM"
-                                range-separator="至"
-                                start-placeholder="训练年度开始年月"
-                                end-placeholder="训练年度结束年月">
+                                placeholder="请选择训练年度">
                         </el-date-picker>
                     </el-form-item>
                 </el-col>

@@ -106,7 +106,7 @@
                     projectId: formData.project,
                     teamId: formData.team,
                     coachId: formData.coach,
-                    trainMonth: formData.trainYear && (formData.trainYear[0] + ',' + formData.trainYear[1]),
+                    trainMonth: formData.trainYear,
                     summary: formData.summary && parseInt(formData.summary)
                 }).then(res => {
                     this.listLoading = false;

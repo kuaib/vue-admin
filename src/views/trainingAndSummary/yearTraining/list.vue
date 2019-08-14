@@ -99,7 +99,8 @@
                     projectId: formData.project,
                     teamId: formData.team,
                     coachId: formData.coach,
-                    trainYear: formData.trainYear && (formData.trainYear[0] + ',' + formData.trainYear[1]),
+                    // trainYear: formData.trainYear && (formData.trainYear[0] + ',' + formData.trainYear[1]),
+                    trainYear: formData.trainYear,
                 }).then(res => {
                     this.listLoading = false;
                     if (res.data.code === 200) {

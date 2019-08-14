@@ -25,37 +25,38 @@
                 :title="currentWeekDay+'训练内容'"
                 :visible.sync="dialogVisible"
                 width="60%"
+                :close-on-click-modal="false"
                 center>
             <el-row class="train-section">
                 <el-row class="edit-table-title">专项训练</el-row>
                 <el-table :data="listSpecial" border highlight-current-row style="width: 100%" max-height="250">
 
-                    <el-table-column prop="trainTime" label="*训练时段" width="230" align="center" header-align="center">
+                    <el-table-column prop="trainTime" label="*训练时段" align="center" header-align="center">
                         <template slot-scope="scope">
                             <el-input v-if="scope.row.trainTime.editFlag" v-model="scope.row.trainTime.value" v-focus></el-input>
                             <div v-else class="table-item-div" @click="editRowItem(scope,'listSpecial')">{{scope.row.trainTime.value}}</div>
                         </template>
                     </el-table-column>
 
-                    <el-table-column prop="trainType" label="*训练类型" width="150" align="center" header-align="center">
+                    <el-table-column prop="trainType" label="*训练类型" align="center" header-align="center">
                         <template slot-scope="scope">
                             <el-input v-if="scope.row.trainType.editFlag" v-model="scope.row.trainType.value" v-focus></el-input>
                             <div v-else class="table-item-div" @click="editRowItem(scope,'listSpecial')">{{scope.row.trainType.value}}</div>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="trainContent" label="*训练内容" width="180" align="center" header-align="center">
+                    <el-table-column prop="trainContent" label="*训练内容" align="center" header-align="center">
                         <template slot-scope="scope">
                             <el-input v-if="scope.row.trainContent.editFlag" v-model="scope.row.trainContent.value" v-focus></el-input>
                             <div v-else class="table-item-div" @click="editRowItem(scope,'listSpecial')">{{scope.row.trainContent.value}}</div>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="trainDetail" label="内容细节" width="200" align="center" header-align="center">
+                    <el-table-column prop="trainDetail" label="内容细节" align="center" header-align="center">
                         <template slot-scope="scope">
                             <el-input v-if="scope.row.trainDetail.editFlag" v-model="scope.row.trainDetail.value" v-focus></el-input>
                             <div v-else class="table-item-div" @click="editRowItem(scope,'listSpecial')">{{scope.row.trainDetail.value}}</div>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="repeatTimes" label="重复次数" width="120" align="center" header-align="center">
+                    <el-table-column prop="repeatTimes" label="重复次数" width="80" align="center" header-align="center">
                         <template slot-scope="scope">
                             <el-input v-if="scope.row.repeatTimes.editFlag" v-model="scope.row.repeatTimes.value" v-focus></el-input>
                             <div v-else class="table-item-div" @click="editRowItem(scope,'listSpecial')">{{scope.row.repeatTimes.value}}</div>
@@ -63,58 +64,76 @@
                     </el-table-column>
                     <el-table-column fixed label="操作" width="80" align="center" header-align="center">
                         <template slot-scope="scope">
-                            <span v-if="scope.$index===listSpecial.length-1" @click="addRow(scope.$index,'listSpecial')" class="row-act-btns">添加</span>
-                            <span v-else @click="handleDel(scope.$index, scope.row, 'listSpecial')" class="row-act-btns">删除</span>
+                            <span @click="handleDel(scope.$index, scope.row, 'listSpecial')" class="row-act-btns">删除</span>
                         </template>
                     </el-table-column>
                 </el-table>
+                <div @click="addRow('listSpecial')" class="row-act-btns addBtn">添加</div>
             </el-row>
             <el-row class="train-section">
                 <el-row class="edit-table-title">体能训练</el-row>
                 <el-table :data="listBody" border highlight-current-row style="width: 100%" max-height="250">
 
-                    <el-table-column prop="trainTime" label="*训练时段" width="230" align="center" header-align="center">
+                    <el-table-column prop="trainTime" label="*训练时段" align="center" header-align="center">
                         <template slot-scope="scope">
                             <el-input v-if="scope.row.trainTime.editFlag" v-model="scope.row.trainTime.value" v-focus></el-input>
                             <div v-else class="table-item-div" @click="editRowItem(scope,'listBody')">{{scope.row.trainTime.value}}</div>
                         </template>
                     </el-table-column>
 
-                    <el-table-column prop="trainType" label="*训练类型" width="150" align="center" header-align="center">
+                    <el-table-column prop="trainType" label="*训练类型" align="center" header-align="center">
                         <template slot-scope="scope">
                             <el-input v-if="scope.row.trainType.editFlag" v-model="scope.row.trainType.value" v-focus></el-input>
                             <div v-else class="table-item-div" @click="editRowItem(scope,'listBody')">{{scope.row.trainType.value}}</div>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="trainContent" label="*训练内容" width="180" align="center" header-align="center">
+                    <el-table-column prop="trainContent" label="训练内容" align="center" header-align="center">
                         <template slot-scope="scope">
                             <el-input v-if="scope.row.trainContent.editFlag" v-model="scope.row.trainContent.value" v-focus></el-input>
                             <div v-else class="table-item-div" @click="editRowItem(scope,'listBody')">{{scope.row.trainContent.value}}</div>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="trainDetail" label="内容细节" width="200" align="center" header-align="center">
+                    <el-table-column prop="trainDetail" label="内容细节" align="center" header-align="center">
                         <template slot-scope="scope">
                             <el-input v-if="scope.row.trainDetail.editFlag" v-model="scope.row.trainDetail.value" v-focus></el-input>
                             <div v-else class="table-item-div" @click="editRowItem(scope,'listBody')">{{scope.row.trainDetail.value}}</div>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="repeatTimes" label="重复次数" width="120" align="center" header-align="center">
+                    <el-table-column prop="repeatTimes" label="每组重复次数" align="center" header-align="center">
                         <template slot-scope="scope">
                             <el-input v-if="scope.row.repeatTimes.editFlag" v-model="scope.row.repeatTimes.value" v-focus></el-input>
                             <div v-else class="table-item-div" @click="editRowItem(scope,'listBody')">{{scope.row.repeatTimes.value}}</div>
                         </template>
                     </el-table-column>
+                    <el-table-column prop="actionTimes" label="动作次数" width="80" align="center" header-align="center">
+                        <template slot-scope="scope">
+                            <el-input v-if="scope.row.actionTimes.editFlag" v-model="scope.row.actionTimes.value" v-focus></el-input>
+                            <div v-else class="table-item-div" @click="editRowItem(scope,'listBody')">{{scope.row.actionTimes.value}}</div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="restInterval" label="组间休息间隔s" width="80" align="center" header-align="center">
+                        <template slot-scope="scope">
+                            <el-input v-if="scope.row.restInterval.editFlag" v-model="scope.row.restInterval.value" v-focus></el-input>
+                            <div v-else class="table-item-div" @click="editRowItem(scope,'listBody')">{{scope.row.restInterval.value}}</div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="rhythm" label="节奏" align="center" header-align="center">
+                        <template slot-scope="scope">
+                            <el-input v-if="scope.row.rhythm.editFlag" v-model="scope.row.rhythm.value" v-focus></el-input>
+                            <div v-else class="table-item-div" @click="editRowItem(scope,'listBody')">{{scope.row.rhythm.value}}</div>
+                        </template>
+                    </el-table-column>
                     <el-table-column fixed label="操作" width="80" align="center" header-align="center">
                         <template slot-scope="scope">
-                            <span v-if="scope.$index===listBody.length-1" @click="addRow(scope.$index,'listBody')" class="row-act-btns">添加</span>
-                            <span v-else @click="handleDel(scope.$index, scope.row, 'listBody')" class="row-act-btns">删除</span>
+                            <span @click="handleDel(scope.$index, scope.row, 'listSpecial')" class="row-act-btns">删除</span>
                         </template>
                     </el-table-column>
                 </el-table>
+                <div @click="addRow('listBody')" class="row-act-btns addBtn">添加</div>
             </el-row>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="onSubmit('addForm')">提 交</el-button>
+                <el-button type="primary" @click="onSubmit('addForm')">保 存</el-button>
             </span>
         </el-dialog>
     </div>
@@ -128,16 +147,18 @@
         },
         data() {
             return {
-                dateArrList: [{weekDay:"0205（周二）"},{weekDay:"0206（周三）"},{weekDay:"0207（周四）"},{weekDay:"0208（周五）"}],       // 周区间
-                currentWeekDay: null, // 当前点击的行的日期
-                dialogVisible: true,  // 是否显示行数据编辑dialog对话框
-                listSpecial: [],      // 专项训练列表
-                listBody: [],         // 体能训练列表
+                rowIdx: null,          // 编辑行时候，当前点击的行索引
+                isEditDialog: false,   // 判断当前当前打开dialog是否是编辑
+                // dateArrList: [{weekDay:"0205（周二）"},{weekDay:"0206（周三）"},{weekDay:"0207（周四）"},{weekDay:"0208（周五）"}],       // 周区间
+                dateArrList: [],       // 周区间
+                currentWeekDay: null,  // 当前点击的行的日期
+                dialogVisible: true,   // 是否显示行数据编辑dialog对话框
+                listSpecial: [],       // 专项训练列表
+                listBody: [],          // 体能训练列表
 
 
 
-                // rowIdx: null,          // 编辑行时候，当前点击的行索引
-                // isEditDialog: false,   // 判断当前当前打开dialog是否是编辑
+
                 //
                 // id: this.$route.query.id,
                 // status: this.$route.query.status,
@@ -161,30 +182,30 @@
         },
         created() {
             this.getAllList();
-            this.initTable()
         },
         methods: {
-            initTable() {
-                this.listSpecial= [
-                    {
+            // 增加一条表格行
+            addRow(tableName) {
+                if(tableName === 'listSpecial') {
+                    this[tableName].push({
                         trainType: { value: '', editFlag: false },
                         trainTime: { value: '', editFlag: false },
                         trainContent: { value: '', editFlag: false },
                         trainDetail: { value: '', editFlag: false },
                         repeatTimes: { value: '', editFlag: false }
-                    }
-                ]
-            },
-
-            // 增加一条表格行
-            addRow(index, tableName) {
-                this[tableName].splice(index + 1, 0, {
-                    trainType: { value: '', editFlag: false },
-                    trainTime: { value: '', editFlag: false },
-                    trainContent: { value: '', editFlag: false },
-                    trainDetail: { value: '', editFlag: false },
-                    repeatTimes: { value: '', editFlag: false }
-                })
+                    });
+                } else {
+                    this[tableName].push({
+                        trainType: { value: '', editFlag: false },
+                        trainTime: { value: '', editFlag: false },
+                        trainContent: { value: '', editFlag: false },
+                        trainDetail: { value: '', editFlag: false },
+                        repeatTimes: { value: '', editFlag: false },
+                        actionTimes: { value: '', editFlag: false },
+                        restInterval: { value: '', editFlag: false },
+                        rhythm: { value: '', editFlag: false }
+                    });
+                }
             },
             // 删除一条表格行
             handleDel: function(index, row, tableName) {
@@ -194,19 +215,20 @@
             editRowItem(scope,tableName) {
                 let columnName = scope.column.property;
                 this[tableName].forEach((item, idx) => {
-                    for (var key in this.list[idx]) {
-                        if (this.list[idx][key].editFlag !== undefined) {
-                            this.list[idx][key].editFlag = false;
+                    for (var key in this[tableName][idx]) {
+                        if (this[tableName][idx][key].editFlag !== undefined) {
+                            this[tableName][idx][key].editFlag = false;
                         }
                     }
                 })
-                this.list[scope.$index][columnName].editFlag = true
+                this[tableName][scope.$index][columnName].editFlag = true
             },
 
 
             // 点击每一天的详情/编辑
             editRow(item, idx) {
                 this.currentWeekDay = item.weekDay;
+                this.rowIdx = idx;
                 this.dialogVisible = true;
             },
 
@@ -224,39 +246,42 @@
                     dataArr.push({weekDay: month + day + '（周' + week + '）'});
                     startDate.setDate(startDate.getDate() + 1);
                 }
-                console.log(dataArr)
                 this.dateArrList = dataArr;
             },
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            // 提交
+            // 保存
             onSubmit(formName) {
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
+                // this.$refs[formName].validate((valid) => {
+                //     if (valid) {
                         this.dialogVisible = false;
                         if(this.isEditDialog) { // 编辑
                             this.list.splice(this.rowIdx, 1, JSON.parse(JSON.stringify(this.addForm)))
                         } else {    // 新增
-                            this.list.push(JSON.parse(JSON.stringify(this.addForm)));
+                            let arr1 = this.listSpecial.slice(0, this.listSpecial.length);
+                            let arr2 = this.listBody.slice(0, this.listBody.length);
+                            this.dataArrList[this.rowIdx].trainList = arr1.concat(arr2);
                         }
                         this.resetForm(formName);
-                    }
-                })
+                //     }
+                // })
             },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             // 点击添加/编辑
             validateBaseForm(rowIdx) {
@@ -323,6 +348,11 @@
         .row-act-btns {
             color: #409EFF;
             cursor: pointer;
+            text-align: center;
+        }
+        .addBtn {
+            font-size: 16px;
+            margin-top: 15px;
         }
         .table-item-div {
             width:100%;
@@ -340,6 +370,9 @@
             &:first-child {
                 margin-bottom: 15px;
             }
+        }
+        .el-table__empty-block {
+            display: none;
         }
     }
 </style>

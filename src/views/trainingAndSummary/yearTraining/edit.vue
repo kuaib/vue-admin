@@ -76,11 +76,9 @@
                         <el-form-item label="训练年度：" prop="trainYear">
                             <el-date-picker
                                     v-model="baseForm.trainYear"
-                                    type="monthrange"
+                                    type="month"
                                     value-format="yyyy-MM"
-                                    range-separator="至"
-                                    start-placeholder="开始年月"
-                                    end-placeholder="结束年月">
+                                    placeholder="训练年度">
                             </el-date-picker>
                         </el-form-item>
                     </el-col>
@@ -160,7 +158,7 @@
                         this.baseForm.team = resData.teamId;
                         this.baseForm.coach = resData.coachId;
                         this.baseForm.leader = resData.leaderId;
-                        this.baseForm.trainYear = resData.trainYear.split('~') // ??？逗号还是波浪号
+                        this.baseForm.trainYear = resData.trainYear;
                         this.$refs.tripDetail.list = this.formateListReverse(resData.detailList);
                     } else {
                         this.$message({
@@ -179,7 +177,7 @@
                         let detail = this.formateList(this.$refs.tripDetail.list);
                         saveYearTrain({
                             trainId: this.baseForm.trainId,
-                            trainYear: this.baseForm.trainYear[0] + '~' + this.baseForm.trainYear[1],
+                            trainYear: this.baseForm.trainYear,
                             teamId: this.baseForm.team,
                             projectId: this.baseForm.bigPro,
                             leaderId: this.baseForm.leader,

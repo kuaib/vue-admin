@@ -63,11 +63,9 @@
                         <el-form-item label="训练年度：" prop="trainYear">
                             <el-date-picker
                                     v-model="baseForm.trainYear"
-                                    type="monthrange"
+                                    type="month"
                                     value-format="yyyy-MM"
-                                    range-separator="至"
-                                    start-placeholder="开始年月"
-                                    end-placeholder="结束年月">
+                                    placeholder="训练年度">
                             </el-date-picker>
                         </el-form-item>
                     </el-col>
@@ -142,7 +140,7 @@
                         let detail = this.formatList(this.$refs.tripDetail.list);
                         saveYearTrain({
                             trainId: this.baseForm.trainId,
-                            trainYear: this.baseForm.trainYear[0] + '~' + this.baseForm.trainYear[1],
+                            trainYear: this.baseForm.trainYear,
                             teamId: this.baseForm.team,
                             projectId: this.baseForm.bigPro,
                             leaderId: this.baseForm.leader,

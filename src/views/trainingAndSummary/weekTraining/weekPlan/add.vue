@@ -123,7 +123,7 @@
                     coachId: this.userInfo.staffId,
                     teamId: this.userInfo.teamId,
                     teamName: this.userInfo.teamName,
-                    trainMonth: this.baseForm.trainYear.join(),
+                    trainMonth: this.baseForm.trainYear,
                     status: parseInt(types),
                     trainPlans: trainPlans,
                     matchPlans: matchPlans,

@@ -32,11 +32,9 @@
                         <el-form-item label="训练年度：" prop="trainYear">
                             <el-date-picker
                                     v-model="baseForm.trainYear"
-                                    type="monthrange"
+                                    type="month"
                                     value-format="yyyy-MM"
-                                    range-separator="至"
-                                    start-placeholder="训练年度开始年月"
-                                    end-placeholder="训练年度结束年月">
+                                    placeholder="请选择训练年度">
                             </el-date-picker>
                         </el-form-item>
                     </el-col>
@@ -143,7 +141,7 @@
                         this.baseForm.teamId = sportsTrainMonth.teamId;
                         this.baseForm.coach = sportsTrainMonth.coachName;
                         this.baseForm.coachId = sportsTrainMonth.coachId;
-                        this.baseForm.trainYear = sportsTrainMonth.trainMonth.split(',');
+                        this.baseForm.trainYear = sportsTrainMonth.trainMonth;
                     } else {
                         this.$message({
                             message: res.data.msg,
@@ -166,7 +164,7 @@
                     coachId: this.baseForm.coachId,
                     teamId: this.baseForm.teamId,
                     teamName: this.baseForm.team,
-                    trainMonth: this.baseForm.trainYear.join(),
+                    trainMonth: this.baseForm.trainYear,
                     status: parseInt(types),
                     trainPlans: trainPlans,
                     matchPlans: matchPlans,

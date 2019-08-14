@@ -32,11 +32,9 @@
                         <el-form-item label="训练年度：" prop="trainYear">
                             <el-date-picker
                                     v-model="baseForm.trainYear"
-                                    type="monthrange"
+                                    type="month"
                                     value-format="yyyy-MM"
-                                    range-separator="至"
-                                    start-placeholder="训练年度开始年月"
-                                    end-placeholder="训练年度结束年月">
+                                    placeholder="请选择训练年度">
                             </el-date-picker>
                         </el-form-item>
                     </el-col>
@@ -120,7 +118,7 @@
                     coachId: this.userInfo.staffId,
                     teamId: this.userInfo.teamId,
                     teamName: this.userInfo.teamName,
-                    trainMonth: this.baseForm.trainYear.join(),
+                    trainMonth: this.baseForm.trainYear,
                     status: parseInt(types),
                     trainPlans: trainPlans,
                     matchPlans: matchPlans,
