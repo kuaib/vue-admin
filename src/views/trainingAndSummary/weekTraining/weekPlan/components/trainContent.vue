@@ -10,8 +10,8 @@
             <el-col :span="18">
                 <el-row :gutter="20">
                     <el-col :span="4" v-if="item.trainList&&item.trainList.length>0">
-                        <p>{{item.trainList && item.trainList.time}}</p>
-                        <p>{{item.trainList && item.trainList.trainType}}</p>
+                        <p>{{item.trainList && item.trainList.trainTime.value}}</p>
+                        <p>{{item.trainList && item.trainList.trainType.value}}</p>
                     </el-col>
                     <el-col :span="4" v-else>&nbsp;</el-col>
                 </el-row>
@@ -152,7 +152,7 @@
                 // dateArrList: [{weekDay:"0205（周二）"},{weekDay:"0206（周三）"},{weekDay:"0207（周四）"},{weekDay:"0208（周五）"}],       // 周区间
                 dateArrList: [],       // 周区间
                 currentWeekDay: null,  // 当前点击的行的日期
-                dialogVisible: true,   // 是否显示行数据编辑dialog对话框
+                dialogVisible: false,   // 是否显示行数据编辑dialog对话框
                 listSpecial: [],       // 专项训练列表
                 listBody: [],          // 体能训练列表
 
@@ -259,7 +259,8 @@
                         } else {    // 新增
                             let arr1 = this.listSpecial.slice(0, this.listSpecial.length);
                             let arr2 = this.listBody.slice(0, this.listBody.length);
-                            this.dataArrList[this.rowIdx].trainList = arr1.concat(arr2);
+                            this.dateArrList[this.rowIdx].trainList = arr1.concat(arr2);
+                            console.log(this.dateArrList[this.rowIdx].trainList)
                         }
                         this.resetForm(formName);
                 //     }
