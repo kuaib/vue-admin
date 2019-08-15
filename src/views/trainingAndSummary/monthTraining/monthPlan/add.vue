@@ -114,6 +114,7 @@
                 let matchPlans = this.formatList(this.$refs.competitionPlan.list, 'match');
                 saveMonthTrainPlan({
                     projectName: this.userInfo.projectName,
+                    projectId: this.userInfo.projectId,
                     coachName: this.userInfo.staffName,
                     coachId: this.userInfo.staffId,
                     teamId: this.userInfo.teamId,

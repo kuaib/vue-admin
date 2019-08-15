@@ -84,3 +84,12 @@ export function saveWeekTrainPlan(data) {
     data
   })
 }
+
+// 获取周计划详情
+export function getWeekTrainDetail(params) {
+    return request({
+        url: '/sports/sports_train_week/detail',
+        method: 'get',
+        params
+    })
+}

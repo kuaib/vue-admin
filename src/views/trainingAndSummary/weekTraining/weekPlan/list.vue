@@ -1,6 +1,9 @@
 <!--周训练管理列表-->
 <template>
     <div class="week-training-wrapper">
+        <!--tab切换-->
+        <change-tab-bar :isSummary="isSummary" sectionItem="week"></change-tab-bar>
+
         <!--搜索-->
         <search-section typeName="周计划" @handleFilter="handleFilter" :isSummary="isSummary"></search-section>
 
@@ -62,11 +65,12 @@
 
 <script>
     import mixins from '@/utils/mixins'
+    import changeTabBar from '../../components/changeTabBar'
     import searchSection from '../../components/searchSection'
     import {getWeekTrainPlanList} from '@/api/trainingAndSummary'
     export default {
         mixins: [mixins],
-        components: {searchSection},
+        components: {searchSection, changeTabBar},
         data() {
             return {
                 isSummary: this.$route.path.indexOf('/weekSummary') !== -1,    // 是否是周训练总结(计划与总结页面公用)
@@ -123,7 +127,16 @@
 
             // 去详情
             toEdit(row) {
-                // this.$router.push({path: '/weekPlan/edit', query: {id: row.trainId}})
+                this.$router.push({path: '/weekPlan/edit', query: {id: row.trainId}})
+
+                let path;
+                if(this.isSummary) {
+                    path = '/weekSummary/edit';
+                } else {
+                    path = '/weekPlan/edit'
+                }
+                this.$router.push(
+                    {path: path, query: {id: row.trainWeekId, canOperate: this.extInfo.canOperate}})
             },
         }
     }

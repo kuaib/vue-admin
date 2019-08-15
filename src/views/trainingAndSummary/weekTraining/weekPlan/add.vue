@@ -52,6 +52,13 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
+                <el-row :gutter="20">
+                    <el-col>
+                        <el-form-item label="本周训练目标：" prop="purpose">
+                            <el-input type="textarea" v-model="baseForm.purpose" placeholder="本周训练目标"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
             </el-form>
         </el-card>
 
@@ -64,9 +71,9 @@
         </el-card>
 
         <!--保存-->
-        <el-row style="text-align: center;">
-            <el-button type="primary" round @click="onSubmit('baseForm','0')" :loading="btnLoading" style="padding: 12px 35px;">保存草稿</el-button>
-            <el-button type="primary" round @click="onSubmit('baseForm','1')" :loading="btnLoading" style="padding: 12px 35px;">提 交</el-button>
+        <el-row style="text-align: center;margin-top:15px;">
+            <el-button type="primary" round @click="cancelAct" style="padding: 12px 35px;">取消</el-button>
+            <el-button type="primary" round @click="onSubmit('baseForm')" :loading="btnLoading" style="padding: 12px 35px;">提 交</el-button>
         </el-row>
     </div>
 </template>
@@ -74,14 +81,15 @@
 <script>
     import changeTabBar from '../../components/changeTabBar'
     import trainContent from './components/trainContent'
-    import {saveMonthTrainPlan} from '@/api/trainingAndSummary'
+    import {saveWeekTrainPlan} from '@/api/trainingAndSummary'
     import mixins from '@/utils/mixins'
+    import {getWeekChange} from '@/utils/index'
     export default {
         mixins: [mixins],
         components: {changeTabBar, trainContent},
         data() {
             return {
-                isSummary: this.$route.path.indexOf('/weekSummary') !== -1,    // 是否是月训练总结(计划与总结页面公用)
+                isSummary: this.$route.path.indexOf('/weekSummary') !== -1,    // 是否是日训练总结(计划与总结页面公用)
                 userInfo: JSON.parse(localStorage.getItem('trainAndSumUserWeek')),
                 btnLoading: false,
                 baseForm: {
@@ -89,11 +97,15 @@
                     coach: null,
                     trainYear: null,
                     trainDate: null,
+                    purpose: null
                 },
                 rules: {
                     trainYear: [
                         { required: true, message: '请选择训练年度', trigger: 'change' }
                     ],
+                    trainDate: [
+                        { required: true, message: '请选择时间范围', trigger: 'change' }
+                    ]
                 },
 
                 defaultVal: '',  // 日期的选择范围
@@ -113,67 +125,66 @@
 
         methods: {
             // 提交
-            onSubmit(formName, types) {
-                this.btnLoading = true;
-                let trainPlans = this.formatList(this.$refs.trainPlan.list, 'train');
-                let matchPlans = this.formatList(this.$refs.competitionPlan.list, 'match');
-                saveMonthTrainPlan({
-                    projectName: this.userInfo.projectName,
-                    coachName: this.userInfo.staffName,
-                    coachId: this.userInfo.staffId,
-                    teamId: this.userInfo.teamId,
-                    teamName: this.userInfo.teamName,
-                    trainMonth: this.baseForm.trainYear,
-                    status: parseInt(types),
-                    trainPlans: trainPlans,
-                    matchPlans: matchPlans,
-                }).then(res => {
-                    if(res.data.code == 200) {
-                        this.$message({
-                            message: '保存成功',
-                            type: 'success'
-                        });
-                        this.cancelAct('save');
-                    } else {
+            onSubmit(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
                         this.btnLoading = true;
-                        this.$message({
-                            message: res.data.msg,
-                            type: 'warning'
-                        });
+                        let sportsTrainDays = this.formatList(this.$refs.trainContent.dateArrList);
+                        saveWeekTrainPlan({
+                            projectName: this.userInfo.projectName,
+                            projectId: this.userInfo.projectId,
+                            coachName: this.userInfo.staffName,
+                            coachId: this.userInfo.staffId,
+                            teamId: this.userInfo.teamId,
+                            teamName: this.userInfo.teamName,
+                            trainDate: this.baseForm.trainYear,
+                            purpose: this.baseForm.purpose,
+                            trainDay: this.baseForm.trainDate[0].split('-').join('') + '-' + this.baseForm.trainDate[1].split('-').join(''),
+                            sportsTrainDays: sportsTrainDays
+                        }).then(res => {
+                            if(res.data.code == 200) {
+                                this.$message({
+                                    message: '保存成功',
+                                    type: 'success'
+                                });
+                                this.cancelAct('save');
+                            } else {
+                                this.btnLoading = true;
+                                this.$message({
+                                    message: res.data.msg,
+                                    type: 'warning'
+                                });
+                            }
+                        }).catch(() => {
+                            this.btnLoading = true;
+                        })
                     }
-                }).catch(() => {
-                    this.btnLoading = true;
                 })
             },
 
             // 格式化列表（传递给后台需要）
-            formatList(list, typeName) {
+            formatList(list) {
                 let arr = [];
-                if(typeName === 'train') {  // 训练计划
-                    list.forEach((item, idx) => {
-                        let obj = {};
-                        obj.shortBoard = item.shortBoard;
-                        obj.trainType = item.trainType;
-                        // obj.trainPurpose = item.trainPurposeSelected.join(); // 后续是字典项的时候使用
-                        obj.trainPurpose = item.trainPurposeSelectedName;
-                        obj.trainContent = item.trainContent;
-                        obj.target = item.trainTarget;
-                        arr.push(obj);
+                list.forEach((item) => {
+                    let obj = {}; obj.sportsTrainDayDetails = [];
+                    obj.dayStr = item.weekDay.substr(0, 4);
+                    obj.whichDay = getWeekChange(item.weekDay.substr(item.weekDay.length - 2, 1));
+                    item.trainList.forEach((dayItem,idx) => {
+                        obj.sportsTrainDayDetails[idx] = {};
+                        obj.sportsTrainDayDetails[idx].trainSubType = dayItem.trainType && dayItem.trainType.value;
+                        obj.sportsTrainDayDetails[idx].actionRepeat = dayItem.repeatTimes && dayItem.repeatTimes.value;
+                        obj.sportsTrainDayDetails[idx].rest = dayItem.restInterval && dayItem.restInterval.value;
+                        obj.sportsTrainDayDetails[idx].rhythm = dayItem.rhythm && dayItem.rhythm.value;
+                        obj.sportsTrainDayDetails[idx].trainAction = dayItem.actionTimes && dayItem.actionTimes.value;
+                        obj.sportsTrainDayDetails[idx].trainContent = dayItem.trainContent && dayItem.trainContent.value;
+                        obj.sportsTrainDayDetails[idx].trainDate = dayItem.trainTime && (dayItem.trainTime.value[0] + '-' + dayItem.trainTime.value[1]);
+                        obj.sportsTrainDayDetails[idx].trainDetail = dayItem.trainDetail && dayItem.trainDetail.value;
+                        obj.sportsTrainDayDetails[idx].trainDuration = dayItem.trainDuration && dayItem.trainDuration.value;
+                        obj.sportsTrainDayDetails[idx].trainType = dayItem.typeCode; // 区分专项和体能的
                     });
-                } else {   // 比赛计划
-                    list.forEach((item, idx) => {
-                        let obj = {};
-                        obj.matchName = item.compName;
-                        obj.matchDate = item.comDate;
-                        obj.matchCountry = item.country;
-                        obj.matchCity = item.city;
-                        obj.matchProjetId = item.bigPro;
-                        obj.matchProjectInfo = item.smallPro.join();
-                        obj.matchAthlete = item.athleteSelected.join();
-                        arr.push(obj);
-                    });
-                }
-                return JSON.stringify(arr)
+                    arr.push(obj);
+                });
+                return arr;
             },
 
             //修改月份

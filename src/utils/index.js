@@ -269,3 +269,67 @@ export function deepClone(source) {
 export function uniqueArr(arr) {
   return Array.from(new Set(arr))
 }
+
+// 周的汉字和数字之间的转换
+export function getWeekChange(week) {
+    let weekVal;
+    if(typeof week === 'string') {
+        switch (week) {
+            case '日':
+                weekVal = 7;
+                break;
+            case '一':
+                weekVal = 1;
+                break;
+            case '二':
+                weekVal = 2;
+                break;
+            case '三':
+                weekVal = 3;
+                break;
+            case '四':
+                weekVal = 4;
+                break;
+            case '五':
+                weekVal = 6;
+                break;
+            case '六':
+                weekVal = 6;
+                break;
+        }
+    } else if(typeof week === 'number') {
+        switch (week) {
+            case 7:
+                weekVal = '日';
+                break;
+            case 1:
+                weekVal = '一';
+                break;
+            case 2:
+                weekVal = '二';
+                break;
+            case 3:
+                weekVal = '三';
+                break;
+            case 4:
+                weekVal = '四';
+                break;
+            case 5:
+                weekVal = '五';
+                break;
+            case 6:
+                weekVal = '六';
+                break;
+        }
+    }
+    return weekVal;
+}
+
+// 小时转化为分钟
+export function changeStrToMinutes(str) {
+    let arrminutes = str.split(":");
+    if (arrminutes.length === 2) {
+        return parseInt(arrminutes[0]) * 60 + parseInt(arrminutes[1]);
+    }
+    return 0;
+}

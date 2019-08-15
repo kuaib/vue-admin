@@ -121,7 +121,6 @@
         },
 
         created() {
-            console.log(this.canOperate)
             this.getDetails();
         },
 
