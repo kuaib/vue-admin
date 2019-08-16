@@ -18,15 +18,15 @@
             goNext(types) {
                 if(this.sectionItem === 'month') {
                     if(types === 'train' && this.isSummary) {
-                        this.$router.push('/monthPlan/list')
+                        this.$router.push('/monthTraining/monthPlan/list')
                     } else if(types === 'summary' && !this.isSummary) {
-                        this.$router.push('/monthSummary/list')
+                        this.$router.push('/monthTraining/monthSummary/list')
                     }
                 } else if(this.sectionItem === 'week') {
                     if(types === 'train' && this.isSummary) {
-                        this.$router.push('/weekPlan/list')
+                        this.$router.push('/weekTraining/weekPlan/list')
                     } else if(types === 'summary' && !this.isSummary) {
-                        this.$router.push('/weekSummary/list')
+                        this.$router.push('/weekTraining/weekSummary/list')
                     }
                 }
             }

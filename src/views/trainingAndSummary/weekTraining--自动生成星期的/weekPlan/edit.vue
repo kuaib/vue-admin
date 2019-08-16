@@ -1,6 +1,6 @@
-<!--创建周计划-->
+<!--编辑周计划-->
 <template>
-    <div class="week-train-plan-add-wrapper">
+    <div class="week-train-plan-edit-wrapper">
         <!--tab切换-->
         <change-tab-bar :isSummary="isSummary" sectionItem="week"></change-tab-bar>
 
@@ -34,6 +34,23 @@
                             </el-date-picker>
                         </el-form-item>
                     </el-col>
+                    <el-col :span="8">
+                        <el-form-item label="时间范围：" prop="trainDate">
+                            <el-date-picker
+                                    v-model="baseForm.trainDate"
+                                    type="daterange"
+                                    format="MM-dd"
+                                    value-format="MM-dd"
+                                    range-separator="至"
+                                    start-placeholder="开始日"
+                                    end-placeholder="结束日"
+                                    :default-value="defaultVal"
+                                    :picker-options="pickerOptions"
+                                    @change="changeApplyDate"
+                                    :disabled="!baseForm.trainYear">
+                            </el-date-picker>
+                        </el-form-item>
+                    </el-col>
                 </el-row>
                 <el-row :gutter="20">
                     <el-col>
@@ -50,7 +67,6 @@
             <div slot="header" class="clearfix">
                 <span class="section-title">训练内容</span>
             </div>
-            <!--<train-content ref="trainContent" :pickerOptions="pickerOptions" :defaultVal="defaultVal" :trainYear="baseForm.trainYear"></train-content>-->
             <train-content ref="trainContent"></train-content>
         </el-card>
 
@@ -65,7 +81,7 @@
 <script>
     import changeTabBar from '../../components/changeTabBar'
     import trainContent from './components/trainContent'
-    import {saveWeekTrainPlan} from '@/api/trainingAndSummary'
+    import {saveWeekTrainPlan, getWeekTrainDetail} from '@/api/trainingAndSummary'
     import mixins from '@/utils/mixins'
     import {getWeekChange} from '@/utils/index'
     export default {
@@ -74,17 +90,23 @@
         data() {
             return {
                 isSummary: this.$route.path.indexOf('/weekSummary') !== -1,    // 是否是日训练总结(计划与总结页面公用)
-                userInfo: JSON.parse(localStorage.getItem('trainAndSumUserWeek')),
+                id: this.$route.query.id,
+                canOperate: this.$route.query.canOperate,
+                isInitFinish: false,   // 是否初始化渲染完成（初始化渲染不让watch走，会影响第二次给dateArrList赋值）
                 btnLoading: false,
                 baseForm: {
                     project: null,
                     coach: null,
                     trainYear: null,
+                    trainDate: null,
                     purpose: null
                 },
                 rules: {
                     trainYear: [
                         { required: true, message: '请选择训练年度', trigger: 'change' }
+                    ],
+                    trainDate: [
+                        { required: true, message: '请选择时间范围', trigger: 'change' }
                     ]
                 },
 
@@ -98,12 +120,39 @@
         },
 
         created() {
-            this.baseForm.project = this.userInfo.projectName;
-            this.baseForm.team = this.userInfo.teamName;
-            this.baseForm.coach = this.userInfo.staffName;
+            this.getDetails();
         },
 
         methods: {
+            // 获取详情
+            getDetails() {
+                getWeekTrainDetail({trainWeekId: this.id}).then(res => {
+                    if(res.data.code == 200) {
+                        let resData = res.data.data;
+                        this.baseForm.project = resData.projectName;
+                        this.baseForm.projectId = resData.projectId;
+                        this.baseForm.team = resData.teamName;
+                        this.baseForm.teamId = resData.teamId;
+                        this.baseForm.coach = resData.coachName;
+                        this.baseForm.coachId = resData.coachId;
+                        this.baseForm.purpose = resData.purpose,
+                        this.baseForm.trainYear = resData.trainDate;
+                        this.changeApplyMonth(resData.trainDate);
+                        let arrDate = resData.trainDay.split('-');
+                        this.baseForm.trainDate = [arrDate[0].slice(0, 2) + '-' + arrDate[0].slice(2), arrDate[1].slice(0, 2) + '-' + arrDate[1].slice(2)];
+
+                        this.$refs.trainContent.dateArrList = this.formatListReverse(resData.sportsTrainDays);
+                    } else {
+                        this.$message({
+                            message: res.data.msg,
+                            type: 'warning'
+                        });
+                    }
+                    this.isInitFinish = true;
+                })
+            },
+
+
             // 提交
             onSubmit(formName) {
                 this.$refs[formName].validate((valid) => {
@@ -111,12 +160,13 @@
                         this.btnLoading = true;
                         let sportsTrainDays = this.formatList(this.$refs.trainContent.dateArrList);
                         saveWeekTrainPlan({
-                            projectName: this.userInfo.projectName,
-                            projectId: this.userInfo.projectId,
-                            coachName: this.userInfo.staffName,
-                            coachId: this.userInfo.staffId,
-                            teamId: this.userInfo.teamId,
-                            teamName: this.userInfo.teamName,
+                            trainWeekId: this.id,
+                            projectName: this.baseForm.projectName,
+                            projectId: this.baseForm.projectId,
+                            coachName: this.baseForm.staffName,
+                            coachId: this.baseForm.staffId,
+                            teamId: this.baseForm.teamId,
+                            teamName: this.baseForm.teamName,
                             trainDate: this.baseForm.trainYear,
                             purpose: this.baseForm.purpose,
                             trainDay: this.baseForm.trainDate[0].split('-').join('') + '-' + this.baseForm.trainDate[1].split('-').join(''),
@@ -167,38 +217,65 @@
                 return arr;
             },
 
+            //  格式化列表（渲染后端数据,前端需要）
+            formatListReverse(list) {
+                let arr = [];
+                list.forEach((item) => {
+                    let obj = {};
+                    obj.weekDay = item.dayStr + '（周' + getWeekChange(item.whichDay) + '）';
+                    obj.trainList = [];
+                    item.sportsTrainDayDetails.forEach((dayItem,idx) => {
+                        obj.trainList[idx] = {
+                            trainType: {},
+                            repeatTimes:{},
+                            restInterval:{},
+                            rhythm:{},
+                            actionTimes:{},
+                            trainContent:{},
+                            trainTime:{},
+                            trainDetail:{},
+                            trainDuration:{},
+                        };
+                        obj.trainList[idx].trainType.value = dayItem.trainSubType;
+                        obj.trainList[idx].repeatTimes.value = dayItem.actionRepeat;
+                        obj.trainList[idx].restInterval.value = dayItem.rest;
+                        obj.trainList[idx].rhythm.value = dayItem.rhythm;
+                        obj.trainList[idx].actionTimes.value = dayItem.trainAction;
+                        obj.trainList[idx].trainContent.value = dayItem.trainContent;
+                        obj.trainList[idx].trainTime.value = dayItem.trainDate.split('-');
+                        obj.trainList[idx].trainDetail.value = dayItem.trainDetail;
+                        obj.trainList[idx].trainDuration.value = dayItem.trainDuration;
+                        obj.trainList[idx].typeCode = dayItem.trainType; // 区分专项和体能的
+                    });
+                    arr.push(obj);
+                });
+                return arr;
+            },
+
             //修改月份
             changeApplyMonth(val){
                 val = new Date(val)
                 this.defaultVal = val.getFullYear()+"-"+(val.getMonth()+1)+"-"+"1";
-                // this.defaultValYear = val.getFullYear();
-                // this.defaultValMon= val.getMonth()+1;
-                // console.log(this.defaultVal);
             },
             //修改日期
             changeApplyDate(val){
-                // let val0 = new Date(val[0]);
-                // let val1 = new Date(val[1]);
-                // let startDate = val0.getFullYear() + "-" + (val0.getMonth()+1) + "-" + val0.getDate();
-                // console.log(startDate);
-                // let endDate = val1.getFullYear() + "-" + (val1.getMonth()+1) + "-" + val1.getDate();
-                // console.log(startDate,endDate);
+
             },
-
-
         },
         watch: {
-            // 'baseForm.trainDate': function(val) {
-            //     if(val) {
-            //         this.$refs.trainContent.getDateComplete(this.baseForm.trainYear, this.baseForm.trainDate);
-            //     }
-            // }
+            'baseForm.trainDate': function(val) {
+                if(val) {
+                    if(this.isInitFinish) { // 刚进入页面初始化的时候不去触发子组件的渲染
+                        this.$refs.trainContent.getDateComplete(this.baseForm.trainYear, this.baseForm.trainDate);
+                    }
+                }
+            }
         }
     }
 </script>
 
 <style lang="scss">
-    .week-train-plan-add-wrapper {
+    .week-train-plan-edit {
         .card-box {
             margin-bottom: 25px;
         }

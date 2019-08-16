@@ -122,18 +122,18 @@
             // 创建周计划
             addNew() {
                 localStorage.setItem('trainAndSumUserWeek', JSON.stringify(this.extInfo.useInfo));
-                this.$router.push('/weekTraining/weekPlan/add');
+                this.$router.push('/weekPlan/add');
             },
 
             // 去详情
             toEdit(row) {
-                this.$router.push({path: '/weekTraining/weekPlan/edit', query: {id: row.trainId}})
+                this.$router.push({path: '/weekPlan/edit', query: {id: row.trainId}})
 
                 let path;
                 if(this.isSummary) {
-                    path = '/weekTraining/weekSummary/edit';
+                    path = '/weekSummary/edit';
                 } else {
-                    path = '/weekTraining/weekPlan/edit'
+                    path = '/weekPlan/edit'
                 }
                 this.$router.push(
                     {path: path, query: {id: row.trainWeekId, canOperate: this.extInfo.canOperate}})

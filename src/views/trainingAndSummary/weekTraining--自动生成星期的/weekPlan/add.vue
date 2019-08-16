@@ -34,6 +34,23 @@
                             </el-date-picker>
                         </el-form-item>
                     </el-col>
+                    <el-col :span="8">
+                        <el-form-item label="时间范围：" prop="trainDate">
+                            <el-date-picker
+                                    v-model="baseForm.trainDate"
+                                    type="daterange"
+                                    format="MM-dd"
+                                    value-format="MM-dd"
+                                    range-separator="至"
+                                    start-placeholder="开始日"
+                                    end-placeholder="结束日"
+                                    :default-value="defaultVal"
+                                    :picker-options="pickerOptions"
+                                    @change="changeApplyDate"
+                                    :disabled="!baseForm.trainYear">
+                            </el-date-picker>
+                        </el-form-item>
+                    </el-col>
                 </el-row>
                 <el-row :gutter="20">
                     <el-col>
@@ -50,7 +67,6 @@
             <div slot="header" class="clearfix">
                 <span class="section-title">训练内容</span>
             </div>
-            <!--<train-content ref="trainContent" :pickerOptions="pickerOptions" :defaultVal="defaultVal" :trainYear="baseForm.trainYear"></train-content>-->
             <train-content ref="trainContent"></train-content>
         </el-card>
 
@@ -80,11 +96,15 @@
                     project: null,
                     coach: null,
                     trainYear: null,
+                    trainDate: null,
                     purpose: null
                 },
                 rules: {
                     trainYear: [
                         { required: true, message: '请选择训练年度', trigger: 'change' }
+                    ],
+                    trainDate: [
+                        { required: true, message: '请选择时间范围', trigger: 'change' }
                     ]
                 },
 
@@ -188,11 +208,11 @@
 
         },
         watch: {
-            // 'baseForm.trainDate': function(val) {
-            //     if(val) {
-            //         this.$refs.trainContent.getDateComplete(this.baseForm.trainYear, this.baseForm.trainDate);
-            //     }
-            // }
+            'baseForm.trainDate': function(val) {
+                if(val) {
+                    this.$refs.trainContent.getDateComplete(this.baseForm.trainYear, this.baseForm.trainDate);
+                }
+            }
         }
     }
 </script>

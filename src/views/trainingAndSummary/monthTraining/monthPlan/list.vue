@@ -130,9 +130,9 @@
             addNew() {
                 let path;
                 if(this.isSummary) {
-                    path = '/monthSummary/add'
+                    path = '/monthTraining/monthSummary/add'
                 } else {
-                    path = '/monthPlan/add'
+                    path = '/monthTraining/monthPlan/add'
                 }
                 localStorage.setItem('trainAndSumUserMonth', JSON.stringify(this.extInfo.useInfo));
                 this.$router.push({path: path});
@@ -142,10 +142,10 @@
             toEdit(row) {
                 let path, updatedTime;
                 if(this.isSummary) {
-                    path = '/monthSummary/edit';
+                    path = '/monthTraining/monthSummary/edit';
                     updatedTime = row.updatedTime;
                 } else {
-                    path = '/monthPlan/edit'
+                    path = '/monthTraining/monthPlan/edit'
                 }
                 this.$router.push(
                     {path: path, query: {

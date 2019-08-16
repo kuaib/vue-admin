@@ -4,7 +4,7 @@
                  label-position="left">
             <div class="title-container">
                 <h3 class="title">{{$t('login.title')}}</h3>
-                <lang-select class="set-language"></lang-select>
+                <!--<lang-select class="set-language"></lang-select>-->
             </div>
             <el-form-item prop="username">
                 <span class="svg-container svg-container_login">
@@ -26,10 +26,12 @@
                 </span>
             </el-form-item>
 
-            <div class="tips">
-                <span @click="showDialog=true">{{$t('login.forgetPswd')}}</span>
+            <!--<div class="tips">-->
+                <!--<span @click="showDialog=true">{{$t('login.forgetPswd')}}</span>-->
+            <!--</div>-->
+            <div style="text-align:center;">
+                <el-button class="loginBtn" type="primary" :loading="loading" @click.native.prevent="handleLogin">{{$t('login.logIn')}}</el-button>
             </div>
-            <el-button class="loginBtn" type="primary" :loading="loading" @click.native.prevent="handleLogin">{{$t('login.logIn')}}</el-button>
         </el-form>
 
         <el-dialog :title="$t('login.forgetPswd')" :visible.sync="showDialog" append-to-body>
@@ -219,10 +221,11 @@
             user-select: none;
         }
         .loginBtn {
-            position: absolute;
-            right: 35px;
-            bottom: 0;
-            width: 140px;
+            /*position: absolute;*/
+            /*right: 35px;*/
+            /*bottom: 0;*/
+            width: 80%;
+            margin-top: 15px;
         }
     }
 </style>

@@ -19,150 +19,263 @@
                 </el-row>
             </el-col>
             <el-col :span="3" class="week-btn">
-                <span v-if="item.trainList&&item.trainList.length>0" @click="editRow(item,idx,'isEdit')">详情</span>
-                <span v-if="!item.trainList||item.trainList.length<=0" @click="editRow(item,idx)">编辑</span>
+                <span @click="editRow(item,idx)">详情</span>
             </el-col>
         </el-row>
+        <el-row class="add-btn">
+            <span @click="editRow">增加日训练计划</span>
+        </el-row>
 
-        <!--新增类表中的项-->
+
+        <!--显示训练计划表格-->
         <el-dialog
                 :show-close="false"
-                :title="currentWeekDay+'训练内容'"
+                title="训练内容"
                 :visible.sync="dialogVisible"
                 width="60%"
                 :close-on-click-modal="false"
                 center>
-            <el-row class="train-section">
-                <el-row class="edit-table-title">专项训练</el-row>
-                <el-table :data="listSpecial" border highlight-current-row style="width: 100%" max-height="250">
+            <el-row style="margin-bottom: 15px;">
+                <el-col :span="8">
+                    <el-date-picker
+                            v-model="trainDate"
+                            type="date"
+                            format="MM-dd"
+                            value-format="yyyy-MM-dd"
+                            placeholder="请选择训练日期">
+                    </el-date-picker>
+                </el-col>
+                <el-col :span="3" v-if="trainDate" style="line-height:36px;"><span>周{{weekDay}}</span></el-col>
+            </el-row>
 
-                    <el-table-column prop="trainTime" label="*训练时段" align="center" width="150" header-align="center">
-                        <template slot-scope="scope">
-                            <el-time-picker v-if="scope.row.trainTime.editFlag"
-                                    :clearable="false"
-                                    :ref="'specialTrainTime'+scope.$index"
-                                    @blur="changeStatus(scope,'listSpecial','blur','specialTrainTime'+scope.$index)"
-                                    is-range
-                                    v-model="scope.row.trainTime.value"
-                                    format="HH:mm"
-                                    value-format="HH:mm"
-                                    range-separator="~"
-                                    start-placeholder="开始时间"
-                                    end-placeholder="结束时间">
-                            </el-time-picker>
-                            <div v-else class="table-item-div" @click="changeStatus(scope,'listSpecial','focus','specialTrainTime'+scope.$index)">
-                                <span v-if="scope.row.trainTime.value">{{scope.row.trainTime.value[0]}}~{{scope.row.trainTime.value[1]}}</span>
-                                <span v-if="scope.row.trainTime.value">| {{getMinutes(scope.row.trainTime.value,scope.$index,'listSpecial')}}分钟</span>
-                            </div>
-                        </template>
-                    </el-table-column>
+            <!--专项训练/体能训练编辑框-->
+            <train-content-add ref="trainContentAdd"></train-content-add>
 
-                    <el-table-column prop="trainType" label="*训练类型" align="center" header-align="center">
+            <!--专项训练-->
+            <el-row>
+                <el-table :data="listSpecial" border fit highlight-current-row
+                          style="width: 100%;">
+                    <el-table-column align="center" label="训练时段">
                         <template slot-scope="scope">
-                            <el-input v-if="scope.row.trainType.editFlag" v-model="scope.row.trainType.value" v-focus @blur="changeStatus(scope,'listSpecial','blur')"></el-input>
-                            <div v-else class="table-item-div" @click="changeStatus(scope,'listSpecial','focus')">{{scope.row.trainType.value}}</div>
+                            <span>{{scope.row.trainTime}} | </span>
+                            <span>{{scope.row.trainDuration}}分钟</span>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="trainContent" label="*训练内容" align="center" header-align="center">
+                    <el-table-column align="center" label="训练类型">
                         <template slot-scope="scope">
-                            <el-input v-if="scope.row.trainContent.editFlag" v-model="scope.row.trainContent.value" v-focus @blur="changeStatus(scope,'listSpecial','blur')"></el-input>
-                            <div v-else class="table-item-div" @click="changeStatus(scope,'listSpecial','focus')">{{scope.row.trainContent.value}}</div>
+                            <span>{{scope.row.trainType}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="trainDetail" label="内容细节" align="center" header-align="center">
+                    <el-table-column align="center" label="训练内容">
                         <template slot-scope="scope">
-                            <el-input v-if="scope.row.trainDetail.editFlag" v-model="scope.row.trainDetail.value" v-focus @blur="changeStatus(scope,'listSpecial','blur')"></el-input>
-                            <div v-else class="table-item-div" @click="changeStatus(scope,'listSpecial','focus')">{{scope.row.trainDetail.value}}</div>
+                            <span>{{scope.row.trainContent}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="repeatTimes" label="重复次数" width="80" align="center" header-align="center">
+                    <el-table-column align="center" label="内容细节">
                         <template slot-scope="scope">
-                            <el-input v-if="scope.row.repeatTimes.editFlag" v-model="scope.row.repeatTimes.value" v-focus @blur="changeStatus(scope,'listSpecial','blur')"></el-input>
-                            <div v-else class="table-item-div" @click="changeStatus(scope,'listSpecial','focus')">{{scope.row.repeatTimes.value}}</div>
+                            <span>{{scope.row.trainDetail}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column fixed label="操作" width="80" align="center" header-align="center">
+                    <el-table-column align="center" label="重复次数">
                         <template slot-scope="scope">
-                            <span @click="handleDel(scope.$index, scope.row, 'listSpecial')" class="row-act-btns">删除</span>
+                            <span>{{scope.row.repeatTimes}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column align="center" label="操作">
+                        <template slot-scope="scope">
+                            <span>删除</span>
+                            <span> | </span>
+                            <span>编辑</span>
                         </template>
                     </el-table-column>
                 </el-table>
-                <div style="text-align:center;margin-top:15px;"><span @click="addRow('listSpecial')" class="addBtn">添加</span></div>
+                <el-row class="add-btn"><span @click="addRow('专项')">添加</span></el-row>
             </el-row>
-            <el-row class="train-section">
-                <el-row class="edit-table-title">体能训练</el-row>
-                <el-table :data="listBody" border highlight-current-row style="width: 100%" max-height="250">
-                    <el-table-column prop="trainTime" label="*训练时段" width="150" align="center" header-align="center">
-                        <template slot-scope="scope">
-                            <el-time-picker v-if="scope.row.trainTime.editFlag"
-                                            :clearable="false"
-                                            :ref="'bodyTrainTime'+scope.$index"
-                                            @blur="changeStatus(scope,'listBody','blur','bodyTrainTime'+scope.$index)"
-                                            is-range
-                                            v-model="scope.row.trainTime.value"
-                                            format="HH:mm"
-                                            value-format="HH:mm"
-                                            range-separator="~"
-                                            start-placeholder="开始时间"
-                                            end-placeholder="结束时间">
-                            </el-time-picker>
-                            <div v-else class="table-item-div" @click="changeStatus(scope,'listBody','focus','bodyTrainTime'+scope.$index)">
-                                <span v-if="scope.row.trainTime.value">{{scope.row.trainTime.value[0]}}~{{scope.row.trainTime.value[1]}}</span>
-                                <span v-if="scope.row.trainTime.value">| {{getMinutes(scope.row.trainTime.value,scope.$index,'listBody')}}分钟</span>
-                            </div>
-                        </template>
-                    </el-table-column>
 
-                    <el-table-column prop="trainType" label="*训练类型" align="center" header-align="center">
+            <!--体能训练-->
+            <el-row>
+                <el-table :data="listBody" border fit highlight-current-row
+                          style="width: 100%;">
+                    <el-table-column align="center" label="训练时段">
                         <template slot-scope="scope">
-                            <el-input v-if="scope.row.trainType.editFlag" v-model="scope.row.trainType.value" v-focus @blur="changeStatus(scope,'listBody','blur')"></el-input>
-                            <div v-else class="table-item-div" @click="changeStatus(scope,'listBody','focus')">{{scope.row.trainType.value}}</div>
+                            <span>{{scope.row.trainTime}} | </span>
+                            <span>{{scope.row.trainDuration}}分钟</span>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="trainContent" label="训练内容" align="center" header-align="center">
+                    <el-table-column align="center" label="训练类型">
                         <template slot-scope="scope">
-                            <el-input v-if="scope.row.trainContent.editFlag" v-model="scope.row.trainContent.value" v-focus @blur="changeStatus(scope,'listBody','blur')"></el-input>
-                            <div v-else class="table-item-div" @click="changeStatus(scope,'listBody','focus')">{{scope.row.trainContent.value}}</div>
+                            <span>{{scope.row.trainType}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="trainDetail" label="内容细节" align="center" header-align="center">
+                    <el-table-column align="center" label="训练内容">
                         <template slot-scope="scope">
-                            <el-input v-if="scope.row.trainDetail.editFlag" v-model="scope.row.trainDetail.value" v-focus @blur="changeStatus(scope,'listBody','blur')"></el-input>
-                            <div v-else class="table-item-div" @click="changeStatus(scope,'listBody','focus')">{{scope.row.trainDetail.value}}</div>
+                            <span>{{scope.row.trainContent}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="repeatTimes" label="每组重复次数" align="center" header-align="center">
+                    <el-table-column align="center" label="每组重复次数">
                         <template slot-scope="scope">
-                            <el-input v-if="scope.row.repeatTimes.editFlag" v-model="scope.row.repeatTimes.value" v-focus @blur="changeStatus(scope,'listBody','blur')"></el-input>
-                            <div v-else class="table-item-div" @click="changeStatus(scope,'listBody','focus')">{{scope.row.repeatTimes.value}}</div>
+                            <span>{{scope.row.repeatTimes}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="actionTimes" label="动作组数" width="80" align="center" header-align="center">
+                    <el-table-column align="center" label="动作组数">
                         <template slot-scope="scope">
-                            <el-input v-if="scope.row.actionTimes.editFlag" v-model="scope.row.actionTimes.value" v-focus @blur="changeStatus(scope,'listBody','blur')"></el-input>
-                            <div v-else class="table-item-div" @click="changeStatus(scope,'listBody','focus')">{{scope.row.actionTimes.value}}</div>
+                            <span>{{scope.row.actionTimes}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="restInterval" label="组间休息间隔s" width="80" align="center" header-align="center">
+                    <el-table-column align="center" label="组件休息间隔s">
                         <template slot-scope="scope">
-                            <el-input v-if="scope.row.restInterval.editFlag" v-model="scope.row.restInterval.value" v-focus @blur="changeStatus(scope,'listBody','blur')"></el-input>
-                            <div v-else class="table-item-div" @click="changeStatus(scope,'listBody','focus')">{{scope.row.restInterval.value}}</div>
+                            <span>{{scope.row.restInterval}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="rhythm" label="节奏" align="center" header-align="center">
+                    <el-table-column align="center" label="节奏">
                         <template slot-scope="scope">
-                            <el-input v-if="scope.row.rhythm.editFlag" v-model="scope.row.rhythm.value" v-focus @blur="changeStatus(scope,'listBody','blur')"></el-input>
-                            <div v-else class="table-item-div" @click="changeStatus(scope,'listBody','focus')">{{scope.row.rhythm.value}}</div>
+                            <span>{{scope.row.rhythm}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column fixed label="操作" width="80" align="center" header-align="center">
+                    <el-table-column align="center" label="操作">
                         <template slot-scope="scope">
-                            <span @click="handleDel(scope.$index, scope.row, 'listSpecial')" class="row-act-btns">删除</span>
+                            <span>删除</span>
+                            <span> | </span>
+                            <span>编辑</span>
                         </template>
                     </el-table-column>
                 </el-table>
-                <div style="text-align:center;margin-top:15px;"><span @click="addRow('listBody')" class="addBtn">添加</span></div>
+                <el-row class="add-btn"><span @click="addRow('体能')">添加</span></el-row>
             </el-row>
+
+
+            <!--<el-row class="train-section">-->
+                <!--<el-row class="edit-table-title">专项训练</el-row>-->
+                <!--<el-table :data="listSpecial" border highlight-current-row style="width: 100%" max-height="250">-->
+
+                    <!--<el-table-column prop="trainTime" label="*训练时段" align="center" width="150" header-align="center">-->
+                        <!--<template slot-scope="scope">-->
+                            <!--<el-time-picker v-if="scope.row.trainTime.editFlag"-->
+                                    <!--:clearable="false"-->
+                                    <!--:ref="'specialTrainTime'+scope.$index"-->
+                                    <!--@blur="changeStatus(scope,'listSpecial','blur','specialTrainTime'+scope.$index)"-->
+                                    <!--is-range-->
+                                    <!--v-model="scope.row.trainTime.value"-->
+                                    <!--format="HH:mm"-->
+                                    <!--value-format="HH:mm"-->
+                                    <!--range-separator="~"-->
+                                    <!--start-placeholder="开始时间"-->
+                                    <!--end-placeholder="结束时间">-->
+                            <!--</el-time-picker>-->
+                            <!--<div v-else class="table-item-div" @click="changeStatus(scope,'listSpecial','focus','specialTrainTime'+scope.$index)">-->
+                                <!--<span v-if="scope.row.trainTime.value">{{scope.row.trainTime.value[0]}}~{{scope.row.trainTime.value[1]}}</span>-->
+                                <!--<span v-if="scope.row.trainTime.value">| {{getMinutes(scope.row.trainTime.value,scope.$index,'listSpecial')}}分钟</span>-->
+                            <!--</div>-->
+                        <!--</template>-->
+                    <!--</el-table-column>-->
+
+                    <!--<el-table-column prop="trainType" label="*训练类型" align="center" header-align="center">-->
+                        <!--<template slot-scope="scope">-->
+                            <!--<el-input v-if="scope.row.trainType.editFlag" v-model="scope.row.trainType.value" v-focus @blur="changeStatus(scope,'listSpecial','blur')"></el-input>-->
+                            <!--<div v-else class="table-item-div" @click="changeStatus(scope,'listSpecial','focus')">{{scope.row.trainType.value}}</div>-->
+                        <!--</template>-->
+                    <!--</el-table-column>-->
+                    <!--<el-table-column prop="trainContent" label="*训练内容" align="center" header-align="center">-->
+                        <!--<template slot-scope="scope">-->
+                            <!--<el-input v-if="scope.row.trainContent.editFlag" v-model="scope.row.trainContent.value" v-focus @blur="changeStatus(scope,'listSpecial','blur')"></el-input>-->
+                            <!--<div v-else class="table-item-div" @click="changeStatus(scope,'listSpecial','focus')">{{scope.row.trainContent.value}}</div>-->
+                        <!--</template>-->
+                    <!--</el-table-column>-->
+                    <!--<el-table-column prop="trainDetail" label="内容细节" align="center" header-align="center">-->
+                        <!--<template slot-scope="scope">-->
+                            <!--<el-input v-if="scope.row.trainDetail.editFlag" v-model="scope.row.trainDetail.value" v-focus @blur="changeStatus(scope,'listSpecial','blur')"></el-input>-->
+                            <!--<div v-else class="table-item-div" @click="changeStatus(scope,'listSpecial','focus')">{{scope.row.trainDetail.value}}</div>-->
+                        <!--</template>-->
+                    <!--</el-table-column>-->
+                    <!--<el-table-column prop="repeatTimes" label="重复次数" width="80" align="center" header-align="center">-->
+                        <!--<template slot-scope="scope">-->
+                            <!--<el-input v-if="scope.row.repeatTimes.editFlag" v-model="scope.row.repeatTimes.value" v-focus @blur="changeStatus(scope,'listSpecial','blur')"></el-input>-->
+                            <!--<div v-else class="table-item-div" @click="changeStatus(scope,'listSpecial','focus')">{{scope.row.repeatTimes.value}}</div>-->
+                        <!--</template>-->
+                    <!--</el-table-column>-->
+                    <!--<el-table-column fixed label="操作" width="80" align="center" header-align="center">-->
+                        <!--<template slot-scope="scope">-->
+                            <!--<span @click="handleDel(scope.$index, scope.row, 'listSpecial')" class="row-act-btns">删除</span>-->
+                        <!--</template>-->
+                    <!--</el-table-column>-->
+                <!--</el-table>-->
+                <!--<div style="text-align:center;margin-top:15px;"><span @click="addRow('listSpecial')" class="addBtn">添加</span></div>-->
+            <!--</el-row>-->
+            <!--<el-row class="train-section">-->
+                <!--<el-row class="edit-table-title">体能训练</el-row>-->
+                <!--<el-table :data="listBody" border highlight-current-row style="width: 100%" max-height="250">-->
+                    <!--<el-table-column prop="trainTime" label="*训练时段" width="150" align="center" header-align="center">-->
+                        <!--<template slot-scope="scope">-->
+                            <!--<el-time-picker v-if="scope.row.trainTime.editFlag"-->
+                                            <!--:clearable="false"-->
+                                            <!--:ref="'bodyTrainTime'+scope.$index"-->
+                                            <!--@blur="changeStatus(scope,'listBody','blur','bodyTrainTime'+scope.$index)"-->
+                                            <!--is-range-->
+                                            <!--v-model="scope.row.trainTime.value"-->
+                                            <!--format="HH:mm"-->
+                                            <!--value-format="HH:mm"-->
+                                            <!--range-separator="~"-->
+                                            <!--start-placeholder="开始时间"-->
+                                            <!--end-placeholder="结束时间">-->
+                            <!--</el-time-picker>-->
+                            <!--<div v-else class="table-item-div" @click="changeStatus(scope,'listBody','focus','bodyTrainTime'+scope.$index)">-->
+                                <!--<span v-if="scope.row.trainTime.value">{{scope.row.trainTime.value[0]}}~{{scope.row.trainTime.value[1]}}</span>-->
+                                <!--<span v-if="scope.row.trainTime.value">| {{getMinutes(scope.row.trainTime.value,scope.$index,'listBody')}}分钟</span>-->
+                            <!--</div>-->
+                        <!--</template>-->
+                    <!--</el-table-column>-->
+
+                    <!--<el-table-column prop="trainType" label="*训练类型" align="center" header-align="center">-->
+                        <!--<template slot-scope="scope">-->
+                            <!--<el-input v-if="scope.row.trainType.editFlag" v-model="scope.row.trainType.value" v-focus @blur="changeStatus(scope,'listBody','blur')"></el-input>-->
+                            <!--<div v-else class="table-item-div" @click="changeStatus(scope,'listBody','focus')">{{scope.row.trainType.value}}</div>-->
+                        <!--</template>-->
+                    <!--</el-table-column>-->
+                    <!--<el-table-column prop="trainContent" label="训练内容" align="center" header-align="center">-->
+                        <!--<template slot-scope="scope">-->
+                            <!--<el-input v-if="scope.row.trainContent.editFlag" v-model="scope.row.trainContent.value" v-focus @blur="changeStatus(scope,'listBody','blur')"></el-input>-->
+                            <!--<div v-else class="table-item-div" @click="changeStatus(scope,'listBody','focus')">{{scope.row.trainContent.value}}</div>-->
+                        <!--</template>-->
+                    <!--</el-table-column>-->
+                    <!--<el-table-column prop="trainDetail" label="内容细节" align="center" header-align="center">-->
+                        <!--<template slot-scope="scope">-->
+                            <!--<el-input v-if="scope.row.trainDetail.editFlag" v-model="scope.row.trainDetail.value" v-focus @blur="changeStatus(scope,'listBody','blur')"></el-input>-->
+                            <!--<div v-else class="table-item-div" @click="changeStatus(scope,'listBody','focus')">{{scope.row.trainDetail.value}}</div>-->
+                        <!--</template>-->
+                    <!--</el-table-column>-->
+                    <!--<el-table-column prop="repeatTimes" label="每组重复次数" align="center" header-align="center">-->
+                        <!--<template slot-scope="scope">-->
+                            <!--<el-input v-if="scope.row.repeatTimes.editFlag" v-model="scope.row.repeatTimes.value" v-focus @blur="changeStatus(scope,'listBody','blur')"></el-input>-->
+                            <!--<div v-else class="table-item-div" @click="changeStatus(scope,'listBody','focus')">{{scope.row.repeatTimes.value}}</div>-->
+                        <!--</template>-->
+                    <!--</el-table-column>-->
+                    <!--<el-table-column prop="actionTimes" label="动作组数" width="80" align="center" header-align="center">-->
+                        <!--<template slot-scope="scope">-->
+                            <!--<el-input v-if="scope.row.actionTimes.editFlag" v-model="scope.row.actionTimes.value" v-focus @blur="changeStatus(scope,'listBody','blur')"></el-input>-->
+                            <!--<div v-else class="table-item-div" @click="changeStatus(scope,'listBody','focus')">{{scope.row.actionTimes.value}}</div>-->
+                        <!--</template>-->
+                    <!--</el-table-column>-->
+                    <!--<el-table-column prop="restInterval" label="组间休息间隔s" width="80" align="center" header-align="center">-->
+                        <!--<template slot-scope="scope">-->
+                            <!--<el-input v-if="scope.row.restInterval.editFlag" v-model="scope.row.restInterval.value" v-focus @blur="changeStatus(scope,'listBody','blur')"></el-input>-->
+                            <!--<div v-else class="table-item-div" @click="changeStatus(scope,'listBody','focus')">{{scope.row.restInterval.value}}</div>-->
+                        <!--</template>-->
+                    <!--</el-table-column>-->
+                    <!--<el-table-column prop="rhythm" label="节奏" align="center" header-align="center">-->
+                        <!--<template slot-scope="scope">-->
+                            <!--<el-input v-if="scope.row.rhythm.editFlag" v-model="scope.row.rhythm.value" v-focus @blur="changeStatus(scope,'listBody','blur')"></el-input>-->
+                            <!--<div v-else class="table-item-div" @click="changeStatus(scope,'listBody','focus')">{{scope.row.rhythm.value}}</div>-->
+                        <!--</template>-->
+                    <!--</el-table-column>-->
+                    <!--<el-table-column fixed label="操作" width="80" align="center" header-align="center">-->
+                        <!--<template slot-scope="scope">-->
+                            <!--<span @click="handleDel(scope.$index, scope.row, 'listSpecial')" class="row-act-btns">删除</span>-->
+                        <!--</template>-->
+                    <!--</el-table-column>-->
+                <!--</el-table>-->
+                <!--<div style="text-align:center;margin-top:15px;"><span @click="addRow('listBody')" class="addBtn">添加</span></div>-->
+            <!--</el-row>-->
+
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible = false">取 消</el-button>
                 <el-button type="primary" @click="onSubmit('addForm')">保 存</el-button>
@@ -173,13 +286,18 @@
 
 <script>
     import mixins from '@/utils/mixins'
-    import {changeStrToMinutes} from '@/utils/index'
+    import {getWeek} from '@/utils/index'
+    import trainContentAdd from './trainContentAdd'
     export default {
         mixins: [mixins],
-        props: {
-        },
+        components: {trainContentAdd},
         data() {
             return {
+                trainDate: null,       // 日期选择(初始化增加时候使用)
+                weekDay: null,         // 周几(初始化增加时候使用)
+
+
+
                 rowIdx: null,          // 编辑行时候，当前点击的行索引
                 isEditDialog: false,   // 判断当前当前打开dialog是否是编辑
                 currentWeekDay: null,  // 当前点击的行的日期
@@ -187,6 +305,7 @@
 
                 // dateArrList: [{weekDay:"0205（周二）"},{weekDay:"0206（周三）"},{weekDay:"0207（周四）"},{weekDay:"0208（周五）"}],       // 周区间
                 dateArrList: [],       // 周区间
+
                 listSpecial: [],       // 专项训练列表(初始化增加时候使用)
                 listBody: [],          // 体能训练列表(初始化增加时候使用)
                 listSpecialData: [],   // 专项训练列表(真实存储数据的)
@@ -221,41 +340,16 @@
         },
 
         methods: {
-            // 增加一条表格行
-            addRow(tableName) {
-                if(tableName === 'listSpecial') {
-                    this[tableName].push({
-                        typeCode: 1,
-                        trainType: { value: null, editFlag: false },
-                        trainTime: { value: null, editFlag: false },
-                        trainDuration: { value: null},  // 时长
-                        trainContent: { value: null, editFlag: false },
-                        trainDetail: { value: null, editFlag: false },
-                        repeatTimes: { value: null, editFlag: false }
-                    });
-                } else {
-                    this[tableName].push({
-                        typeCode: 2,
-                        trainType: { value: null, editFlag: false },
-                        trainTime: { value: null, editFlag: false },
-                        trainDuration: { value: null},  // 时长
-                        trainContent: { value: null, editFlag: false },
-                        trainDetail: { value: null, editFlag: false },
-                        repeatTimes: { value: null, editFlag: false },
-                        actionTimes: { value: null, editFlag: false },
-                        restInterval: { value: null, editFlag: false },
-                        rhythm: { value: '', editFlag: false }
-                    });
-                }
+            // 增加一条表格行(专项/体能)
+            addRow(typeName) {
+                this.$refs.trainContentAdd.addRow(typeName);
             },
 
-            // 点击每一天的详情/编辑
-            editRow(item, idx, isEdit) {
-                this.currentWeekDay = item.weekDay;
-                this.rowIdx = idx;
+            // 点击每一天的新增/编辑
+            editRow(item, idx) {
                 this.dialogVisible = true;
-                // 是否修改状态
-                if(isEdit) {
+                if(idx) {
+                    this.rowIdx = idx;
                     this.dateArrList[idx].trainList.forEach(item => {
                         if(item.typeCode === 1) {
                             this.listSpecial.push(item);
@@ -271,22 +365,20 @@
                 // this.$refs[formName].validate((valid) => {
                 //     if (valid) {
                         this.dialogVisible = false;
+                        this.listSpecialData = this.listSpecial.concat();
+                        this.listBodyData = this.listBody.concat();
                         if(this.isEditDialog) { // 编辑
-                            this.list.splice(this.rowIdx, 1, JSON.parse(JSON.stringify(this.addForm)))
-                        } else {    // 新增
-                            this.listSpecialData = this.listSpecial.concat();
-                            this.listBodyData = this.listBody.concat();
+                            this.dateArrList[this.rowIdx].weekDay = this.trainDate;
                             this.dateArrList[this.rowIdx].trainList = this.listSpecialData.concat(this.listBodyData);
+                        } else {    // 新增
+                            this.dateArrList.push({
+                                weekDay: this.trainDate,
+                                trainList: this.listSpecialData.concat(this.listBodyData)
+                            })
                         }
 
                 //     }
                 // })
-            },
-
-            getResData(list) {
-                this.dateArrList = list;
-                this.$forceUpdate();
-                console.log(this.dateArrList)
             },
 
 
@@ -306,15 +398,14 @@
                     dataArr.push({weekDay: month + day + '（周' + week + '）'});
                     startDate.setDate(startDate.getDate() + 1);
                 }
-                // this.dateArrList = dataArr;
             },
-            // 获取两个时间之间的时间差（分钟）
-            getMinutes: function(timeRange, idx, listName) {
-                let start = changeStrToMinutes(timeRange[0]);
-                let end = changeStrToMinutes(timeRange[1]);
-                this[listName][idx].trainDuration.value = end - start; // 设置时长字段
-                return end - start;
-            },
+            // // 获取两个时间之间的时间差（分钟）
+            // getMinutes: function(timeRange, idx, listName) {
+            //     let start = changeStrToMinutes(timeRange[0]);
+            //     let end = changeStrToMinutes(timeRange[1]);
+            //     this[listName][idx].trainDuration.value = end - start; // 设置时长字段
+            //     return end - start;
+            // },
             // 聚焦/失焦
             changeStatus(scope, tableName, eventType, refName) {
                 let columnName = scope.column.property;
@@ -335,18 +426,19 @@
 
         watch: {
             dialogVisible: function(val) {
-                if(!val) { // dialog关闭的时候
+                if(!val) { // dialog关闭的时候重置列表
                     this.isEditDialog = false;
+                    this.trainDate = null;
+                    this.weekDay = null;
                     this.listSpecial = [];
                     this.listBody = [];
                 }
             },
-            // dateArrList: {
-            //     handler(newValue,oldValue){
-            //         this.dateArrList = newValue;
-            //     },
-            //     deep: true
-            // }
+            trainDate: function(val) {
+                if(val) {
+                    this.weekDay = getWeek(val);
+                }
+            }
         }
     }
 </script>

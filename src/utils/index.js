@@ -333,3 +333,11 @@ export function changeStrToMinutes(str) {
     }
     return 0;
 }
+
+// 根据时间获取周几
+export function getWeek(date) {
+    let currentDay = new Date(date);
+    let weeks = ['日', '一', '二', '三', '四', '五', '六'];
+    let week = weeks[currentDay.getDay()];
+    return week;
+}
