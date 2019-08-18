@@ -3,29 +3,33 @@
     <div class="week-plan-train-wrapper">
 
         <!--一周的列表-->
-        <el-row class="week-item" v-for="(item,idx) in dateArrList" :key="idx">
-            <el-col :span="3">
-                <div :span="3" class="week-title">{{item.trainDate.split('-').slice(1, 3).join('-')}}(周{{item.weekDay}})</div>
-            </el-col>
-            <el-col :span="18">
-                <el-row :gutter="20" v-if="item.trainList&&item.trainList.length>0">
-                    <el-col :span="4" v-for="(dayItem,dayIdx) in item.trainList" :key="dayIdx">
-                        <p >{{dayItem.trainTime[0]}}~{{dayItem.trainTime[1]}}</p>
-                        <p >{{dayItem.trainTypeName}}</p>
-                    </el-col>
-                </el-row>
-                <el-row v-else>
-                    <el-col :span="4">&nbsp;</el-col>
-                </el-row>
-            </el-col>
-            <el-col :span="3" class="week-btn">
-                <span @click="editRow(item,idx)">详情</span>
-            </el-col>
-        </el-row>
-        <el-row class="add-btn">
-            <span @click="editRow">增加日训练计划</span>
+        <el-row v-if="!isSummary">
+            <el-row class="week-item" v-for="(item,idx) in dateArrList" :key="idx">
+                <el-col :span="3">
+                    <div :span="3" class="week-title">{{item.trainDate.split('-').slice(1, 3).join('-')}}(周{{item.weekDay}})</div>
+                </el-col>
+                <el-col :span="18">
+                    <el-row :gutter="20" v-if="item.trainList&&item.trainList.length>0">
+                        <el-col :span="4" v-for="(dayItem,dayIdx) in item.trainList" :key="dayIdx">
+                            <p >{{dayItem.trainTime[0]}}~{{dayItem.trainTime[1]}}</p>
+                            <p >{{dayItem.trainTypeName}}</p>
+                        </el-col>
+                    </el-row>
+                    <el-row v-else>
+                        <el-col :span="4">&nbsp;</el-col>
+                    </el-row>
+                </el-col>
+                <el-col :span="3" class="week-btn">
+                    <span @click="editRow(item,idx)">详情</span>
+                </el-col>
+            </el-row>
+            <el-row class="add-btn">
+                <span @click="editRow">增加日训练计划</span>
+            </el-row>
         </el-row>
 
+        <el-row>
+        </el-row>
 
         <!--显示训练计划表格-->
         <el-dialog
@@ -166,6 +170,7 @@
     export default {
         mixins: [mixins],
         components: {trainContentAdd},
+        props: ['isSummary'],
         data() {
             return {
                 rowIdx: null,          // 编辑行时候，当前点击的行索引(最外层的大项)

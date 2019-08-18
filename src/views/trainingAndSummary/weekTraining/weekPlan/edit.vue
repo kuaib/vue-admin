@@ -50,7 +50,14 @@
             <div slot="header" class="clearfix">
                 <span class="section-title">训练内容</span>
             </div>
-            <train-content ref="trainContent"></train-content>
+            <train-content ref="trainContent" :isSummary="isSummary"></train-content>
+        </el-card>
+
+        <!--总结内容(日训练特有)-->
+        <el-card class="static-box card-box" v-if="isSummary">
+            <div slot="header" class="clearfix">
+                <span class="section-title">总结内容</span>
+            </div>
         </el-card>
 
         <!--保存-->
@@ -198,7 +205,7 @@
                 let arr = [];
                 list.forEach((item) => {
                     let obj = {};
-                    obj.trainDate = item.dayStr;
+                    obj.trainDate = item.dayStr.substring(0, 4) + '-' + item.dayStr.substring(4, 6) + '-' + item.dayStr.substring(6, 8);
                     obj.weekDay = getWeekChange(item.whichDay);
                     obj.trainList = [];
                     item.sportsTrainDayDetails.forEach((dayItem,idx) => {
@@ -239,7 +246,7 @@
 </script>
 
 <style lang="scss">
-    .week-train-plan-edit {
+    .week-train-plan-edit-wrapper {
         .card-box {
             margin-bottom: 25px;
         }
