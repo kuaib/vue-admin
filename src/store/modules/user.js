@@ -693,7 +693,7 @@ let aa = [
     },
     {
         "id": 10,
-        "path": "/trainingBriefing",
+        "path": "/trainingBriefReport",
         "component": "Layout",
         "name": "",
         "title": "集训简报管理",
@@ -712,14 +712,120 @@ let aa = [
         "children": [
             {
                 "id": 3,
-                "path": "list",
-                "component": "views/trainingBriefing/list",
+                "path": "/briefRecord",
+                "component": "views/trainingBriefReport/briefRecord",
                 "name": "bigProject",
                 "title": "简报记录",
                 "icon": "ios-basket-outline",
                 "parentId": 1,
                 "enabled": 1,
-                "children": [],
+                "children": [
+                  {
+                    "id": 3,
+                    "path": "plan/list",
+                    "component": "views/trainingBriefReport/briefRecord/list",
+                    "name": "bigProject",
+                    "title": "集训计划",
+                    "icon": "ios-basket-outline",
+                    "parentId": 1,
+                    "enabled": 1,
+                    "children": [],
+                    "roles": null,
+                    "meta": {
+                      "access": null,
+                      "title": "集训计划",    // children中的title：取我定义的
+                      "icon": "ios-basket-outline",
+                      "hideInMenu": false,
+                      "noCache": true     // 这个是新加的字段！！！！！！！！！！！！
+                    },
+                    "url": "",
+                    "hideInMenu": false
+                  },
+                  {
+                    "id": 3,
+                    "path": "plan/add",
+                    "component": "views/trainingBriefReport/briefRecord/add",
+                    "name": "bigProject",
+                    "title": "创建集训计划",
+                    "icon": "ios-basket-outline",
+                    "parentId": 1,
+                    "enabled": 1,
+                    "children": [],
+                    "roles": null,
+                    "meta": {
+                      "access": null,
+                      "title": "创建集训计划",    // children中的title：取我定义的
+                      "icon": "ios-basket-outline",
+                      "hideInMenu": true,
+                      "noCache": true     // 这个是新加的字段！！！！！！！！！！！！
+                    },
+                    "url": "",
+                    "hideInMenu": true
+                  },
+                  {
+                    "id": 3,
+                    "path": "plan/edit",
+                    "component": "views/trainingBriefReport/briefRecord/edit",
+                    "name": "bigProject",
+                    "title": "编辑集训计划",
+                    "icon": "ios-basket-outline",
+                    "parentId": 1,
+                    "enabled": 1,
+                    "children": [],
+                    "roles": null,
+                    "meta": {
+                      "access": null,
+                      "title": "编辑集训计划",    // children中的title：取我定义的
+                      "icon": "ios-basket-outline",
+                      "hideInMenu": true,
+                      "noCache": true     // 这个是新加的字段！！！！！！！！！！！！
+                    },
+                    "url": "",
+                    "hideInMenu": true
+                  },
+                  {
+                    "id": 3,
+                    "path": "summary/list",
+                    "component": "views/trainingBriefReport/briefRecord/list",
+                    "name": "bigProject",
+                    "title": "训练小结",
+                    "icon": "ios-basket-outline",
+                    "parentId": 1,
+                    "enabled": 1,
+                    "children": [],
+                    "roles": null,
+                    "meta": {
+                      "access": null,
+                      "title": "训练小结",    // children中的title：取我定义的
+                      "icon": "ios-basket-outline",
+                      "hideInMenu": true,
+                      "noCache": true     // 这个是新加的字段！！！！！！！！！！！！
+                    },
+                    "url": "",
+                    "hideInMenu": true
+                  },
+                  {
+                    "id": 3,
+                    "path": "summary/edit",
+                    "component": "views/trainingBriefReport/briefRecord/edit",
+                    "name": "bigProject",
+                    "title": "编辑集训小结",
+                    "icon": "ios-basket-outline",
+                    "parentId": 1,
+                    "enabled": 1,
+                    "children": [],
+                    "roles": null,
+                    "meta": {
+                      "access": null,
+                      "title": "编辑集训小结",    // children中的title：取我定义的
+                      "icon": "ios-basket-outline",
+                      "hideInMenu": true,
+                      "noCache": true     // 这个是新加的字段！！！！！！！！！！！！
+                    },
+                    "url": "",
+                    "hideInMenu": true
+                  }
+                ],
                 "roles": null,
                 "meta": {
                     "access": null,

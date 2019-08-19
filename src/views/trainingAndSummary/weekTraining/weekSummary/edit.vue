@@ -128,6 +128,7 @@
                         this.baseForm.coachId = resData.coachId;
                         this.baseForm.purpose = resData.purpose;
                         this.baseForm.trainYear = resData.trainDate;
+                        this.videoUrl = resData.video;
                         // this.changeApplyMonth(resData.trainDate);
 
                         this.$refs.trainContent.listSpecial = this.formatListReverse(resData.special);
@@ -154,7 +155,8 @@
                             trainDayId: this.id,
                             bestAthlete: this.$refs.summaryContent.baseForm.bestAthlete,
                             summary: this.$refs.summaryContent.baseForm.summary,
-                            remark: this.$refs.summaryContent.remarkList
+                            remark: this.$refs.summaryContent.remarkList,
+                            video: this.videoUrl
                         }).then(res => {
                             if(res.data.code == 200) {
                                 this.$message({

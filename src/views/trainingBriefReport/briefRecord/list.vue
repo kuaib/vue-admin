@@ -1,17 +1,14 @@
 <!--集训简报-->
 <template>
     <div class="big-project-wrapper">
+        <change-tab-bar :isSummary="isSummary"></change-tab-bar>
         <!--搜索-->
-        <search-section typeName="报表" @handleFilter="handleFilter"></search-section>
+        <search-section @handleFilter="handleFilter"></search-section>
 
         <!--表格-->
         <el-row>
             <div class="table-title clearfix">
-
                 <el-button type="success" @click="addBriefPlan">创建集训计划</el-button>
-
-                <el-button type="success" @click="addBriefSummary">创建小结计划</el-button>
-
             </div>
             <el-table :data="list" v-loading="listLoading" border fit highlight-current-row
                       style="width: 100%;">
@@ -76,13 +73,15 @@
 
 <script>
     import searchSection  from '../components/searchSection'
+    import changeTabBar from '../components/changeTabBar'
     import mixins from '@/utils/mixins'
     import {getBriefingList} from '@/api/trainingBriefing'
     export default {
         mixins: [mixins],
-        components: {searchSection},
+        components: {searchSection, changeTabBar},
         data() {
             return {
+                isSummary: this.$route.path.indexOf('/summary') !== -1,
                 list: null,          // table列表
                 total: null,         // 总条目数
                 listLoading: false,  // 查询table的loading

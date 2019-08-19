@@ -5,7 +5,7 @@
             <el-row :gutter="20" class="search-item">
                 <el-col :span="6">
                     <el-form-item prop="id">
-                        <el-input :placeholder="'请输入'+typeName+'id'" v-model="searchForm.id"></el-input>
+                        <el-input placeholder="请输入报表id" v-model="searchForm.id"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
@@ -34,7 +34,7 @@
                 </el-col>
             </el-row>
             <el-row :gutter="20" class="search-item">
-                <el-col :span="4">
+                <el-col :span="6">
                     <el-form-item prop="coach">
                         <el-select v-model="searchForm.coach" placeholder="请选择教练">
                             <el-option
@@ -46,66 +46,44 @@
                         </el-select>
                     </el-form-item>
                 </el-col>
-
-              <el-col :span="4">
-                <el-form-item prop="coach">
-                  <el-select v-model="searchForm.coach" placeholder="请选择简报类型">
-                    <el-option
-                      v-for="item in coachInfoList"
-                      :label="item.dicValue"
-                      :value="item.dicKey"
-                      :key="item.dicKey">
-                    </el-option>
-                  </el-select>
-                </el-form-item>
-              </el-col>
-
-                <el-col :span="8">
+                <el-col :span="6">
                     <el-form-item prop="team">
-                        <el-date-picker
+                        <el-date-picker style="width:100%"
                                 v-model="searchForm.trainYear"
-                                type="monthrange"
+                                type="month"
                                 value-format="yyyy-MM"
-                                range-separator="至"
-                                start-placeholder="集训年度开始年月"
-                                end-placeholder="集训年度结束年月">
+                                placeholder="请选择集训时间">
                         </el-date-picker>
                     </el-form-item>
                 </el-col>
                 <el-col :span="3">
                     <el-form-item prop="name">
-                        <el-button type="primary" v-waves icon="el-icon-search" @click="handleFilter">搜索 Search</el-button>
+                        <el-button type="primary" v-waves icon="el-icon-search" @click="handleFilter">搜索</el-button>
                     </el-form-item>
                 </el-col>
                 <el-col :span="3">
                     <el-form-item prop="name">
-                        <el-button class="search" type="info" v-waves @click="resetForm('searchForm')">重置 Reset</el-button>
+                        <el-button class="search" type="info" v-waves @click="resetForm('searchForm')">重置</el-button>
                     </el-form-item>
                 </el-col>
             </el-row>
         </el-form>
-
     </div>
 </template>
 
 <script>
     import mixin from '@/utils/mixins'
-    import {findStaffName} from '@/api/accountAndPermission'
     export default ({
         mixins: [mixin],
         data() {
             return {
-                roleList: [],   // 角色列表
-                nameLoading: false, // 搜索姓名时候的loading
-                nameList: [],  // 姓名列表
-                options: [],   // 远程搜索姓名时使用
-
                 searchForm: {
                     id: null,
                     project: null,
                     team: null,
                     coach: null,
                     trainYear: null,
+                    summary: null
                 }
             }
         },
@@ -124,30 +102,6 @@
             // 搜索
             handleFilter() {
                 this.$emit('handleFilter', this.searchForm)
-            },
-
-            // 人员管理模糊搜索姓名
-            getPersonName(query) {
-                if (query !== '') {
-                    this.nameLoading = true;
-                    findStaffName({staffName: query}).then(res => {
-                        if(res.data.code == 200) {
-                            this.nameLoading = false;
-
-                            this.nameList = res.data.data.map(item => {
-                                return { value: item, label: item };
-                            });
-                            this.options = this.nameList.filter(item => {
-                                return item.label.toLowerCase()
-                                    .indexOf(query.toLowerCase()) > -1;
-                            });
-                        }
-                    })
-
-
-                } else {
-                    this.options = [];
-                }
             }
         }
     })
