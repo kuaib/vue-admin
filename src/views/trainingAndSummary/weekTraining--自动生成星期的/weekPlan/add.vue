@@ -34,6 +34,23 @@
                             </el-date-picker>
                         </el-form-item>
                     </el-col>
+                    <el-col :span="8">
+                        <el-form-item label="时间范围：" prop="trainDate">
+                            <el-date-picker
+                                    v-model="baseForm.trainDate"
+                                    type="daterange"
+                                    format="MM-dd"
+                                    value-format="MM-dd"
+                                    range-separator="至"
+                                    start-placeholder="开始日"
+                                    end-placeholder="结束日"
+                                    :default-value="defaultVal"
+                                    :picker-options="pickerOptions"
+                                    @change="changeApplyDate"
+                                    :disabled="!baseForm.trainYear">
+                            </el-date-picker>
+                        </el-form-item>
+                    </el-col>
                 </el-row>
                 <el-row :gutter="20">
                     <el-col>
@@ -50,7 +67,6 @@
             <div slot="header" class="clearfix">
                 <span class="section-title">训练内容</span>
             </div>
-            <!--<train-content ref="trainContent" :pickerOptions="pickerOptions" :defaultVal="defaultVal" :trainYear="baseForm.trainYear"></train-content>-->
             <train-content ref="trainContent"></train-content>
         </el-card>
 
@@ -80,11 +96,15 @@
                     project: null,
                     coach: null,
                     trainYear: null,
+                    trainDate: null,
                     purpose: null
                 },
                 rules: {
                     trainYear: [
                         { required: true, message: '请选择训练年度', trigger: 'change' }
+                    ],
+                    trainDate: [
+                        { required: true, message: '请选择时间范围', trigger: 'change' }
                     ]
                 },
 
@@ -119,7 +139,7 @@
                             teamName: this.userInfo.teamName,
                             trainDate: this.baseForm.trainYear,
                             purpose: this.baseForm.purpose,
-                            // trainDay: this.baseForm.trainDate,  // 去掉了
+                            trainDay: this.baseForm.trainDate[0].split('-').join('') + '-' + this.baseForm.trainDate[1].split('-').join(''),
                             sportsTrainDays: sportsTrainDays
                         }).then(res => {
                             if(res.data.code == 200) {
@@ -147,22 +167,19 @@
                 let arr = [];
                 list.forEach((item) => {
                     let obj = {}; obj.sportsTrainDayDetails = [];
-                    obj.dayStr = item.trainDate.split('-').join('');
-                    obj.whichDay = getWeekChange(item.weekDay);
+                    obj.dayStr = item.weekDay.substr(0, 4);
+                    obj.whichDay = getWeekChange(item.weekDay.substr(item.weekDay.length - 2, 1));
                     item.trainList.forEach((dayItem,idx) => {
                         obj.sportsTrainDayDetails[idx] = {};
-                        obj.sportsTrainDayDetails[idx].trainSubTypeId = dayItem.trainType;
-                        obj.sportsTrainDayDetails[idx].trainSubType = dayItem.trainTypeName;
-                        obj.sportsTrainDayDetails[idx].actionRepeat = dayItem.repeatTimes;
-                        obj.sportsTrainDayDetails[idx].rest = dayItem.restInterval;
-                        obj.sportsTrainDayDetails[idx].rhythm = dayItem.rhythm;
-                        obj.sportsTrainDayDetails[idx].trainAction = dayItem.actionTimes;
-                        obj.sportsTrainDayDetails[idx].trainContentId = dayItem.trainContent;
-                        obj.sportsTrainDayDetails[idx].trainContent = dayItem.trainContentName;
-                        obj.sportsTrainDayDetails[idx].trainDate = dayItem.trainTime[0] + '-' + dayItem.trainTime[1];
-                        obj.sportsTrainDayDetails[idx].trainDetailId = dayItem.trainDetail;
-                        obj.sportsTrainDayDetails[idx].trainDetail = dayItem.trainDetailName;
-                        obj.sportsTrainDayDetails[idx].trainDuration = dayItem.trainDuration;
+                        obj.sportsTrainDayDetails[idx].trainSubType = dayItem.trainType && dayItem.trainType.value;
+                        obj.sportsTrainDayDetails[idx].actionRepeat = dayItem.repeatTimes && dayItem.repeatTimes.value;
+                        obj.sportsTrainDayDetails[idx].rest = dayItem.restInterval && dayItem.restInterval.value;
+                        obj.sportsTrainDayDetails[idx].rhythm = dayItem.rhythm && dayItem.rhythm.value;
+                        obj.sportsTrainDayDetails[idx].trainAction = dayItem.actionTimes && dayItem.actionTimes.value;
+                        obj.sportsTrainDayDetails[idx].trainContent = dayItem.trainContent && dayItem.trainContent.value;
+                        obj.sportsTrainDayDetails[idx].trainDate = dayItem.trainTime && (dayItem.trainTime.value[0] + '-' + dayItem.trainTime.value[1]);
+                        obj.sportsTrainDayDetails[idx].trainDetail = dayItem.trainDetail && dayItem.trainDetail.value;
+                        obj.sportsTrainDayDetails[idx].trainDuration = dayItem.trainDuration && dayItem.trainDuration.value;
                         obj.sportsTrainDayDetails[idx].trainType = dayItem.typeCode; // 区分专项和体能的
                     });
                     arr.push(obj);
@@ -173,7 +190,28 @@
             //修改月份
             changeApplyMonth(val){
                 val = new Date(val)
-                this.defaultVal = val.getFullYear() + "-" + (val.getMonth() + 1) + "-" + "1";
+                this.defaultVal = val.getFullYear()+"-"+(val.getMonth()+1)+"-"+"1";
+                // this.defaultValYear = val.getFullYear();
+                // this.defaultValMon= val.getMonth()+1;
+                // console.log(this.defaultVal);
+            },
+            //修改日期
+            changeApplyDate(val){
+                // let val0 = new Date(val[0]);
+                // let val1 = new Date(val[1]);
+                // let startDate = val0.getFullYear() + "-" + (val0.getMonth()+1) + "-" + val0.getDate();
+                // console.log(startDate);
+                // let endDate = val1.getFullYear() + "-" + (val1.getMonth()+1) + "-" + val1.getDate();
+                // console.log(startDate,endDate);
+            },
+
+
+        },
+        watch: {
+            'baseForm.trainDate': function(val) {
+                if(val) {
+                    this.$refs.trainContent.getDateComplete(this.baseForm.trainYear, this.baseForm.trainDate);
+                }
             }
         }
     }

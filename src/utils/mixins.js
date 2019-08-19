@@ -2,7 +2,7 @@
  * 混入
  */
 
-import {getBaseInfo, childProject, getLevelByName, getAthlete} from '@/api/common'
+import {getBaseInfo, childProject, getLevelByName, getAthlete, getTrainSelect} from '@/api/common'
 export default {
     data() {
         return {
@@ -133,6 +133,20 @@ export default {
                 if(res.data.code == 200) {
                     this.athleteList = res.data.data;
                     successCallback && successCallback(res.data.data);
+                } else {
+                    this.$message({
+                        message: res.data.msg,
+                        type: 'warning'
+                    });
+                }
+            })
+        },
+
+        // 训练类型获取(联动)
+        getTrainSelectAll(params, successCallback) {
+            getTrainSelect(params).then(res => {
+                if(res.data.code == 200) {
+                    successCallback && successCallback(res.data.data)
                 } else {
                     this.$message({
                         message: res.data.msg,

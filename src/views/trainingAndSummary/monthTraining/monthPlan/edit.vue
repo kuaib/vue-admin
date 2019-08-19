@@ -2,7 +2,7 @@
 <template>
     <div class="month-train-plan-edit-wrapper">
         <!--tab切换-->
-        <change-tab-bar :isSummary="isSummary"></change-tab-bar>
+        <change-tab-bar :isSummary="isSummary" sectionItem="month"></change-tab-bar>
 
         <!--基础信息-->
         <el-card class="static-box card-box">
@@ -32,11 +32,9 @@
                         <el-form-item label="训练年度：" prop="trainYear">
                             <el-date-picker
                                     v-model="baseForm.trainYear"
-                                    type="monthrange"
+                                    type="month"
                                     value-format="yyyy-MM"
-                                    range-separator="至"
-                                    start-placeholder="训练年度开始年月"
-                                    end-placeholder="训练年度结束年月">
+                                    placeholder="请选择训练年度">
                             </el-date-picker>
                         </el-form-item>
                     </el-col>
@@ -78,10 +76,10 @@
         </el-card>
 
         <!--保存-->
-        <el-row style="text-align: center;" v-if="status==1&&!isSummary">
+        <el-row style="text-align: center;" v-if="!canOperate || (status==1&&!isSummary)">
             <el-button type="primary" round style="padding: 12px 35px;" @click="cancelAct('save')">关 闭</el-button>
         </el-row>
-        <el-row style="text-align: center;"  v-if="status!=1&&!isSummary">
+        <el-row style="text-align: center;"  v-if="status!=1&&!isSummary&&canOperate">
             <el-button type="primary" round @click="onSubmit('baseForm','0')" :loading="btnLoading" style="padding: 12px 35px;">保存草稿</el-button>
             <el-button type="primary" round @click="onSubmit('baseForm','1')" :loading="btnLoading" style="padding: 12px 35px;">提 交</el-button>
         </el-row>
@@ -91,7 +89,7 @@
 <script>
     import trainPlan from './components/trainPlan'
     import competitionPlan from './components/competitionPlan'
-    import changeTabBar from './components/changeTabBar'
+    import changeTabBar from '../../components/changeTabBar'
     import {saveMonthTrainPlan, getMonthTrainDetail} from '@/api/trainingAndSummary'
     import mixins from '@/utils/mixins'
     export default {
@@ -99,10 +97,11 @@
         components: {trainPlan, competitionPlan, changeTabBar},
         data() {
             return {
-                isSummary: false,    // 是否是月训练总结(计划与总结页面公用)
+                isSummary: this.$route.path.indexOf('/monthSummary') !== -1,  // 是否是月训练总结(计划与总结页面公用)
                 updatedTime: this.$route.query.updatedTime,
                 id: this.$route.query.id,
                 status: this.$route.query.status,
+                canOperate: this.$route.query.canOperate,
                 btnLoading: false,
                 baseForm: {
                     project: null,
@@ -141,7 +140,7 @@
                         this.baseForm.teamId = sportsTrainMonth.teamId;
                         this.baseForm.coach = sportsTrainMonth.coachName;
                         this.baseForm.coachId = sportsTrainMonth.coachId;
-                        this.baseForm.trainYear = sportsTrainMonth.trainMonth.split(',');
+                        this.baseForm.trainYear = sportsTrainMonth.trainMonth;
                     } else {
                         this.$message({
                             message: res.data.msg,
@@ -164,7 +163,7 @@
                     coachId: this.baseForm.coachId,
                     teamId: this.baseForm.teamId,
                     teamName: this.baseForm.team,
-                    trainMonth: this.baseForm.trainYear.join(),
+                    trainMonth: this.baseForm.trainYear,
                     status: parseInt(types),
                     trainPlans: trainPlans,
                     matchPlans: matchPlans,
@@ -246,8 +245,10 @@
                         obj.country = item.matchCountry;
                         obj.city = item.matchCity;
                         obj.bigPro = item.matchProjetId;
+                        obj.bigProName = item.matchProjetName;
                         obj.smallPro = item.matchProjectInfo.split(',');
                         obj.athleteSelected = item.matchAthlete.split(',');
+                        obj.athleteSelectedName = item.matchAthleteList;
 
                         // 月总结使用的
                         obj.id = item.id;
@@ -259,13 +260,6 @@
                 }
                 return arr;
             }
-        },
-        beforeRouteEnter (to, from, next) {
-            next(vm => {
-                if(to.meta.isPublic === '月训练总结') {
-                    vm.isSummary = true
-                }
-            })
         }
     }
 </script>

@@ -169,7 +169,6 @@
         },
         created() {
             this.getAllList();
-            console.log(this.$route.path.indexOf('/monthSummary') !== -1)
         },
         methods: {
             // 提交
@@ -234,7 +233,12 @@
             dialogVisible: function(val) {
                 if(!val) { // dialog关闭的时候
                     this.isEditDialog = false;
-                    this.$refs.addForm.resetFields();
+                    this.addForm.trainContent = null;
+                    this.addForm.trainType = null;
+                    this.addForm.shortBoard = null;
+                    this.addForm.trainPurposeSelected = [];
+                    this.addForm.trainPurposeSelectedName = null;
+                    this.addForm.trainTarget = null;
                 }
             }
         }

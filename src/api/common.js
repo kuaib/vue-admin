@@ -48,3 +48,12 @@ export function getAthlete(params) {
         params
     })
 }
+
+// 训练类型下拉
+export function getTrainSelect(params) {
+    return request({
+        url: '/sports/sports_base/getTrainSelect',
+        method: 'get',
+        params
+    })
+}

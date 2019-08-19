@@ -2,7 +2,7 @@
 <template>
     <div class="month-train-plan-add-wrapper">
         <!--tab切换-->
-        <change-tab-bar :isSummary="isSummary"></change-tab-bar>
+        <change-tab-bar :isSummary="isSummary" sectionItem="month"></change-tab-bar>
 
         <!--基础信息-->
         <el-card class="static-box card-box">
@@ -32,11 +32,9 @@
                         <el-form-item label="训练年度：" prop="trainYear">
                             <el-date-picker
                                     v-model="baseForm.trainYear"
-                                    type="monthrange"
+                                    type="month"
                                     value-format="yyyy-MM"
-                                    range-separator="至"
-                                    start-placeholder="训练年度开始年月"
-                                    end-placeholder="训练年度结束年月">
+                                    placeholder="请选择训练年度">
                             </el-date-picker>
                         </el-form-item>
                     </el-col>
@@ -76,7 +74,7 @@
 <script>
     import trainPlan from './components/trainPlan'
     import competitionPlan from './components/competitionPlan'
-    import changeTabBar from './components/changeTabBar'
+    import changeTabBar from '../../components/changeTabBar'
     import {saveMonthTrainPlan} from '@/api/trainingAndSummary'
     import mixins from '@/utils/mixins'
     export default {
@@ -84,8 +82,8 @@
         components: {trainPlan, competitionPlan, changeTabBar},
         data() {
             return {
-                isSummary: false,    // 是否是月训练总结(计划与总结页面公用)
-                userInfo: this.$route.query.userInfo,
+                isSummary: this.$route.path.indexOf('/monthSummary') !== -1,    // 是否是月训练总结(计划与总结页面公用)
+                userInfo: JSON.parse(localStorage.getItem('trainAndSumUserMonth')),
                 btnLoading: false,
                 baseForm: {
                     project: null,
@@ -103,7 +101,6 @@
         },
 
         created() {
-            console.log(this.userInfo)
             this.baseForm.project = this.userInfo.projectName;
             this.baseForm.team = this.userInfo.teamName;
             this.baseForm.coach = this.userInfo.staffName;
@@ -117,11 +114,12 @@
                 let matchPlans = this.formatList(this.$refs.competitionPlan.list, 'match');
                 saveMonthTrainPlan({
                     projectName: this.userInfo.projectName,
+                    projectId: this.userInfo.projectId,
                     coachName: this.userInfo.staffName,
                     coachId: this.userInfo.staffId,
                     teamId: this.userInfo.teamId,
                     teamName: this.userInfo.teamName,
-                    trainMonth: this.baseForm.trainYear.join(),
+                    trainMonth: this.baseForm.trainYear,
                     status: parseInt(types),
                     trainPlans: trainPlans,
                     matchPlans: matchPlans,
@@ -173,13 +171,6 @@
                 }
                 return JSON.stringify(arr)
             }
-        },
-        beforeRouteEnter (to, from, next) {
-            next(vm => {
-                if(to.meta.isPublic === '月训练总结') {
-                    vm.isSummary = true
-                }
-            })
         }
     }
 </script>

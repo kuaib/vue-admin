@@ -84,3 +84,50 @@ export function saveWeekTrainPlan(data) {
     data
   })
 }
+
+// 获取周计划详情
+export function getWeekTrainDetail(params) {
+    return request({
+        url: '/sports/sports_train_week/detail',
+        method: 'get',
+        params
+    })
+}
+
+//==================================== 日总结 =====================//
+
+// 获取日总结列表
+export function getDayTrainList(params) {
+    return request({
+        url: '/sports/sports_train_day/list',
+        method: 'get',
+        params
+    })
+}
+
+// 保存日总结信息
+export function saveDaySummary(data) {
+    return request({
+        url: '/sports/sports_train_day/summary',
+        method: 'post',
+        data
+    })
+}
+
+// 获取日总结详情
+export function getDayTrainDetail(params) {
+    return request({
+        url: '/sports/sports_train_day/detail',
+        method: 'get',
+        params
+    })
+}
+
+// 上传视频
+export function dayUploadVideo(data) {
+    return request({
+        url: '/sports/sports_train_day/uploadVideo',
+        method: 'post',
+        data
+    })
+}

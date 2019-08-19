@@ -1,51 +1,71 @@
+<!--周训练管理列表-->
 <template>
-    <div class="year-training-wrapper">
+    <div class="week-training-wrapper">
+        <!--tab切换-->
+        <change-tab-bar :isSummary="isSummary" sectionItem="week"></change-tab-bar>
+
         <!--搜索-->
-        <search-section typeName="周计划" @handleFilter="handleFilter" :isSummary="isSummary"></search-section>
+        <search-section :typeName="typeName" @handleFilter="handleFilter" :isSummary="isSummary"></search-section>
 
         <!--表格-->
         <el-row>
             <div class="table-title clearfix">
-                <h3>周计划列表</h3>
-                <el-button type="success" @click="addNew" v-show="">创建周计划</el-button>
+                <h3>{{typeName}}列表</h3>
+                <el-button type="success" @click="addNew" v-if="extInfo.canOperate&&!isSummary">创建周计划</el-button>
             </div>
             <el-table :data="list" v-loading="listLoading" border fit highlight-current-row
                       style="width: 100%;">
-                <el-table-column align="center" label="周计划id">
+                <el-table-column align="center" :label="typeName+'id'">
                     <template slot-scope="scope">
-                        <span>{{scope.row.trainWeekId}}</span>
+                        <span v-if="!isSummary">{{scope.row.trainWeekId}}</span>
+                        <span v-else>{{scope.row.trainDayId}}</span>
                     </template>
                 </el-table-column>
 
-              <el-table-column align="center" label="项目">
-                <template slot-scope="scope">
-                  <span>{{scope.row.projectName}}</span>
-                </template>
-              </el-table-column>
+                <el-table-column align="center" label="项目">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.projectName}}</span>
+                    </template>
+                </el-table-column>
 
-              <el-table-column align="center" label="教练员">
-                <template slot-scope="scope">
-                  <span>{{scope.row.coachName}}</span>
-                </template>
-              </el-table-column>
+                <el-table-column align="center" label="教练员">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.coachName}}</span>
+                    </template>
+                </el-table-column>
 
-              <el-table-column align="center" label="训练年度">
-                  <template slot-scope="scope">
-                      <span>{{scope.row.trainDate}}</span>
-                  </template>
-              </el-table-column>
+                <el-table-column align="center" label="训练年度">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.trainDate}}</span>
+                    </template>
+                </el-table-column>
 
-              <el-table-column align="center" label="时间范围">
-                <template slot-scope="scope">
-                  <span>{{scope.row.trainDay}}</span>
-                </template>
-              </el-table-column>
+                <el-table-column align="center" label="时间范围" v-if="!isSummary">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.trainDay}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" label="日期" v-if="isSummary">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.dayStr}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" label="是否有视频" v-if="isSummary">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.video?'是':'否'}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" label="是否总结" v-if="isSummary">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.summary=='0'?'否':'是'}}</span>
+                    </template>
+                </el-table-column>
 
-              <el-table-column align="center" label="操作">
-                  <template slot-scope="scope">
-                      <el-button size="mini" type="primary" @click="toEdit(scope.row)">详情</el-button>
-                  </template>
-              </el-table-column>
+                <el-table-column align="center" label="操作">
+                    <template slot-scope="scope">
+                        <el-button size="mini" type="primary" @click="toEdit(scope.row)">详情</el-button>
+                    </template>
+                </el-table-column>
             </el-table>
 
             <div class="pagination-container">
@@ -61,21 +81,25 @@
 
 <script>
     import mixins from '@/utils/mixins'
+    import changeTabBar from '../../components/changeTabBar'
     import searchSection from '../../components/searchSection'
-    import {getWeekTrainPlanList} from '@/api/trainingAndSummary'
+    import {getWeekTrainPlanList, getDayTrainList} from '@/api/trainingAndSummary'
+
     export default {
         mixins: [mixins],
-        components: {searchSection},
+        components: {searchSection, changeTabBar},
         data() {
             return {
-                isSummary: false,    // 是否是月训练总结(计划与总结页面公用)
+                isSummary: this.$route.path.indexOf('/weekSummary') !== -1,    // 是否是周训练总结(计划与总结页面公用)
+                typeName: this.$route.path.indexOf('/weekSummary') !== -1 ? '日计划' : '周计划',
                 list: [],            // table列表
                 total: null,         // 总条目数
                 listLoading: false,  // 查询table的loading
                 listQuery: {
                     currentPage: 1,
                     pageSize: 10
-                }
+                },
+                extInfo: {}  // 账号的权限
             }
         },
 
@@ -84,57 +108,89 @@
         },
 
         methods: {
-            // 获取周计划列表
+            // 获取周/日计划列表
             getList(formData = {}) {
                 this.listLoading = true;
-                getWeekTrainPlanList({
-                    currentPage: this.listQuery.currentPage,
-                    pageSize: this.listQuery.pageSize,
-                    trainWeekId: formData.id,
-                    projectId: formData.project,
-                    teamId: formData.team,
-                    coachId: formData.coach,
-                    trainDate: formData.trainYear && (formData.trainYear[0] + ',' + formData.trainYear[1]),
-                }).then(res => {
-                    this.listLoading = false;
-                    if (res.data.code === 200) {
-                        const data = res.data.data;
-                        this.list = data.list;
-                        this.total = data.pagination.total;
-                    } else {
-                        this.$message({
-                            message: res.data.msg,
-                            type: 'warning'
-                        })
-                    }
-                }).catch(rej => {
-                    this.listLoading = false;
-                })
+                if (this.isSummary) { // 日计划列表
+                    getDayTrainList({
+                        currentPage: this.listQuery.currentPage,
+                        pageSize: this.listQuery.pageSize,
+                        trainDayId: formData.id,
+                        projectId: formData.project,
+                        teamId: formData.team,
+                        coachId: formData.coach,
+                        trainDate: formData.trainYear,
+                        dayStr: formData.trainDate && formData.trainDate.split('-').join(''),
+                    }).then(res => {
+                        this.listLoading = false;
+                        if (res.data.code === 200) {
+                            const data = res.data.data;
+                            this.list = data.list;
+                            this.extInfo = data.extInfo;
+                            this.total = data.pagination.total;
+                        } else {
+                            this.$message({
+                                message: res.data.msg,
+                                type: 'warning'
+                            })
+                        }
+                    }).catch(rej => {
+                        this.listLoading = false;
+                    })
+                } else { // 周计划列表
+                    getWeekTrainPlanList({
+                        currentPage: this.listQuery.currentPage,
+                        pageSize: this.listQuery.pageSize,
+                        trainWeekId: formData.id,
+                        projectId: formData.project,
+                        teamId: formData.team,
+                        coachId: formData.coach,
+                        trainDate: formData.trainYear,
+                    }).then(res => {
+                        this.listLoading = false;
+                        if (res.data.code === 200) {
+                            const data = res.data.data;
+                            this.list = data.list;
+                            this.extInfo = data.extInfo;
+                            this.total = data.pagination.total;
+                        } else {
+                            this.$message({
+                                message: res.data.msg,
+                                type: 'warning'
+                            })
+                        }
+                    }).catch(rej => {
+                        this.listLoading = false;
+                    })
+                }
             },
 
             // 创建周计划
             addNew() {
-                this.$router.push('/weekPlan/add');
+                localStorage.setItem('trainAndSumUserWeek', JSON.stringify(this.extInfo.useInfo));
+                this.$router.push('/weekTraining/weekPlan/add');
             },
 
             // 去详情
             toEdit(row) {
-                this.$router.push({path: '/weekPlan/edit', query: {id: row.trainId}})
-            },
-        },
-
-        beforeRouteEnter (to, from, next) {
-            next(vm => {
-                if(to.meta.isPublic === '周训练总结') {
-                    vm.isSummary = true
+                let path;
+                if (this.isSummary) {
+                    path = '/weekTraining/weekSummary/edit';
+                    this.$router.push(
+                        {path: path, query: {id: row.trainDayId, canOperate: this.extInfo.canOperate}})
+                } else {
+                    path = '/weekTraining/weekPlan/edit';
+                    this.$router.push(
+                        {path: path, query: {id: row.trainWeekId, canOperate: this.extInfo.canOperate}})
                 }
-            })
+
+            },
         }
     }
 </script>
 
 <style lang="scss">
-    .year-training-wrapper {
+    .week-training-wrapper {
         .table-title {
             margin-top: 20px;
             margin-bottom: 10px;

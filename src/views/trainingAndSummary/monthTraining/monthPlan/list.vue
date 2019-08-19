@@ -1,7 +1,7 @@
 <template>
     <div class="month-training-wrapper">
         <!--tab切换-->
-        <change-tab-bar :isSummary="isSummary"></change-tab-bar>
+        <change-tab-bar :isSummary="isSummary" sectionItem="month"></change-tab-bar>
 
         <!--搜索-->
         <search-section typeName="月计划" @handleFilter="handleFilter" :isSummary="isSummary"></search-section>
@@ -10,7 +10,7 @@
         <el-row>
             <div class="table-title clearfix">
                 <h3>月计划列表</h3>
-                <el-button type="success" @click="addNew" v-show="extInfo.canOperate&&!isSummary">创建月计划</el-button>
+                <el-button type="success" @click="addNew" v-if="extInfo.canOperate&&!isSummary">创建月计划</el-button>
             </div>
             <el-table :data="list" v-loading="listLoading" border fit highlight-current-row
                       style="width: 100%;">
@@ -72,14 +72,14 @@
 <script>
     import mixins from '@/utils/mixins'
     import searchSection from '../../components/searchSection'
-    import changeTabBar from './components/changeTabBar'
+    import changeTabBar from '../../components/changeTabBar'
     import {getMonthTrainPlanList} from '@/api/trainingAndSummary'
     export default {
         mixins: [mixins],
         components: {searchSection, changeTabBar},
         data() {
             return {
-                isSummary: false,    // 是否是月训练总结(计划与总结页面公用)
+                isSummary: this.$route.path.indexOf('/monthSummary') !== -1, // 是否是月训练总结(计划与总结页面公用)
                 list: [],            // table列表
                 total: null,         // 总条目数
                 listLoading: false,  // 查询table的loading
@@ -106,7 +106,7 @@
                     projectId: formData.project,
                     teamId: formData.team,
                     coachId: formData.coach,
-                    trainMonth: formData.trainYear && (formData.trainYear[0] + ',' + formData.trainYear[1]),
+                    trainMonth: formData.trainYear,
                     summary: formData.summary && parseInt(formData.summary)
                 }).then(res => {
                     this.listLoading = false;
@@ -130,32 +130,31 @@
             addNew() {
                 let path;
                 if(this.isSummary) {
-                    path = '/monthSummary/add'
+                    path = '/monthTraining/monthSummary/add'
                 } else {
-                    path = '/monthPlan/add'
+                    path = '/monthTraining/monthPlan/add'
                 }
-                this.$router.push({path: path, query: {userInfo: this.extInfo.useInfo}});
+                localStorage.setItem('trainAndSumUserMonth', JSON.stringify(this.extInfo.useInfo));
+                this.$router.push({path: path});
             },
 
             // 去详情
             toEdit(row) {
                 let path, updatedTime;
                 if(this.isSummary) {
-                    path = '/monthSummary/edit';
+                    path = '/monthTraining/monthSummary/edit';
                     updatedTime = row.updatedTime;
                 } else {
-                    path = '/monthPlan/edit'
+                    path = '/monthTraining/monthPlan/edit'
                 }
-                this.$router.push({path: path, query: {id: row.trainMonthId, status: row.status, updatedTime: updatedTime}})
+                this.$router.push(
+                    {path: path, query: {
+                        id: row.trainMonthId,
+                        status: row.status,
+                        updatedTime: updatedTime,
+                        canOperate: this.extInfo.canOperate}
+                    })
             },
-        },
-
-        beforeRouteEnter (to, from, next) {
-            next(vm => {
-                if(to.meta.isPublic === '月训练总结') {
-                    vm.isSummary = true
-                }
-            })
         }
     }
 </script>
