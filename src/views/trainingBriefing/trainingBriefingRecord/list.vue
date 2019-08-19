@@ -8,9 +8,9 @@
         <el-row>
             <div class="table-title clearfix">
 
-                <el-button type="success" @click="createItem">创建集训计划</el-button>
+                <el-button type="success" @click="addBriefPlan">创建集训计划</el-button>
 
-                <el-button type="success" @click="createItem">创建小结计划</el-button>
+                <el-button type="success" @click="addBriefSummary">创建小结计划</el-button>
 
             </div>
             <el-table :data="list" v-loading="listLoading" border fit highlight-current-row
@@ -77,7 +77,7 @@
 <script>
     import searchSection  from '../components/searchSection'
     import mixins from '@/utils/mixins'
-    import {getSportsList} from '@/api/systemConfig'
+    import {getBriefingList} from '@/api/trainingBriefing'
     export default {
         mixins: [mixins],
         components: {searchSection},
@@ -98,25 +98,25 @@
         },
 
         methods: {
-            // 创建大项
-            createItem() {
-                this.$router.push('/bigProject/add')
+            // 创建小结计划
+            addBriefPlan() {
+                this.$router.push('/trainingBriefingRecord/addBriefPlan')
             },
 
-            // 编辑大项
+            addBriefSummary() {
+                this.$router.push('/trainingBriefingRecord/addBriefSummary')
+            },
+
+            //创建集训计划
             toDetail(row) {
-                this.$router.push({path: '/bigProject/edit', query: {id: row.projectId}})
+                this.$router.push('/trainingBriefingRecord/addBriefSummary')
             },
 
-            // // 获取列表（外面套一层getList是为了直接调用mixins里面的getList）
-            // getList(formData) {
-            //     this.getBigProList(formData);
-            // },
 
             // 获取大项列表
             getList(formData = {}) {
                 this.listLoading = true;
-                getSportsList({
+                getBriefingList({
                     projectId: formData.id,
                     projectName: formData.name,
                     status: formData.bigProjectState,

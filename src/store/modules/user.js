@@ -1309,7 +1309,7 @@ let aa = [
             "id": 3,
             "path": "addBriefPlan", // children中的path：取我定义的（子菜单path前不加斜杠： /）
             "component": "views/trainingBriefing/trainingBriefingRecord/addBriefPlan", // children中的component：取我定义的，最前面不加斜杠： /
-            "name": "trainingBriefingAddBriefPlan",     // children中的name：取我定义的
+            "name": "addBriefPlan",     // children中的name：取我定义的
             "title": "创建集训计划",      // 可有可无*****
             "icon": "ios-basket-outline",
             "parentId": 2,
@@ -1330,7 +1330,7 @@ let aa = [
             "id": 3,
             "path": "addBriefSummary", // children中的path：取我定义的（子菜单path前不加斜杠： /）
             "component": "views/trainingBriefing/trainingBriefingRecord/addBriefSummary", // children中的component：取我定义的，最前面不加斜杠： /
-            "name": "trainingBriefingAddBriefSummary",     // children中的name：取我定义的
+            "name": "addBriefSummary",     // children中的name：取我定义的
             "title": "创建集训小结",      // 可有可无*****
             "icon": "ios-basket-outline",
             "parentId": 2,
