@@ -50,14 +50,7 @@
             <div slot="header" class="clearfix">
                 <span class="section-title">训练内容</span>
             </div>
-            <train-content ref="trainContent" :isSummary="isSummary"></train-content>
-        </el-card>
-
-        <!--总结内容(日训练特有)-->
-        <el-card class="static-box card-box" v-if="isSummary">
-            <div slot="header" class="clearfix">
-                <span class="section-title">总结内容</span>
-            </div>
+            <train-content ref="trainContent"></train-content>
         </el-card>
 
         <!--保存-->
@@ -82,7 +75,6 @@
                 isSummary: this.$route.path.indexOf('/weekSummary') !== -1,    // 是否是日训练总结(计划与总结页面公用)
                 id: this.$route.query.id,
                 canOperate: this.$route.query.canOperate,
-                isInitFinish: false,   // 是否初始化渲染完成（初始化渲染不让watch走，会影响第二次给dateArrList赋值）
                 btnLoading: false,
                 baseForm: {
                     project: null,
@@ -121,7 +113,7 @@
                         this.baseForm.teamId = resData.teamId;
                         this.baseForm.coach = resData.coachName;
                         this.baseForm.coachId = resData.coachId;
-                        this.baseForm.purpose = resData.purpose,
+                        this.baseForm.purpose = resData.purpose;
                         this.baseForm.trainYear = resData.trainDate;
                         this.changeApplyMonth(resData.trainDate);
 
@@ -132,7 +124,6 @@
                             type: 'warning'
                         });
                     }
-                    this.isInitFinish = true;
                 })
             },
 
@@ -184,14 +175,17 @@
                     obj.whichDay = getWeekChange(item.weekDay);
                     item.trainList.forEach((dayItem,idx) => {
                         obj.sportsTrainDayDetails[idx] = {};
-                        obj.sportsTrainDayDetails[idx].trainSubType = dayItem.trainType;
+                        obj.sportsTrainDayDetails[idx].trainSubTypeId = dayItem.trainType;
+                        obj.sportsTrainDayDetails[idx].trainSubType = dayItem.trainTypeName;
                         obj.sportsTrainDayDetails[idx].actionRepeat = dayItem.repeatTimes;
                         obj.sportsTrainDayDetails[idx].rest = dayItem.restInterval;
                         obj.sportsTrainDayDetails[idx].rhythm = dayItem.rhythm;
                         obj.sportsTrainDayDetails[idx].trainAction = dayItem.actionTimes;
-                        obj.sportsTrainDayDetails[idx].trainContent = dayItem.trainContent;
+                        obj.sportsTrainDayDetails[idx].trainContentId = dayItem.trainContent;
+                        obj.sportsTrainDayDetails[idx].trainContent = dayItem.trainContentName;
                         obj.sportsTrainDayDetails[idx].trainDate = dayItem.trainTime[0] + '-' + dayItem.trainTime[1];
-                        obj.sportsTrainDayDetails[idx].trainDetail = dayItem.trainDetail;
+                        obj.sportsTrainDayDetails[idx].trainDetailId = dayItem.trainDetail;
+                        obj.sportsTrainDayDetails[idx].trainDetail = dayItem.trainDetailName;
                         obj.sportsTrainDayDetails[idx].trainDuration = dayItem.trainDuration;
                         obj.sportsTrainDayDetails[idx].trainType = dayItem.typeCode; // 区分专项和体能的
                     });
@@ -210,14 +204,17 @@
                     obj.trainList = [];
                     item.sportsTrainDayDetails.forEach((dayItem,idx) => {
                         let tempObj = {}
-                        tempObj.trainType = dayItem.trainSubType;
+                        tempObj.trainType = dayItem.trainSubTypeId;
+                        tempObj.trainTypeName = dayItem.trainSubType;
                         tempObj.repeatTimes = dayItem.actionRepeat;
                         tempObj.restInterval = dayItem.rest;
                         tempObj.rhythm = dayItem.rhythm;
                         tempObj.actionTimes = dayItem.trainAction;
-                        tempObj.trainContent = dayItem.trainContent;
+                        tempObj.trainContent = dayItem.trainContentId;
+                        tempObj.trainContentName = dayItem.trainContent;
                         tempObj.trainTime = dayItem.trainDate.split('-');
-                        tempObj.trainDetail = dayItem.trainDetail;
+                        tempObj.trainDetail = dayItem.trainDetailId;
+                        tempObj.trainDetailName = dayItem.trainDetail;
                         tempObj.trainDuration = dayItem.trainDuration;
                         tempObj.typeCode = dayItem.trainType; // 区分专项和体能的
                         obj.trainList.push(tempObj);

@@ -1,15 +1,15 @@
-<!--创建周计划-->
+<!--日总结-->
 <template>
-    <div class="week-train-plan-add-wrapper">
+    <div class="week-train-plan-edit-wrapper">
         <!--tab切换-->
-        <change-tab-bar :isSummary="isSummary" sectionItem="week"></change-tab-bar>
+        <change-tab-bar :isSummary="true" sectionItem="week"></change-tab-bar>
 
         <!--基础信息-->
         <el-card class="static-box card-box">
             <div slot="header" class="clearfix">
                 <span class="section-title">基础信息</span>
             </div>
-            <el-form :model="baseForm" ref="baseForm" :rules="rules" label-width="150px">
+            <el-form :model="baseForm" ref="baseForm" label-width="150px">
                 <el-row :gutter="20">
                     <el-col :span="8">
                         <el-form-item label="项目：">
@@ -25,20 +25,24 @@
                 <el-row :gutter="20">
                     <el-col :span="8">
                         <el-form-item label="训练年度：" prop="trainYear">
-                            <el-date-picker
-                                    v-model="baseForm.trainYear"
-                                    type="month"
-                                    value-format="yyyy-MM"
-                                    placeholder="请选择训练年度"
-                                    @change="changeApplyMonth">
-                            </el-date-picker>
+                            <span>{{baseForm.trainYear}}</span>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                        <el-form-item label="本周训练目标：" prop="purpose">
+                            <span>{{baseForm.purpose}}</span>
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
                     <el-col>
-                        <el-form-item label="本周训练目标：" prop="purpose">
-                            <el-input type="textarea" v-model="baseForm.purpose" placeholder="本周训练目标"></el-input>
+                        <el-form-item label="视频上传：" prop="purpose">
+                            <el-upload
+                                    class="avatar-uploader"
+                                    action="api/sports/sports_train_day/uploadVideo"
+                                    :on-success="uploadSuccess">
+                                <el-button size="small" type="primary">点击上传</el-button>
+                            </el-upload>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -50,14 +54,21 @@
             <div slot="header" class="clearfix">
                 <span class="section-title">训练内容</span>
             </div>
-            <!--<train-content ref="trainContent" :pickerOptions="pickerOptions" :defaultVal="defaultVal" :trainYear="baseForm.trainYear"></train-content>-->
             <train-content ref="trainContent"></train-content>
+        </el-card>
+
+        <!--总结内容-->
+        <el-card class="static-box card-box">
+            <div slot="header" class="clearfix">
+                <span class="section-title">总结内容</span>
+            </div>
+            <summary-content ref="summaryContent"></summary-content>
         </el-card>
 
         <!--保存-->
         <el-row style="text-align: center;margin-top:15px;">
             <el-button type="primary" round @click="cancelAct" style="padding: 12px 35px;">取消</el-button>
-            <el-button type="primary" round @click="onSubmit('baseForm')" :loading="btnLoading" style="padding: 12px 35px;">提 交</el-button>
+            <el-button type="primary" round @click="onSubmit('baseForm')" :loading="btnLoading" style="padding: 12px 35px;">保 存</el-button>
         </el-row>
     </div>
 </template>
@@ -65,16 +76,18 @@
 <script>
     import changeTabBar from '../../components/changeTabBar'
     import trainContent from './components/trainContent'
-    import {saveWeekTrainPlan} from '@/api/trainingAndSummary'
+    import summaryContent from './components/summaryContent'
+    import {saveDaySummary, getDayTrainDetail} from '@/api/trainingAndSummary'
     import mixins from '@/utils/mixins'
     import {getWeekChange} from '@/utils/index'
     export default {
         mixins: [mixins],
-        components: {changeTabBar, trainContent},
+        components: {changeTabBar, trainContent, summaryContent},
         data() {
             return {
-                isSummary: this.$route.path.indexOf('/weekSummary') !== -1,    // 是否是日训练总结(计划与总结页面公用)
-                userInfo: JSON.parse(localStorage.getItem('trainAndSumUserWeek')),
+                id: this.$route.query.id,
+                canOperate: this.$route.query.canOperate,
+                videoUrl: null,
                 btnLoading: false,
                 baseForm: {
                     project: null,
@@ -98,29 +111,50 @@
         },
 
         created() {
-            this.baseForm.project = this.userInfo.projectName;
-            this.baseForm.team = this.userInfo.teamName;
-            this.baseForm.coach = this.userInfo.staffName;
+            this.getDetails();
         },
 
         methods: {
+            // 获取详情
+            getDetails() {
+                getDayTrainDetail({trainDayId: this.id}).then(res => {
+                    if(res.data.code == 200) {
+                        let resData = res.data.data;
+                        this.baseForm.project = resData.projectName;
+                        this.baseForm.projectId = resData.projectId;
+                        this.baseForm.team = resData.teamName;
+                        this.baseForm.teamId = resData.teamId;
+                        this.baseForm.coach = resData.coachName;
+                        this.baseForm.coachId = resData.coachId;
+                        this.baseForm.purpose = resData.purpose;
+                        this.baseForm.trainYear = resData.trainDate;
+                        // this.changeApplyMonth(resData.trainDate);
+
+                        this.$refs.trainContent.listSpecial = this.formatListReverse(resData.special);
+                        this.$refs.trainContent.listBody = this.formatListReverse(resData.stamina);
+                        this.$refs.summaryContent.remarkList = resData.remark ? resData.remark : [];
+                        this.$refs.summaryContent.baseForm.bestAthlete = resData.bestAthlete;
+                        this.$refs.summaryContent.baseForm.summary = resData.summary;
+                    } else {
+                        this.$message({
+                            message: res.data.msg,
+                            type: 'warning'
+                        });
+                    }
+                })
+            },
+
+
             // 提交
             onSubmit(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         this.btnLoading = true;
-                        let sportsTrainDays = this.formatList(this.$refs.trainContent.dateArrList);
-                        saveWeekTrainPlan({
-                            projectName: this.userInfo.projectName,
-                            projectId: this.userInfo.projectId,
-                            coachName: this.userInfo.staffName,
-                            coachId: this.userInfo.staffId,
-                            teamId: this.userInfo.teamId,
-                            teamName: this.userInfo.teamName,
-                            trainDate: this.baseForm.trainYear,
-                            purpose: this.baseForm.purpose,
-                            // trainDay: this.baseForm.trainDate,  // 去掉了
-                            sportsTrainDays: sportsTrainDays
+                        saveDaySummary({
+                            trainDayId: this.id,
+                            bestAthlete: this.$refs.summaryContent.baseForm.bestAthlete,
+                            summary: this.$refs.summaryContent.baseForm.summary,
+                            remark: this.$refs.summaryContent.remarkList
                         }).then(res => {
                             if(res.data.code == 200) {
                                 this.$message({
@@ -170,17 +204,45 @@
                 return arr;
             },
 
+            //  格式化列表（渲染后端数据,前端需要）
+            formatListReverse(list) {
+                let arr = [];
+                list.forEach((dayItem) => {
+                    let tempObj = {}
+                    tempObj.trainType = dayItem.trainSubTypeId;
+                    tempObj.trainTypeName = dayItem.trainSubType;
+                    tempObj.repeatTimes = dayItem.actionRepeat;
+                    tempObj.restInterval = dayItem.rest;
+                    tempObj.rhythm = dayItem.rhythm;
+                    tempObj.actionTimes = dayItem.trainAction;
+                    tempObj.trainContent = dayItem.trainContentId;
+                    tempObj.trainContentName = dayItem.trainContent;
+                    tempObj.trainTime = dayItem.trainDate.split('-');
+                    tempObj.trainDetail = dayItem.trainDetailId;
+                    tempObj.trainDetailName = dayItem.trainDetail;
+                    tempObj.trainDuration = dayItem.trainDuration;
+                    tempObj.typeCode = dayItem.trainType; // 区分专项和体能的
+                    arr.push(tempObj);
+                });
+                return arr;
+            },
+
             //修改月份
             changeApplyMonth(val){
                 val = new Date(val)
-                this.defaultVal = val.getFullYear() + "-" + (val.getMonth() + 1) + "-" + "1";
-            }
-        }
+                this.defaultVal = val.getFullYear()+"-"+(val.getMonth()+1)+"-"+"1";
+            },
+
+            // 上传成功回调函数
+            uploadSuccess(res) {
+                this.videoUrl = res.data.videoUrl;
+            },
+        },
     }
 </script>
 
 <style lang="scss">
-    .week-train-plan-add-wrapper {
+    .week-train-plan-edit-wrapper {
         .card-box {
             margin-bottom: 25px;
         }

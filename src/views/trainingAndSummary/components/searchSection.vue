@@ -52,6 +52,7 @@
                                 v-model="searchForm.trainYear"
                                 type="month"
                                 value-format="yyyy-MM"
+                                @change="changeApplyMonth"
                                 placeholder="请选择训练年度">
                         </el-date-picker>
                     </el-form-item>
@@ -68,12 +69,26 @@
                 </el-col>
             </el-row>
             <el-row :gutter="20">
-                <el-col :span="6" v-if="isSummary">
+                <el-col :span="6" v-if="isSummary&&typeName.indexOf('月')!=-1">
                     <el-form-item prop="summary">
                         <el-select v-model="searchForm.summary" placeholder="是否总结">
                             <el-option label="否" value="0"></el-option>
                             <el-option label="是" value="1"></el-option>
                         </el-select>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="6" v-if="isSummary&&typeName==='日计划'">
+                    <el-form-item prop="trainDate">
+                        <el-date-picker
+                                v-model="searchForm.trainDate"
+                                type="date"
+                                format="MM-dd"
+                                value-format="MM-dd"
+                                placeholder="请选择日期"
+                                :default-value="defaultVal"
+                                :picker-options="pickerOptions"
+                                :disabled="!searchForm.trainYear">
+                        </el-date-picker>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -88,7 +103,6 @@
         mixins: [mixin],
         data() {
             return {
-                roleList: [],   // 角色列表
                 nameLoading: false, // 搜索姓名时候的loading
                 nameList: [],  // 姓名列表
                 options: [],   // 远程搜索姓名时使用
@@ -98,9 +112,17 @@
                     project: null,
                     team: null,
                     coach: null,
-                    trainYear: null,
+                    trainYear: null,  // 训练年度
+                    trainDate: null,  // 日期选择
                     summary: null
-                }
+                },
+
+                defaultVal: null,
+                pickerOptions: {
+                    disabledDate: (time) => {
+                        return (this.defaultVal && new Date(this.defaultVal).getMonth() !== time.getMonth())
+                    }
+                },
             }
         },
 
@@ -146,7 +168,13 @@
                 } else {
                     this.options = [];
                 }
-            }
+            },
+
+            // 改变训练年度
+            changeApplyMonth(val){
+                val = new Date(val)
+                this.defaultVal = val.getFullYear()+"-"+(val.getMonth()+1)+"-"+"1";
+            },
         }
     })
 </script>

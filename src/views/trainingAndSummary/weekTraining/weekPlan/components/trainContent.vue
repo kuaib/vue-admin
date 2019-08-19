@@ -3,7 +3,7 @@
     <div class="week-plan-train-wrapper">
 
         <!--一周的列表-->
-        <el-row v-if="!isSummary">
+        <el-row>
             <el-row class="week-item" v-for="(item,idx) in dateArrList" :key="idx">
                 <el-col :span="3">
                     <div :span="3" class="week-title">{{item.trainDate.split('-').slice(1, 3).join('-')}}(周{{item.weekDay}})</div>
@@ -26,9 +26,6 @@
             <el-row class="add-btn">
                 <span @click="editRow">增加日训练计划</span>
             </el-row>
-        </el-row>
-
-        <el-row>
         </el-row>
 
         <!--显示训练计划表格-->
@@ -170,7 +167,6 @@
     export default {
         mixins: [mixins],
         components: {trainContentAdd},
-        props: ['isSummary'],
         data() {
             return {
                 rowIdx: null,          // 编辑行时候，当前点击的行索引(最外层的大项)
@@ -238,6 +234,9 @@
 
             // 增加一条表格行/编辑表格行(专项/体能)
             addRow(typeName, item, idx) {
+                if(typeof idx === 'number') {
+                    item = JSON.parse(JSON.stringify(item));
+                }
                 this.$refs.trainContentAdd.addRow(typeName, item, idx);
             },
 
@@ -262,7 +261,7 @@
             editRow(item, idx) {
                 this.dialogVisible = true;
                 if(typeof idx === 'number') {
-                    console.log(item)
+                    this.isEditDialog = true;
                     this.rowIdx = idx;
                     this.addForm.trainDate = item.trainDate;
                     this.addForm.weekDay = item.weekDay;

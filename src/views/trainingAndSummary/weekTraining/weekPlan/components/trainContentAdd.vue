@@ -218,7 +218,7 @@
         methods: {
             // 添加数据行
             addRow(typeName, item, idx) {
-                if(item !== undefined && idx !== undefined) {
+                if(item !== undefined && typeof idx === 'number') {
                     this.addForm = item;
                     this.rowIdx = idx;
                 }
