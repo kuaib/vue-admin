@@ -4,7 +4,7 @@ import request from '@/utils/request'
 //获取简报列表
 export function getBriefingList(params) {
   return request({
-    url: '/sports/sports_project/list',
+    url: '/sports/sports_train_report/list',
     method: 'get',
     params
   })

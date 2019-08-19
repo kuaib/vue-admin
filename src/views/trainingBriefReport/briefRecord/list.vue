@@ -14,7 +14,7 @@
                       style="width: 100%;">
                 <el-table-column align="center" label="报表id">
                     <template slot-scope="scope">
-                        <span>{{scope.row.projectId}}</span>
+                        <span>{{scope.row.reportId}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="项目">
@@ -24,33 +24,33 @@
                 </el-table-column>
               <el-table-column align="center" label="队伍">
                 <template slot-scope="scope">
-                  <span>{{scope.row.projectName}}</span>
+                  <span>{{scope.row.teamName}}</span>
                 </template>
               </el-table-column>
               <el-table-column align="center" label="简报类型">
                 <template slot-scope="scope">
-                  <span>{{scope.row.projectName}}</span>
+                  <span>{{scope.row.reportType}}</span>
                 </template>
               </el-table-column>
               <el-table-column align="center" label="集训时间">
                 <template slot-scope="scope">
-                  <span>{{scope.row.projectName}}</span>
+                  <span>{{scope.row.trainDate}}</span>
                 </template>
               </el-table-column>
               <el-table-column align="center" label="教练员">
                 <template slot-scope="scope">
-                  <span>{{scope.row.projectName}}</span>
+                  <span>{{scope.row.coachName}}</span>
                 </template>
               </el-table-column>
                 <el-table-column align="center" label="状态">
                     <template slot-scope="scope">
-                        <span v-if="scope.row.status == 1">已激活</span>
-                        <span v-if="scope.row.status == 0" style="color: red">未激活</span>
+                        <span v-if="scope.row.reportStatus == 1">已总结</span>
+                        <span v-if="scope.row.reportStatus == 0" style="color: red">未总结</span>
                     </template>
                 </el-table-column>
               <el-table-column align="center" label="提交时间">
                 <template slot-scope="scope">
-                  <span>{{scope.row.projectName}}</span>
+                  <span>{{scope.row.submitTime}}</span>
                 </template>
               </el-table-column>
                 <el-table-column align="center" label="操作">
@@ -101,11 +101,6 @@
             addBriefPlan() {
                 this.$router.push('/trainingBriefingRecord/addBriefPlan')
             },
-
-            addBriefSummary() {
-                this.$router.push('/trainingBriefingRecord/addBriefSummary')
-            },
-
             //创建集训计划
             toDetail(row) {
                 this.$router.push('/trainingBriefingRecord/addBriefSummary')
@@ -116,10 +111,13 @@
             getList(formData = {}) {
                 this.listLoading = true;
                 getBriefingList({
-                    projectId: formData.id,
-                    projectName: formData.name,
-                    status: formData.bigProjectState,
-                    currentPage:  this.listQuery.currentPage,
+                    reportId: formData.id,
+                    projectId: formData.project,
+                    teamId: formData.team,
+                    coachId: formData.coach,
+                    trainDate: formData.trainYear,
+                    summary: 0,
+                    currentPage: this.listQuery.currentPage,
                     pageSize: this.listQuery.pageSize
                 }).then(res => {
                     this.listLoading = false;
