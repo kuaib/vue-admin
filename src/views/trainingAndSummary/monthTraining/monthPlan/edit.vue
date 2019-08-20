@@ -219,44 +219,46 @@
             // 格式化接口返回的数据(渲染需要)
             formatListReverse(list, typeName) {
                 let arr = [];
-                if(typeName === 'train') {  // 训练计划
-                    list.forEach((item, idx) => {
-                        let obj = {};
-                        obj.shortBoard = item.shortBoard;
-                        obj.trainType = item.trainType;
-                        obj.trainPurposeSelectedName = item.trainPurpose;
-                        obj.trainPurposeSelected = item.trainPurpose.split('、');
-                        obj.trainContent = item.trainContent;
-                        obj.trainTarget = item.target;
+                if(list && list.length > 0) {
+                    if(typeName === 'train') {  // 训练计划
+                        list.forEach((item, idx) => {
+                            let obj = {};
+                            obj.shortBoard = item.shortBoard;
+                            obj.trainType = item.trainType;
+                            obj.trainPurposeSelectedName = item.trainPurpose;
+                            obj.trainPurposeSelected = item.trainPurpose.split('、');
+                            obj.trainContent = item.trainContent;
+                            obj.trainTarget = item.target;
 
-                        // 月总结使用的
-                        obj.id = item.id;
-                        obj.summary = item.summary;
-                        obj.realize = item.realize;
-                        obj.realizeDetail = item.realizeDetail;
-                        obj.program = item.program;
-                        arr.push(obj);
-                    });
-                } else {   // 比赛计划
-                    list.forEach((item, idx) => {
-                        let obj = {};
-                        obj.compName = item.matchName;
-                        obj.compDate = item.matchDate;
-                        obj.country = item.matchCountry;
-                        obj.city = item.matchCity;
-                        obj.bigPro = item.matchProjetId;
-                        obj.bigProName = item.matchProjetName;
-                        obj.smallPro = item.matchProjectInfo.split(',');
-                        obj.athleteSelected = item.matchAthlete.split(',');
-                        obj.athleteSelectedName = item.matchAthleteList;
+                            // 月总结使用的
+                            obj.id = item.id;
+                            obj.summary = item.summary;
+                            obj.realize = item.realize;
+                            obj.realizeDetail = item.realizeDetail;
+                            obj.program = item.program;
+                            arr.push(obj);
+                        });
+                    } else {   // 比赛计划
+                        list.forEach((item, idx) => {
+                            let obj = {};
+                            obj.compName = item.matchName;
+                            obj.compDate = item.matchDate;
+                            obj.country = item.matchCountry;
+                            obj.city = item.matchCity;
+                            obj.bigPro = item.matchProjetId;
+                            obj.bigProName = item.matchProjetName;
+                            obj.smallPro = item.matchProjectInfo.split(',');
+                            obj.athleteSelected = item.matchAthlete.split(',');
+                            obj.athleteSelectedName = item.matchAthleteList;
 
-                        // 月总结使用的
-                        obj.id = item.id;
-                        obj.summary = item.summary;
-                        obj.score = item.score;
-                        obj.rank = item.rank;
-                        arr.push(obj);
-                    });
+                            // 月总结使用的
+                            obj.id = item.id;
+                            obj.summary = item.summary;
+                            obj.score = item.score;
+                            obj.rank = item.rank;
+                            arr.push(obj);
+                        });
+                    }
                 }
                 return arr;
             }

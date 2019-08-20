@@ -111,6 +111,7 @@
         created() {
             localStorage.removeItem('trainAndSumUserMonth'); // 清空月训练管理中的缓存
             localStorage.removeItem('trainAndSumUserWeek'); // 清空周训练管理中的缓存
+            localStorage.removeItem('trainingBriefReport'); // 清空集训简报中的缓存
         }
     }
 </script>

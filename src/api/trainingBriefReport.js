@@ -1,8 +1,8 @@
 import request from '@/utils/request'
 
 
-//获取简报列表
-export function getBriefingList(params) {
+// 获取简报列表
+export function getBriefList(params) {
   return request({
     url: '/sports/sports_train_report/list',
     method: 'get',

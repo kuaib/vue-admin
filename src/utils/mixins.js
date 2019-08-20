@@ -16,6 +16,8 @@ export default {
             bigProList: [],       // 大项列表
             smallProList: [],     // 小项列表(无key值，通过大项获取小项)
             athleteList: [],      // 运动员列表
+            assistInfoList: [],      // 辅助人员列表
+            contactsInfoList: [],    // 联系人列表
 
             searchFormData: {},   // 搜索条件
         }
@@ -57,7 +59,6 @@ export default {
                 }
                 this.searchFormData = formData;
             }
-            console.log(formData)
             this.listQuery.currentPage = 1;
             this.getList(formData)
         },
@@ -84,10 +85,12 @@ export default {
                     this.jobInfoList = allObj.jobInfo;      // 职位列表(无key值)
                     this.teamInfoList = allObj.teamInfo;    // 队伍列表
                     this.coachInfoList = allObj.coachInfo;  // 教练列表
-                    this.leaderInfoList = allObj.leaderInfo;// 教练列表
+                    this.leaderInfoList = allObj.leaderInfo;// 项目负责人列表
                     this.provinceList = allObj.placeInfo;   // 省份列表
                     this.bigProList = allObj.projectInfo;   // 大项列表
                     this.roleInfoList = allObj.roleInfo;    // 角色列表
+                    this.assistInfoList = allObj.assistInfo;       // 辅助人员列表
+                    this.contactsInfoList = allObj.contactsInfo;   // 联系人列表
                     successCallback && successCallback();
                 } else {
                     this.$message({
@@ -128,8 +131,8 @@ export default {
         },
 
         // 获取运动员列表
-        getAthleteList(successCallback) {
-            getAthlete().then(res => {
+        getAthleteList(successCallback, params) {
+            getAthlete(params).then(res => {
                 if(res.data.code == 200) {
                     this.athleteList = res.data.data;
                     successCallback && successCallback(res.data.data);

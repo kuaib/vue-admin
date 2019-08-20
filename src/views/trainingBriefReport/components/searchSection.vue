@@ -2,7 +2,7 @@
 <template>
     <div>
         <el-form :model="searchForm" ref="searchForm">
-            <el-row :gutter="20" class="search-item">
+            <el-row :gutter="20">
                 <el-col :span="6">
                     <el-form-item prop="id">
                         <el-input placeholder="请输入报表id" v-model="searchForm.reportId"></el-input>
@@ -33,7 +33,7 @@
                     </el-form-item>
                 </el-col>
             </el-row>
-            <el-row :gutter="20" class="search-item">
+            <el-row :gutter="20">
                 <el-col :span="6">
                     <el-form-item prop="coach">
                         <el-select v-model="searchForm.coach" placeholder="请选择教练">
@@ -56,6 +56,14 @@
                         </el-date-picker>
                     </el-form-item>
                 </el-col>
+                <el-col :span="6" v-if="isSummary">
+                    <el-form-item prop="summary">
+                        <el-select v-model="searchForm.summary" placeholder="是否总结">
+                            <el-option label="否" value="0"></el-option>
+                            <el-option label="是" value="1"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-col>
                 <el-col :span="3">
                     <el-form-item prop="name">
                         <el-button type="primary" v-waves icon="el-icon-search" @click="handleFilter">搜索</el-button>
@@ -75,6 +83,7 @@
     import mixin from '@/utils/mixins'
     export default ({
         mixins: [mixin],
+        props: ['isSummary'],
         data() {
             return {
                 searchForm: {
@@ -82,19 +91,14 @@
                     project: null,
                     team: null,
                     coach: null,
-                    trainYear: null
+                    trainYear: null,
+                    summary: null
                 }
             }
         },
 
         created() {
             this.getAllList(); // 获取基础下拉
-        },
-
-        props: {
-            typeName: {  // 引用搜索组件的父组件
-                type: String
-            }
         },
 
         methods: {
