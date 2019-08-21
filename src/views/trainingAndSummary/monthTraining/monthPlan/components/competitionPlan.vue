@@ -116,9 +116,6 @@
                                         <el-checkbox :label="child" v-for="(child,idx) in smallProList" :key="idx"></el-checkbox>
                                     </el-checkbox-group>
                                 </el-col>
-                                <!--<el-col :span="6" style="padding-left:10px;">-->
-                                    <!--<span>{{addForm.smallPro}}</span>-->
-                                <!--</el-col>-->
                             </el-row>
                         </el-form-item>
                     </el-col>
@@ -126,11 +123,14 @@
                 <el-row :gutter="20">
                     <el-col :span="24">
                         <el-form-item label="参赛运动员" prop="athleteSelected">
-                            <el-transfer
-                                    v-model="addForm.athleteSelected"
-                                    :data="athleteList"
-                                    :titles="['点选可关联','已选训练目的']">
-                            </el-transfer>
+                            <el-select v-model="addForm.athleteSelected" multiple placeholder="请选择参赛运动员">
+                                <el-option
+                                        v-for="(item,idx) in athleteList"
+                                        :key="idx"
+                                        :label="item.dicValue"
+                                        :value="item.dicKey">
+                                </el-option>
+                            </el-select>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -204,7 +204,7 @@
 
         created() {
             this.getAllList();
-            this.getAthleteList(this.formatAthlete); // 获取运动员列表
+            this.getAthleteList(); // 获取运动员列表
         },
         methods: {
             // 点击大项目 / 编辑渲染时
@@ -256,13 +256,6 @@
                 this.addForm.athleteSelectedName = rowData.athleteSelectedName;
             },
 
-            // 重新组装运动员列表
-            formatAthlete() {
-                this.athleteList = this.athleteList.map(item => {
-                    return {key: item.dicKey, label: item.dicValue, disabled: false}
-                })
-            },
-
             // 点击总结/详情
             toSummary(item) {
                 this.$refs.competitionSummary.baseForm = item;
@@ -286,8 +279,8 @@
                     let str = '';
                     this.athleteList.forEach(item => {
                         this.addForm.athleteSelected.forEach(sel => {
-                            if(sel === item.key) {
-                                str += ',' + item.label;
+                            if(sel === item.dicKey) {
+                                str += ',' + item.dicValue;
                             }
                         });
                     });

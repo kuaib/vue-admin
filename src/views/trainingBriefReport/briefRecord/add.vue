@@ -1,11 +1,11 @@
 <template>
     <div class="train-brief-plan-add-wrapper">
-        <!--基础信息-->
-        <el-card class="static-box card-box">
-            <div slot="header" class="clearfix">
-                <span class="section-title">基础信息</span>
-            </div>
-            <el-form :model="baseForm" ref="baseForm" :rules="rules" label-width="120px">
+        <el-form :model="baseForm" ref="baseForm" :rules="rules" label-width="120px">
+            <!--基础信息-->
+            <el-card class="static-box card-box">
+                <div slot="header" class="clearfix">
+                    <span class="section-title">基础信息</span>
+                </div>
                 <el-row :gutter="20">
                     <el-col :span="8">
                         <el-form-item label="项目：" prop="project">
@@ -21,7 +21,7 @@
                     </el-col>
                     <el-col :span="8">
                         <el-form-item label="队伍：" prop="team">
-                            <el-select v-model="baseForm.team" filterable placeholder="请选择队伍">
+                            <el-select v-model="baseForm.team" filterable placeholder="请选择队伍" @change="changeItem">
                                 <el-option
                                         v-for="(item,idx) in teamInfoList"
                                         :key="idx"
@@ -47,14 +47,7 @@
                 <el-row :gutter="20">
                     <el-col :span="8">
                         <el-form-item label="联系人：" prop="contacts">
-                            <el-select v-model="baseForm.contacts" filterable placeholder="请选择联系人">
-                                <el-option
-                                        v-for="(item,idx) in contactsInfoList"
-                                        :key="idx"
-                                        :label="item.dicValue"
-                                        :value="item.dicKey">
-                                </el-option>
-                            </el-select>
+                            <el-input v-model="baseForm.contacts" placeholder="请输入联系人"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="8">
@@ -64,40 +57,31 @@
                     </el-col>
                     <el-col :span="8">
                         <el-form-item label="辅助人员：" prop="assist">
-                            <el-select v-model="baseForm.assist" filterable placeholder="请选择辅助人员">
-                                <el-option
-                                        v-for="(item,idx) in assistInfoList"
-                                        :key="idx"
-                                        :label="item.dicValue"
-                                        :value="item.dicKey">
-                                </el-option>
-                            </el-select>
+                            <el-input v-model="baseForm.assist" placeholder="请输入辅助人员"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
-                    <el-col :span="12">
-                        <el-form-item label="运动员：" prop="athlete">
-                            <el-select v-model="baseForm.athlete" multiple placeholder="请选择运动员">
-                                <el-option
-                                        v-for="(item,idx) in athleteList"
-                                        :key="idx"
-                                        :label="item.dicValue"
-                                        :value="item.dicKey">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-            </el-form>
-        </el-card>
+                        <el-col :span="12">
+                            <el-form-item label="运动员：" prop="athlete">
+                                <el-select v-model="baseForm.athlete" multiple placeholder="请选择运动员">
+                                    <el-option
+                                            v-for="(item,idx) in athleteList"
+                                            :key="idx"
+                                            :label="item.dicValue"
+                                            :value="item.dicKey">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+            </el-card>
 
-        <!--集训详情-->
-        <el-card class="static-box card-box">
-            <div slot="header" class="clearfix">
-                <span class="section-title">集训详情</span>
-            </div>
-            <el-form :model="baseForm" ref="baseForm" :rules="rules" label-width="150px">
+            <!--集训详情-->
+            <el-card class="static-box card-box">
+                <div slot="header" class="clearfix">
+                    <span class="section-title">集训详情</span>
+                </div>
                 <el-row :gutter="20">
                     <el-col :span="8">
                         <el-form-item label="地点：" prop="address">
@@ -107,6 +91,7 @@
                     <el-col :span="8">
                         <el-form-item label="时间：" prop="trainYear">
                             <el-date-picker
+                                    @change="changeItem"
                                     v-model="baseForm.trainYear"
                                     type="month"
                                     value-format="yyyy-MM"
@@ -122,32 +107,59 @@
                 </el-row>
                 <el-row :gutter="20">
                     <el-col >
-                        <el-form-item label="集训内容及训练目的：" prop="contentPurpose">
-                            <el-input type="textarea" v-model="baseForm.contentPurpose" placeholder="请输入集训内容及训练目的"></el-input>
+                        <el-form-item label="集训内容及训练目的：" prop="contentPurpose"  label-width="180px">
+                            <el-input type="textarea" v-model="baseForm.contentPurpose" placeholder="请输入集训内容及训练目的" :autosize="{ minRows: 4, maxRows: 4 }" resize="none"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
-                    <el-col>
-                        <el-form-item label="需要解决的问题：" prop="problem">
-                            <el-input type="textarea" v-model="baseForm.problem" placeholder="请输入需要解决的问题"></el-input>
+                        <el-col>
+                            <el-form-item label="需要解决的问题：" prop="problem" label-width="180px">
+                                <el-input type="textarea" v-model="baseForm.problem" placeholder="请输入需要解决的问题" :autosize="{ minRows: 4, maxRows: 4 }" resize="none"></el-input>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+            </el-card>
+
+            <!--其他内容-->
+            <el-card class="static-box card-box">
+                <div slot="header" class="clearfix">
+                    <span class="section-title">其他内容</span>
+                </div>
+                <el-row :gutter="20">
+                    <el-col >
+                        <el-form-item label="其他内容：">
+                            <el-input type="textarea" v-model="baseForm.otherContent" placeholder="请输入其他内容" :autosize="{ minRows: 4, maxRows: 4 }" resize="none"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
-            </el-form>
-        </el-card>
+                <el-row :gutter="20">
+                    <el-form-item label="文件上传：">
+                        <el-upload
+                                class="avatar-uploader"
+                                multiple
+                                :on-change="fileChange"
+                                :file-list="fileList"
+                                action="api/sports/sports_train_report/uploadFile"
+                                :on-success="uploadSuccess">
+                            <el-button size="small" type="primary">点击上传</el-button>
+                        </el-upload>
+                    </el-form-item>
+                </el-row>
+            </el-card>
+        </el-form>
 
-        <!--其他内容-->
-        <el-card class="static-box card-box">
-            <div slot="header" class="clearfix">
-                <span class="section-title">其他内容</span>
-            </div>
-            
-        </el-card>
+        <!--保存-->
+        <el-row style="text-align: center;margin-top:15px;">
+            <el-button type="primary" round @click="cancelAct" style="padding: 12px 35px;">取消</el-button>
+            <el-button type="primary" round @click="onSubmit(0)" :loading="btnLoading" style="padding: 12px 35px;">保存草稿</el-button>
+            <el-button type="primary" round @click="onSubmit(1)" :loading="btnLoading" style="padding: 12px 35px;">提交中心</el-button>
+        </el-row>
     </div>
 </template>
 
 <script>
+    import {getTrainInfoByTeamIdAnTrainDate, saveReport, saveSummary} from '@/api/trainingBriefReport'
     import mixins from '@/utils/mixins'
     export default {
         mixins: [mixins],
@@ -156,16 +168,19 @@
                 userInfo: JSON.parse(localStorage.getItem('trainingBriefReport')),
                 baseForm: {
                     project: null,
-                    projectName: null,
                     team: null,
                     coach: null,
-                    contacts: null,
-                    contactsPhone: null, // 联系人
+                    contacts: null, // 联系人
+                    contactsPhone: null,
                     assist: null,    // 辅助人员
                     athlete: [],     // 运动员
+                    athleteName: null,     // 运动员名称，逗号隔开
                     trainYear: null,
                     address: null,
                     personNum: null,
+                    contentPurpose: null,
+                    problem: null,
+                    otherContent: null,
                 },
                 rules: {
                     project: [
@@ -177,7 +192,36 @@
                     coach: [
                         { required: true, message: '请选择主教练', trigger: 'change' }
                     ],
-                }
+                    contacts: [
+                        { required: true, message: '请输入联系人', trigger: 'blur' }
+                    ],
+                    contactsPhone: [
+                        { required: true, message: '请输入联系电话', trigger: 'blur' }
+                    ],
+                    athlete: [
+                        { required: true, message: '请选择运动员', trigger: 'change' }
+                    ],
+                    assist: [
+                        { required: true, message: '请输入辅助人员', trigger: 'blur' }
+                    ],
+                    trainYear: [
+                        { required: true, message: '请选择时间', trigger: 'change' }
+                    ],
+                    address: [
+                        { required: true, message: '请输入地点', trigger: 'blur' }
+                    ],
+                    personNum: [
+                        { required: true, message: '请输入人数', trigger: 'blur' }
+                    ],
+                    contentPurpose: [
+                        { required: true, message: '请输入集训内容及训练目的', trigger: 'blur' }
+                    ],
+                    problem: [
+                        { required: true, message: '请输入需要解决的问题', trigger: 'blur' }
+                    ],
+                },
+                btnLoading: false,
+                fileList: []
             }
         },
 
@@ -193,16 +237,134 @@
         },
 
         methods: {
+            // 保存/提交
+            onSubmit(types) {
+                this.$refs.baseForm.validate((valid) => {
+                    if (valid) {
+                        saveReport({
+                            address: this.baseForm.address,
+                            assistName: this.baseForm.assist,
+                            athleteId: this.baseForm.athlete,
+                            athleteName: this.baseForm.athleteName,
+                            coachId: this.baseForm.coach,
+                            coachName: this.baseForm.coachName,
+                            contactsName: this.baseForm.contacts,
+                            contactsPhone: this.baseForm.contactsPhone,
+                            contentPurpose: this.baseForm.contentPurpose,
+                            files: '',
+                            personNum: parseInt(this.baseForm.personNum),
+                            problem:this.baseForm.problem,
+                            projectId:this.baseForm.project,
+                            projectName:this.baseForm.projectName,
+                            teamId:this.baseForm.team,
+                            teamName:this.baseForm.teamName,
+                            trainDate:this.baseForm.trainYear.split('-').join(''),
+                            others: this.baseForm.otherContent,
+                            reportStatus: types,  // 0: 保存草稿  1: 提交
+                        }).then(res => {
+                            if(res.data.code == 200) {
+                                this.$message({
+                                    message: '保存成功',
+                                    type: 'success'
+                                });
+                                this.cancelAct('save');
+                            } else {
+                                this.$message({
+                                    message: res.data.msg,
+                                    type: 'warning'
+                                })
+                            }
+                        })
+                    }
+                })
+            },
+
             // 根据队伍id获取运动员列表
             getAthleteListByTeam() {
                 this.getAthleteList((res) => { // 运动员列表
                     this.baseForm.personNum = res.length ? res.length : 0;
                     if(res.length && res.length > 0) {
+                        this.baseForm.athlete = [];
                         res.forEach(item => {
                             this.baseForm.athlete.push(item.dicKey)
                         })
                     }
                 }, {teamId: this.baseForm.team});
+            },
+
+            // 通过训练日期和队伍查询月计划
+            getMonthInfo() {
+                getTrainInfoByTeamIdAnTrainDate({
+                    trainDate: this.baseForm.trainYear,
+                    teamId: this.baseForm.team
+                }).then(res => {
+                    if(res.data.code == 200) {
+                        let resData = res.data.data;
+                        let trainPlanList = resData.trainPlanList;
+                        let matchPlanList = resData.matchPlanList;
+                        let sportsTrainMonth = resData.sportsTrainMonth;
+                        this.baseForm.contentPurpose = this.getTrainStr(trainPlanList, 'train');
+                        this.baseForm.otherContent = this.getTrainStr(matchPlanList, 'match');
+                    } else {
+                        this.$message({
+                            message: res.data.msg,
+                            type: 'warning'
+                        })
+                    }
+                })
+            },
+
+            // 改变队伍 / 训练日期
+            changeItem() {
+                if(this.baseForm.team && this.baseForm.trainYear) {
+                    this.getMonthInfo();
+                }
+            },
+
+            // 将训练内容格式化成字符串
+            getTrainStr(list, typeName) {
+                let str = '';
+                if(list && list.length > 0) {
+                    if(typeName === 'train') {
+                        list.forEach((item, idx) => {
+                            let index = idx + 1;
+                            str += `${index}.训练类型：${item.trainType}；训练内容：${item.trainContent}；训练目的：${item.trainPurpose}；期望目标：${item.target}。\n`
+                        })
+                    } else {
+                        list.forEach((item, idx) => {
+                            let index = idx + 1;
+                            str += `${index}.比赛日期：${item.matchDate}；比赛名称：${item.matchName}；比赛国家：${item.matchCountry}；比赛城市：${item.matchCity}；比赛大项：${item.matchProjectName}；比赛小项：${item.matchProjectInfo}；参赛运动员：${item.matchAthleteList}。\n`
+                        })
+                    }
+                }
+                return str;
+            },
+
+            // 上传成功回调函数
+            uploadSuccess(res, file) {
+                this.fileList.push({
+                    name: file.name,
+                    url: file.response.data.url
+                })
+            },
+
+            // 文件改变
+            fileChange(file, fileList) {
+                console.log(this.fileList)
+                // this.baseForm.files = fileList;
+                // this.getUrlStr(this.baseForm.files)
+            },
+
+            // 获取url集合
+            getUrlStr(file) {
+                let str = '';
+                if(file && file.length > 0) {
+                    file.forEach(item => {
+                        str += ',' + item.response.data.url
+                    })
+                }
+                console.log(str.substr(1))
+                return str.substr(1)
             }
         },
 
@@ -212,7 +374,28 @@
                 if(val) {
                     this.getAthleteListByTeam();
                 }
+            },
+
+            // 获取运动员名字字符串
+            'baseForm.athlete': function(val) {
+                let str = '';
+                this.athleteList.forEach(item => {
+                    val.forEach(althId => {
+                        if(item.dicKey == althId) {
+                            str += item.dicValue;
+                        }
+                    })
+                })
+                this.baseForm.athleteName = str;
             }
         }
     }
 </script>
+
+<style lang="scss">
+    .train-brief-plan-add-wrapper {
+        .static-box {
+            margin-bottom: 15px;
+        }
+    }
+</style>

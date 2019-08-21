@@ -88,11 +88,14 @@
                 <el-row :gutter="20">
                     <el-col :span="24">
                         <el-form-item label="训练目的" prop="trainPurposeSelected">
-                            <el-transfer
-                                    v-model="addForm.trainPurposeSelected"
-                                    :data="addForm.trainPurpose"
-                                    :titles="['点选可关联','已选训练目的']">
-                            </el-transfer>
+                            <el-select v-model="addForm.trainPurposeSelected" multiple placeholder="请选择训练目的">
+                                <el-option
+                                        v-for="(item,idx) in addForm.trainPurpose"
+                                        :key="idx"
+                                        :label="item.label"
+                                        :value="item.key">
+                                </el-option>
+                            </el-select>
                         </el-form-item>
                     </el-col>
                 </el-row>
