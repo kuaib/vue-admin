@@ -138,10 +138,9 @@
                         <el-upload
                                 class="avatar-uploader"
                                 multiple
-                                :on-change="fileChange"
+                                :on-change="changeFile"
                                 :file-list="fileList"
-                                action="api/sports/sports_train_report/uploadFile"
-                                :on-success="uploadSuccess">
+                                action="api/sports/sports_train_report/uploadFile">
                             <el-button size="small" type="primary">点击上传</el-button>
                         </el-upload>
                     </el-form-item>
@@ -221,7 +220,8 @@
                     ],
                 },
                 btnLoading: false,
-                fileList: []
+                fileList: [],
+                fileUrl: []
             }
         },
 
@@ -244,14 +244,14 @@
                         saveReport({
                             address: this.baseForm.address,
                             assistName: this.baseForm.assist,
-                            athleteId: this.baseForm.athlete,
+                            athleteId: this.baseForm.athlete.join(','),
                             athleteName: this.baseForm.athleteName,
                             coachId: this.baseForm.coach,
                             coachName: this.baseForm.coachName,
                             contactsName: this.baseForm.contacts,
                             contactsPhone: this.baseForm.contactsPhone,
                             contentPurpose: this.baseForm.contentPurpose,
-                            files: '',
+                            files: this.getUrlStr(this.fileUrl),
                             personNum: parseInt(this.baseForm.personNum),
                             problem:this.baseForm.problem,
                             projectId:this.baseForm.project,
@@ -340,19 +340,9 @@
                 return str;
             },
 
-            // 上传成功回调函数
-            uploadSuccess(res, file) {
-                this.fileList.push({
-                    name: file.name,
-                    url: file.response.data.url
-                })
-            },
-
             // 文件改变
-            fileChange(file, fileList) {
-                console.log(this.fileList)
-                // this.baseForm.files = fileList;
-                // this.getUrlStr(this.baseForm.files)
+            changeFile(file, fileList) {
+                this.fileUrl = fileList;
             },
 
             // 获取url集合
@@ -363,7 +353,6 @@
                         str += ',' + item.response.data.url
                     })
                 }
-                console.log(str.substr(1))
                 return str.substr(1)
             }
         },
@@ -382,11 +371,11 @@
                 this.athleteList.forEach(item => {
                     val.forEach(althId => {
                         if(item.dicKey == althId) {
-                            str += item.dicValue;
+                            str += ',' + item.dicValue;
                         }
                     })
                 })
-                this.baseForm.athleteName = str;
+                this.baseForm.athleteName = str.substr(1);
             }
         }
     }

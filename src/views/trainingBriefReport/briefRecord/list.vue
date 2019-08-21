@@ -134,6 +134,17 @@
                 localStorage.setItem('trainingBriefReport', JSON.stringify(this.extInfo.useInfo));
                 this.$router.push('/briefRecord/plan/add');
             },
+
+            // 去详情
+            toDetail(row) {
+                let path = '';
+                if(this.isSummary) {
+                    path = '/briefRecord/summary/edit'
+                } else {
+                    path = '/briefRecord/plan/edit'
+                }
+                this.$router.push({path: path, query: {id: row.reportId, canOperate: this.extInfo.canOperate}})
+            }
         }
     }
 </script>
