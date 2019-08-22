@@ -347,6 +347,7 @@
 
             // 获取url集合
             getUrlStr(file) {
+                console.log(file)
                 let str = '';
                 if(file && file.length > 0) {
                     file.forEach(item => {

@@ -139,6 +139,7 @@
                                 class="avatar-uploader"
                                 multiple
                                 :on-change="changeFile"
+                                :on-remove="removeFile"
                                 :file-list="fileList"
                                 action="api/sports/sports_train_report/uploadFile">
                             <el-button size="small" type="primary">点击上传</el-button>
@@ -261,10 +262,7 @@
                         this.baseForm.contentPurpose = resData.contentPurpose;
                         this.baseForm.problem = resData.problem;
                         this.baseForm.otherContent = resData.others;
-                        this.fileList = [
-                                {name: '111', url: resData.files.split(',')[0]},
-                                {name: '222', url: resData.files.split(',')[1]}
-                            ]
+                        this.fileList = resData.fileList;
                     } else {
                         this.$message({
                             message: res.data.msg,
@@ -276,6 +274,9 @@
 
             // 保存/提交
             onSubmit(types) {
+                console.log(this.getUrlStr(this.fileList))
+
+                return;
                 this.$refs.baseForm.validate((valid) => {
                     if (valid) {
                         saveReport({
@@ -384,7 +385,11 @@
 
             // 文件改变
             changeFile(file, fileList) {
-                this.fileUrl = fileList;
+                this.fileList = fileList;
+            },
+            // 移除文件
+            removeFile(file, fileList) {
+                this.fileList = fileList;
             },
 
             // 获取url集合
@@ -392,7 +397,11 @@
                 let str = '';
                 if(file && file.length > 0) {
                     file.forEach(item => {
-                        str += ',' + item.response.data.url
+                        if(item.response) {
+                            str += ',' + item.response.data.url
+                        } else {
+                            str += ',' + item.url
+                        }
                     })
                 }
                 return str.substr(1)
@@ -418,6 +427,10 @@
                     })
                 })
                 this.baseForm.athleteName = str.substr(1);
+            },
+            fileList: function(val) {
+                // console.log(val)
+                // this.fileUrl.concat(val)
             }
         }
     }
