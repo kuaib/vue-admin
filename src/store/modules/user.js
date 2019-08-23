@@ -786,7 +786,7 @@ let aa = [
                     {
                         "id": 3,
                         "path": "summary/edit",
-                        "component": "views/trainingBriefReport/briefRecord/edit",
+                        "component": "views/trainingBriefReport/briefRecord/summaryEdit",
                         "name": "summaryEdit",
                         "title": "编辑集训小结",
                         "icon": "ios-basket-outline",

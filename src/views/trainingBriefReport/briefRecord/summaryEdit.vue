@@ -10,69 +10,41 @@
                 <el-row :gutter="20">
                     <el-col :span="8">
                         <el-form-item label="项目：" prop="project">
-                            <el-select v-model="baseForm.project" filterable placeholder="请选择项目">
-                                <el-option
-                                        v-for="(item,idx) in bigProList"
-                                        :key="idx"
-                                        :label="item.dicValue"
-                                        :value="item.dicKey">
-                                </el-option>
-                            </el-select>
+                            <span>{{baseForm.projectName}}</span>
                         </el-form-item>
                     </el-col>
                     <el-col :span="8">
                         <el-form-item label="队伍：" prop="team">
-                            <el-select v-model="baseForm.team" filterable placeholder="请选择队伍" @change="changeItem">
-                                <el-option
-                                        v-for="(item,idx) in teamInfoList"
-                                        :key="idx"
-                                        :label="item.dicValue"
-                                        :value="item.dicKey">
-                                </el-option>
-                            </el-select>
+                            <span>{{baseForm.teamName}}</span>
                         </el-form-item>
                     </el-col>
                     <el-col :span="8">
                         <el-form-item label="主教练：" prop="coach">
-                            <el-select v-model="baseForm.coach" filterable placeholder="请选择主教练">
-                                <el-option
-                                        v-for="(item,idx) in coachInfoList"
-                                        :key="idx"
-                                        :label="item.dicValue"
-                                        :value="item.dicKey">
-                                </el-option>
-                            </el-select>
+                            <span>{{baseForm.coachName}}</span>
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="8">
                         <el-form-item label="联系人：" prop="contacts">
-                            <el-input v-model="baseForm.contacts" placeholder="请输入联系人"></el-input>
+                            <span>{{baseForm.contacts}}</span>
                         </el-form-item>
                     </el-col>
                     <el-col :span="8">
                         <el-form-item label="联系人电话：" prop="contactsPhone">
-                            <el-input v-model="baseForm.contactsPhone" placeholder="请输入联系人电话"></el-input>
+                            <span>{{baseForm.contactsPhone}}</span>
                         </el-form-item>
                     </el-col>
                     <el-col :span="8">
                         <el-form-item label="辅助人员：" prop="assist">
-                            <el-input v-model="baseForm.assist" placeholder="请输入辅助人员"></el-input>
+                            <span>{{baseForm.assist}}</span>
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item label="运动员：" prop="athlete">
-                            <el-select v-model="baseForm.athlete" multiple placeholder="请选择运动员">
-                                <el-option
-                                        v-for="(item,idx) in athleteList"
-                                        :key="idx"
-                                        :label="item.dicValue"
-                                        :value="item.dicKey">
-                                </el-option>
-                            </el-select>
+                            <span>{{baseForm.athleteName}}</span>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -86,37 +58,45 @@
                 <el-row :gutter="20">
                     <el-col :span="8">
                         <el-form-item label="地点：" prop="address">
-                            <el-input v-model="baseForm.address" placeholder="请输入地点"></el-input>
+                            <span>{{baseForm.address}}</span>
                         </el-form-item>
                     </el-col>
                     <el-col :span="8">
                         <el-form-item label="时间：" prop="trainYear">
-                            <el-date-picker
-                                    @change="changeItem"
-                                    v-model="baseForm.trainYear"
-                                    type="month"
-                                    value-format="yyyy-MM"
-                                    placeholder="请选择时间">
-                            </el-date-picker>
+                            <span>{{baseForm.trainYear}}</span>
                         </el-form-item>
                     </el-col>
                     <el-col :span="8">
                         <el-form-item label="人数：" prop="personNum">
-                            <el-input v-model="baseForm.personNum" placeholder="请输入地点"></el-input>
+                            <span>{{baseForm.personNum}}</span>
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
                     <el-col >
                         <el-form-item label="集训内容及训练目的：" prop="contentPurpose"  label-width="180px">
-                            <el-input type="textarea" v-model="baseForm.contentPurpose" placeholder="请输入集训内容及训练目的" :autosize="{ minRows: 4, maxRows: 4 }" resize="none"></el-input>
+                            <span>{{baseForm.contentPurpose}}</span>
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
                     <el-col>
-                        <el-form-item label="需要解决的问题：" prop="problem" label-width="180px">
-                            <el-input type="textarea" v-model="baseForm.problem" placeholder="请输入需要解决的问题" :autosize="{ minRows: 4, maxRows: 4 }" resize="none"></el-input>
+                        <el-form-item label="集训成果及经验总结：" prop="resultExperience" label-width="180px">
+                            <el-input type="textarea" v-model="baseForm.resultExperience" placeholder="请输入集训成果及经验总结" :autosize="{ minRows: 4, maxRows: 4 }" resize="none"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row :gutter="20">
+                    <el-col>
+                        <el-form-item label="集训不足及拟解决方法：" prop="solveMethod" label-width="180px">
+                            <el-input type="textarea" v-model="baseForm.solveMethod" placeholder="请输入集训不足及拟解决方法" :autosize="{ minRows: 4, maxRows: 4 }" resize="none"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row :gutter="20">
+                    <el-col>
+                        <el-form-item label="运动员伤病及康复情况：" prop="athleteHealth" label-width="180px">
+                            <el-input type="textarea" v-model="baseForm.athleteHealth" placeholder="请输入运动员伤病及康复情况" :autosize="{ minRows: 4, maxRows: 4 }" resize="none"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -130,21 +110,22 @@
                 <el-row :gutter="20">
                     <el-col >
                         <el-form-item label="其他内容：">
-                            <el-input type="textarea" v-model="baseForm.otherContent" placeholder="请输入其他内容" :autosize="{ minRows: 4, maxRows: 4 }" resize="none"></el-input>
+                            <span>{{baseForm.otherContent}}</span>
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
                     <el-form-item label="文件上传：">
-                        <el-upload
-                                class="avatar-uploader"
-                                multiple
-                                :on-change="changeFile"
-                                :on-remove="removeFile"
-                                :file-list="fileList"
-                                action="api/sports/sports_train_report/uploadFile">
-                            <el-button size="small" type="primary">点击上传</el-button>
-                        </el-upload>
+                        <!--<el-upload-->
+                                <!--class="avatar-uploader"-->
+                                <!--multiple-->
+                                <!--:on-change="changeFile"-->
+                                <!--:on-remove="removeFile"-->
+                                <!--:file-list="fileList"-->
+                                <!--action="api/sports/sports_train_report/uploadFile">-->
+                            <!--<el-button size="small" type="primary">点击上传</el-button>-->
+                        <!--</el-upload>-->
+                        <el-row v-for="item in fileList" :key="item.name">{{item.name}}</el-row>
                     </el-form-item>
                 </el-row>
             </el-card>
@@ -153,8 +134,7 @@
         <!--保存-->
         <el-row style="text-align: center;margin-top:15px;" v-if="canOperate">
             <el-button type="primary" round @click="cancelAct" style="padding: 12px 35px;">取消</el-button>
-            <el-button type="primary" round @click="onSubmit(0)" :loading="btnLoading" style="padding: 12px 35px;">保存草稿</el-button>
-            <el-button type="primary" round @click="onSubmit(1)" :loading="btnLoading" style="padding: 12px 35px;">提交中心</el-button>
+            <el-button type="primary" round @click="onSubmit" :loading="btnLoading" style="padding: 12px 35px;">保 存</el-button>
         </el-row>
         <el-row style="text-align: center;margin-top:15px;" v-else>
             <el-button type="primary" round @click="cancelAct" style="padding: 12px 35px;">关闭</el-button>
@@ -164,7 +144,7 @@
 
 <script>
     import changeTabBar from '../components/changeTabBar'
-    import {getTrainInfoByTeamIdAnTrainDate, saveReport, getReportDetail} from '@/api/trainingBriefReport'
+    import {getTrainInfoByTeamIdAnTrainDate, saveSummary, getReportDetail} from '@/api/trainingBriefReport'
     import mixins from '@/utils/mixins'
     export default {
         components: {changeTabBar},
@@ -189,45 +169,20 @@
                     address: null,
                     personNum: null,
                     contentPurpose: null,
-                    problem: null,
+                    resultExperience: null,
+                    solveMethod: null,
+                    athleteHealth: null,
                     otherContent: null,
                 },
                 rules: {
-                    project: [
-                        { required: true, message: '请选择项目', trigger: 'change' }
+                    resultExperience: [
+                        { required: true, message: '请输入集训成果及经验总结', trigger: 'blur' }
                     ],
-                    team: [
-                        { required: true, message: '请选择队伍', trigger: 'change' }
+                    solveMethod: [
+                        { required: true, message: '请输入集训不足及拟解决方法', trigger: 'blur' }
                     ],
-                    coach: [
-                        { required: true, message: '请选择主教练', trigger: 'change' }
-                    ],
-                    contacts: [
-                        { required: true, message: '请输入联系人', trigger: 'blur' }
-                    ],
-                    contactsPhone: [
-                        { required: true, message: '请输入联系电话', trigger: 'blur' }
-                    ],
-                    athlete: [
-                        { required: true, message: '请选择运动员', trigger: 'change' }
-                    ],
-                    assist: [
-                        { required: true, message: '请输入辅助人员', trigger: 'blur' }
-                    ],
-                    trainYear: [
-                        { required: true, message: '请选择时间', trigger: 'change' }
-                    ],
-                    address: [
-                        { required: true, message: '请输入地点', trigger: 'blur' }
-                    ],
-                    personNum: [
-                        { required: true, message: '请输入人数', trigger: 'blur' }
-                    ],
-                    contentPurpose: [
-                        { required: true, message: '请输入集训内容及训练目的', trigger: 'blur' }
-                    ],
-                    problem: [
-                        { required: true, message: '请输入需要解决的问题', trigger: 'blur' }
+                    athleteHealth: [
+                        { required: true, message: '请输入运动员伤病及康复情况', trigger: 'blur' }
                     ],
                 },
                 btnLoading: false,
@@ -276,30 +231,14 @@
             },
 
             // 保存/提交
-            onSubmit(types) {
+            onSubmit() {
                 this.$refs.baseForm.validate((valid) => {
                     if (valid) {
-                        saveReport({
+                        saveSummary({
                             reportId: this.id,
-                            address: this.baseForm.address,
-                            assistName: this.baseForm.assist,
-                            athleteId: this.baseForm.athlete.join(),
-                            athleteName: this.baseForm.athleteName,
-                            coachId: this.baseForm.coach,
-                            coachName: this.baseForm.coachName,
-                            contactsName: this.baseForm.contacts,
-                            contactsPhone: this.baseForm.contactsPhone,
-                            contentPurpose: this.baseForm.contentPurpose,
-                            files: this.getUrlStr(this.fileList),
-                            personNum: parseInt(this.baseForm.personNum),
-                            problem:this.baseForm.problem,
-                            projectId:this.baseForm.project,
-                            projectName:this.baseForm.projectName,
-                            teamId:this.baseForm.team,
-                            teamName:this.baseForm.teamName,
-                            trainDate:this.baseForm.trainYear.split('-').join(''),
-                            others: this.baseForm.otherContent,
-                            reportStatus: types,  // 0: 保存草稿  1: 提交
+                            resultExperience: this.baseForm.resultExperience,
+                            solveMethod: this.baseForm.solveMethod,
+                            athleteHealth: this.baseForm.athleteHealth
                         }).then(res => {
                             if(res.data.code == 200) {
                                 this.$message({

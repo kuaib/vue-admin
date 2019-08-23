@@ -1,5 +1,6 @@
 <template>
     <div class="train-brief-plan-add-wrapper">
+        <change-tab-bar :isSummary="isSummary"></change-tab-bar>
         <el-form :model="baseForm" ref="baseForm" :rules="rules" label-width="120px">
             <!--基础信息-->
             <el-card class="static-box card-box">
@@ -158,12 +159,15 @@
 </template>
 
 <script>
+    import changeTabBar from '../components/changeTabBar'
     import {getTrainInfoByTeamIdAnTrainDate, saveReport, saveSummary} from '@/api/trainingBriefReport'
     import mixins from '@/utils/mixins'
     export default {
+        components: {changeTabBar},
         mixins: [mixins],
         data() {
             return {
+                isSummary: this.$route.path.indexOf('/summary') !== -1, // 是否是集训总结
                 userInfo: JSON.parse(localStorage.getItem('trainingBriefReport')),
                 baseForm: {
                     project: null,

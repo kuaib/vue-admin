@@ -44,8 +44,14 @@
                 </el-table-column>
                 <el-table-column align="center" label="状态">
                     <template slot-scope="scope">
-                        <span v-if="scope.row.reportStatus == 1">已总结</span>
-                        <span v-if="scope.row.reportStatus == 0" style="color: red">未总结</span>
+                        <span v-if="scope.row.reportStatus == 1">已提交</span>
+                        <span v-if="scope.row.reportStatus == 0" style="color: red">未提交</span>
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" label="是否总结" v-if="isSummary">
+                    <template slot-scope="scope">
+                        <span v-if="scope.row.summary == 1">已总结</span>
+                        <span v-if="scope.row.summary == 0" style="color: red">未总结</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="提交时间">
