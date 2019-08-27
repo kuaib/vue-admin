@@ -1,25 +1,22 @@
 <template>
-    <div class="month-training-wrapper">
-        <!--tab切换-->
-        <change-tab-bar :isSummary="isSummary" sectionItem="month"></change-tab-bar>
-
+    <div class="team-report-list-wrapper">
         <!--搜索-->
-        <search-section typeName="月计划" @handleFilter="handleFilter" :isSummary="isSummary"></search-section>
+        <search-section typeName="teamReport" @handleFilter="handleFilter"></search-section>
 
         <!--表格-->
         <el-row>
             <div class="table-title clearfix">
-                <h3>月计划列表</h3>
-                <el-button type="success" @click="addNew" v-if="extInfo.canOperate&&!isSummary">创建月计划</el-button>
+                <h3>测评记录列表</h3>
+                <el-button type="success" @click="addNew">导入</el-button>
             </div>
             <el-table :data="list" v-loading="listLoading" border fit highlight-current-row
                       style="width: 100%;">
-                <el-table-column align="center" label="月计划id">
+                <el-table-column align="center" label="文档id">
                     <template slot-scope="scope">
                         <span>{{scope.row.trainMonthId}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column align="center" label="训练年度">
+                <el-table-column align="center" label="文档名称">
                     <template slot-scope="scope">
                         <span>{{scope.row.trainMonth}}</span>
                     </template>
@@ -29,31 +26,20 @@
                         <span>{{scope.row.projectName}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column align="center" label="队伍">
+                <el-table-column align="center" label="上传时间">
                     <template slot-scope="scope">
                         <span>{{scope.row.teamName}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column align="center" label="教练员">
-                    <template slot-scope="scope">
-                        <span>{{scope.row.coachName}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column align="center" label="状态">
-                    <template slot-scope="scope">
-                        <span v-if="scope.row.status==0">未提交</span>
-                        <span v-if="scope.row.status==1">已提交</span>
-                    </template>
-                </el-table-column>
-                <el-table-column align="center" label="是否总结" v-if="isSummary">
-                    <template slot-scope="scope">
-                        <span v-if="scope.row.summary==0">否</span>
-                        <span v-if="scope.row.summary==1">是</span>
-                    </template>
-                </el-table-column>
                 <el-table-column align="center" label="操作">
                     <template slot-scope="scope">
-                        <el-button size="mini" type="primary" @click="toEdit(scope.row)">详情</el-button>
+                        <div class="act-btns">
+                            <span class="btn" @click="previewItem(scope.row)">预览</span>
+                            <span> | </span>
+                            <span class="btn" @click="downLoadItem(scope.row)">下载</span>
+                            <span> | </span>
+                            <span class="btn" @click="deleteItem(scope.row)">删除</span>
+                        </div>
                     </template>
                 </el-table-column>
             </el-table>
@@ -66,20 +52,20 @@
                 </el-pagination>
             </div>
         </el-row>
+
+        <import-file ref="importFile"></import-file>
     </div>
 </template>
 
 <script>
     import mixins from '@/utils/mixins'
-    import searchSection from '../../components/searchSection'
-    import changeTabBar from '../../components/changeTabBar'
-    import {getMonthTrainPlanList} from '@/api/trainingAndSummary'
+    import searchSection from '../components/searchSection'
+    import importFile from './components/importFile'
     export default {
+        components: {searchSection, importFile},
         mixins: [mixins],
-        components: {searchSection, changeTabBar},
         data() {
             return {
-                isSummary: this.$route.path.indexOf('/monthSummary') !== -1, // 是否是月训练总结(计划与总结页面公用)
                 list: [],            // table列表
                 total: null,         // 总条目数
                 listLoading: false,  // 查询table的loading
@@ -87,16 +73,15 @@
                     currentPage: 1,
                     pageSize: 10
                 },
-                extInfo: {}  // 账号的权限
             }
         },
 
         created() {
-            this.getList();
+            // this.getList();
         },
 
         methods: {
-            // 获取月计划列表
+            // 获取列表
             getList(formData = {}) {
                 this.listLoading = true;
                 getMonthTrainPlanList({
@@ -126,41 +111,52 @@
                 })
             },
 
-            // 创建月计划
+            // 导入
             addNew() {
-                let path;
-                if(this.isSummary) {
-                    path = '/monthTraining/monthSummary/add'
-                } else {
-                    path = '/monthTraining/monthPlan/add'
-                }
-                localStorage.setItem('trainAndSumUserMonth', JSON.stringify(this.extInfo.useInfo));
-                this.$router.push({path: path});
+                this.$refs.importFile.showDialog = true;
             },
 
-            // 去详情
-            toEdit(row) {
-                let path, updatedTime;
-                if(this.isSummary) {
-                    path = '/monthTraining/monthSummary/edit';
-                    updatedTime = row.updatedTime;
-                } else {
-                    path = '/monthTraining/monthPlan/edit'
-                }
-                this.$router.push(
-                    {path: path, query: {
-                        id: row.trainMonthId,
-                        status: row.status,
-                        updatedTime: updatedTime,
-                        canOperate: this.extInfo.canOperate}
-                    })
+            // 预览
+            previewItem(row) {
+
             },
+
+            // 下载
+            downLoadItem(row) {
+
+            },
+
+            // 删除
+            deleteItem(row) {
+                this.$confirm('确定删除吗?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    aaa({id: row.id}).then(res => {
+                        if(res.data.code == 200) {
+                            this.$message({
+                                message: '删除成功',
+                                type: 'success'
+                            });
+                            this.getList();
+                        } else {
+                            this.$message({
+                                message: res.data.msg,
+                                type: 'warning'
+                            })
+                        }
+                    })
+                }).catch(() => {
+
+                });
+            }
         }
     }
 </script>
 
 <style lang="scss">
-    .month-training-wrapper {
+    .team-report-list-wrapper {
         .table-title {
             margin-top: 20px;
             margin-bottom: 10px;
@@ -173,11 +169,14 @@
                 float: right;
             }
         }
-        .el-date-editor .el-range-separator {
-            padding: 0 !important;
-        }
-        .el-date-editor .el-range-input {
-            width: 60%;
+
+        .act-btns {
+            span {
+                color: #409EFF;
+            }
+            .btn {
+                cursor: pointer;
+            }
         }
     }
 </style>

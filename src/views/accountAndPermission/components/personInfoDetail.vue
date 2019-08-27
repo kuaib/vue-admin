@@ -48,7 +48,7 @@
         <!--业务信息-->
         <el-card class="static-box card-box">
             <div slot="header" class="clearfix">
-                <span class="section-title">个人信息</span>
+                <span class="section-title">业务信息</span>
             </div>
             <el-form :model="businessForm" label-width="130px">
                 <el-row :gutter="20">

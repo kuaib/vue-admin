@@ -819,6 +819,198 @@ let aa = [
         ]
     },
     {
+        "id": 11,
+        "path": "/evaluationManagement",
+        "component": "Layout",
+        "name": "",
+        "title": "测评管理",
+        "icon": "ios-color-wand",
+        "parentId": 0,
+        "enabled": 1,
+        "roles": null,
+        "meta": {
+            "access": null,
+            "title": "测评管理",
+            "icon": "ios-color-wand",
+            "hideInMenu": false
+        },
+        "url": "",
+        "hideInMenu": false,
+        "children": [
+            {
+                "id": 3,
+                "path": "/evaluationRecord",
+                "component": "views/evaluationManagement/evaluationRecord/index",
+                "name": "evaluationRecord",
+                "title": "测评记录",
+                "icon": "ios-basket-outline",
+                "parentId": 1,
+                "enabled": 1,
+                "children": [
+                    {
+                        "id": 3,
+                        "path": "list",
+                        "component": "views/evaluationManagement/evaluationRecord/list",
+                        "name": "evaluationRecordList",
+                        "title": "测评记录",
+                        "icon": "ios-basket-outline",
+                        "parentId": 2,
+                        "enabled": 1,
+                        "children": null,
+                        "roles": null,
+                        "meta": {
+                            "access": null,
+                            "title": "测评记录",
+                            "icon": "ios-basket-outline",
+                            "hideInMenu": false,
+                            "noCache": true
+                        },
+                        "url": "",
+                        "hideInMenu": false
+                    },
+                    {
+                        "id": 3,
+                        "path": "importFile",
+                        "component": "views/evaluationManagement/evaluationRecord/importFile",
+                        "name": "valuationRecordImportFile",
+                        "title": "文件导入",
+                        "icon": "ios-basket-outline",
+                        "parentId": 2,
+                        "enabled": 1,
+                        "children": null,
+                        "roles": null,
+                        "meta": {
+                            "access": null,
+                            "title": "文件导入",
+                            "icon": "ios-basket-outline",
+                            "hideInMenu": true,
+                            "noCache": true
+                        },
+                        "url": "",
+                        "hideInMenu": true
+                    },
+                    {
+                        "id": 3,
+                        "path": "detail",
+                        "component": "views/evaluationManagement/evaluationRecord/detail",
+                        "name": "evaluationRecordDetail",
+                        "title": "有氧测试",
+                        "icon": "ios-basket-outline",
+                        "parentId": 2,
+                        "enabled": 1,
+                        "children": null,
+                        "roles": null,
+                        "meta": {
+                            "access": null,
+                            "title": "有氧测试",
+                            "icon": "ios-basket-outline",
+                            "hideInMenu": true,
+                            "noCache": true
+                        },
+                        "url": "",
+                        "hideInMenu": true
+                    },
+                ],
+                "roles": null,
+                "meta": {
+                    "access": null,
+                    "title": "测评记录",
+                    "icon": "ios-basket-outline",
+                    "hideInMenu": false,
+                    "noCache": true
+                },
+                "url": "",
+                "hideInMenu": false
+            },
+            {
+                "id": 3,
+                "path": "/evaluationAnalysis",
+                "component": "views/evaluationManagement/evaluationAnalysis/index",
+                "name": "evaluationAnalysis",
+                "title": "测评分析",
+                "icon": "ios-basket-outline",
+                "parentId": 1,
+                "enabled": 1,
+                "children": [
+                    {
+                        "id": 3,
+                        "path": "detail",
+                        "component": "views/evaluationManagement/evaluationAnalysis/detail",
+                        "name": "evaluationAnalysisDetail",
+                        "title": "测评分析",
+                        "icon": "ios-basket-outline",
+                        "parentId": 2,
+                        "enabled": 1,
+                        "children": null,
+                        "roles": null,
+                        "meta": {
+                            "access": null,
+                            "title": "测评分析",
+                            "icon": "ios-basket-outline",
+                            "hideInMenu": false,
+                            "noCache": true
+                        },
+                        "url": "",
+                        "hideInMenu": false
+                    },
+                ],
+                "roles": null,
+                "meta": {
+                    "access": null,
+                    "title": "测评分析",
+                    "icon": "ios-basket-outline",
+                    "hideInMenu": false,
+                    "noCache": true
+                },
+                "url": "",
+                "hideInMenu": false
+            },
+            {
+                "id": 3,
+                "path": "/teamReport",
+                "component": "views/evaluationManagement/teamReport/index",
+                "name": "teamReport",
+                "title": "队伍分析报告",
+                "icon": "ios-basket-outline",
+                "parentId": 1,
+                "enabled": 1,
+                "children": [
+                    {
+                        "id": 3,
+                        "path": "list",
+                        "component": "views/evaluationManagement/teamReport/list",
+                        "name": "teamReportList",
+                        "title": "队伍分析报告",
+                        "icon": "ios-basket-outline",
+                        "parentId": 2,
+                        "enabled": 1,
+                        "children": null,
+                        "roles": null,
+                        "meta": {
+                            "access": null,
+                            "title": "队伍分析报告",
+                            "icon": "ios-basket-outline",
+                            "hideInMenu": false,
+                            "noCache": true
+                        },
+                        "url": "",
+                        "hideInMenu": false
+                    },
+                ],
+                "roles": null,
+                "meta": {
+                    "access": null,
+                    "title": "队伍分析报告",    // children中的title：取我定义的
+                    "icon": "ios-basket-outline",
+                    "hideInMenu": false,
+                    "noCache": true     // 这个是新加的字段！！！！！！！！！！！！
+                },
+                "url": "",
+                "hideInMenu": false
+            },
+        ]
+    },
+    {
         "id": 8,
         "path": "/accountAndPermission",  // 第一级菜单前面有斜杠： /
         "component": "Layout",
