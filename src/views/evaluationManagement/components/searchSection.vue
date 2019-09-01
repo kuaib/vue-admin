@@ -25,10 +25,10 @@
                     <el-form-item prop="evaluationType">
                         <el-select v-model="searchForm.evaluationType" placeholder="请选择测评类型">
                             <el-option
-                                    v-for="item in teamInfoList"
-                                    :label="item.dicValue"
-                                    :value="item.dicKey"
-                                    :key="item.dicKey">
+                                    v-for="(item,idx) in testTypeList"
+                                    :label="item.testType"
+                                    :value="item.id"
+                                    :key="idx">
                             </el-option>
                         </el-select>
                     </el-form-item>
@@ -39,10 +39,10 @@
                     <el-form-item prop="project">
                         <el-select v-model="searchForm.project" placeholder="请选择测评项目">
                             <el-option
-                                    v-for="item in coachInfoList"
-                                    :label="item.dicValue"
-                                    :value="item.dicKey"
-                                    :key="item.dicKey">
+                                    v-for="(item,idx) in testProjectList"
+                                    :label="item.testType"
+                                    :value="item.id"
+                                    :key="idx">
                             </el-option>
                         </el-select>
                     </el-form-item>
@@ -89,7 +89,7 @@
                     <el-form-item prop="project">
                         <el-select v-model="searchForm.project" placeholder="请选择测评项目">
                             <el-option
-                                    v-for="item in coachInfoList"
+                                    v-for="item in bigProList"
                                     :label="item.dicValue"
                                     :value="item.dicKey"
                                     :key="item.dicKey">
@@ -128,21 +128,22 @@
 <script>
     import mixin from '@/utils/mixins'
     import {findStaffName} from '@/api/accountAndPermission'
+    import {getTestTypeOrTestProjectList} from '@/api/evaluationManagement'
     export default ({
         mixins: [mixin],
         data() {
             return {
-                nameLoading: false, // 搜索姓名时候的loading
-                nameList: [],  // 姓名列表
-                options: [],   // 远程搜索姓名时使用
-
+                // nameLoading: false, // 搜索姓名时候的loading
+                // nameList: [],  // 姓名列表
+                // options: [],   // 远程搜索姓名时使用
+                testTypeList: [], //测评类型
+                testProjectList: [], //测评项目
                 searchForm: {
                     id: null,
                     athlete: null,
                     evaluationType: null,
                     project: null,
                     batch: null,  // 测评批次
-
                     fileName: null,
                     uploadDate: null
                 }
@@ -152,6 +153,7 @@
         created() {
             this.getAllList(); // 获取基础下拉
             this.getAthleteList(); // 获取运动员列表
+            this.getTypeOrProjectList({dataLevel: '1',queryId: '0' }, 'testTypeList');//测评类型查询
         },
 
         props: {
@@ -188,7 +190,34 @@
                 } else {
                     this.options = [];
                 }
+            },
+
+            getTypeOrProjectList(param, typeName) {
+                getTestTypeOrTestProjectList({
+                    dataLevel: param.dataLevel,
+                    queryId: param.queryId
+                }).then(res => {
+                    if (res.data.code === 200) {
+                        const data = res.data.data;
+                        this[typeName] = data;
+                    } else {
+                        this.$message({
+                            message: res.data.msg,
+                            type: 'warning'
+                        })
+                    }
+                });
             }
-        }
+        },
+
+        watch: {
+            'searchForm.evaluationType': function (val) {
+               if (val) {
+                   this.searchForm.project = null;
+                   this.getTypeOrProjectList({dataLevel: '2', queryId: val}, 'testProjectList');//测评项目查询
+               }
+            }
+
+        },
     })
 </script>

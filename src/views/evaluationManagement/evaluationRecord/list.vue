@@ -13,27 +13,27 @@
                       style="width: 100%;">
                 <el-table-column align="center" label="测评id">
                     <template slot-scope="scope">
-                        <span>{{scope.row.trainMonthId}}</span>
+                        <span>{{scope.row.testId}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="测评批次">
                     <template slot-scope="scope">
-                        <span>{{scope.row.trainMonth}}</span>
+                        <span>{{scope.row.testBatch}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="测评类型">
                     <template slot-scope="scope">
-                        <span>{{scope.row.projectName}}</span>
+                        <span>{{scope.row.testType}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="测评项目">
                     <template slot-scope="scope">
-                        <span>{{scope.row.teamName}}</span>
+                        <span>{{scope.row.testProjectName}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="运动员">
                     <template slot-scope="scope">
-                        <span>{{scope.row.coachName}}</span>
+                        <span>{{scope.row.athleteName}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="操作">
@@ -57,6 +57,7 @@
 <script>
     import mixins from '@/utils/mixins'
     import searchSection from '../components/searchSection'
+    import {getSportsList} from '@/api/evaluationManagement'
     export default {
         components: {searchSection},
         mixins: [mixins],
@@ -73,28 +74,26 @@
         },
 
         created() {
-            // this.getList();
+            this.getList();
         },
 
         methods: {
             // 获取列表
             getList(formData = {}) {
                 this.listLoading = true;
-                getMonthTrainPlanList({
+                getSportsList({
                     currentPage: this.listQuery.currentPage,
                     pageSize: this.listQuery.pageSize,
-                    trainMonthId: formData.id,
-                    projectId: formData.project,
-                    teamId: formData.team,
-                    coachId: formData.coach,
-                    trainMonth: formData.trainYear,
-                    summary: formData.summary && parseInt(formData.summary)
+                    testId: formData.id,
+                    testBatch: formData.batch,
+                    athleteId: formData.athlete,
+                    testTypeId: formData.evaluationType,
+                    testProjectId: formData.project
                 }).then(res => {
                     this.listLoading = false;
                     if (res.data.code === 200) {
                         const data = res.data.data;
                         this.list = data.list;
-                        this.extInfo = data.extInfo;
                         this.total = data.pagination.total;
                     } else {
                         this.$message({
@@ -114,9 +113,13 @@
 
             // 去详情
             toEdit(row) {
-                this.$router.push({path: '/evaluationRecord/detail', query: {id: row.id}})
+                this.$router.push({path: '/evaluationRecord/detail', query: {id: row.testId}})
             }
-        }
+        },
+
+
+
+
     }
 </script>
 

@@ -8,13 +8,13 @@
                         <div class="sub-title">基础信息</div>
                         <el-row :gutter="20">
                             <el-col :span="8">
-                                <el-form-item label="姓名：">{{personForm.name}}</el-form-item>
+                                <el-form-item label="姓名：">{{personForm.staffName}}</el-form-item>
                             </el-col>
                             <el-col :span="8">
-                                <el-form-item label="性别：">{{personForm.sex}}</el-form-item>
+                                <el-form-item label="性别：">{{personForm.gender == 1 ?'男':'女'}}</el-form-item>
                             </el-col>
                             <el-col :span="8">
-                                <el-form-item label="身份证：">{{personForm.idCard}}</el-form-item>
+                                <el-form-item label="身份证：">{{personForm.identity}}</el-form-item>
                             </el-col>
                         </el-row>
                         <el-row :gutter="20">
@@ -30,7 +30,7 @@
                         </el-row>
                         <el-row :gutter="20">
                             <el-col :span="8">
-                                <el-form-item label="籍贯：">{{personForm.jg}}</el-form-item>
+                                <el-form-item label="籍贯：">{{personForm.nativePlace}}</el-form-item>
                             </el-col>
                             <el-col :span="8">
                                 <el-form-item label="个人照片：">
@@ -47,7 +47,7 @@
                                 <el-form-item label="身份角色：">{{personForm.jobName}}</el-form-item>
                             </el-col>
                             <el-col :span="8">
-                                <el-form-item label="运动员级别：">{{personForm.level}}</el-form-item>
+                                <el-form-item label="运动员级别：">{{personForm.jobLevel}}</el-form-item>
                             </el-col>
                         </el-row>
                     </el-row>
@@ -56,24 +56,24 @@
                         <div class="sub-title">业务信息</div>
                         <el-row :gutter="20">
                             <el-col :span="8">
-                                <el-form-item label="大项：">{{personForm.bigPro}}</el-form-item>
+                                <el-form-item label="大项：">{{personForm.projectName}}</el-form-item>
                             </el-col>
                             <el-col :span="8">
-                                <el-form-item label="小项：">{{personForm.smallPro}}</el-form-item>
+                                <el-form-item label="小项：">{{personForm.childProject}}</el-form-item>
                             </el-col>
                             <el-col :span="8">
-                                <el-form-item label="运动队：">{{personForm.team}}</el-form-item>
+                                <el-form-item label="运动队：">{{personForm.teamName}}</el-form-item>
                             </el-col>
                         </el-row>
                         <el-row :gutter="20">
                             <el-col :span="8">
-                                <el-form-item label="教练员：">{{personForm.coach}}</el-form-item>
+                                <el-form-item label="教练员：">{{personForm.coachName}}</el-form-item>
                             </el-col>
                             <el-col :span="8">
-                                <el-form-item label="原项目：">{{personForm.frontPro}}</el-form-item>
+                                <el-form-item label="原项目：">{{personForm.oldProjectName}}</el-form-item>
                             </el-col>
                             <el-col :span="8">
-                                <el-form-item label="原项目训练年限：">{{personForm.trainYear}}</el-form-item>
+                                <el-form-item label="原项目训练年限：">{{personForm.oldProjectDuration}}</el-form-item>
                             </el-col>
                         </el-row>
                         <el-row :gutter="20">
@@ -94,18 +94,18 @@
                         <div class="sub-title">基础信息</div>
                         <el-row :gutter="20">
                             <el-col :span="8">
-                                <el-form-item label="测评类型：">{{personForm.testType}}</el-form-item>
+                                <el-form-item label="测评类型：">{{testForm.testType}}</el-form-item>
                             </el-col>
                             <el-col :span="8">
-                                <el-form-item label="测评项目：">{{personForm.project}}</el-form-item>
+                                <el-form-item label="测评项目：">{{testForm.testProjectName}}</el-form-item>
                             </el-col>
                         </el-row>
                         <el-row :gutter="20">
                             <el-col :span="8">
-                                <el-form-item label="测评id：">{{personForm.id}}</el-form-item>
+                                <el-form-item label="测评id：">{{testForm.testId}}</el-form-item>
                             </el-col>
                             <el-col :span="8">
-                                <el-form-item label="测评批次：">{{personForm.batch}}</el-form-item>
+                                <el-form-item label="测评批次：">{{testForm.testBatch}}</el-form-item>
                             </el-col>
                         </el-row>
                     </el-row>
@@ -117,32 +117,32 @@
                                       style="width: 100%;">
                                 <el-table-column align="center" label="通气量(MV)">
                                     <template slot-scope="scope">
-                                        <span>{{scope.row.trainMonthId}}</span>
+                                        <span>{{scope.row.mv}}</span>
                                     </template>
                                 </el-table-column>
                                 <el-table-column align="center" label="最大氧耗量（VO2max ）">
                                     <template slot-scope="scope">
-                                        <span>{{scope.row.trainMonth}}</span>
+                                        <span>{{scope.row.vo2max}}</span>
                                     </template>
                                 </el-table-column>
                                 <el-table-column align="center" label="心率(HR)">
                                     <template slot-scope="scope">
-                                        <span>{{scope.row.projectName}}</span>
+                                        <span>{{scope.row.hr}}</span>
                                     </template>
                                 </el-table-column>
                                 <el-table-column align="center" label="负荷">
                                     <template slot-scope="scope">
-                                        <span>{{scope.row.teamName}}</span>
+                                        <span>{{scope.row.load}}</span>
                                     </template>
                                 </el-table-column>
                                 <el-table-column align="center" label="速度(km/h)">
                                     <template slot-scope="scope">
-                                        <span>{{scope.row.coachName}}</span>
+                                        <span>{{scope.row.speed}}</span>
                                     </template>
                                 </el-table-column>
                                 <el-table-column align="center" label="坡度(%)">
                                     <template slot-scope="scope">
-                                        <span>{{scope.row.coachName}}</span>
+                                        <span>{{scope.row.grade}}</span>
                                     </template>
                                 </el-table-column>
                             </el-table>
@@ -152,35 +152,44 @@
             </el-collapse-item>
         </el-collapse>
         <el-row style="text-align: center;margin-top:20px;">
-            <el-button type="primary" round @click="closeWindow" :loading="btnLoading" style="padding: 12px 35px;">关闭</el-button>
+            <el-button type="primary" round @click="closeWindow" style="padding: 12px 35px;">关闭</el-button>
         </el-row>
     </div>
 </template>
 
 <script>
+    import {getTestDetail} from '@/api/evaluationManagement'
+
     export default {
         data() {
             return {
                 activeNames: ['2'],
+                id: this.$route.query.id,
                 personForm: { // 个人信息
-                    name: null,
-                    sex: null,
-                    idCard: null,
+                    staffName: null,
+                    gender: null,
+                    identity: null,
                     birthday: null,
                     height: null,
                     weight: null,
-                    jg: null,
+                    nativePlace: null,
                     photo: null,
-
                     jobName: null,
-                    level: null,
+                    jobLevel: null,
+                    projectName: null,
+                    childProject: null,
+                    teamName: null,
+                    coachName: null,
+                    oldProjectName: null,
+                    oldProjectDuration: null,
+                    joinDate: null,
                 },
 
                 testForm: {  // 测评信息
                     testType: null,
-                    project: null,
-                    id: null,
-                    batch: null
+                    testProjectName: null,
+                    testId: null,
+                    testBatch: null
                 },
 
                 list: []   // 测评详情列表
@@ -188,15 +197,19 @@
         },
 
         created() {
-            // this.getDetails();
+            this.getDetails();
         },
 
         methods: {
             // 获取详情信息
             getDetails() {
-                aaaa().then(res => {
+                getTestDetail({
+                    testId: this.id
+                }).then(res => {
                     if(res.data.code == 200) {
-
+                        this.personForm = res.data.data.sportsStaff,
+                        this.testForm = res.data.data.sportsTest,
+                        this.list = [res.data.data.sportsTest.detailData]
                     } else {
                         this.$message({
                             message: res.data.msg,
