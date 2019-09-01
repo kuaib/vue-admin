@@ -38,6 +38,14 @@ export function getTestDetail(params) {
   })
 }
 
+// 获取指标列表
+export function getTargetList(params) {
+  return request({
+    url: '/sports/sports_test/getTestAttribute',
+    method: 'get',
+    params
+  })
+}
 
 
 

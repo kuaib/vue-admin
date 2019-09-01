@@ -21,6 +21,9 @@ import './mock' // simulation data
 import * as filters from './filters' // global filters
 // import mixin from './utils/mixins'
 import waves from '@/directive/waves' // 水波纹指令
+//echarts
+import echarts from 'echarts'
+Vue.prototype.$echarts = echarts
 // Vue.mixin(mixin);
 Vue.use(waves);
 

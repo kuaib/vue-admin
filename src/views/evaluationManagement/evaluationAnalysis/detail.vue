@@ -8,6 +8,7 @@
     import athleteCharts  from './components/athleteCharts'
     import teamCharts  from './components/teamCharts'
     import athleteTargetChart from './components/athleteTargetChart'
+
     export default {
         components: {athleteCharts, teamCharts, athleteTargetChart},
         data() {
