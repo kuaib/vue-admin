@@ -1011,6 +1011,113 @@ let aa = [
         ]
     },
     {
+        "id": 12,
+        "path": "/kanbanOfData",
+        "component": "Layout",
+        "name": "",
+        "title": "数据看板",
+        "icon": "ios-color-wand",
+        "parentId": 0,
+        "enabled": 1,
+        "roles": null,
+        "meta": {
+            "access": null,
+            "title": "数据看板",
+            "icon": "ios-color-wand",
+            "hideInMenu": false
+        },
+        "url": "",
+        "hideInMenu": false,
+        "children": [
+            {
+                "id": 3,
+                "path": "/athleteKanban",
+                "component": "views/kanbanOfData/athleteKanban/index",
+                "name": "athleteKanban",
+                "title": "运动员看板",
+                "icon": "ios-basket-outline",
+                "parentId": 1,
+                "enabled": 1,
+                "children": [
+                    {
+                        "id": 3,
+                        "path": "allData",
+                        "component": "views/kanbanOfData/athleteKanban/allData",
+                        "name": "allDataAthlete",
+                        "title": "运动员看板",
+                        "icon": "ios-basket-outline",
+                        "parentId": 2,
+                        "enabled": 1,
+                        "children": null,
+                        "roles": null,
+                        "meta": {
+                            "access": null,
+                            "title": "运动员看板",
+                            "icon": "ios-basket-outline",
+                            "hideInMenu": false,
+                            "noCache": true
+                        },
+                        "url": "",
+                        "hideInMenu": false
+                    }
+                ],
+                "roles": null,
+                "meta": {
+                    "access": null,
+                    "title": "运动员看板",
+                    "icon": "ios-basket-outline",
+                    "hideInMenu": false,
+                    "noCache": true
+                },
+                "url": "",
+                "hideInMenu": false
+            },
+            {
+                "id": 3,
+                "path": "/teamKanban",
+                "component": "views/kanbanOfData/teamKanban/index",
+                "name": "teamKanban",
+                "title": "运动队看板",
+                "icon": "ios-basket-outline",
+                "parentId": 1,
+                "enabled": 1,
+                "children": [
+                    {
+                        "id": 3,
+                        "path": "allData",
+                        "component": "views/kanbanOfData/teamKanban/allData",
+                        "name": "allDataTeam",
+                        "title": "运动队看板",
+                        "icon": "ios-basket-outline",
+                        "parentId": 2,
+                        "enabled": 1,
+                        "children": null,
+                        "roles": null,
+                        "meta": {
+                            "access": null,
+                            "title": "运动队看板",
+                            "icon": "ios-basket-outline",
+                            "hideInMenu": false,
+                            "noCache": true
+                        },
+                        "url": "",
+                        "hideInMenu": false
+                    }
+                ],
+                "roles": null,
+                "meta": {
+                    "access": null,
+                    "title": "运动队看板",
+                    "icon": "ios-basket-outline",
+                    "hideInMenu": false,
+                    "noCache": true
+                },
+                "url": "",
+                "hideInMenu": false
+            }
+        ]
+    },
+    {
         "id": 8,
         "path": "/accountAndPermission",  // 第一级菜单前面有斜杠： /
         "component": "Layout",
