@@ -87,7 +87,7 @@
                 </el-col>
                 <el-col :span="6">
                     <el-form-item prop="project">
-                        <el-select v-model="searchForm.project" placeholder="请选择测评项目">
+                        <el-select v-model="searchForm.project" placeholder="请选择项目">
                             <el-option
                                     v-for="item in bigProList"
                                     :label="item.dicValue"
@@ -101,11 +101,13 @@
             <el-row :gutter="20" class="search-item">
                 <el-col :span="6">
                     <el-form-item prop="project">
-                        <el-date-picker style="width:100%"
+                        <el-date-picker
                                 v-model="searchForm.uploadDate"
-                                type="date"
-                                value-format="yyyy-MM-dd"
-                                placeholder="请选择上传时间">
+                                type="datetimerange"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                                range-separator="至"
+                                start-placeholder="上传开始时间"
+                                end-placeholder="上传截止时间">
                         </el-date-picker>
                     </el-form-item>
                 </el-col>
@@ -127,16 +129,12 @@
 
 <script>
     import mixin from '@/utils/mixins'
-    import {findStaffName} from '@/api/accountAndPermission'
     import {getTestTypeOrTestProjectList} from '@/api/evaluationManagement'
     export default ({
         mixins: [mixin],
         data() {
             return {
-                // nameLoading: false, // 搜索姓名时候的loading
-                // nameList: [],  // 姓名列表
-                // options: [],   // 远程搜索姓名时使用
-                testTypeList: [], //测评类型
+                testTypeList: [],    //测评类型
                 testProjectList: [], //测评项目
                 searchForm: {
                     id: null,
@@ -168,30 +166,7 @@
                 this.$emit('handleFilter', this.searchForm)
             },
 
-            // 人员管理模糊搜索姓名
-            getPersonName(query) {
-                if (query !== '') {
-                    this.nameLoading = true;
-                    findStaffName({staffName: query}).then(res => {
-                        if(res.data.code == 200) {
-                            this.nameLoading = false;
-
-                            this.nameList = res.data.data.map(item => {
-                                return { value: item, label: item };
-                            });
-                            this.options = this.nameList.filter(item => {
-                                return item.label.toLowerCase()
-                                    .indexOf(query.toLowerCase()) > -1;
-                            });
-                        }
-                    })
-
-
-                } else {
-                    this.options = [];
-                }
-            },
-
+            // 获取测评类型/测评项目列表
             getTypeOrProjectList(param, typeName) {
                 getTestTypeOrTestProjectList({
                     dataLevel: param.dataLevel,
@@ -217,7 +192,6 @@
                    this.getTypeOrProjectList({dataLevel: '2', queryId: val}, 'testProjectList');//测评项目查询
                }
             }
-
         },
     })
 </script>

@@ -13,12 +13,12 @@
                       style="width: 100%;">
                 <el-table-column align="center" label="文档id">
                     <template slot-scope="scope">
-                        <span>{{scope.row.trainMonthId}}</span>
+                        <span>{{scope.row.docId}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="文档名称">
                     <template slot-scope="scope">
-                        <span>{{scope.row.trainMonth}}</span>
+                        <span>{{scope.row.docName}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="项目">
@@ -53,7 +53,7 @@
             </div>
         </el-row>
 
-        <import-file ref="importFile"></import-file>
+        <import-file ref="importFile" @saveDoc="getList"></import-file>
     </div>
 </template>
 
@@ -61,6 +61,7 @@
     import mixins from '@/utils/mixins'
     import searchSection from '../components/searchSection'
     import importFile from './components/importFile'
+    import {getSportsDocList, deleteSportsDoc} from '@/api/evaluationManagement'
     export default {
         components: {searchSection, importFile},
         mixins: [mixins],
@@ -77,28 +78,26 @@
         },
 
         created() {
-            // this.getList();
+            this.getList();
         },
 
         methods: {
             // 获取列表
             getList(formData = {}) {
                 this.listLoading = true;
-                getMonthTrainPlanList({
+                getSportsDocList({
                     currentPage: this.listQuery.currentPage,
                     pageSize: this.listQuery.pageSize,
-                    trainMonthId: formData.id,
+                    docId: formData.id,
+                    docName: formData.fileName,
                     projectId: formData.project,
-                    teamId: formData.team,
-                    coachId: formData.coach,
-                    trainMonth: formData.trainYear,
-                    summary: formData.summary && parseInt(formData.summary)
+                    uploadStartTime: formData.uploadDate && formData.uploadDate[0],
+                    uploadEndTime: formData.uploadDate && formData.uploadDate[1]
                 }).then(res => {
                     this.listLoading = false;
                     if (res.data.code === 200) {
                         const data = res.data.data;
                         this.list = data.list;
-                        this.extInfo = data.extInfo;
                         this.total = data.pagination.total;
                     } else {
                         this.$message({
@@ -118,12 +117,12 @@
 
             // 预览
             previewItem(row) {
-
+                window.open(row.docUrl, '_blank');
             },
 
             // 下载
             downLoadItem(row) {
-
+                window.location.href = row.docUrl;
             },
 
             // 删除
@@ -133,7 +132,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    aaa({id: row.id}).then(res => {
+                    deleteSportsDoc({docId: row.docId}).then(res => {
                         if(res.data.code == 200) {
                             this.$message({
                                 message: '删除成功',

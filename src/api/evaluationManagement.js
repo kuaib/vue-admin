@@ -47,7 +47,7 @@ export function getTargetList(params) {
     })
 }
 
-// 查询多条件下的运动员指标折线图
+// 获取三个echarts图表数据
 export function getAthleteCharts(params) {
     return request({
         url: '/sports/sports_test/analyze',
@@ -55,7 +55,33 @@ export function getAthleteCharts(params) {
         params
     })
 }
+//-----------------------------------//
+// 获取队伍分析报告列表
+export function getSportsDocList(params) {
+    return request({
+        url: '/sports/sports_doc/list',
+        method: 'get',
+        params
+    })
+}
 
+// 删除文档
+export function deleteSportsDoc(data) {
+    return request({
+        url: '/sports/sports_doc/delete',
+        method: 'post',
+        data
+    })
+}
+
+// 保存文档信息
+export function saveSportsDoc(data) {
+    return request({
+        url: '/sports/sports_doc/save',
+        method: 'post',
+        data
+    })
+}
 
 
 

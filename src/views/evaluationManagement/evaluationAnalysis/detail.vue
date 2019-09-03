@@ -1,6 +1,13 @@
 <template>
     <div>
+        <!--运动员测试指标变化趋势图-->
         <athlete-charts></athlete-charts>
+
+        <!--运动队测试指标变化趋势图-->
+        <team-charts></team-charts>
+
+        <!--运动员测试指标对比图-->
+        <athlete-target-chart></athlete-target-chart>
     </div>
 </template>
 
