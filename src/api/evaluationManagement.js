@@ -12,41 +12,49 @@ export function getSportsList(params) {
 
 // 查询训练类型和训练项目
 export function getTestTypeOrTestProjectList(params) {
-  return request({
-    url: '/sports/sports_test/getTestType',
-    method: 'get',
-    params
-  })
+    return request({
+        url: '/sports/sports_test/getTestType',
+        method: 'get',
+        params
+    })
 }
 
 
 // 上传excel
 export function importTestFile(params) {
-  return request({
-    url: '/sports/sports_test/importFile',
-    method: 'post',
-    data
-  })
+    return request({
+        url: '/sports/sports_test/importFile',
+        method: 'post',
+        data
+    })
 }
 
 // 获取详细信息
 export function getTestDetail(params) {
-  return request({
-    url: '/sports/sports_test/detail',
-    method: 'get',
-    params
-  })
+    return request({
+        url: '/sports/sports_test/detail',
+        method: 'get',
+        params
+    })
 }
 
 // 获取指标列表
 export function getTargetList(params) {
-  return request({
-    url: '/sports/sports_test/getTestAttribute',
-    method: 'get',
-    params
-  })
+    return request({
+        url: '/sports/sports_test/getTestAttribute',
+        method: 'get',
+        params
+    })
 }
 
+// 查询多条件下的运动员指标折线图
+export function getAthleteCharts(params) {
+    return request({
+        url: '/sports/sports_test/analyze',
+        method: 'get',
+        params
+    })
+}
 
 
 

@@ -123,7 +123,15 @@
             //上传成功
             importSuccess(response, file, fileList){
                 this.btnLoading = false;
-                this.cancelAct('save');
+                if(response.code != 200) {
+                    this.$message({
+                        message: response.msg,
+                        type: 'warning'
+                    })
+                } else {
+                    this.cancelAct('save');
+                }
+
             },
             //上传失败
             importError(err, file, fileList){
