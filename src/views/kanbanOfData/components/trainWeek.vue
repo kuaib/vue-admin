@@ -4,8 +4,9 @@
               style="width: 100%;">
         <el-table-column align="center" :label="!isSummary?'周计划id':'日计划id'">
             <template slot-scope="scope">
-                <span v-if="!isSummary">{{scope.row.trainWeekId}}</span>
-                <span v-else>{{scope.row.trainDayId}}</span>
+<!--                <span v-if="!isSummary">{{scope.row.trainWeekId}}</span>-->
+<!--                <span v-else>{{scope.row.trainDayId}}</span>-->
+              <span>{{scope.row.trainWeekId}}</span>
             </template>
         </el-table-column>
 
