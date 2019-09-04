@@ -58,10 +58,16 @@
 
 <script>
     export default {
-        props: ['isSummary'],
-        data() {
-            return {
-                list: []
+        props: {
+            list: {
+                type: Array,
+                default: () => {
+                    return []
+                }
+            },
+            isSummary: {
+                type: Boolean,
+                default: false
             }
         },
 

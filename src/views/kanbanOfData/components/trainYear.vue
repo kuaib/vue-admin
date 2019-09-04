@@ -48,9 +48,12 @@
 
 <script>
     export default {
-        data() {
-            return {
-                list: [],
+        props: {
+            list: {
+                type: Array,
+                default: () => {
+                    return []
+                }
             }
         },
 
@@ -58,7 +61,7 @@
             // 去详情
             toEdit(row) {
                 this.$router.push({path: '/yearTraining/edit', query: {id: row.trainId, status: row.status}})
-            },
+            }
         }
     }
 </script>

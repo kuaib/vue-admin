@@ -49,10 +49,16 @@
 
 <script>
     export default {
-        props: ['isSummary'],
-        data() {
-            return {
-                list: []
+        props: {
+            list: {
+                type: Array,
+                default: () => {
+                    return []
+                }
+            },
+            isSummary: {
+                type: Boolean,
+                default: false
             }
         },
 
@@ -68,7 +74,7 @@
                 }
                 this.$router.push(
                     {path: path, query: {id: row.trainMonthId, status: row.status, updatedTime: updatedTime, canOperate: false }})
-            },
+            }
         }
     }
 </script>

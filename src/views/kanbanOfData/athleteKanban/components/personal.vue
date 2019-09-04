@@ -84,34 +84,13 @@
 
 <script>
     export default {
-        props: ['id'],
-        data() {
-            return {
-                athleteName: '',  // 运动员名称
-                personForm: { // 个人信息
-                    staffName: null,
-                    gender: null,
-                    identity: null,
-                    birthday: null,
-                    height: null,
-                    weight: null,
-                    nativePlace: null,
-                    photo: null,
-                    jobName: null,
-                    jobLevel: null,
-                    projectName: null,
-                    childProject: null,
-                    teamName: null,
-                    coachName: null,
-                    oldProjectName: null,
-                    oldProjectDuration: null,
-                    joinDate: null,
-                },
+        props: {
+            personForm: {  // 运动员信息
+                type: Object,
+                default: () => {
+                    return {}
+                }
             }
-        },
-
-        methods: {
-
         }
     }
 </script>

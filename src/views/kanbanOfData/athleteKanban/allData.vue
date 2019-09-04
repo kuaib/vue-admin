@@ -2,13 +2,13 @@
 <template>
     <div class="kanban-wrapper">
         <!--搜索-->
-        <searchSection typeName="athlete" @handleFilter="handleFilter" @getName="getName"></searchSection>
+        <searchSection typeName="athlete" @getAllData="getAllData"></searchSection>
 
         <el-row class="all-info">
             <!--个人信息-->
             <el-collapse v-model="activeNames">
-                <el-collapse-item title="aaa的个人信息" name="1" style="margin-bottom: 0">
-                    <personal :id="id"></personal>
+                <el-collapse-item :title="allData.staff&&allData.staff.staffName+'的个人信息'" name="1" style="margin-bottom: 0">
+                    <personal :personForm="allData.staff"></personal>
                 </el-collapse-item>
             </el-collapse>
 
@@ -18,7 +18,7 @@
             <!--最近年训练计划-->
             <el-collapse v-model="activeNames">
                 <el-collapse-item title="最近年训练计划" name="2">
-                    <train-year></train-year>
+                    <train-year :list="allData.year"></train-year>
                 </el-collapse-item>
             </el-collapse>
 
@@ -29,7 +29,7 @@
                         <span class="des-title" :class="{titleAct:!monthFlag}" @click.prevent.stop="monthFlag=false">最近月训练计划</span>
                         <span class="des-title" :class="{titleAct:monthFlag}" @click.prevent.stop="monthFlag=true">最近月训练计划总结</span>
                     </template>
-                    <train-month :isSummary="monthFlag"></train-month>
+                    <train-month :isSummary="monthFlag" :list="allData.month"></train-month>
                 </el-collapse-item>
             </el-collapse>
 
@@ -40,14 +40,14 @@
                         <span class="des-title" :class="{titleAct:!weekFlag}" @click.prevent.stop="weekFlag=false">最近周训练计划</span>
                         <span class="des-title" :class="{titleAct:weekFlag}" @click.prevent.stop="weekFlag=true">最近周训练计划总结</span>
                     </template>
-                    <train-week :isSummary="weekFlag"></train-week>
+                    <train-week :isSummary="weekFlag" :list="allData.week"></train-week>
                 </el-collapse-item>
             </el-collapse>
 
             <!--全部比赛情况-->
             <el-collapse v-model="activeNames">
                 <el-collapse-item title="全部比赛情况" name="5">
-                    <all-match></all-match>
+                    <all-match :list="allData.match"></all-match>
                 </el-collapse-item>
             </el-collapse>
         </el-row>
@@ -63,22 +63,36 @@
     import trainMonth from '../components/trainMonth'
     import trainWeek from '../components/trainWeek'
     import allMatch from '../components/allMatch'
+    import {getAthleteData} from '@/api/kanbanOfData'
     export default {
         mixins: [mixins],
         components: {searchSection, personal, mostTrain, trainYear, trainMonth, trainWeek, allMatch},
         data() {
             return {
-                id: '',  // 运动员id
+                athleteId: '',  // 运动员id
+                teamId: '',     // 队伍id
+                allData: {},    // 所有的数据
                 activeNames: ['1'],
                 monthFlag: false,  // 是否是月训练总结
-                weekFlag: false,  // 是否是周训练总结
+                weekFlag: false,   // 是否是周训练总结
             }
         },
 
         methods: {
-            // 从子组件中获取到当前运动员的id
-            getName(obj) {
-                this.id = obj.id;
+            // 获取看板数据
+            getAllData(obj) {
+                this.athleteId = obj.athleteId;
+                this.teamId = obj.teamId;
+                getAthleteData({teamId: this.teamId, athleteId: this.athleteId}).then(res => {
+                    if(res.data.code == 200) {
+                        this.allData = res.data.data;
+                    } else {
+                        this.$message({
+                            message: res.data.msg,
+                            type: 'warning'
+                        });
+                    }
+                })
             }
         }
     }

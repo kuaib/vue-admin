@@ -112,13 +112,11 @@
 
         created() {
             this.getAllList();     // 获取基础下拉
-            this.getAthleteList(); // 获取运动员列表
         },
         methods: {
             // 搜索
             handleFilter() {
-                this.$emit('handleFilter', this.searchForm);
-                this.$emit('getName', {id: typeName === 'athlete' ? this.searchForm.athlete : this.searchForm.team})
+                this.$emit('getAllData', {athleteId: this.searchForm.athlete, teamId: this.searchForm.team})
             }
         },
 
