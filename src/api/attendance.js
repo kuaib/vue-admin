@@ -55,6 +55,7 @@ export function monthFileDownload(params) {
     return request({
         url: '/sports/sports_attendance/downloadExcel',
         method: 'get',
+        responseType: 'arraybuffer',
         params
     })
 }

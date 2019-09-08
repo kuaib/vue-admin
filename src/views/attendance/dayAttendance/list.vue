@@ -35,11 +35,11 @@
                         <span>{{scope.row.projectName}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column align="center" label="小项">
-                    <template slot-scope="scope">
-                        <span>{{scope.row.username}}</span>
-                    </template>
-                </el-table-column>
+<!--                <el-table-column align="center" label="小项">-->
+<!--                    <template slot-scope="scope">-->
+<!--                        <span>{{scope.row.username}}</span>-->
+<!--                    </template>-->
+<!--                </el-table-column>-->
                 <el-table-column align="center" label="教练员">
                     <template slot-scope="scope">
                         <span>{{scope.row.coachName}}</span>

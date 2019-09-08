@@ -29,11 +29,11 @@
                         <span>{{scope.row.projectName}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column align="center" label="小项">
-                    <template slot-scope="scope">
-                        <span>{{scope.row.username}}</span>
-                    </template>
-                </el-table-column>
+<!--                <el-table-column align="center" label="小项">-->
+<!--                    <template slot-scope="scope">-->
+<!--                        <span>{{scope.row.username}}</span>-->
+<!--                    </template>-->
+<!--                </el-table-column>-->
                 <el-table-column align="center" label="教练员">
                     <template slot-scope="scope">
                         <span>{{scope.row.coachName}}</span>
@@ -58,20 +58,16 @@
                 </el-pagination>
             </div>
         </el-row>
-
-        <!--预览表格-->
-        <preview-table :list="previewList"></preview-table>
     </div>
 </template>
 
 <script>
     import changeTabBar from '../components/changeTabBar'
     import searchSection from '../components/searchSection'
-    import previewTable from './components/preview'
     import mixins from '@/utils/mixins'
-    import {getMonthAttendanceList, monthFilePreview, monthFileDownload} from '@/api/attendance'
+    import {getMonthAttendanceList, monthFileDownload} from '@/api/attendance'
     export default {
-        components: {changeTabBar, searchSection, previewTable},
+        components: {changeTabBar, searchSection},
         mixins: [mixins],
         data() {
             return {
@@ -121,29 +117,30 @@
 
             // 预览
             previewItem(row) {
-                monthFilePreview({
-                    coachId: row.coachId,
-                    projectId: row.projectId,
-                    attDate: row.attDate,
-                }).then(res => {
-                    if(res.data.code == 200) {
-                        this.previewList = res.data.data;
-                    } else {
-                        this.$message({
-                            message: res.data.msg,
-                            type: 'warning'
-                        })
-                    }
-                })
+                this.$router.push({path: '/monthAttendance/preview', query: {coachId: row.coachId, projectId: row.projectId, attDate: row.attDate}})
             },
 
             // 下载
             downLoadItem(row) {
-                // monthFileDownload({
-                //     coachId: row.coachId,
-                //     projectId: row.projectId,
-                //     attDate: row.attDate,
-                // })
+                monthFileDownload({
+                    coachId: row.coachId,
+                    projectId: row.projectId,
+                    attDate: row.attDate,
+                }).then(res => {
+                    // let blob = new Blob([res.data], {type: 'application/vnd.ms-excel'})
+                    let blob = new Blob([res.data], {type: 'application/msexcel'})
+                    let objectUrl = URL.createObjectURL(blob);
+                    //window.location.href = objectUrl;
+                    var filename = row.attDate + row.projectName + "国家集训队考勤情况表" ;
+                    let link = document.createElement('a');
+                    link.style.display = 'none';
+                    link.href = objectUrl;
+                    link.setAttribute('download', filename + '.xlsx');
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link); //下载完成移除元素
+                    window.URL.revokeObjectURL(objectUrl); //释放掉blob对象
+                })
             },
         }
     }

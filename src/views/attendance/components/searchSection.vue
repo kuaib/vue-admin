@@ -17,16 +17,16 @@
                         </el-select>
                     </el-form-item>
                 </el-col>
-                <el-col :span="6">
-                    <el-form-item prop="smallPro">
-                        <el-select v-model="searchForm.smallPro" placeholder="请选择小项">
-                            <el-option v-for="(item,idx) in smallProList"
-                                       :label="item"
-                                       :value="item"
-                                       :key="idx"></el-option>
-                        </el-select>
-                    </el-form-item>
-                </el-col>
+<!--                <el-col :span="6">-->
+<!--                    <el-form-item prop="smallPro">-->
+<!--                        <el-select v-model="searchForm.smallPro" placeholder="请选择小项">-->
+<!--                            <el-option v-for="(item,idx) in smallProList"-->
+<!--                                       :label="item"-->
+<!--                                       :value="item"-->
+<!--                                       :key="idx"></el-option>-->
+<!--                        </el-select>-->
+<!--                    </el-form-item>-->
+<!--                </el-col>-->
             </el-row>
             <el-row :gutter="20" class="search-item">
                 <el-col :span="6" v-if="typeName==='day'">
