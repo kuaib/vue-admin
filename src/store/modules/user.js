@@ -1311,6 +1311,155 @@ let aa = [
         ]
     },
     {
+        "id": 13,
+        "path": "/attendance",
+        "component": "Layout",
+        "name": "",
+        "title": "考勤管理",
+        "icon": "ios-color-wand",
+        "parentId": 0,
+        "enabled": 1,
+        "roles": null,
+        "meta": {
+            "access": null,
+            "title": "考勤管理",
+            "icon": "ios-color-wand",
+            "hideInMenu": false
+        },
+        "url": "",
+        "hideInMenu": false,
+        "children": [
+            {
+                "id": 3,
+                "path": "/dayAttendance",
+                "component": "views/attendance/dayAttendance",
+                "name": "dayAttendance",
+                "title": "每日考勤",
+                "icon": "ios-basket-outline",
+                "parentId": 1,
+                "enabled": 1,
+                "children": [
+                    {
+                        "id": 3,
+                        "path": "list",
+                        "component": "views/attendance/dayAttendance/list",
+                        "name": "dayAttendanceList",
+                        "title": "每日考勤",
+                        "icon": "ios-basket-outline",
+                        "parentId": 2,
+                        "enabled": 1,
+                        "children": null,
+                        "roles": null,
+                        "meta": {
+                            "access": null,
+                            "title": "每日考勤",
+                            "icon": "ios-basket-outline",
+                            "hideInMenu": false,
+                            "noCache": true
+                        },
+                        "url": "",
+                        "hideInMenu": false
+                    },
+                    {
+                        "id": 3,
+                        "path": "add",
+                        "component": "views/attendance/dayAttendance/add",
+                        "name": "dayAttendanceAdd",
+                        "title": "创建每日考勤",
+                        "icon": "ios-basket-outline",
+                        "parentId": 2,
+                        "enabled": 1,
+                        "children": null,
+                        "roles": null,
+                        "meta": {
+                            "access": null,
+                            "title": "创建每日考勤",
+                            "icon": "ios-basket-outline",
+                            "hideInMenu": true,
+                            "noCache": true
+                        },
+                        "url": "",
+                        "hideInMenu": true
+                    },
+                    {
+                        "id": 3,
+                        "path": "edit",
+                        "component": "views/attendance/dayAttendance/edit",
+                        "name": "dayAttendanceEdit",
+                        "title": "编辑每日考勤",
+                        "icon": "ios-basket-outline",
+                        "parentId": 2,
+                        "enabled": 1,
+                        "children": null,
+                        "roles": null,
+                        "meta": {
+                            "access": null,
+                            "title": "编辑每日考勤",
+                            "icon": "ios-basket-outline",
+                            "hideInMenu": true,
+                            "noCache": true
+                        },
+                        "url": "",
+                        "hideInMenu": true
+                    },
+                ],
+                "roles": null,
+                "meta": {
+                    "access": null,
+                    "title": "每日考勤",
+                    "icon": "ios-basket-outline",
+                    "hideInMenu": false,
+                    "noCache": true
+                },
+                "url": "",
+                "hideInMenu": false
+            },
+            {
+                "id": 3,
+                "path": "/monthAttendance",
+                "component": "views/attendance/monthAttendance/index",
+                "name": "monthAttendance",
+                "title": "月度考勤统计",
+                "icon": "ios-basket-outline",
+                "parentId": 1,
+                "enabled": 1,
+                "children": [
+                    {
+                        "id": 3,
+                        "path": "list",
+                        "component": "views/attendance/monthAttendance/list",
+                        "name": "monthAttendanceList",
+                        "title": "月度考勤统计",
+                        "icon": "ios-basket-outline",
+                        "parentId": 2,
+                        "enabled": 1,
+                        "children": null,
+                        "roles": null,
+                        "meta": {
+                            "access": null,
+                            "title": "月度考勤统计",
+                            "icon": "ios-basket-outline",
+                            "hideInMenu": false,
+                            "noCache": true
+                        },
+                        "url": "",
+                        "hideInMenu": false
+                    }
+                ],
+                "roles": null,
+                "meta": {
+                    "access": null,
+                    "title": "月度考勤统计",
+                    "icon": "ios-basket-outline",
+                    "hideInMenu": false,
+                    "noCache": true
+                },
+                "url": "",
+                "hideInMenu": false
+            },
+        ]
+    },
+    {
         "id": 9,
         "path": "/systemConfig",  // 第一级菜单前面有斜杠： /
         "component": "Layout",
