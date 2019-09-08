@@ -39,7 +39,7 @@
                         <el-form-item label="视频上传：" prop="purpose">
                             <el-upload
                                     class="avatar-uploader"
-                                    action="api/sports/sports_train_day/uploadVideo"
+                                    action="sports/sports_train_day/uploadVideo"
                                     :on-success="uploadSuccess">
                                 <el-button size="small" type="primary">点击上传</el-button>
                             </el-upload>

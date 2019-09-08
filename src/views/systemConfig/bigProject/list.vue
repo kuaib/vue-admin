@@ -7,7 +7,7 @@
         <!--表格-->
         <el-row>
             <div class="table-title clearfix">
-                <h3>账号列表</h3>
+                <h3>项目列表</h3>
                 <el-button type="success" @click="createItem">创建大项</el-button>
             </div>
             <el-table :data="list" v-loading="listLoading" border fit highlight-current-row

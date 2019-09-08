@@ -56,7 +56,7 @@
                             :on-success="importSuccess"
                             :on-error="importError"
                             :data="searchForm"
-                            action="api/sports/sports_test/importFile">
+                            action="sports/sports_test/importFile">
                             <el-button size="small" type="primary">点击上传</el-button>
                         </el-upload>
                     </el-form-item>

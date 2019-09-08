@@ -141,7 +141,7 @@
                                 multiple
                                 :on-change="changeFile"
                                 :file-list="fileList"
-                                action="api/sports/sports_train_report/uploadFile">
+                                action="sports/sports_train_report/uploadFile">
                             <el-button size="small" type="primary">点击上传</el-button>
                         </el-upload>
                     </el-form-item>

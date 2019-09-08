@@ -14,7 +14,7 @@
                                 :limit=limit
                                 :on-success="uploadSuc"
                                 :file-list="fileList"
-                                action="api/sports/sports_doc/uploadDoc">
+                                action="sports/sports_doc/uploadDoc">
                             <el-button size="small" type="primary">点击上传</el-button>
                         </el-upload>
                     </el-form-item>

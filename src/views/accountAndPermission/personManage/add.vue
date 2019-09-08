@@ -75,7 +75,7 @@
                         <el-form-item label="个人照片：">
                             <el-upload
                                     class="avatar-uploader"
-                                    action="api/sports/sports_staff/upload"
+                                    action="sports/sports_staff/upload"
                                     :show-file-list="false"
                                     :on-success="uploadSuccess"
                                     :before-upload="beforeUpload">
