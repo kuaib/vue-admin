@@ -122,25 +122,8 @@
 
             // 下载
             downLoadItem(row) {
-                monthFileDownload({
-                    coachId: row.coachId,
-                    projectId: row.projectId,
-                    attDate: row.attDate,
-                }).then(res => {
-                    // let blob = new Blob([res.data], {type: 'application/vnd.ms-excel'})
-                    let blob = new Blob([res.data], {type: 'application/msexcel'})
-                    let objectUrl = URL.createObjectURL(blob);
-                    //window.location.href = objectUrl;
-                    var filename = row.attDate + row.projectName + "国家集训队考勤情况表" ;
-                    let link = document.createElement('a');
-                    link.style.display = 'none';
-                    link.href = objectUrl;
-                    link.setAttribute('download', filename + '.xlsx');
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link); //下载完成移除元素
-                    window.URL.revokeObjectURL(objectUrl); //释放掉blob对象
-                })
+                window.location.href = `/sports/sports_attendance/downloadExcel?coachId=${row.coachId}&projectId=${row.projectId}&attDate=${row.attDate}`
+
             },
         }
     }
