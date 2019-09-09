@@ -69,15 +69,16 @@
                     <el-table-column label="编号" type="index" width="50"></el-table-column>
                     <el-table-column prop="name" label="姓名" align="center" header-align="center">
                         <template slot-scope="scope">
-                            <el-select v-if="scope.row.name.editFlag" v-model="scope.row.name.value" placeholder="请选择运动员" v-focus @change="changeStatus(scope,'blur','list'+scope.$index)" :ref="'list'+scope.$index">
-                                <el-option
-                                        v-for="item in athleteList"
-                                        :key="item.dicKey"
-                                        :label="item.dicValue"
-                                        :value="item.dicKey">
-                                </el-option>
-                            </el-select>
-                            <div v-else class="table-item-div" @click="changeStatus(scope,'focus','list'+scope.$index)">{{scope.row.name.label}}</div>
+                            <!--<el-select v-if="scope.row.name.editFlag" v-model="scope.row.name.value" placeholder="请选择运动员" v-focus @change="changeStatus(scope,'blur','list'+scope.$index)" :ref="'list'+scope.$index">-->
+                                <!--<el-option-->
+                                        <!--v-for="item in athleteList"-->
+                                        <!--:key="item.dicKey"-->
+                                        <!--:label="item.dicValue"-->
+                                        <!--:value="item.dicKey">-->
+                                <!--</el-option>-->
+                            <!--</el-select>-->
+                            <!--<div v-else class="table-item-div" @click="changeStatus(scope,'focus','list'+scope.$index)">{{scope.row.name.label}}</div>-->
+                            <div class="table-item-div">{{scope.row.name.label}}</div>
                         </template>
                     </el-table-column>
                     <el-table-column prop="attendance" label="出勤" align="center" header-align="center">
@@ -128,20 +129,20 @@
                             <div class="table-item-div" v-else @click="toggleStatus(scope,'add')"></div>
                         </template>
                     </el-table-column>
-                    <el-table-column fixed label="操作" width="80" align="center" header-align="center">
-                        <template slot-scope="scope">
-                            <span @click="handleDel(scope.$index)" class="row-act-btns">删除</span>
-                        </template>
-                    </el-table-column>
+                    <!--<el-table-column fixed label="操作" width="80" align="center" header-align="center">-->
+                        <!--<template slot-scope="scope">-->
+                            <!--<span @click="handleDel(scope.$index)" class="row-act-btns">删除</span>-->
+                        <!--</template>-->
+                    <!--</el-table-column>-->
                 </el-table>
-                <div style="text-align:center;margin-top:15px;"><span @click="addRow" class="addBtn">添加</span></div>
+                <!--<div style="text-align:center;margin-top:15px;"><span @click="addRow" class="addBtn">添加</span></div>-->
             </el-row>
         </el-card>
 
         <!--保存-->
         <el-row style="text-align: center;">
-            <el-button type="primary" round @click="cancelAct" style="padding: 12px 35px;">取消</el-button>
-            <el-button type="primary" round @click="onSubmit" :loading="btnLoading" style="padding: 12px 35px;">提 交</el-button>
+            <el-button type="primary" round @click="cancelAct" style="padding: 12px 35px;">取 消</el-button>
+            <el-button type="primary" round @click="onSubmit" :loading="btnLoading" style="padding: 12px 35px;">保 存</el-button>
         </el-row>
     </div>
 </template>
@@ -277,9 +278,22 @@
                     this.baseForm.stage = item.stage.toString();
                     arr.push(obj);
                 });
-                console.log(arr)
                 return arr;
             },
+
+            // 打勾/去掉勾
+            toggleStatus(scope, eventType) {
+                let columnName = scope.column.property;
+                if(eventType === 'add') {
+                    this.list[scope.$index][columnName].editFlag = true;
+                } else if(eventType === 'del') {
+                    this.list[scope.$index][columnName].editFlag = false;
+                }
+            },
+
+
+
+            /*******************暂不需要*********************/
 
             // 增加一条表格行
             addRow() {
@@ -313,15 +327,6 @@
                             this.$refs[refName] && this.$refs[refName].focus();
                         })
                     }
-                }
-            },
-            // 打勾/去掉勾
-            toggleStatus(scope, eventType) {
-                let columnName = scope.column.property;
-                if(eventType === 'add') {
-                    this.list[scope.$index][columnName].editFlag = true;
-                } else if(eventType === 'del') {
-                    this.list[scope.$index][columnName].editFlag = false;
                 }
             },
 
