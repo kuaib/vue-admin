@@ -53,7 +53,7 @@
                              @validateTeam="validateTeam"
                              @getDetail="getDetail"
                              :id="addForm.id"
-                             :athleteList="athleteList"
+                             :personList="personList"
                              :coachList="coachList"
                              :guaranteeList="guaranteeList"
         >
@@ -85,7 +85,7 @@
                     parentPro: null,
                     proManager: null
                 },
-                athleteList: [],
+                personList: [],
                 coachList: [],
                 guaranteeList: [],
                 rules: {
@@ -115,7 +115,7 @@
                 getTeamDetail({teamId: this.addForm.id}).then(res => {
                     if(res.data.code == 200) {
                         let sportsTeamVo = res.data.data.sportsTeamVo; // 队伍信息
-                        this.athleteList = res.data.data.athleteList;  // 关联人员信息
+                        this.personList = res.data.data.athleteList;  // 关联人员信息
                         this.coachList = res.data.data.coachList;      // 关联教练信息
                         this.guaranteeList = res.data.data.guaranteeList;  // 关联保障队信息
 
@@ -149,12 +149,12 @@
                             this.$refs.associatedAthletes.relationLoading = false;
                             this.$refs.associatedAthletes.btnLoading = false;
                             if(res.data.code == 200) {
-                                this.$refs.associatedAthletes.resetForm('addForm');
+                                this.$refs.associatedAthletes.restMyForm();
                                 this.$message({
                                     message: '保存成功',
                                     type: 'success'
                                 });
-                                this.reload();
+                                this.cancelAct('save');
                             } else {
                                 this.btnLoading = false;
                                 this.$message({

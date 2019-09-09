@@ -113,7 +113,7 @@
                             this.$refs.associatedAthletes.relationLoading = false;
                             this.$refs.associatedAthletes.btnLoading = false;
                             if(res.data.code == 200) {
-                                this.$refs.associatedAthletes.resetForm('addForm');
+                                this.$refs.associatedAthletes.restMyForm();
                                 this.$message({
                                     message: '保存成功',
                                     type: 'success'

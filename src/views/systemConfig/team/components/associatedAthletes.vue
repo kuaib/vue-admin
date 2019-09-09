@@ -4,7 +4,7 @@
 
         <template>
             <div class="tab-title">关联运动员</div>
-            <person-list :list="athleteList" types="1" @removeRelation="removeRelation" @toDetail="toDetail"></person-list>
+            <person-list :list="personList" types="1" @removeRelation="removeRelation" @toDetail="toDetail"></person-list>
             <el-row class="table-add-btn">
                 <span @click="createItem(1)">新增>></span>
             </el-row>
@@ -130,7 +130,7 @@
             }
         },
         props: {
-            athleteList: { // 关联的运动员列表
+            personList: { // 关联的运动员列表
                 type: Array,
                 default: () => {
                     return [];
@@ -243,6 +243,14 @@
                 } else if(types == 3) {
                     return '保障团队';
                 }
+            },
+
+            // 清空表单
+            restMyForm() {
+                this.addForm.name = null;
+                this.addForm.position = null;
+                this.addForm.positionLevel = null;
+                this.addForm.birthday = null;
             }
         }
     }
