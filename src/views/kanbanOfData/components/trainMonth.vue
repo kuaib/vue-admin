@@ -1,7 +1,7 @@
 <!--最近月训练计划-->
 <template>
     <el-table :data="list" border fit highlight-current-row
-              style="width: 100%;">
+              style="width: 100%;" :header-cell-style="{background:'#eef1f6',color:'#606266'}">
         <el-table-column align="center" label="月计划id">
             <template slot-scope="scope">
                 <span>{{scope.row.trainMonthId}}</span>

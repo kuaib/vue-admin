@@ -73,7 +73,7 @@
             <el-row :gutter="20" class="search-item">
                 <el-col :span="6">
                     <el-form-item prop="id">
-                        <el-input placeholder="请输入队伍di" v-model="teamForm.id"></el-input>
+                        <el-input placeholder="请输入队伍id" v-model="teamForm.id"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">

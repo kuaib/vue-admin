@@ -11,15 +11,15 @@
                 <el-button type="success" @click="createAccount">创建账号</el-button>
             </div>
             <el-table :data="list" v-loading="listLoading" border fit highlight-current-row
-                      style="width: 100%;">
+                      style="width: 100%;" :header-cell-style="{background:'#eef1f6',color:'#606266'}">
                 <el-table-column align="center" label="账号id">
                     <template slot-scope="scope">
                         <span>{{scope.row.accountId}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column align="center" label="姓名">
+                <el-table-column align="center" label="账号">
                     <template slot-scope="scope">
-                        <span>{{scope.row.staffName}}</span>
+                        <span>{{scope.row.username}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="角色">
@@ -27,9 +27,9 @@
                         <span>{{scope.row.roleName}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column align="center" label="账号">
+                <el-table-column align="center" label="姓名">
                     <template slot-scope="scope">
-                        <span>{{scope.row.username}}</span>
+                        <span>{{scope.row.staffName}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="账号状态">

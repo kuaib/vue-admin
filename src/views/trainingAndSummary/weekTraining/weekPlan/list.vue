@@ -14,7 +14,7 @@
                 <el-button type="success" @click="addNew" v-if="extInfo.canOperate&&!isSummary">创建周计划</el-button>
             </div>
             <el-table :data="list" v-loading="listLoading" border fit highlight-current-row
-                      style="width: 100%;">
+                      style="width: 100%;" :header-cell-style="{background:'#eef1f6',color:'#606266'}">
                 <el-table-column align="center" :label="typeName+'id'">
                     <template slot-scope="scope">
                         <span v-if="!isSummary">{{scope.row.trainWeekId}}</span>

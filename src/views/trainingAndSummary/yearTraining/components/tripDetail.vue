@@ -2,7 +2,7 @@
 <template>
     <div class="trip-detail-wrapper">
         <el-table :data="list" v-loading="listLoading" border fit highlight-current-row empty-text="暂无训练行程"
-                  style="width: 100%;">
+                  style="width: 100%;" :header-cell-style="{background:'#eef1f6',color:'#606266'}">
             <el-table-column
                     width="60px"
                     align="center" label="行程序号"

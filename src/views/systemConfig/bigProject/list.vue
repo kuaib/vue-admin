@@ -11,7 +11,7 @@
                 <el-button type="success" @click="createItem">创建大项</el-button>
             </div>
             <el-table :data="list" v-loading="listLoading" border fit highlight-current-row
-                      style="width: 100%;">
+                      style="width: 100%;" :header-cell-style="{background:'#eef1f6',color:'#606266'}">
                 <el-table-column align="center" label="大项id">
                     <template slot-scope="scope">
                         <span>{{scope.row.projectId}}</span>

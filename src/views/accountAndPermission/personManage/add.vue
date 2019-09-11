@@ -161,7 +161,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="8">
-                        <el-form-item label="教练员：" prop="coach">
+                        <el-form-item label="TA的教练员：" prop="coach">
                             <el-select v-model="businessForm.coach" placeholder="请选择教练员">
                                 <el-option
                                         v-for="item in coachInfoList"
@@ -249,18 +249,20 @@
                 personFormRule: {
                     name: [
                         { required: true, message: '请输入姓名', trigger: 'blur' }
-                    ],
-                    idCard: [
-                        { required: true, message: '请输入身份证', trigger: 'blur' }
                     ]
+                    // ,
+                    // idCard: [
+                    //     { required: true, message: '请输入身份证', trigger: 'blur' }
+                    // ]
                 },
                 rules: {
                     name: [
                         { required: true, message: '请输入姓名', trigger: 'blur' }
-                    ],
-                    idCard: [
-                        { required: true, message: '请输入身份证', trigger: 'blur' }
                     ]
+                    //     ,
+                    // idCard: [
+                    //     { required: true, message: '请输入身份证', trigger: 'blur' }
+                    // ]
                 }
             }
         },
