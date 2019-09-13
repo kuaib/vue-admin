@@ -194,34 +194,38 @@
         methods: {
             // 提交
             onSubmit() {
-                this.btnLoading = true;
-                let attendanceDetails = this.formatList(this.list);
-                saveDayAttendance({
-                    projectName: this.userInfo.projectName,
-                    projectId: this.userInfo.projectId,
-                    coachName: this.userInfo.staffName,
-                    coachId: this.userInfo.staffId,
-                    teamId: this.userInfo.teamId,
-                    teamName: this.userInfo.teamName,
-                    attDate: this.baseForm.date,
-                    stage: this.baseForm.stage,
-                    attendanceDetails: attendanceDetails
-                }).then(res => {
-                    if(res.data.code == 200) {
-                        this.$message({
-                            message: '保存成功',
-                            type: 'success'
-                        });
-                        this.cancelAct('save');
-                    } else {
+                this.$refs.baseForm.validate((valid) => {
+                    if (valid) {
                         this.btnLoading = true;
-                        this.$message({
-                            message: res.data.msg,
-                            type: 'warning'
-                        });
+                        let attendanceDetails = this.formatList(this.list);
+                        saveDayAttendance({
+                            projectName: this.userInfo.projectName,
+                            projectId: this.userInfo.projectId,
+                            coachName: this.userInfo.staffName,
+                            coachId: this.userInfo.staffId,
+                            teamId: this.userInfo.teamId,
+                            teamName: this.userInfo.teamName,
+                            attDate: this.baseForm.date,
+                            stage: this.baseForm.stage,
+                            attendanceDetails: attendanceDetails
+                        }).then(res => {
+                            if(res.data.code == 200) {
+                                this.$message({
+                                    message: '保存成功',
+                                    type: 'success'
+                                });
+                                this.cancelAct('save');
+                            } else {
+                                this.btnLoading = false;
+                                this.$message({
+                                    message: res.data.msg,
+                                    type: 'warning'
+                                });
+                            }
+                        }).catch(() => {
+                            this.btnLoading = true;
+                        })
                     }
-                }).catch(() => {
-                    this.btnLoading = true;
                 })
             },
 

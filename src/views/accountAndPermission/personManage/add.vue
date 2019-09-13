@@ -96,7 +96,7 @@
             <div slot="header" class="clearfix">
                 <span class="section-title">业务信息</span>
             </div>
-            <el-form :model="businessForm" ref="businessForm" :rules="rules" label-width="130px">
+            <el-form :model="businessForm" ref="businessForm" :rules="businessFormRule" label-width="130px">
                 <el-row :gutter="20">
                     <el-col :span="8">
                         <el-form-item label="职位：" prop="job">
@@ -255,14 +255,16 @@
                     //     { required: true, message: '请输入身份证', trigger: 'blur' }
                     // ]
                 },
-                rules: {
-                    name: [
-                        { required: true, message: '请输入姓名', trigger: 'blur' }
+                businessFormRule: {
+                    job: [
+                        { required: true, message: '请选择职位', trigger: 'change' }
+                    ],
+                    team: [
+                        { required: true, message: '请选择运动队', trigger: 'change' }
+                    ],
+                    bigPro: [
+                        { required: true, message: '请选择运动队', trigger: 'change' }
                     ]
-                    //     ,
-                    // idCard: [
-                    //     { required: true, message: '请输入身份证', trigger: 'blur' }
-                    // ]
                 }
             }
         },
@@ -276,50 +278,54 @@
             onSubmit() {
                 this.$refs.personForm.validate((valid) => {
                     if (valid) {
-                        this.btnLoading = true;
-                        saveStaff({
-                            // 人员信息
-                            staffId: null, // 更新的时候使用
-                            staffName: this.personForm.name,
-                            identity: this.personForm.idCard,
-                            gender: parseInt(this.personForm.sex),
-                            birthday: this.personForm.birthday,
-                            height: parseInt(this.personForm.height),
-                            weight: parseInt(this.personForm.weight),
-                            nativePlace: this.personForm.jg,
-                            telphone: this.personForm.phone,
-                            status: this.personForm.status,
-                            photo: this.personForm.photo,
+                        this.$refs.businessForm.validate((valid) => {
+                            if (valid) {
+                                this.btnLoading = true;
+                                saveStaff({
+                                    // 人员信息
+                                    staffId: null, // 更新的时候使用
+                                    staffName: this.personForm.name,
+                                    identity: this.personForm.idCard,
+                                    gender: parseInt(this.personForm.sex),
+                                    birthday: this.personForm.birthday,
+                                    height: parseInt(this.personForm.height),
+                                    weight: parseInt(this.personForm.weight),
+                                    nativePlace: this.personForm.jg,
+                                    telphone: this.personForm.phone,
+                                    status: this.personForm.status,
+                                    photo: this.personForm.photo,
 
-                            // 业务信息
-                            jobName: this.businessForm.job,
-                            jboLevel: parseInt(this.businessForm.level),
-                            projectId: this.businessForm.bigPro,
-                            childProject: this.businessForm.smallPro,
-                            teamId: this.businessForm.team,
-                            coachId: this.businessForm.coach,
-                            oldProjectId: this.businessForm.oldPro,
-                            oldProjectDuration: this.businessForm.trainYear,
-                            joinDate: this.businessForm.joinDate
-                        }).then(res => {
-                            if(res.data.code == 200) {
-                                this.$message({
-                                    message: '保存成功',
-                                    type: 'success'
-                                });
-                                this.cancelAct('save');
+                                    // 业务信息
+                                    jobName: this.businessForm.job,
+                                    jboLevel: parseInt(this.businessForm.level),
+                                    projectId: this.businessForm.bigPro,
+                                    childProject: this.businessForm.smallPro,
+                                    teamId: this.businessForm.team,
+                                    coachId: this.businessForm.coach,
+                                    oldProjectId: this.businessForm.oldPro,
+                                    oldProjectDuration: this.businessForm.trainYear,
+                                    joinDate: this.businessForm.joinDate
+                                }).then(res => {
+                                    if(res.data.code == 200) {
+                                        this.$message({
+                                            message: '保存成功',
+                                            type: 'success'
+                                        });
+                                        this.cancelAct('save');
+                                    } else {
+                                        this.btnLoading = false;
+                                        this.$message({
+                                            message: res.data.msg,
+                                            type: 'warning'
+                                        });
+                                    }
+                                }).catch(() => {
+                                    this.btnLoading = false;
+                                })
                             } else {
-                                this.btnLoading = false;
-                                this.$message({
-                                    message: res.data.msg,
-                                    type: 'warning'
-                                });
+                                return false;
                             }
-                        }).catch(() => {
-                            this.btnLoading = false;
                         })
-                    } else {
-                        return false;
                     }
                 });
             },

@@ -107,6 +107,7 @@
                         this.list = data.list;
                         this.total = data.pagination.total;
                     } else {
+                        this.listLoading = false;
                         this.$message({
                             message: res.data.msg,
                             type: 'warning'

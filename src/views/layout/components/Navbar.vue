@@ -8,6 +8,7 @@
             <!--<el-button type="primary">{{$t('navbar.teamManage')}}</el-button>-->
             <!--<el-button type="primary">{{$t('navbar.enterData')}}</el-button>-->
             <!--<el-button type="primary">{{$t('navbar.test')}}</el-button>-->
+            <span class="user">您好：{{user}}</span>
             <el-button type="primary" @click="logout">{{$t('navbar.logOut')}}</el-button>
         </el-row>
     </el-menu>
@@ -16,6 +17,7 @@
 <script>
     import {mapGetters} from 'vuex'
     import Hamburger from '@/components/Hamburger'
+    import Cookies from 'js-cookie'
 
     export default {
         components: {
@@ -28,8 +30,13 @@
                 'avatar'
             ])
         },
+        data() {
+            return {
+                user: ''
+            }
+        },
         created() {
-            // console.log(this.$route)
+            this.user = Cookies.get('userName');
         },
         methods: {
             toggleSideBar() {
@@ -49,6 +56,10 @@
         border-radius: 0px !important;
         background: rgb(48, 65, 86);
         padding: 15px 15px 15px 0;
+        .user {
+            color: #fff;
+            margin-right: 15px;
+        }
         .hamburger-container {
             line-height: 30px;
             float: left;

@@ -152,8 +152,8 @@
         <!--保存-->
         <el-row style="text-align: center;margin-top:15px;">
             <el-button type="primary" round @click="cancelAct" style="padding: 12px 35px;">取消</el-button>
-            <el-button type="primary" round @click="onSubmit(0)" :loading="btnLoading" style="padding: 12px 35px;">保存草稿</el-button>
-            <el-button type="primary" round @click="onSubmit(1)" :loading="btnLoading" style="padding: 12px 35px;">提交中心</el-button>
+            <el-button type="primary" round @click="onSubmit(0)" :loading="btnLoading1" style="padding: 12px 35px;">保存草稿</el-button>
+            <el-button type="primary" round @click="onSubmit(1)" :loading="btnLoading2" style="padding: 12px 35px;">提交中心</el-button>
         </el-row>
     </div>
 </template>
@@ -223,7 +223,8 @@
                         { required: true, message: '请输入需要解决的问题', trigger: 'blur' }
                     ],
                 },
-                btnLoading: false,
+                btnLoading1: false,
+                btnLoading2: false,
                 fileList: [],
                 fileUrl: []
             }
@@ -245,6 +246,11 @@
             onSubmit(types) {
                 this.$refs.baseForm.validate((valid) => {
                     if (valid) {
+                        if(type == 0) {
+                            this.btnLoading1 = true;
+                        } else {
+                            this.btnLoading2 = true;
+                        }
                         saveReport({
                             address: this.baseForm.address,
                             assistName: this.baseForm.assist,
@@ -266,6 +272,8 @@
                             others: this.baseForm.otherContent,
                             reportStatus: types,  // 0: 保存草稿  1: 提交
                         }).then(res => {
+                            this.btnLoading1 = false;
+                            this.btnLoading2 = false;
                             if(res.data.code == 200) {
                                 this.$message({
                                     message: '保存成功',
@@ -278,6 +286,9 @@
                                     type: 'warning'
                                 })
                             }
+                        }).catch(() => {
+                            this.btnLoading1 = false;
+                            this.btnLoading2 = false;
                         })
                     }
                 })

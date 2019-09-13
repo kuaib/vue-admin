@@ -131,14 +131,14 @@
                         });
                         this.cancelAct('save');
                     } else {
-                        this.btnLoading = true;
+                        this.btnLoading = false;
                         this.$message({
                             message: res.data.msg,
                             type: 'warning'
                         });
                     }
                 }).catch(() => {
-                    this.btnLoading = true;
+                    this.btnLoading = false;
                 })
             },
 

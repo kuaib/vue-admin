@@ -43,7 +43,7 @@
                 <el-row>
                     <el-col :span="12">
                         <el-form-item label="姓名：" prop="name">
-                            <el-input placeholder="请输入运动员名称" v-model="addForm.name"></el-input>
+                            <el-input placeholder="请输入姓名" v-model="addForm.name"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
@@ -114,7 +114,7 @@
                 },
                 rules: {
                     name: [
-                        { required: true, message: '请输入运动员名称', trigger: 'blur' }
+                        { required: true, message: '请输入姓名', trigger: 'blur' }
                     ],
                     position: [
                         { required: true, message: '请选择职位', trigger: 'change' }

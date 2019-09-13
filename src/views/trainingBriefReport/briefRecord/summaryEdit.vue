@@ -234,12 +234,14 @@
             onSubmit() {
                 this.$refs.baseForm.validate((valid) => {
                     if (valid) {
+                        this.btnLoading = true;
                         saveSummary({
                             reportId: this.id,
                             resultExperience: this.baseForm.resultExperience,
                             solveMethod: this.baseForm.solveMethod,
                             athleteHealth: this.baseForm.athleteHealth
                         }).then(res => {
+                            this.btnLoading = false;
                             if(res.data.code == 200) {
                                 this.$message({
                                     message: '保存成功',
@@ -252,6 +254,8 @@
                                     type: 'warning'
                                 })
                             }
+                        }).catch(() => {
+                            this.btnLoading = false;
                         })
                     }
                 })
