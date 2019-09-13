@@ -162,7 +162,7 @@
                     {label: '下午', value: '2'},
                     {label: '晚上', value: '3'},
                 ],
-                userInfo: JSON.parse(localStorage.getItem('attendanceDay')),
+                userInfo: JSON.parse(localStorage.getItem('attendanceDay')).useInfo,
                 btnLoading: false,
                 baseForm: {
                     team: null,
@@ -188,7 +188,7 @@
             this.baseForm.project = this.userInfo.projectName;
             this.baseForm.team = this.userInfo.teamName;
             this.baseForm.coach = this.userInfo.staffName;
-            this.getAthleteList(this.formatTableList, {teamId: this.userInfo.teamId});
+            this.getAthleteList(this.formatTableList, {teamId: this.userInfo.teamId, projectId: this.userInfo.projectId});
         },
 
         methods: {

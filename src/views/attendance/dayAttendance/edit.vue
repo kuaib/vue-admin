@@ -141,8 +141,8 @@
 
         <!--保存-->
         <el-row style="text-align: center;">
-            <el-button type="primary" round @click="cancelAct" style="padding: 12px 35px;">取 消</el-button>
-            <el-button type="primary" round @click="onSubmit" :loading="btnLoading" style="padding: 12px 35px;">保 存</el-button>
+            <el-button type="primary" round @click="cancelAct('save')" style="padding: 12px 35px;">取 消</el-button>
+            <el-button type="primary" round @click="onSubmit" :loading="btnLoading" style="padding: 12px 35px;" v-if="canOperate">保 存</el-button>
         </el-row>
     </div>
 </template>
@@ -161,7 +161,7 @@
                     {label: '下午', value: '2'},
                     {label: '晚上', value: '3'},
                 ],
-                userInfo: JSON.parse(localStorage.getItem('attendanceDay')),
+                canOperate: JSON.parse(localStorage.getItem('attendanceDay')).canOperate,
                 btnLoading: false,
                 baseForm: {
                     team: null,
@@ -202,7 +202,7 @@
                         this.baseForm.date = resData.attDate;
                         this.getAthleteList(() => {
                             this.list = this.reserveFormatList(resData.attendanceDetails)
-                        }, {teamId: resData.teamId});
+                        }, {teamId: resData.teamId, projectId: resData.projectId});
                     }
                 })
             },
@@ -215,12 +215,12 @@
                         let attendanceDetails = this.formatList(this.list);
                         saveDayAttendance({
                             attendanceId: this.baseForm.id,
-                            projectName: this.userInfo.projectName,
-                            projectId: this.userInfo.projectId,
-                            coachName: this.userInfo.staffName,
-                            coachId: this.userInfo.staffId,
-                            teamId: this.userInfo.teamId,
-                            teamName: this.userInfo.teamName,
+                            projectName: this.baseForm.projectName,
+                            projectId: this.baseForm.projectId,
+                            coachName: this.baseForm.staffName,
+                            coachId: this.baseForm.staffId,
+                            teamId: this.baseForm.teamId,
+                            teamName: this.baseForm.teamName,
                             attDate: this.baseForm.date,
                             stage: this.baseForm.stage,
                             attendanceDetails: attendanceDetails

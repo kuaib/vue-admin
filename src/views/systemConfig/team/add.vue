@@ -143,9 +143,7 @@
             validateTeam(typeName) {
                 this.$refs.addForm.validate((valid) => {
                     if (valid) {
-                        if(typeName === 'athlete') {
-                            this.$refs.associatedAthletes.outerVisible = true;
-                        }
+                        this.$refs.associatedAthletes.outerVisible = true;
                     } else {
                         return false;
                     }

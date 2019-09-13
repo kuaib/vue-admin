@@ -30,7 +30,7 @@
                 </el-col>
                 <el-col :span="6">
                     <el-form-item prop="name">
-                        <el-autocomplete
+                        <el-autocomplete style="width:100%"
                                 v-model="accountForm.name"
                                 :fetch-suggestions="getPersonName"
                                 placeholder="请输入姓名"

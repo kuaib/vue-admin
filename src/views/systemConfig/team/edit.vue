@@ -62,7 +62,7 @@
         <!--操作按钮-->
         <el-row style="text-align: center;margin-top:40px;">
             <el-button v-waves @click="cancelAct">取 消</el-button>
-            <el-button v-waves type="primary" :loading="btnLoading" @click="toSubmit">保 存</el-button>
+            <el-button v-waves type="primary" :loading="btnLoading" @click="toSubmit('save')">保 存</el-button>
         </el-row>
     </div>
 </template>
@@ -148,13 +148,19 @@
                         saveTeam(parames).then(res => {
                             this.$refs.associatedAthletes.relationLoading = false;
                             this.$refs.associatedAthletes.btnLoading = false;
+                            this.btnLoading = false;
                             if(res.data.code == 200) {
                                 this.$refs.associatedAthletes.restMyForm();
                                 this.$message({
                                     message: '保存成功',
                                     type: 'success'
                                 });
-                                this.cancelAct('save');
+                                if(componentsForm !== 'save') {
+                                    this.getDetail();
+                                    this.$refs.associatedAthletes.outerVisible = false;
+                                } else {
+                                    this.cancelAct('save');
+                                }
                             } else {
                                 this.btnLoading = false;
                                 this.$message({
@@ -172,7 +178,7 @@
             },
 
             // 校验队伍信息是否填写(关联项需要使用)
-            validateTeam(typeName) {
+            validateTeam() {
                 this.$refs.addForm.validate((valid) => {
                     if (valid) {
                         this.$refs.associatedAthletes.outerVisible = true;

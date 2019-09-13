@@ -14,16 +14,16 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="8">
-                        <el-form-item label="账号状态" prop="accountState" placeholder="请选择账号状态">
-                            <el-select v-model="myForm.accountState">
+                        <el-form-item label="账号状态" prop="accountState">
+                            <el-select v-model="myForm.accountState" placeholder="请选择账号状态">
                                 <el-option label="已激活" value="1"></el-option>
                                 <el-option label="未激活" value="2"></el-option>
                             </el-select>
                         </el-form-item>
                     </el-col>
                     <el-col :span="8">
-                        <el-form-item label="账号角色" prop="role" placeholder="请选择账号角色">
-                            <el-select v-model="myForm.role">
+                        <el-form-item label="账号身份" prop="role">
+                            <el-select v-model="myForm.role" placeholder="请选择账号身份">
                                 <el-option v-for="item in roleInfoList" :label="item.dicValue" :value="item.dicKey"
                                            :key="item.dicKey"></el-option>
                             </el-select>
@@ -106,7 +106,7 @@
                         { required: true, message: '请选择账号状态', trigger: 'change' }
                     ],
                     role: [
-                        { required: true, message: '请选择角色', trigger: 'change' }
+                        { required: true, message: '请选择账号身份', trigger: 'change' }
                     ],
                     phone: [
                         { required: true, message: '请输入电话', trigger: 'blur' }

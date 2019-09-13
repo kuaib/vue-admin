@@ -121,13 +121,14 @@
 
             // 创建考勤
             createData() {
-                localStorage.setItem('attendanceDay', JSON.stringify(this.extInfo.useInfo));
+                localStorage.setItem('attendanceDay', JSON.stringify(this.extInfo));
                 this.$router.push('/dayAttendance/add');
             },
 
             // 去详情
             toDetail(row) {
-                this.$router.push({path: '/dayAttendance/edit', query: {id: row.attendanceId, stage: row.stage}})
+                localStorage.setItem('attendanceDay', JSON.stringify(this.extInfo));
+                this.$router.push({path: '/dayAttendance/edit', query: {id: row.attendanceId}})
             },
         }
     }

@@ -53,7 +53,7 @@
             <el-form :model="businessForm" label-width="130px">
                 <el-row :gutter="20">
                     <el-col :span="8">
-                        <el-form-item label="身份：">{{businessForm.jobName}}</el-form-item>
+                        <el-form-item label="职位：">{{businessForm.jobName}}</el-form-item>
                     </el-col>
                     <el-col :span="8">
                         <el-form-item label="运动员级别：">{{businessForm.level}}</el-form-item>

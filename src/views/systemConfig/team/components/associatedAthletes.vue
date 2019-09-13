@@ -119,9 +119,9 @@
                     position: [
                         { required: true, message: '请选择职位', trigger: 'change' }
                     ],
-                    positionLevel: [
-                        { required: true, message: '请选择职位级别', trigger: 'change' }
-                    ],
+                    // positionLevel: [
+                    //     { required: true, message: '请选择职位级别', trigger: 'change' }
+                    // ],
                     birthday: [
                         { required: true, message: '请选择出生日期', trigger: 'change' }
                     ],
