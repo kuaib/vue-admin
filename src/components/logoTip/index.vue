@@ -1,6 +1,7 @@
 <template>
     <div class="top-logo clearfix">
-        <img src="../../assets/logo.jpg" alt="">
+        <!--<img src="../../assets/logo.jpg" alt="">-->
+        <img src="../../assets/logo1.jpg" alt="">
     </div>
 </template>
 <script>
@@ -13,7 +14,8 @@
 
 <style lang="scss" scoped>
     .top-logo {
-        width: 145px;
+        /*width: 145px;*/
+        width: 181px;
         height: 73.98px;
         background: #abc;
         position: fixed;
