@@ -1,7 +1,11 @@
 <template>
     <el-menu class="navbar" mode="horizontal">
         <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
-        <div class="projectName">奥运备战</div>
+        <!-- <div class="projectName">奥运备战</div> -->
+        <div class="projectName">
+            <img src="../../../assets/logo1.jpg" alt="" style="width: 30px">
+            <span>奥运备战</span>
+        </div>
         <el-row class="right-menu">
             <!--<el-button type="primary" v-if="$route.path.indexOf('/dashboard')!=-1">{{$t('navbar.allAthlete')}}-->
             <!--</el-button>-->

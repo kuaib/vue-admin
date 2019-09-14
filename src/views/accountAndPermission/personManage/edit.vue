@@ -246,9 +246,9 @@
                     name: [
                         { required: true, message: '请输入姓名', trigger: 'blur' }
                     ],
-                    idCard: [
-                        { required: true, message: '请输入身份证', trigger: 'blur' }
-                    ]
+                    // idCard: [
+                    //     { required: true, message: '请输入身份证', trigger: 'blur' }
+                    // ]
                 },
                 // rules: {
                 //     name: [
