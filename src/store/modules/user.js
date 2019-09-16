@@ -16,52 +16,6 @@ function filterPro(arr, proName) {
 
 let aa = [
     {
-        "id": 9,
-        "path": "/teamOverview",  // 第一级菜单前面有斜杠： /
-        "component": "Layout",
-        "name": "",  // 可有可无，我用不到*****
-        "title": "运动员看板",  // 可有可无，我用不到*****
-        "icon": "ios-color-wand",
-        "parentId": 0,
-        "enabled": 1,
-        "roles": null,
-        "meta": {
-            "access": null,
-            "title": "运动员看板",        //  title取我定义的
-            "icon": "ios-color-wand",
-            "hideInMenu": false
-        },
-        "url": "",
-        "hideInMenu": false,
-        "children": [
-            {
-                "id": 3,
-                "path": "/teamOverview", // children中的path：取我定义的（子菜单path前不加斜杠： /）
-                "component": "views/teamOverview/teamOverview", // children中的component：取我定义的，最前面不加斜杠： /
-                "name": "athleteCentralList",     // children中的name：取我定义的
-                "title": "项目(大项)管理",      // 可有可无*****
-                "icon": "ios-basket-outline",
-                "parentId": 1,
-                "enabled": 1,
-                "children": null,
-                "roles": null,
-                "meta": {
-                    "access": null,
-                    "title": "运动员看板",    // children中的title：取我定义的
-                    "icon": "ios-basket-outline",
-                    "hideInMenu": false,
-                    "noCache": true     // 这个是新加的字段！！！！！！！！！！！！
-                },
-                "url": "",
-                "hideInMenu": false
-            },
-        ]
-    },
-
-
-
-
-    {
         "id": 7,
         "path": "/trainingAndSummary",  // 第一级菜单前面有斜杠： /
         "component": "Layout",
@@ -1532,6 +1486,241 @@ let aa = [
     },
 
 
+    {
+        "id": 13,
+        "path": "/trainVideoManage",
+        "component": "Layout",
+        "name": "",
+        "title": "训练视频管理",
+        "icon": "ios-color-wand",
+        "parentId": 0,
+        "enabled": 1,
+        "roles": null,
+        "meta": {
+            "access": null,
+            "title": "训练视频管理",
+            "icon": "ios-color-wand",
+            "hideInMenu": false
+        },
+        "url": "",
+        "hideInMenu": false,
+        "children": [
+            {
+                "id": 3,
+                "path": "/championVideo",
+                "component": "views/trainVideoManage/championVideo/index",
+                "name": "championVideo",
+                "title": "冠军视频源",
+                "icon": "ios-basket-outline",
+                "parentId": 1,
+                "enabled": 1,
+                "children": [
+                    {
+                        "id": 3,
+                        "path": "list",
+                        "component": "views/trainVideoManage/championVideo/list",
+                        "name": "championVideoList",
+                        "title": "冠军视频源",
+                        "icon": "ios-basket-outline",
+                        "parentId": 2,
+                        "enabled": 1,
+                        "children": null,
+                        "roles": null,
+                        "meta": {
+                            "access": null,
+                            "title": "冠军视频源",
+                            "icon": "ios-basket-outline",
+                            "hideInMenu": false,
+                            "noCache": true
+                        },
+                        "url": "",
+                        "hideInMenu": false
+                    },
+                    {
+                        "id": 3,
+                        "path": "add",
+                        "component": "views/trainVideoManage/championVideo/add",
+                        "name": "championVideoAdd",
+                        "title": "上传冠军视频",
+                        "icon": "ios-basket-outline",
+                        "parentId": 2,
+                        "enabled": 1,
+                        "children": null,
+                        "roles": null,
+                        "meta": {
+                            "access": null,
+                            "title": "上传冠军视频",
+                            "icon": "ios-basket-outline",
+                            "hideInMenu": true,
+                            "noCache": true
+                        },
+                        "url": "",
+                        "hideInMenu": true
+                    },
+                    {
+                        "id": 3,
+                        "path": "detail",
+                        "component": "views/trainVideoManage/championVideo/detail",
+                        "name": "championVideoDetail",
+                        "title": "视频详情",
+                        "icon": "ios-basket-outline",
+                        "parentId": 2,
+                        "enabled": 1,
+                        "children": null,
+                        "roles": null,
+                        "meta": {
+                            "access": null,
+                            "title": "视频详情",
+                            "icon": "ios-basket-outline",
+                            "hideInMenu": true,
+                            "noCache": true
+                        },
+                        "url": "",
+                        "hideInMenu": true
+                    },
+                ],
+                "roles": null,
+                "meta": {
+                    "access": null,
+                    "title": "冠军视频源",
+                    "icon": "ios-basket-outline",
+                    "hideInMenu": false,
+                    "noCache": true
+                },
+                "url": "",
+                "hideInMenu": false
+            },
+            {
+                "id": 3,
+                "path": "/athleteVideo",
+                "component": "views/trainVideoManage/athleteVideo/index",
+                "name": "athleteVideo",
+                "title": "运动员视频源",
+                "icon": "ios-basket-outline",
+                "parentId": 1,
+                "enabled": 1,
+                "children": [
+                    {
+                        "id": 3,
+                        "path": "list",
+                        "component": "views/trainVideoManage/athleteVideo/list",
+                        "name": "athleteVideoList",
+                        "title": "运动员视频源",
+                        "icon": "ios-basket-outline",
+                        "parentId": 2,
+                        "enabled": 1,
+                        "children": null,
+                        "roles": null,
+                        "meta": {
+                            "access": null,
+                            "title": "运动员视频源",
+                            "icon": "ios-basket-outline",
+                            "hideInMenu": false,
+                            "noCache": true
+                        },
+                        "url": "",
+                        "hideInMenu": false
+                    },
+                    {
+                        "id": 3,
+                        "path": "add",
+                        "component": "views/trainVideoManage/athleteVideo/add",
+                        "name": "championVideoAdd",
+                        "title": "上传冠军视频",
+                        "icon": "ios-basket-outline",
+                        "parentId": 2,
+                        "enabled": 1,
+                        "children": null,
+                        "roles": null,
+                        "meta": {
+                            "access": null,
+                            "title": "上传冠军视频",
+                            "icon": "ios-basket-outline",
+                            "hideInMenu": true,
+                            "noCache": true
+                        },
+                        "url": "",
+                        "hideInMenu": true
+                    },
+                    {
+                        "id": 3,
+                        "path": "detail",
+                        "component": "views/trainVideoManage/championVideo/detail",
+                        "name": "championVideoDetail",
+                        "title": "视频详情",
+                        "icon": "ios-basket-outline",
+                        "parentId": 2,
+                        "enabled": 1,
+                        "children": null,
+                        "roles": null,
+                        "meta": {
+                            "access": null,
+                            "title": "视频详情",
+                            "icon": "ios-basket-outline",
+                            "hideInMenu": true,
+                            "noCache": true
+                        },
+                        "url": "",
+                        "hideInMenu": true
+                    }
+                ],
+                "roles": null,
+                "meta": {
+                    "access": null,
+                    "title": "运动员视频源",
+                    "icon": "ios-basket-outline",
+                    "hideInMenu": false,
+                    "noCache": true
+                },
+                "url": "",
+                "hideInMenu": false
+            },
+            {
+                "id": 3,
+                "path": "/teamReport",
+                "component": "views/evaluationManagement/teamReport/index",
+                "name": "teamReport",
+                "title": "视频点播对比",
+                "icon": "ios-basket-outline",
+                "parentId": 1,
+                "enabled": 1,
+                "children": [
+                    {
+                        "id": 3,
+                        "path": "list",
+                        "component": "views/evaluationManagement/teamReport/list",
+                        "name": "teamReportList",
+                        "title": "视频点播对比",
+                        "icon": "ios-basket-outline",
+                        "parentId": 2,
+                        "enabled": 1,
+                        "children": null,
+                        "roles": null,
+                        "meta": {
+                            "access": null,
+                            "title": "视频点播对比",
+                            "icon": "ios-basket-outline",
+                            "hideInMenu": false,
+                            "noCache": true
+                        },
+                        "url": "",
+                        "hideInMenu": false
+                    },
+                ],
+                "roles": null,
+                "meta": {
+                    "access": null,
+                    "title": "视频点播对比",    // children中的title：取我定义的
+                    "icon": "ios-basket-outline",
+                    "hideInMenu": false,
+                    "noCache": true     // 这个是新加的字段！！！！！！！！！！！！
+                },
+                "url": "",
+                "hideInMenu": false
+            },
+        ]
+    },
+
 ]
 
 
@@ -1740,11 +1929,11 @@ const user = {
         SET_ROLECODE: (state, roleCode) => {
             state.roleCode = roleCode
         },
-        // 设置路由
+        // 动态添加路由
         SET_ROUTERS: (state, routers) => {
             state.addRouters = routers
             state.routers = constantRouterMap.concat(routers)
-        },
+        }
     },
 
     // 请求方法都在api/login.js中
@@ -1781,14 +1970,13 @@ const user = {
         GetUserMenue({commit, state}) {
             return new Promise((resolve, reject) => {
                 let systemType = Cookies.get('systemType');
-                // getUserMenue(state.roles[0], systemType).then(response => {
-                getUserMenue(state.roles[0], '1').then(response => {
+                getUserMenue(state.roles[0], systemType).then(response => {
                     if (response.data.code === 200) {
                         const res = response.data.data;
                         if (res && res.length > 0) { // 验证返回的菜单是否是一个非空数组
-                            let newRouters = reformRouters(res);
+                            // let newRouters = reformRouters(res);
                             // let newRouters = reformRouters1(res);
-                            // let newRouters = reformRouters(aa);
+                            let newRouters = reformRouters(aa);
                             commit('SET_ROUTERS', newRouters);
                             resolve()
                         } else {

@@ -1,7 +1,10 @@
 <template>
     <el-menu class="navbar" mode="horizontal">
         <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
-        <div class="projectName">奥运备战</div>
+        <div class="projectName">
+            <img src="../../../assets/logo1.jpg" alt="">
+            <span>奥运备战</span>
+        </div>
         <el-row class="right-menu">
             <!--<el-button type="primary" v-if="$route.path.indexOf('/dashboard')!=-1">{{$t('navbar.allAthlete')}}-->
             <!--</el-button>-->
@@ -9,7 +12,7 @@
             <!--<el-button type="primary">{{$t('navbar.enterData')}}</el-button>-->
             <!--<el-button type="primary">{{$t('navbar.test')}}</el-button>-->
             <span style="color: #fff;margin-right: 12px;">您好：{{username}}</span>
-            <!--<el-button type="primary" @click="changeSystem" v-if="username==='admin'">{{sysTemChange}}</el-button>-->
+            <el-button type="primary" @click="changeSystem" v-if="username==='admin'">{{sysTemChange}}</el-button>
             <el-button type="primary" @click="logout">{{$t('navbar.logOut')}}</el-button>
         </el-row>
     </el-menu>
@@ -21,11 +24,12 @@
     import Cookies from 'js-cookie'
 
     export default {
+        // inject: ['reload'],
         data() {
             return {
-                username: Cookies.get('userName'),
-                systemType: Cookies.get('systemType'),
-                sysTemChange: ''
+                username: Cookies.get('userName'),  // 当前的用户名
+                systemType: Cookies.get('systemType'), // 1: 老系统  2: 新系统
+                sysTemChange: ''  // 系统切换按钮名称
             }
         },
         components: {
@@ -41,9 +45,9 @@
         created() {
             // console.log(Cookies.get('userName'))
             if(this.systemType === '1') {
-                this.sysTemChange = '切换到新系统'
+                this.sysTemChange = '运动训练管理'
             } else if(this.systemType === '2') {
-                this.sysTemChange = '切换到老系统'
+                this.sysTemChange = 'Less损伤评估'
             }
         },
         methods: {
@@ -64,7 +68,9 @@
                     Cookies.set('systemType', '1');
                 }
                 this.$store.dispatch('GetUserMenue').then(() => {
-
+                    this.$store.dispatch('delAllViews');
+                    this.$router.push('/');
+                    location.reload();
                 })
             }
         }
@@ -82,6 +88,10 @@
             padding: 8px 10px 5px 10px;
         }
         .projectName {
+            img {
+                width: 35px;
+                vertical-align: middle;
+            }
             float: left;
             font-size: 26px;
             color: #fff;

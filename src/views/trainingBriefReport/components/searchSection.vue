@@ -5,7 +5,7 @@
             <el-row :gutter="20">
                 <el-col :span="6">
                     <el-form-item prop="id">
-                        <el-input placeholder="请输入报表id" v-model="searchForm.reportId"></el-input>
+                        <el-input placeholder="请输入报表id" v-model="searchForm.id"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
