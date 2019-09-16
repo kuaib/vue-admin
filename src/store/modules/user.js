@@ -16,6 +16,52 @@ function filterPro(arr, proName) {
 
 let aa = [
     {
+        "id": 9,
+        "path": "/teamOverview",  // 第一级菜单前面有斜杠： /
+        "component": "Layout",
+        "name": "",  // 可有可无，我用不到*****
+        "title": "运动员看板",  // 可有可无，我用不到*****
+        "icon": "ios-color-wand",
+        "parentId": 0,
+        "enabled": 1,
+        "roles": null,
+        "meta": {
+            "access": null,
+            "title": "运动员看板",        //  title取我定义的
+            "icon": "ios-color-wand",
+            "hideInMenu": false
+        },
+        "url": "",
+        "hideInMenu": false,
+        "children": [
+            {
+                "id": 3,
+                "path": "/teamOverview", // children中的path：取我定义的（子菜单path前不加斜杠： /）
+                "component": "views/teamOverview/teamOverview", // children中的component：取我定义的，最前面不加斜杠： /
+                "name": "athleteCentralList",     // children中的name：取我定义的
+                "title": "项目(大项)管理",      // 可有可无*****
+                "icon": "ios-basket-outline",
+                "parentId": 1,
+                "enabled": 1,
+                "children": null,
+                "roles": null,
+                "meta": {
+                    "access": null,
+                    "title": "运动员看板",    // children中的title：取我定义的
+                    "icon": "ios-basket-outline",
+                    "hideInMenu": false,
+                    "noCache": true     // 这个是新加的字段！！！！！！！！！！！！
+                },
+                "url": "",
+                "hideInMenu": false
+            },
+        ]
+    },
+
+
+
+
+    {
         "id": 7,
         "path": "/trainingAndSummary",  // 第一级菜单前面有斜杠： /
         "component": "Layout",
@@ -1716,6 +1762,7 @@ const user = {
                         Cookies.set('roles', state.roles);
                         Cookies.set('realName', state.realName);
                         Cookies.set('userName', state.userName);
+                        Cookies.set('systemType', '2');  // 新系统：2，老系统：1
                         resolve();
                     } else {
                         Vue.prototype.$message({
@@ -1733,13 +1780,15 @@ const user = {
         // 获取用户菜单-路由(业务需求，菜单和路由需要在后端返回)
         GetUserMenue({commit, state}) {
             return new Promise((resolve, reject) => {
-                getUserMenue(state.roles[0], '2').then(response => {
+                let systemType = Cookies.get('systemType');
+                // getUserMenue(state.roles[0], systemType).then(response => {
+                getUserMenue(state.roles[0], '1').then(response => {
                     if (response.data.code === 200) {
                         const res = response.data.data;
                         if (res && res.length > 0) { // 验证返回的菜单是否是一个非空数组
-                            // let newRouters = reformRouters(res);
+                            let newRouters = reformRouters(res);
                             // let newRouters = reformRouters1(res);
-                            let newRouters = reformRouters(aa);
+                            // let newRouters = reformRouters(aa);
                             commit('SET_ROUTERS', newRouters);
                             resolve()
                         } else {
@@ -1839,6 +1888,7 @@ const user = {
                     Cookies.remove('realName');
                     Cookies.remove('userName');
                     Cookies.remove('roles');
+                    Cookies.remove('systemType');
                     resolve()
                 }).catch(error => {
                     reject(error)

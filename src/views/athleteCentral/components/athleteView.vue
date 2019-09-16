@@ -76,26 +76,17 @@
                     <div class="neuromuscular main-section">
                         <div class="subTitle">神经肌肉分析 Neuromuscular Analysis</div>
                         <dl>
-                            <dt>力输出可能较低的肌肉 Muscles with Probable low Force Output
-                                <!--<p>力输出可能较低的肌肉</p>-->
-                                <!--<p>Muscles with Probable low Force Output</p>-->
-                            </dt>
+                            <dt>力输出可能较低的肌肉 Muscles with Probable low Force Output</dt>
                             <dd v-for="item in forceList"><i></i>{{item.cnName}} {{item.enName}}</dd>
                         </dl>
 
                         <dl>
-                            <dt>可能活动受限的关节 Joint Motion with Probale Restriction
-                                <!--<p>可能活动受限的关节</p>-->
-                                <!--<p>Joint Motion with Probale Restriction</p>-->
-                            </dt>
+                            <dt>可能活动受限的关节 Joint Motion with Probale Restriction</dt>
                             <dd v-for="item in jointList"><i></i>{{item.cnName}} {{item.enName}}</dd>
                         </dl>
 
                         <dl>
-                            <dt>灵活性可能较差的肌肉 Muscles with Probale low Flexibility
-                                <!--<p>灵活性可能较差的肌肉</p>-->
-                                <!--<p>Muscles with Probale low Flexibility</p>-->
-                            </dt>
+                            <dt>灵活性可能较差的肌肉 Muscles with Probale low Flexibility</dt>
                             <dd v-for="item in flexibilityList"><i></i>{{item.cnName}} {{item.enName}}</dd>
                         </dl>
                     </div>

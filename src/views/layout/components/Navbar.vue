@@ -1,18 +1,15 @@
 <template>
     <el-menu class="navbar" mode="horizontal">
         <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
-        <!-- <div class="projectName">奥运备战</div> -->
-        <div class="projectName">
-            <img src="../../../assets/logo1.jpg" alt="" style="width: 30px">
-            <span>奥运备战</span>
-        </div>
+        <div class="projectName">奥运备战</div>
         <el-row class="right-menu">
             <!--<el-button type="primary" v-if="$route.path.indexOf('/dashboard')!=-1">{{$t('navbar.allAthlete')}}-->
             <!--</el-button>-->
             <!--<el-button type="primary">{{$t('navbar.teamManage')}}</el-button>-->
             <!--<el-button type="primary">{{$t('navbar.enterData')}}</el-button>-->
             <!--<el-button type="primary">{{$t('navbar.test')}}</el-button>-->
-            <span class="user">您好：{{user}}</span>
+            <span style="color: #fff;margin-right: 12px;">您好：{{username}}</span>
+            <!--<el-button type="primary" @click="changeSystem" v-if="username==='admin'">{{sysTemChange}}</el-button>-->
             <el-button type="primary" @click="logout">{{$t('navbar.logOut')}}</el-button>
         </el-row>
     </el-menu>
@@ -24,6 +21,13 @@
     import Cookies from 'js-cookie'
 
     export default {
+        data() {
+            return {
+                username: Cookies.get('userName'),
+                systemType: Cookies.get('systemType'),
+                sysTemChange: ''
+            }
+        },
         components: {
             Hamburger
         },
@@ -34,13 +38,13 @@
                 'avatar'
             ])
         },
-        data() {
-            return {
-                user: ''
-            }
-        },
         created() {
-            this.user = Cookies.get('userName');
+            // console.log(Cookies.get('userName'))
+            if(this.systemType === '1') {
+                this.sysTemChange = '切换到新系统'
+            } else if(this.systemType === '2') {
+                this.sysTemChange = '切换到老系统'
+            }
         },
         methods: {
             toggleSideBar() {
@@ -49,6 +53,18 @@
             logout() {
                 this.$store.dispatch('LogOut').then(() => {
                     location.reload()// In order to re-instantiate the vue-router object to avoid bugs
+                })
+            },
+
+            changeSystem() {
+                let systemType = Cookies.get('systemType');
+                if(systemType === '1') {
+                    Cookies.set('systemType', '2');
+                } else if(systemType === '2') {
+                    Cookies.set('systemType', '1');
+                }
+                this.$store.dispatch('GetUserMenue').then(() => {
+
                 })
             }
         }
@@ -60,10 +76,6 @@
         border-radius: 0px !important;
         background: rgb(48, 65, 86);
         padding: 15px 15px 15px 0;
-        .user {
-            color: #fff;
-            margin-right: 15px;
-        }
         .hamburger-container {
             line-height: 30px;
             float: left;

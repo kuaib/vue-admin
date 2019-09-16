@@ -99,7 +99,7 @@
                 </el-col>
             </el-row>
             <el-row :gutter="20" class="search-item">
-                <el-col :span="6">
+                <el-col :span="9">
                     <el-form-item prop="project">
                         <el-date-picker
                                 v-model="searchForm.uploadDate"
