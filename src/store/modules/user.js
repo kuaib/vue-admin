@@ -1559,10 +1559,10 @@ let aa = [
                     },
                     {
                         "id": 3,
-                        "path": "detail",
-                        "component": "views/trainVideoManage/championVideo/detail",
-                        "name": "championVideoDetail",
-                        "title": "视频详情",
+                        "path": "edit",
+                        "component": "views/trainVideoManage/championVideo/edit",
+                        "name": "championVideoEdit",
+                        "title": "编辑冠军视频",
                         "icon": "ios-basket-outline",
                         "parentId": 2,
                         "enabled": 1,
@@ -1570,7 +1570,28 @@ let aa = [
                         "roles": null,
                         "meta": {
                             "access": null,
-                            "title": "视频详情",
+                            "title": "编辑冠军视频",
+                            "icon": "ios-basket-outline",
+                            "hideInMenu": true,
+                            "noCache": true
+                        },
+                        "url": "",
+                        "hideInMenu": true
+                    },
+                    {
+                        "id": 3,
+                        "path": "detail",
+                        "component": "views/trainVideoManage/championVideo/detail",
+                        "name": "championVideoDetail",
+                        "title": "运动员视频详情",
+                        "icon": "ios-basket-outline",
+                        "parentId": 2,
+                        "enabled": 1,
+                        "children": null,
+                        "roles": null,
+                        "meta": {
+                            "access": null,
+                            "title": "运动员视频详情",
                             "icon": "ios-basket-outline",
                             "hideInMenu": true,
                             "noCache": true
@@ -1625,8 +1646,8 @@ let aa = [
                         "id": 3,
                         "path": "add",
                         "component": "views/trainVideoManage/athleteVideo/add",
-                        "name": "championVideoAdd",
-                        "title": "上传冠军视频",
+                        "name": "athleteVideoAdd",
+                        "title": "上传运动员视频",
                         "icon": "ios-basket-outline",
                         "parentId": 2,
                         "enabled": 1,
@@ -1634,7 +1655,28 @@ let aa = [
                         "roles": null,
                         "meta": {
                             "access": null,
-                            "title": "上传冠军视频",
+                            "title": "上传运动员视频",
+                            "icon": "ios-basket-outline",
+                            "hideInMenu": true,
+                            "noCache": true
+                        },
+                        "url": "",
+                        "hideInMenu": true
+                    },
+                    {
+                        "id": 3,
+                        "path": "edit",
+                        "component": "views/trainVideoManage/athleteVideo/edit",
+                        "name": "athleteVideoEdit",
+                        "title": "编辑运动员视频",
+                        "icon": "ios-basket-outline",
+                        "parentId": 2,
+                        "enabled": 1,
+                        "children": null,
+                        "roles": null,
+                        "meta": {
+                            "access": null,
+                            "title": "编辑运动员视频",
                             "icon": "ios-basket-outline",
                             "hideInMenu": true,
                             "noCache": true
@@ -1645,9 +1687,9 @@ let aa = [
                     {
                         "id": 3,
                         "path": "detail",
-                        "component": "views/trainVideoManage/championVideo/detail",
-                        "name": "championVideoDetail",
-                        "title": "视频详情",
+                        "component": "views/trainVideoManage/athleteVideo/detail",
+                        "name": "athleteVideoDetail",
+                        "title": "运动员视频详情",
                         "icon": "ios-basket-outline",
                         "parentId": 2,
                         "enabled": 1,
@@ -1655,14 +1697,14 @@ let aa = [
                         "roles": null,
                         "meta": {
                             "access": null,
-                            "title": "视频详情",
+                            "title": "运动员视频详情",
                             "icon": "ios-basket-outline",
                             "hideInMenu": true,
                             "noCache": true
                         },
                         "url": "",
                         "hideInMenu": true
-                    }
+                    },
                 ],
                 "roles": null,
                 "meta": {
@@ -1677,9 +1719,9 @@ let aa = [
             },
             {
                 "id": 3,
-                "path": "/teamReport",
-                "component": "views/evaluationManagement/teamReport/index",
-                "name": "teamReport",
+                "path": "/videoOnDemand",
+                "component": "views/trainVideoManage/videoOnDemand/index",
+                "name": "videoOnDemand",
                 "title": "视频点播对比",
                 "icon": "ios-basket-outline",
                 "parentId": 1,
@@ -1688,8 +1730,8 @@ let aa = [
                     {
                         "id": 3,
                         "path": "list",
-                        "component": "views/evaluationManagement/teamReport/list",
-                        "name": "teamReportList",
+                        "component": "views/trainVideoManage/videoOnDemand/videoOnDemand",
+                        "name": "videoOnDemandIdx",
                         "title": "视频点播对比",
                         "icon": "ios-basket-outline",
                         "parentId": 2,

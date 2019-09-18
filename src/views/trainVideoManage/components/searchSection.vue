@@ -23,8 +23,8 @@
                 <el-col :span="6">
                     <el-form-item prop="videoType">
                         <el-select v-model="searchForm.videoType" placeholder="请选择视频类型">
-                            <el-option label="短视频" value="1"></el-option>
-                            <el-option label="长视频" value="2"></el-option>
+                            <el-option label="短节目" value="1"></el-option>
+                            <el-option label="长节目" value="2"></el-option>
                         </el-select>
                     </el-form-item>
                 </el-col>

@@ -1,5 +1,5 @@
 <template>
-    <add-and-edit fileType="add" typeName="champion"></add-and-edit>
+    <add-and-edit fileType="add" typeName="athlete"></add-and-edit>
 </template>
 
 <script>

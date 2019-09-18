@@ -1,11 +1,11 @@
 <template>
-    <detail fileType="detail" typeName="champion" :videoId="videoId"></detail>
+    <add-and-edit fileType="edit" typeName="champion" :videoId="videoId"></add-and-edit>
 </template>
 
 <script>
-    import detail from '../components/detail'
+    import addAndEdit from '../components/addAndEdit'
     export default {
-        components: {detail},
+        components: {addAndEdit},
         data() {
             return {
                 videoId: this.$route.query.id

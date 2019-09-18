@@ -27,8 +27,8 @@
             </el-table-column>
             <el-table-column align="center" label="视频类型">
                 <template slot-scope="scope">
-                    <span v-if="scope.row.videoType==1">短视频</span>
-                    <span v-if="scope.row.videoType==2">长视频</span>
+                    <span v-if="scope.row.videoType==1">短节目</span>
+                    <span v-if="scope.row.videoType==2">长节目</span>
                 </template>
             </el-table-column>
             <el-table-column align="center" :label="typeName==='champion'?'冠军':'运动员'">
@@ -132,19 +132,29 @@
 
             // 上传视频
             addNew() {
-                localStorage.setItem('trainingBriefReport', JSON.stringify(this.extInfo.useInfo));
-                this.$router.push('/briefRecord/plan/add');
+                if(this.typeName === 'champion') {
+                    this.$router.push('/championVideo/add');
+                } else if(this.typeName === 'athlete') {
+                    this.$router.push('/athleteVideo/add');
+                }
             },
 
             // 去详情
             toDetail(row) {
-                let path = '';
-                if(this.isSummary) {
-                    path = '/briefRecord/summary/edit'
-                } else {
-                    path = '/briefRecord/plan/edit'
+                if(this.typeName === 'champion') {
+                    if(row.status == '1') { // 已处理
+                        this.$router.push({path: '/championVideo/detail', query: {id: row.videoId}})
+                    } else { // 未处理/处理中
+                        this.$router.push({path: '/championVideo/edit', query: {id: row.videoId}})
+                    }
+                } else if(this.typeName === 'athlete') {
+                    if(row.status == '1') { // 已处理
+                        this.$router.push({path: '/athleteVideo/detail', query: {id: row.videoId}})
+                    } else { // 未处理/处理中
+                        this.$router.push({path: '/athleteVideo/edit', query: {id: row.videoId}})
+                    }
+
                 }
-                this.$router.push({path: path, query: {id: row.reportId, canOperate: this.extInfo.canOperate}})
             }
         }
     }

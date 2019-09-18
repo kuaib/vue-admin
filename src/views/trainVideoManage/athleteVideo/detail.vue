@@ -1,5 +1,5 @@
 <template>
-    <detail fileType="detail" typeName="champion" :videoId="videoId"></detail>
+    <detail fileType="detail" typeName="athlete" :videoId="videoId"></detail>
 </template>
 
 <script>
