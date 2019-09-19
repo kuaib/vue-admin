@@ -1,16 +1,19 @@
 <template>
     <div>
         <el-row :gutter="20">
-            <el-col span="12">
+            <el-col :span="12">
                 <search-video typeName="冠军"></search-video>
             </el-col>
-            <el-col span="12">
+            <el-col :span="12">
                 <search-video typeName="运动员"></search-video>
             </el-col>
         </el-row>
 
-        <el-row>
-            <div>差异数据</div>
+        <el-row class="diff-data">
+            <div class="diff-title">差异数据</div>
+            <el-row>
+                <div>向远离镜头滑行时：</div>
+            </el-row>
         </el-row>
     </div>
 </template>
@@ -26,3 +29,11 @@
         }
     }
 </script>
+
+<style lang="scss">
+    .diff-data {
+        .diff-title {
+            margin: 15px 0;
+        }
+    }
+</style>

@@ -58,7 +58,7 @@
 
         <!--视频-->
         <el-row>
-            <div class="video-title">{{typeName}}{{}}的视频</div>
+            <div class="video-title">{{typeName}}{{searchForm.personName}}的视频</div>
             <div class="video-content">
                 <video src="" controls="controls"></video>
             </div>
