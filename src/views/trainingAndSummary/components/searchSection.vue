@@ -46,9 +46,9 @@
                         </el-select>
                     </el-form-item>
                 </el-col>
-                <el-col :span="8">
+                <el-col :span="6">
                     <el-form-item prop="trainYear">
-                        <el-date-picker
+                        <el-date-picker style="width:100%"
                                 v-model="searchForm.trainYear"
                                 type="month"
                                 value-format="yyyy-MM"
