@@ -3,7 +3,7 @@
         <!--基础信息-->
         <el-row>
             <div>基础信息</div>
-            <el-form :model="baseForm" ref="baseForm" :rules="rules" label-width="150px">
+            <el-form :model="baseForm" ref="baseForm" :rules="rules" label-width="100px">
                 <el-row :gutter="20">
                     <el-col :span="6">
                         <el-form-item label="视频名称：" prop="videoName">

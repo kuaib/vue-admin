@@ -28,4 +28,13 @@ export function getVideoDetail(params) {
     })
 }
 
+// 下拉搜索运动员或冠军
+export function selectEnum(params) {
+    return request({
+        url: '/sports/sports_video/selectEnum',
+        method: 'get',
+        params
+    })
+}
+
 

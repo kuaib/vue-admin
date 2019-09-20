@@ -107,7 +107,7 @@
                     videoType: formData.videoType,
                     status: formData.status,
                     videoName: formData.videoName,
-                    athleteId: formData.athlete,
+                    athleteName: formData.personName,
                     startTime: formData.uploadDate && formData.uploadDate[0],
                     endTime: formData.uploadDate && formData.uploadDate[1],
                     currentPage: this.listQuery.currentPage,
@@ -117,7 +117,7 @@
                     if (res.data.code == 200) {
                         let resData = res.data.data;
                         this.list = resData.list;
-                        this.extInfo = resData.extInfo;
+                        // this.extInfo = resData.extInfo;
                         this.total = resData.pagination.total;
                     } else {
                         this.$message({

@@ -45,13 +45,13 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
-                    <el-form-item prop="athlete">
-                        <el-select v-model="searchForm.athlete" :placeholder="typeName==='champion'?'请选择冠军':'请选择运动员'">
+                    <el-form-item prop="personName">
+                        <el-select v-model="searchForm.personName" :placeholder="typeName==='champion'?'请选择冠军':'请选择运动员'">
                             <el-option
-                                    v-for="item in athleteList"
-                                    :label="item.dicValue"
-                                    :value="item.dicKey"
-                                    :key="item.dicKey">
+                                    v-for="(item,idx) in personNameList"
+                                    :label="item"
+                                    :value="item"
+                                    :key="idx">
                             </el-option>
                         </el-select>
                     </el-form-item>
@@ -87,18 +87,20 @@
 
 <script>
     import mixin from '@/utils/mixins'
+    import {selectEnum} from '@/api/trainVideoManage'
     export default ({
         mixins: [mixin],
         props: ['typeName'],
         data() {
             return {
+                personNameList: [],  // 冠军/运动员下拉
                 searchForm: {
                     id: null,
                     project: null,
                     videoType: null,
                     status: null,
                     videoName: null,
-                    athlete: null,
+                    personName: null,
                     uploadDate: null
                 }
             }
@@ -106,13 +108,28 @@
 
         created() {
             this.getAllList(); // 获取基础下拉
-            this.getAthleteList(); // 获取运动员列表
+            this.selectName(); // 获取冠军/运动员下拉
         },
 
         methods: {
             // 搜索
             handleFilter() {
                 this.$emit('handleFilter', this.searchForm)
+            },
+
+            // 获取冠军/运动员下拉
+            selectName() {
+                let videoGroup = this.typeName === 'champion' ? 1 : 2;
+                selectEnum({videoGroup: videoGroup}).then(res => {
+                    if(res.data.code == 200) {
+                        this.personNameList = res.data.data;
+                    } else {
+                        this.$message({
+                            message: res.data.msg,
+                            type: 'warning'
+                        });
+                    }
+                })
             }
         }
     })
