@@ -85,7 +85,7 @@
                                     :on-progress="uploadProcess"
                                     :on-remove="removeFile"
                                     :file-list="fileList"
-                                    action="api/sports/sports_video/upload">
+                                    action="sports/sports_video/upload">
                                 <el-button size="small" type="primary">点击上传</el-button>
                             </el-upload>
                         </el-form-item>
