@@ -185,7 +185,7 @@
                         this.baseForm.createdTime = resData.createdTime;
                         this.baseForm1.videoFile = {fileName: resData.fileName, fileUrl: resData.videoUrl};
 
-                        this.fileList = [{name: resData.fileName, url: resData.videoUrl}]
+                        this.fileList = [{name: resData.fileName, url: resData.videoUrl, aiNo: resData.aiNo}]
                     } else {
                         this.$message({
                             message: res.data.msg,
@@ -211,7 +211,9 @@
                                     videoType: parseInt(this.baseForm.videoType),
                                     athleteName: this.baseForm.personName,
                                     remark: this.baseForm.remark,
-                                    videoUrl: this.baseForm1.videoFile.fileUrl
+                                    videoUrl: this.baseForm1.videoFile.fileUrl,
+                                    fileName: this.baseForm1.videoFile.fileName,
+                                    aiNo: this.baseForm1.videoFile.aiNo,
                                 }).then(res => {
                                     if(res.data.code == 200) {
                                         this.$message({

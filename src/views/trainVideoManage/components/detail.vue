@@ -67,7 +67,7 @@
             <div>视频内容</div>
             <el-form :model="baseForm1" ref="baseForm1" :rules="rules1" label-width="150px">
                 <el-row :gutter="20">
-                    <el-col :span="8" offset="8">
+                    <el-col :span="8" :offset="8">
                         <video :src="baseForm1.videoFile" controls="controls" class="video"></video>
                     </el-col>
                 </el-row>
@@ -78,8 +78,8 @@
         <el-row>
             <div>视频数据分析</div>
             <el-row :gutter="20">
-                <el-col :span="8" offset="8">
-
+                <el-col :span="12">
+                    <div>向远离镜头滑行时</div>
                 </el-col>
             </el-row>
         </el-row>
