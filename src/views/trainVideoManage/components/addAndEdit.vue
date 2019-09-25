@@ -73,7 +73,7 @@
         <!--视频内容-->
         <el-row>
             <div>视频内容</div>
-            <el-form :model="baseForm1" ref="baseForm1" :rules="rules1" label-width="150px">
+            <el-form :model="baseForm1" ref="baseForm1" :rules="rules1" label-width="150px" v-if="canEdit=='true'">
                 <el-row :gutter="20">
                     <el-col :span="8">
                         <el-form-item label="文件上传：" prop="videoFile">
@@ -86,7 +86,7 @@
                                     :on-remove="removeFile"
                                     :file-list="fileList"
                                     action="sports/sports_video/upload">
-                                <el-button size="small" type="primary">点击上传</el-button>
+                                <el-button size="small" type="primary" v-show="!baseForm1.videoFile">点击上传</el-button>
                             </el-upload>
                         </el-form-item>
                     </el-col>
@@ -94,6 +94,14 @@
                     <el-col :span="8" v-if="videoFlag == true">
                         上传进度：
                         <el-progress :percentage="videoUploadPercent"></el-progress>
+                    </el-col>
+                </el-row>
+            </el-form>
+
+            <el-form :model="baseForm1" ref="baseForm1" :rules="rules1" label-width="150px" v-if="canEdit=='false'">
+                <el-row :gutter="20">
+                    <el-col :span="8" :offset="8">
+                        <video :src="baseForm1.videoFile&&baseForm1.videoFile.fileUrl" controls="controls" class="video"></video>
                     </el-col>
                 </el-row>
             </el-form>
@@ -121,6 +129,7 @@
                 videoFlag: false,       // 是否上传完成
                 fileList: [],
                 videoGroup: this.typeName === 'champion' ? 1 : (this.typeName === 'athlete' ? 2 : null),
+                canEdit: this.$route.query.canEdit,  // 当前的视频是否可编辑
                 baseForm: {
                     videoName: null,
                     project: null,
@@ -286,6 +295,13 @@
             .el-progress--line {
                 display: none;
             }
+        }
+
+        .video {
+            width: 400px;
+            margin-top: 15px;
+            outline-style: none;
+            margin-bottom: 20px;
         }
     }
 </style>

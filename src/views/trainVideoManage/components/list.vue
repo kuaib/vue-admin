@@ -145,13 +145,13 @@
                     if(row.status == '1') { // 已处理
                         this.$router.push({path: '/championVideo/detail', query: {id: row.videoId}})
                     } else { // 未处理/处理中
-                        this.$router.push({path: '/championVideo/edit', query: {id: row.videoId}})
+                        this.$router.push({path: '/championVideo/edit', query: {id: row.videoId, canEdit: row.canEdit.toString()}})
                     }
                 } else if(this.typeName === 'athlete') {
                     if(row.status == '1') { // 已处理
                         this.$router.push({path: '/athleteVideo/detail', query: {id: row.videoId}})
                     } else { // 未处理/处理中
-                        this.$router.push({path: '/athleteVideo/edit', query: {id: row.videoId}})
+                        this.$router.push({path: '/athleteVideo/edit', query: {id: row.videoId, canEdit: row.canEdit.toString()}})
                     }
 
                 }

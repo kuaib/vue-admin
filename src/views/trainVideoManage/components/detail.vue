@@ -80,14 +80,12 @@
             <el-row :gutter="20">
                 <el-col :span="12" class="video-items">
                     <div v-for="item in aiResult.slice(0, subLen)" :key="item.name">
-                        <span>{{item.name}}：</span>
-                        <span>{{item.value}}</span>
+                        <span>{{item}}</span>
                     </div>
                 </el-col>
                 <el-col :span="12" class="video-items">
                     <div v-for="item in aiResult.slice(subLen, aiResult.length)" :key="item.name">
-                        <span>{{item.name}}：</span>
-                        <span>{{item.value}}</span>
+                        <span>{{item}}</span>
                     </div>
                 </el-col>
             </el-row>
@@ -103,7 +101,6 @@
 <script>
     import mixins from '@/utils/mixins'
     import {getVideoDetail} from '@/api/trainVideoManage'
-    import {getRelation} from '../relation'
     export default {
         mixins: [mixins],
         props: ['fileType', 'typeName', 'videoId'],  // 编辑还是创建, 运动员还是冠军
@@ -171,7 +168,7 @@
                         this.baseForm.createdName = resData.createdName;
                         this.baseForm.createdTime = resData.createdTime;
                         this.baseForm1.videoFile = resData.videoUrl;
-                        this.aiResult = getRelation(resData.aiResult); // 将对象转为对象数组
+                        this.aiResult = resData.aiResult; // 将对象转为对象数组
                         this.subLen = Math.ceil(this.aiResult.length / 2);
                     } else {
                         this.$message({
