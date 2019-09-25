@@ -76,10 +76,19 @@
 
         <!--视频数据分析-->
         <el-row>
-            <div>视频数据分析</div>
+            <div style="margin-bottom:15px;">视频数据分析</div>
             <el-row :gutter="20">
-                <el-col :span="12">
-                    <div>向远离镜头滑行时</div>
+                <el-col :span="12" class="video-items">
+                    <div v-for="item in aiResult.slice(0, subLen)" :key="item.name">
+                        <span>{{item.name}}：</span>
+                        <span>{{item.value}}</span>
+                    </div>
+                </el-col>
+                <el-col :span="12" class="video-items">
+                    <div v-for="item in aiResult.slice(subLen, aiResult.length)" :key="item.name">
+                        <span>{{item.name}}：</span>
+                        <span>{{item.value}}</span>
+                    </div>
                 </el-col>
             </el-row>
         </el-row>
@@ -94,6 +103,7 @@
 <script>
     import mixins from '@/utils/mixins'
     import {getVideoDetail} from '@/api/trainVideoManage'
+    import {getRelation} from '../relation'
     export default {
         mixins: [mixins],
         props: ['fileType', 'typeName', 'videoId'],  // 编辑还是创建, 运动员还是冠军
@@ -113,6 +123,8 @@
                 baseForm1: {
                     videoFile: null
                 },
+                aiResult: [],   // ai结果数组集
+                subLen: 0,      // ai结果数组集长度一半（向上取整）
 
                 rules: {
                     videoName: [
@@ -159,6 +171,8 @@
                         this.baseForm.createdName = resData.createdName;
                         this.baseForm.createdTime = resData.createdTime;
                         this.baseForm1.videoFile = resData.videoUrl;
+                        this.aiResult = getRelation(resData.aiResult); // 将对象转为对象数组
+                        this.subLen = Math.ceil(this.aiResult.length / 2);
                     } else {
                         this.$message({
                             message: res.data.msg,
@@ -171,11 +185,20 @@
     }
 </script>
 
-<style>
+<style lang="scss" scope>
     .video {
         width: 400px;
         margin-top: 15px;
         outline-style: none;
         margin-bottom: 20px;
+    }
+    .video-items {
+        div {
+            margin-left: 25px;
+            line-height: 35px;
+            span {
+                color: #606266;
+            }
+        }
     }
 </style>
