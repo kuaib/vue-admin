@@ -4,7 +4,7 @@
         <el-form :model="searchForm" ref="searchForm" :rules="rules" label-width="100px">
             <el-row :gutter="20">
                 <el-col>
-                    <el-form-item prop="project" label="条件一：">
+                    <el-form-item prop="project" label="项目：">
                         <el-select v-model="searchForm.project" placeholder="请选择项目">
                             <el-option
                                     v-for="item in projectList"
@@ -18,7 +18,7 @@
             </el-row>
             <el-row :gutter="20">
                 <el-col>
-                    <el-form-item prop="videoType" label="条件二：">
+                    <el-form-item prop="videoType" label="视频类型：">
                         <el-select v-model="searchForm.videoType" placeholder="请选择视频类型">
                             <el-option label="短节目" value="1"></el-option>
                             <el-option label="长节目" value="2"></el-option>
@@ -42,7 +42,7 @@
             </el-row>
             <el-row>
                 <el-col>
-                    <el-form-item prop="videoName" label="条件三：">
+                    <el-form-item prop="videoName" label="视频名称：">
                         <el-select v-model="searchForm.videoName" placeholder="请选择视频名称">
                             <el-option
                                     v-for="(item,idx) in videoList"
@@ -61,42 +61,25 @@
             </el-row>
         </el-form>
 
-        <el-row v-show="videoUrl">
-            <!--视频-->
-            <el-row>
-                <div class="video-title">{{typeName}}{{searchForm.personName}}的视频</div>
-                <div class="video-content">
-                    <video :src="videoUrl" controls="controls"></video>
-                </div>
-            </el-row>
-
-            <!--数据-->
-            <el-row class="diff-data">
-                <div class="diff-title">视频数据分析</div>
-                <el-row :gutter="20">
-                    <el-col>
-                        <div v-for="(item,idx) in aiResult" :key="idx" class="data-item">
-                            <span>{{item}}</span>
-                        </div>
-                    </el-col>
-                </el-row>
-            </el-row>
+        <!--视频-->
+        <el-row v-if="videoUrl">
+            <div class="video-title">{{typeName}}{{searchForm.personName}}的视频</div>
+            <div class="video-content">
+                <video :src="videoUrl" controls="controls"></video>
+            </div>
         </el-row>
-
-        <!--<el-row v-show="!videoUrl">没有查询到相应的结果</el-row>-->
     </div>
 </template>
 
 <script>
     import {selectEnum, getProjectByPerson, getVideoList, getAthleteBySome, getVideoDetail} from '@/api/trainVideoManage'
     export default {
-        props: ['typeName'],  // 运动员/冠军
+        props: ['typeName', 'aiResult'],  // 运动员/冠军
         data() {
             return {
                 projectList: [],       // 项目列表
                 personNameList: [],    // 冠军/运动列表
                 videoList: [],         // 视频下拉离诶包
-                aiResult: [],
                 videoUrl: null,
                 searchForm: {
                     project: null,
@@ -174,7 +157,7 @@
                         getVideoDetail({videoId: this.videoId}).then(res => {
                             if(res.data.code == 200) {
                                 let resData = res.data.data;
-                                this.aiResult = resData.aiResult;
+                                this.$emit('update:aiResult', resData.aiResult);
                                 this.videoUrl = resData.videoUrl;
                             } else {
                                 this.$message({
@@ -226,15 +209,6 @@
         margin: 0 auto;
         video {
             width: 100%;
-        }
-    }
-    .diff-data {
-        .data-item {
-            line-height: 30px;
-            margin-left: 30px;
-            span {
-                color: #606266;
-            }
         }
     }
 </style>
