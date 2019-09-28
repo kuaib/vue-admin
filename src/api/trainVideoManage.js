@@ -37,4 +37,20 @@ export function selectEnum(params) {
     })
 }
 
+// 查询项目列表（冠军/运动员的）
+export function getProjectByPerson(params) {
+    return request({
+        url: '/sports/sports_video/projects',
+        method: 'get',
+        params
+    })
+}
 
+// 查询运动员列表（通过：项目，视频类型，运动员/冠军）
+export function getAthleteBySome(params) {
+    return request({
+        url: '/sports/sports_video/getAthlete',
+        method: 'get',
+        params
+    })
+}

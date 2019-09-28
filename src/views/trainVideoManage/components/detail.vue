@@ -67,7 +67,7 @@
             <div>视频内容</div>
             <el-form :model="baseForm1" ref="baseForm1" :rules="rules1" label-width="150px">
                 <el-row :gutter="20">
-                    <el-col :span="8" :offset="8">
+                    <el-col :span="8" :offset="8" style="text-align: center">
                         <video :src="baseForm1.videoFile" controls="controls" class="video"></video>
                     </el-col>
                 </el-row>
@@ -78,13 +78,20 @@
         <el-row>
             <div style="margin-bottom:15px;">视频数据分析</div>
             <el-row :gutter="20">
-                <el-col :span="12" class="video-items">
-                    <div v-for="item in aiResult.slice(0, subLen)" :key="item.name">
-                        <span>{{item}}</span>
-                    </div>
-                </el-col>
-                <el-col :span="12" class="video-items">
-                    <div v-for="item in aiResult.slice(subLen, aiResult.length)" :key="item.name">
+                <!--两边展示-->
+                <!--<el-col :span="12" class="video-items">-->
+                    <!--<div v-for="item in aiResult.slice(0, subLen)" :key="item.name">-->
+                        <!--<span>{{item}}</span>-->
+                    <!--</div>-->
+                <!--</el-col>-->
+                <!--<el-col :span="12" class="video-items">-->
+                    <!--<div v-for="item in aiResult.slice(subLen, aiResult.length)" :key="item.name">-->
+                        <!--<span>{{item}}</span>-->
+                    <!--</div>-->
+                <!--</el-col>-->
+
+                <el-col :span="12" class="video-items" :offset="6">
+                    <div v-for="(item,idx) in aiResult" :key="idx" style="text-align: center;">
                         <span>{{item}}</span>
                     </div>
                 </el-col>

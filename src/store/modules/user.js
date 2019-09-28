@@ -1579,7 +1579,7 @@ let aa = [
                         "path": "detail",
                         "component": "views/trainVideoManage/championVideo/detail",
                         "name": "championVideoDetail",
-                        "title": "运动员视频详情",
+                        "title": "冠军视频详情",
                         "icon": "ios-basket-outline",
                         "parentId": 2,
                         "enabled": 1,
@@ -1587,7 +1587,7 @@ let aa = [
                         "roles": null,
                         "meta": {
                             "access": null,
-                            "title": "运动员视频详情",
+                            "title": "冠军视频详情",
                             "icon": "ios-basket-outline",
                             "hideInMenu": true,
                             "noCache": true

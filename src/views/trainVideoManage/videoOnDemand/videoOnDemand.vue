@@ -9,12 +9,7 @@
             </el-col>
         </el-row>
 
-        <el-row class="diff-data">
-            <div class="diff-title">差异数据</div>
-            <el-row>
-                <div>向远离镜头滑行时：</div>
-            </el-row>
-        </el-row>
+
     </div>
 </template>
 
@@ -24,7 +19,7 @@
         components: {searchVideo},
         data() {
             return {
-
+                aiResult: []
             }
         }
     }
