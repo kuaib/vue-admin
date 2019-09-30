@@ -16,12 +16,14 @@
                     <span>{{item}}</span>
                 </div>
             </el-col>
+            <el-col :span="12" v-else style="height: 10px;"></el-col>
             <el-col :span="12" v-if="aiResultB.length>0">
                 <div class="diff-title">视频数据分析</div>
                 <div v-for="(item,idx) in aiResultB" :key="idx" class="data-item">
                     <span>{{item}}</span>
                 </div>
             </el-col>
+            <el-col :span="12" v-else style="height: 10px;"></el-col>
         </el-row>
     </div>
 </template>
