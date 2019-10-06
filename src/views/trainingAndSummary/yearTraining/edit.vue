@@ -37,10 +37,10 @@
                         <el-form-item label="组别：" prop="team">
                             <el-select v-model="baseForm.team" filterable placeholder="请选择组别">
                                 <el-option
-                                        v-for="item in teamInfoList"
-                                        :key="item.dicKey"
-                                        :label="item.dicValue"
-                                        :value="item.dicKey">
+                                    v-for="item in teamByProList"
+                                    :label="item.teamName"
+                                    :value="item.teamId"
+                                    :key="item.teamId">
                                 </el-option>
                             </el-select>
                         </el-form-item>
@@ -115,6 +115,7 @@
         data() {
             return {
                 btnLoading: false,
+                idDetail: true,  // 是否是详情接口渲染
                 baseForm: {
                     trainId: this.$route.query.id,
                     status: this.$route.query.status, // 提交还是未提交
@@ -155,7 +156,7 @@
                     if(res.data.code == 200) {
                         let resData = res.data.data;
                         this.baseForm.bigPro = resData.projectId;
-                        this.baseForm.team = resData.teamId;
+                        this.baseForm.team = parseInt(resData.teamId);
                         this.baseForm.coach = resData.coachId;
                         this.baseForm.leader = resData.leaderId;
                         this.baseForm.trainYear = resData.trainYear;
@@ -255,6 +256,21 @@
                     arr.push(obj);
                 });
                 return arr;
+            }
+        },
+         watch: {
+            'baseForm.bigPro': function(val) {
+                if(val) {
+                    if(this.idDetail) {
+                        this.idDetail = false;
+                    } else {
+                        this.baseForm.team = null;
+                    }
+                    this.teamByProList = [];
+                    this.getTeamByProject(val, () => {
+
+                    });
+                }
             }
         }
     }

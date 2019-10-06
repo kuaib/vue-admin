@@ -24,10 +24,10 @@
                         <el-form-item label="组别：" prop="team">
                             <el-select v-model="baseForm.team" filterable placeholder="请选择组别">
                                 <el-option
-                                        v-for="item in teamInfoList"
-                                        :key="item.dicKey"
-                                        :label="item.dicValue"
-                                        :value="item.dicKey">
+                                    v-for="item in teamByProList"
+                                    :label="item.teamName"
+                                    :value="item.teamId"
+                                    :key="item.teamId">
                                 </el-option>
                             </el-select>
                         </el-form-item>
@@ -199,6 +199,15 @@
                     arr.push(obj);
                 });
                 return JSON.stringify(arr)
+            }
+        },
+         watch: {
+            'baseForm.bigPro': function(val) {
+                if(val) {
+                    this.baseForm.team = null;
+                    this.teamByProList = [];
+                    this.getTeamByProject(val);
+                }
             }
         }
     }

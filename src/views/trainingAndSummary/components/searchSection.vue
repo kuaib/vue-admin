@@ -24,10 +24,10 @@
                     <el-form-item prop="team">
                         <el-select v-model="searchForm.team" placeholder="请选择队伍">
                             <el-option
-                                    v-for="item in teamInfoList"
-                                    :label="item.dicValue"
-                                    :value="item.dicKey"
-                                    :key="item.dicKey">
+                                    v-for="item in teamByProList"
+                                    :label="item.teamName"
+                                    :value="item.teamId"
+                                    :key="item.teamId">
                             </el-option>
                         </el-select>
                     </el-form-item>
@@ -175,6 +175,16 @@
                 val = new Date(val)
                 this.defaultVal = val.getFullYear()+"-"+(val.getMonth()+1)+"-"+"1";
             },
+        },
+         watch: {
+            'searchForm.project': function(val) {
+                if(val) {
+                    this.searchForm.team = null;
+                    this.teamByProList = [];
+                    this.getTeamByProject(val);
+                }
+            }
         }
+        
     })
 </script>
