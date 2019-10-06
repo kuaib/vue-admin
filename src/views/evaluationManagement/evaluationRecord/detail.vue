@@ -114,36 +114,10 @@
                         <div class="sub-title">测评详情</div>
                         <el-row :gutter="20">
                             <el-table :data="list" border fit highlight-current-row
-                                      style="width: 100%;">
-                                <el-table-column align="center" label="通气量(MV)">
-                                    <template slot-scope="scope">
-                                        <span>{{scope.row.mv}}</span>
-                                    </template>
-                                </el-table-column>
-                                <el-table-column align="center" label="最大氧耗量（VO2max ）">
-                                    <template slot-scope="scope">
-                                        <span>{{scope.row.vo2max}}</span>
-                                    </template>
-                                </el-table-column>
-                                <el-table-column align="center" label="心率(HR)">
-                                    <template slot-scope="scope">
-                                        <span>{{scope.row.hr}}</span>
-                                    </template>
-                                </el-table-column>
-                                <el-table-column align="center" label="负荷">
-                                    <template slot-scope="scope">
-                                        <span>{{scope.row.load}}</span>
-                                    </template>
-                                </el-table-column>
-                                <el-table-column align="center" label="速度(km/h)">
-                                    <template slot-scope="scope">
-                                        <span>{{scope.row.speed}}</span>
-                                    </template>
-                                </el-table-column>
-                                <el-table-column align="center" label="坡度(%)">
-                                    <template slot-scope="scope">
-                                        <span>{{scope.row.grade}}</span>
-                                    </template>
+                                      style="width: 100%;" :header-cell-style="{background:'#eef1f6',color:'#606266'}">
+                                <el-table-column align="center"
+                                        v-for="(col,idx) in cols" :key="idx"
+                                        :prop="col.prop" :label="col.label" >
                                 </el-table-column>
                             </el-table>
                         </el-row>
@@ -159,10 +133,13 @@
 
 <script>
     import {getTestDetail} from '@/api/evaluationManagement'
+    import linq from "linq"
 
     export default {
         data() {
             return {
+                //header: ['通气量(MV)', '最大氧耗量（VO2max ）', '心率(HR)', '负荷', '速度(km/h)', '坡度(%)'],
+
                 activeNames: ['2'],
                 id: this.$route.query.id,
                 personForm: { // 个人信息
@@ -192,7 +169,9 @@
                     testBatch: null
                 },
 
-                list: []   // 测评详情列表
+                list: [],   // 测评详情列表
+                cols:[]// 列信息
+
             }
         },
 
@@ -207,9 +186,11 @@
                     testId: this.id
                 }).then(res => {
                     if(res.data.code == 200) {
-                        this.personForm = res.data.data.sportsStaff,
-                        this.testForm = res.data.data.sportsTest,
-                        this.list = [res.data.data.sportsTest.detailData]
+                        this.personForm = res.data.data.sportsStaff;
+                        this.testForm = res.data.data.sportsTest;
+                        this.cols = linq.from(this.testForm.headerList).orderBy("d=>d.orderNum").toArray();
+                        this.list = this.testForm.detailList;
+
                     } else {
                         this.$message({
                             message: res.data.msg,

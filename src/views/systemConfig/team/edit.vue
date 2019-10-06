@@ -98,9 +98,9 @@
                     parentPro: [
                         { required: true, message: '请选择隶属大项', trigger: 'change' }
                     ],
-                    proManager: [
-                        { required: true, message: '请选择项目负责人', trigger: 'change' }
-                    ]
+                    // proManager: [
+                    //     { required: true, message: '请选择项目负责人', trigger: 'change' }
+                    // ]
                 }
             }
         },

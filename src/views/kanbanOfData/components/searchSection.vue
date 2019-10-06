@@ -20,28 +20,28 @@
                         </el-select>
                     </el-form-item>
                 </el-col>
-                <el-col :span="6">
-                    <el-form-item prop="smallPro">
-                        <el-select v-model="searchForm.smallPro" placeholder="请选择小项">
-                            <el-option
-                                    v-for="(item, idx) in smallProList"
-                                    :key="idx"
-                                    :label="item"
-                                    :value="item">
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                </el-col>
+                <!--<el-col :span="6">-->
+                    <!--<el-form-item prop="smallPro">-->
+                        <!--<el-select v-model="searchForm.smallPro" placeholder="请选择小项">-->
+                            <!--<el-option-->
+                                    <!--v-for="(item, idx) in smallProList"-->
+                                    <!--:key="idx"-->
+                                    <!--:label="item"-->
+                                    <!--:value="item">-->
+                            <!--</el-option>-->
+                        <!--</el-select>-->
+                    <!--</el-form-item>-->
+                <!--</el-col>-->
             </el-row>
             <el-row :gutter="20" class="search-item">
                 <el-col :span="6">
-                    <el-form-item prop="batch">
+                    <el-form-item prop="team">
                         <el-select v-model="searchForm.team" placeholder="请选择队伍">
                             <el-option
-                                    v-for="item in teamInfoList"
-                                    :label="item.dicValue"
-                                    :value="item.dicKey"
-                                    :key="item.dicKey">
+                                    v-for="item in teamByProList"
+                                    :label="item.teamName"
+                                    :value="item.teamId"
+                                    :key="item.teamId">
                             </el-option>
                         </el-select>
                     </el-form-item>
@@ -123,11 +123,17 @@
         watch: {
             'searchForm.project': function(val) {
                 if(val) {
-                    this.getSmallProList(val)
+                    this.searchForm.team = null;
+                    this.searchForm.athlete = null;
+                    this.teamByProList = [];
+                    this.athleteList = [];
+                    this.getTeamByProject(val);
                 }
             },
             'searchForm.team': function(val) { // 根据队伍获取运动员
                 if(val) {
+                    this.searchForm.athlete = null;
+                    this.athleteList = [];
                     this.getAthleteList('', {teamId: val});
                 }
             }

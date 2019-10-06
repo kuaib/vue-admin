@@ -2,7 +2,7 @@
  * 混入
  */
 
-import {getBaseInfo, childProject, getLevelByName, getAthlete, getTrainSelect} from '@/api/common'
+import {getBaseInfo, childProject, getLevelByName, getAthlete, getTrainSelect, getTeamByProjectId} from '@/api/common'
 export default {
     data() {
         return {
@@ -20,6 +20,8 @@ export default {
             contactsInfoList: [],    // 联系人列表
 
             searchFormData: {},   // 搜索条件
+
+            teamByProList: [],    // 队伍列表(通过大项关联的队伍列表)
         }
     },
 
@@ -110,6 +112,21 @@ export default {
                 } else {
                     this.$message({
                         message: '获取小项失败',
+                        type: 'warning'
+                    });
+                }
+            })
+        },
+
+        // 通过大项获取队伍
+        getTeamByProject(projectId, successCallback) {
+            getTeamByProjectId({projectId: projectId}).then(res => {
+                if(res.data.code == 200) {
+                    this.teamByProList = res.data.data;
+                    successCallback && successCallback(res.data.data);
+                } else {
+                    this.$message({
+                        message: res.data.msg,
                         type: 'warning'
                     });
                 }

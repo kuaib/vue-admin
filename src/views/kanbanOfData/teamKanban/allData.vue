@@ -4,10 +4,10 @@
         <!--搜索-->
         <searchSection typeName="team" @getAllData="getAllData"></searchSection>
 
-        <el-row class="all-info">
-            <!--个人信息-->
+        <el-row class="all-info" v-show="allData.team">
+            <!--运动队信息-->
             <el-collapse v-model="activeNames">
-                <el-collapse-item :title="allData.staff&&allData.staff.staffName+'的个人信息'" name="1" style="margin-bottom: 0">
+                <el-collapse-item :title="allData.team&&allData.team.teamName+'的运动队信息'" name="1" style="margin-bottom: 0">
                     <team :teamForm="allData.team" :list="allData.athlete"></team>
                 </el-collapse-item>
             </el-collapse>

@@ -65,8 +65,9 @@
                 <span class="section-title">考勤详情</span>
             </div>
             <el-row class="train-section">
+                <div></div>
                 <el-table :data="list" border highlight-current-row style="width: 100%" max-height="250">
-                    <el-table-column label="编号" type="index" width="50"></el-table-column>
+                    <el-table-column label="编号" type="index" width="50" header-align="center"></el-table-column>
                     <el-table-column prop="name" label="姓名" align="center" header-align="center">
                         <template slot-scope="scope">
                             <!--<el-input v-if="scope.row.name.editFlag" v-model="scope.row.name.value" v-focus @blur="changeStatus(scope,'blur','list'+scope.$index)" :ref="'list'+scope.$index"></el-input>-->
@@ -82,49 +83,49 @@
                             <div class="table-item-div">{{scope.row.name.label}}</div>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="attendance" label="出勤" align="center" header-align="center">
+                    <el-table-column prop="attendance" label="出勤" align="center" :render-header="renderHeader" header-align="center">
                         <template slot-scope="scope">
                             <div class="table-item-div" v-if="scope.row.attendance.editFlag" @click="toggleStatus(scope,'del')">✓</div>
                             <div class="table-item-div" v-else @click="toggleStatus(scope,'add')"></div>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="late" label="迟到" align="center" header-align="center">
+                    <el-table-column prop="late" label="迟到" align="center" :render-header="renderHeader" header-align="center">
                         <template slot-scope="scope">
                             <div class="table-item-div" v-if="scope.row.late.editFlag" @click="toggleStatus(scope,'del')">✓</div>
                             <div class="table-item-div" v-else @click="toggleStatus(scope,'add')"></div>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="leaveEarly" label="早退" align="center" header-align="center">
+                    <el-table-column prop="leaveEarly" label="早退" align="center" :render-header="renderHeader" header-align="center">
                         <template slot-scope="scope">
                             <div class="table-item-div" v-if="scope.row.leaveEarly.editFlag" @click="toggleStatus(scope,'del')">✓</div>
                             <div class="table-item-div" v-else @click="toggleStatus(scope,'add')"></div>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="singLeave" label="事假" align="center" header-align="center">
+                    <el-table-column prop="singLeave" label="事假" align="center" :render-header="renderHeader" header-align="center">
                         <template slot-scope="scope">
                             <div class="table-item-div" v-if="scope.row.singLeave.editFlag" @click="toggleStatus(scope,'del')">✓</div>
                             <div class="table-item-div" v-else @click="toggleStatus(scope,'add')"></div>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="absenteeism" label="旷工" align="center" header-align="center">
+                    <el-table-column prop="absenteeism" label="旷工" align="center" :render-header="renderHeader" header-align="center">
                         <template slot-scope="scope">
                             <div class="table-item-div" v-if="scope.row.absenteeism.editFlag" @click="toggleStatus(scope,'del')">✓</div>
                             <div class="table-item-div" v-else @click="toggleStatus(scope,'add')"></div>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="weakLeave" label="病假" align="center" header-align="center">
+                    <el-table-column prop="weakLeave" label="病假" align="center" :render-header="renderHeader" header-align="center">
                         <template slot-scope="scope">
                             <div class="table-item-div" v-if="scope.row.weakLeave.editFlag" @click="toggleStatus(scope,'del')">✓</div>
                             <div class="table-item-div" v-else @click="toggleStatus(scope,'add')"></div>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="injury" label="工伤" align="center" header-align="center">
+                    <el-table-column prop="injury" label="工伤" align="center" :render-header="renderHeader" header-align="center">
                         <template slot-scope="scope">
                             <div class="table-item-div" v-if="scope.row.injury.editFlag" @click="toggleStatus(scope,'del')">✓</div>
                             <div class="table-item-div" v-else @click="toggleStatus(scope,'add')"></div>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="other" label="其他" align="center" header-align="center">
+                    <el-table-column prop="other" label="其他" align="center" :render-header="renderHeader" header-align="center">
                         <template slot-scope="scope">
                             <div class="table-item-div" v-if="scope.row.other.editFlag" @click="toggleStatus(scope,'del')">✓</div>
                             <div class="table-item-div" v-else @click="toggleStatus(scope,'add')"></div>
@@ -180,7 +181,9 @@
                         { required: true, message: '请选择考勤时段', trigger: 'change' }
                     ],
                 },
-                list: []
+                list: [],
+
+                checkAll: {attendance: false,late: false,leaveEarly: false, singLeave: false, absenteeism: false, weakLeave: false, injury: false, other: false}
             }
         },
 
@@ -244,13 +247,43 @@
                 return arr;
             },
 
-            // 打勾/去掉勾
+            // 打勾/去掉勾(单个)
             toggleStatus(scope, eventType) {
                 let columnName = scope.column.property;
+                document.getElementsByClassName(columnName)[0].children[0].children[1].checked = true;
+                let ele = document.getElementsByClassName(columnName)[0];
+                let childSpan = ele.children[0];
+                let childIpt = childSpan.children[1];
+
                 if(eventType === 'add') {
+                    let flag = true;
                     this.list[scope.$index][columnName].editFlag = true;
+
+
+
+                    this.list.forEach((item,index) => {
+                        if(!this.list[index][columnName].editFlag) {
+                            flag = false;
+                        }
+                    });
+                    // 通过改变el-checkbox的类去改变是否选中的样式
+                    if(flag) {
+                        this.checkAll[columnName] = true;
+                        ele.className = 'el-checkbox is-checked ' + columnName;
+                        childSpan.className = 'el-checkbox__input is-checked';
+                        childIpt.checked = true;
+                    } else {
+                        this.checkAll[columnName] = false;
+                        ele.className = 'el-checkbox ' + columnName;
+                        childSpan.className = 'el-checkbox__input';
+                        childIpt.checked = false;
+                    }
                 } else if(eventType === 'del') {
                     this.list[scope.$index][columnName].editFlag = false;
+                    this.checkAll[columnName] = false;
+                    ele.className = 'el-checkbox ' + columnName;
+                    childSpan.className = 'el-checkbox__input';
+                    childIpt.checked = false;
                 }
             },
 
@@ -260,7 +293,7 @@
                     athleteList.forEach(item => {
                         this.list.push({
                             name: { label: item.dicValue, value: item.dicKey, editFlag: false },
-                            attendance: { value: null, editFlag: false },
+                            attendance: { value: null, editFlag: false }, // 出勤
                             late: { value: null, editFlag: false}, // 迟到
                             leaveEarly: { value: null, editFlag: false },  // 早退
                             singLeave: { value: null, editFlag: false },   // 事假
@@ -269,6 +302,39 @@
                             injury: { value: null, editFlag: false },      // 工伤
                             other: { value: null, editFlag: false },       // 其他
                         })
+                    })
+                }
+            },
+
+            // 渲染表格头部
+            renderHeader(h,{column, $index}) {
+                return h(
+                    'div',[
+                        h('span', column.label),
+                        h('el-checkbox', {
+                            class: column.property,
+                            style: 'margin-left: 5px;',
+                            props: {
+                                checked: this.checkAll[column.property]
+                            },
+                            on:{
+                                change: (checkType, $event) => this.select(checkType, $event, $index, column), // 选中事件 $event, column，这里$event=true,column是input的dom当在select里打印的时候
+                            }
+                        })
+                    ],
+                );
+            },
+
+            // 全选的事件
+            select(checkType, e, idx, column) {
+                console.log(e.target)
+                if(checkType) {
+                    this.list.forEach((item,index) => {
+                        this.list[index][column.property].editFlag = true;
+                    })
+                } else {
+                    this.list.forEach((item,index) => {
+                        this.list[index][column.property].editFlag = false;
                     })
                 }
             },

@@ -57,3 +57,12 @@ export function getTrainSelect(params) {
         params
     })
 }
+
+// 通过大项查找队伍
+export function getTeamByProjectId(params) {
+    return request({
+        url: '/sports/sports_base/getTeamByProjectId',
+        method: 'get',
+        params
+    })
+}
