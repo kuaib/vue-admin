@@ -441,6 +441,7 @@
             width:100%;
             height:36px;
             line-height: 36px;
+            cursor: pointer;
         }
         .row-act-btns {
             color: #409EFF;

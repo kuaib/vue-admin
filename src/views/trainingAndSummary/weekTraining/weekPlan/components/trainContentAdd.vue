@@ -37,7 +37,7 @@
                 <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item label="训练类型" prop="trainType">
-                            <el-select v-model="addForm.trainType" placeholder="请选择训练类型" @change="getCommonList('2')">
+                            <el-select v-model="addForm.trainType" multiple placeholder="请选择训练类型">
                                 <el-option
                                         v-for="item in trainTypeList"
                                         :label="item.trainContent"
@@ -48,34 +48,22 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="训练内容" prop="trainContent">
-                            <el-select v-model="addForm.trainContent" placeholder="请选择训练内容" @change="getCommonList('3')">
-                                <el-option
-                                        v-for="item in trainContentList"
-                                        :label="item.trainContent"
-                                        :value="item.id"
-                                        :key="item.id">
-                                </el-option>
-                            </el-select>
+                        <el-form-item label="重复次数" prop="repeatTimes">
+                            <el-input v-model="addForm.repeatTimes" placeholder="请输入重复次数"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
-                    <el-col :span="12">
-                        <el-form-item label="内容细节" prop="trainDetail">
-                            <el-select v-model="addForm.trainDetail" placeholder="请选择内容细节">
-                                <el-option
-                                        v-for="item in trainDetailList"
-                                        :label="item.trainContent"
-                                        :value="item.id"
-                                        :key="item.id">
-                                </el-option>
-                            </el-select>
+                    <el-col>
+                        <el-form-item label="训练内容" prop="trainContentName">
+                            <el-input type="textarea" v-model="addForm.trainContentName" placeholder="请输入训练内容"></el-input>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="12">
-                        <el-form-item label="重复次数" prop="repeatTimes">
-                            <el-input v-model="addForm.repeatTimes" placeholder="请输入重复次数"></el-input>
+                </el-row>
+                <el-row :gutter="20">
+                    <el-col>
+                        <el-form-item label="内容细节" prop="trainDetailName">
+                            <el-input type="textarea" v-model="addForm.trainDetailName" placeholder="请输入内容细节"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -108,7 +96,7 @@
                 <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item label="训练类型" prop="trainType">
-                            <el-select v-model="addForm.trainType" placeholder="请选择训练类型" @change="getCommonList('2')">
+                            <el-select v-model="addForm.trainType" multiple placeholder="请选择训练类型">
                                 <el-option
                                         v-for="item in trainTypeList"
                                         :label="item.trainContent"
@@ -119,15 +107,8 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="训练内容" prop="trainContent">
-                            <el-select v-model="addForm.trainContent" placeholder="请选择训练内容">
-                                <el-option
-                                        v-for="item in trainContentList"
-                                        :label="item.trainContent"
-                                        :value="item.id"
-                                        :key="item.id">
-                                </el-option>
-                            </el-select>
+                        <el-form-item label="节奏" prop="rhythm">
+                            <el-input v-model="addForm.rhythm" placeholder="请输入节奏"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -149,9 +130,11 @@
                             <el-input v-model="addForm.restInterval" placeholder="请输入组间休息间隔"></el-input>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="12">
-                        <el-form-item label="节奏" prop="rhythm">
-                            <el-input v-model="addForm.rhythm" placeholder="请输入节奏"></el-input>
+                </el-row>
+                <el-row :gutter="20">
+                    <el-col>
+                        <el-form-item label="训练内容" prop="trainContentName">
+                            <el-input type="textarea" v-model="addForm.trainContentName" placeholder="请输入训练内容"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -200,7 +183,7 @@
                     trainType: [
                         {required: true, message: '请选择训练类型', trigger: 'blur'}
                     ],
-                    trainContent: [
+                    trainContentName: [
                         {required: true, message: '请选择训练内容', trigger: 'blur'}
                     ],
                 },
@@ -230,6 +213,17 @@
             onSubmit(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
+                        // 训练类型多选，name都转化为字符串，id暂时保持数组形式（用于反显）
+                        let tempArr = [];
+                        this.trainTypeList.forEach(item => {
+                            this.addForm.trainType.forEach(types => {
+                                if(item.id == types) {
+                                    tempArr.push(item.trainContent)
+                                }
+                            })
+                        });
+                        this.addForm.trainTypeName = tempArr.join();
+
                         let obj = JSON.parse(JSON.stringify(this.addForm));
                         this.$emit('showItem', obj, this.titleType, this.rowIdx);
                         this.dialogVisible = false;
@@ -249,7 +243,7 @@
 
             },
 
-            // 获取训练类型、训练内容、训练细节下拉
+            // 获取训练类型下拉
             getCommonList(level) {
                 let params = {
                     level: level,
@@ -258,40 +252,54 @@
                 if(level === '1') {         // 训练类型
                     params.queryId = '0';
                     this.getTrainSelectAll(params, (res) => {
-                        if(this.trainTypeList.length === 0 && this.addForm.trainType) {
-
-                        } else {
-                            this.trainContentList = [];
-                            this.trainDetailList = [];
-                            this.addForm.trainContent = null;
-                            this.addForm.trainDetail = null;
-                        }
                         this.trainTypeList = res;
-                    });
-                } else if(level === '2') {  // 训练内容
-                    params.queryId = this.addForm.trainType;
-                    this.getTrainSelectAll(params, (res) => {
-                        if(this.trainContentList.length === 0 && this.addForm.trainContent) {
-
-                        } else {
-                            this.trainDetailList = [];
-                            this.addForm.trainContent = null;
-                            this.addForm.trainDetail = null;
-                        }
-                        this.trainContentList = res;
-                    });
-                } else if(level === '3') {  // 训练细节
-                    params.queryId = this.addForm.trainContent;
-                    this.getTrainSelectAll(params, (res) => {
-                        if(this.trainDetailList.length === 0 && this.addForm.trainDetail) {
-
-                        } else {
-                            this.addForm.trainDetail = null;
-                        }
-                        this.trainDetailList = res;
                     });
                 }
             }
+
+            // 获取训练类型、训练内容、训练细节下拉
+            // getCommonList(level) {
+            //     let params = {
+            //         level: level,
+            //         trainType: this.addForm.typeCode.toString()
+            //     };
+            //     if(level === '1') {         // 训练类型
+            //         params.queryId = '0';
+            //         this.getTrainSelectAll(params, (res) => {
+            //             if(this.trainTypeList.length === 0 && this.addForm.trainType) {
+            //
+            //             } else {
+            //                 this.trainContentList = [];
+            //                 this.trainDetailList = [];
+            //                 this.addForm.trainContent = null;
+            //                 this.addForm.trainDetail = null;
+            //             }
+            //             this.trainTypeList = res;
+            //         });
+            //     } else if(level === '2') {  // 训练内容
+            //         params.queryId = this.addForm.trainType;
+            //         this.getTrainSelectAll(params, (res) => {
+            //             if(this.trainContentList.length === 0 && this.addForm.trainContent) {
+            //
+            //             } else {
+            //                 this.trainDetailList = [];
+            //                 this.addForm.trainContent = null;
+            //                 this.addForm.trainDetail = null;
+            //             }
+            //             this.trainContentList = res;
+            //         });
+            //     } else if(level === '3') {  // 训练细节
+            //         params.queryId = this.addForm.trainContent;
+            //         this.getTrainSelectAll(params, (res) => {
+            //             if(this.trainDetailList.length === 0 && this.addForm.trainDetail) {
+            //
+            //             } else {
+            //                 this.addForm.trainDetail = null;
+            //             }
+            //             this.trainDetailList = res;
+            //         });
+            //     }
+            // }
         },
 
         watch: {
@@ -323,41 +331,41 @@
                     this.getCommonList('1');
                 }
             },
-            'addForm.trainType': function(val) {
-                if(val) {
-                    this.trainTypeList.forEach(item => {
-                        if(item.id == val) {
-                            this.addForm.trainTypeName = item.trainContent;
-                        }
-                    })
-                }
-            },
-            'addForm.trainContent': function(val) {
-                if(val) {
-                    if(this.trainContentList.length === 0) { // 处于编辑状态时渲染需要
-                        this.getCommonList('2');
-                    } else {
-                        this.trainContentList.forEach(item => {
-                            if(item.id == val) {
-                                this.addForm.trainContentName = item.trainContent;
-                            }
-                        })
-                    }
-                }
-            },
-            'addForm.trainDetail': function(val) {
-                if(val) {
-                    if(this.trainDetailList.length === 0) {
-                        this.getCommonList('3');
-                    } else {
-                        this.trainDetailList.forEach(item => {
-                            if(item.id == val) {
-                                this.addForm.trainDetailName = item.trainContent;
-                            }
-                        })
-                    }
-                }
-            }
+            // 'addForm.trainType': function(val) {
+            //     if(val) {
+            //         this.trainTypeList.forEach(item => {
+            //             if(item.id == val) {
+            //                 this.addForm.trainTypeName = item.trainContent;
+            //             }
+            //         })
+            //     }
+            // },
+            // 'addForm.trainContent': function(val) {
+            //     if(val) {
+            //         if(this.trainContentList.length === 0) { // 处于编辑状态时渲染需要
+            //             this.getCommonList('2');
+            //         } else {
+            //             this.trainContentList.forEach(item => {
+            //                 if(item.id == val) {
+            //                     this.addForm.trainContentName = item.trainContent;
+            //                 }
+            //             })
+            //         }
+            //     }
+            // },
+            // 'addForm.trainDetail': function(val) {
+            //     if(val) {
+            //         if(this.trainDetailList.length === 0) {
+            //             this.getCommonList('3');
+            //         } else {
+            //             this.trainDetailList.forEach(item => {
+            //                 if(item.id == val) {
+            //                     this.addForm.trainDetailName = item.trainContent;
+            //                 }
+            //             })
+            //         }
+            //     }
+            // }
         }
     }
 </script>

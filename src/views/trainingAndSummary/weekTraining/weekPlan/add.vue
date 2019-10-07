@@ -151,7 +151,7 @@
                     obj.whichDay = getWeekChange(item.weekDay);
                     item.trainList.forEach((dayItem,idx) => {
                         obj.sportsTrainDayDetails[idx] = {};
-                        obj.sportsTrainDayDetails[idx].trainSubTypeId = dayItem.trainType;
+                        obj.sportsTrainDayDetails[idx].trainSubTypeId = dayItem.trainType.join(); // 多选的
                         obj.sportsTrainDayDetails[idx].trainSubType = dayItem.trainTypeName;
                         obj.sportsTrainDayDetails[idx].actionRepeat = dayItem.repeatTimes;
                         obj.sportsTrainDayDetails[idx].rest = dayItem.restInterval;

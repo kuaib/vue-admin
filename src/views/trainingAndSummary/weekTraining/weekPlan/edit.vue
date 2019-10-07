@@ -175,7 +175,7 @@
                     obj.whichDay = getWeekChange(item.weekDay);
                     item.trainList.forEach((dayItem,idx) => {
                         obj.sportsTrainDayDetails[idx] = {};
-                        obj.sportsTrainDayDetails[idx].trainSubTypeId = dayItem.trainType;
+                        obj.sportsTrainDayDetails[idx].trainSubTypeId = dayItem.trainType.join();
                         obj.sportsTrainDayDetails[idx].trainSubType = dayItem.trainTypeName;
                         obj.sportsTrainDayDetails[idx].actionRepeat = dayItem.repeatTimes;
                         obj.sportsTrainDayDetails[idx].rest = dayItem.restInterval;
@@ -203,8 +203,13 @@
                     obj.weekDay = getWeekChange(item.whichDay);
                     obj.trainList = [];
                     item.sportsTrainDayDetails.forEach((dayItem,idx) => {
-                        let tempObj = {}
-                        tempObj.trainType = dayItem.trainSubTypeId;
+                        let tempObj = {};
+                        let trainTypeId = dayItem.trainSubTypeId.split(',');
+                        trainTypeId = trainTypeId.map(item => {
+                            return parseInt(item)
+                        });
+                        console.log(trainTypeId)
+                        tempObj.trainType = trainTypeId;
                         tempObj.trainTypeName = dayItem.trainSubType;
                         tempObj.repeatTimes = dayItem.actionRepeat;
                         tempObj.restInterval = dayItem.rest;

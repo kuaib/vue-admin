@@ -228,6 +228,7 @@
                                 trainList: this.listSpecialData.concat(this.listBodyData)  // 列表
                             })
                         }
+                        console.log(this.dateArrList)
                     }
                 })
             },
@@ -244,13 +245,15 @@
             showItem(addForm, titleType, idx) {
                 if(titleType === '专项') {
                     if(typeof idx === 'number') {
-                        this.listSpecial[idx] = addForm;
+                        // this.listSpecial[idx] = addForm;
+                        this.$set(this.listSpecial, idx, addForm)
                     } else {
                         this.listSpecial.push(addForm);
                     }
                 } else if(titleType === '体能') {
                     if(typeof idx === 'number') {
-                        this.listBody[idx] = addForm;
+                        // this.listBody[idx] = addForm;
+                        this.$set(this.listBody, idx, addForm)
                     } else {
                         this.listBody.push(addForm);
                     }
