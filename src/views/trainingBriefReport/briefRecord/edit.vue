@@ -24,10 +24,10 @@
                         <el-form-item label="队伍：" prop="team">
                             <el-select v-model="baseForm.team" filterable placeholder="请选择队伍" @change="changeItem">
                                 <el-option
-                                        v-for="(item,idx) in teamInfoList"
-                                        :key="idx"
-                                        :label="item.dicValue"
-                                        :value="item.dicKey">
+                                    v-for="item in teamByProList"
+                                    :label="item.teamName"
+                                    :value="item.teamId"
+                                    :key="item.teamId">
                                 </el-option>
                             </el-select>
                         </el-form-item>
@@ -176,9 +176,12 @@
                 canOperate: this.$route.query.canOperate,
                 userInfo: JSON.parse(localStorage.getItem('trainingBriefReport')),
                 isFirstReq: false,  // 是否是第一次获取到队伍
+                firstReq: true, // 是否是初次渲染
                 baseForm: {
                     project: null,
                     team: null,
+                    teamId: null,
+                    teamName: null,
                     coach: null,
                     contacts: null, // 联系人
                     contactsPhone: null,
@@ -251,8 +254,8 @@
                         let resData = res.data.data;
                         this.baseForm.project = resData.projectId;
                         this.baseForm.projectName = resData.projectName;
-                        this.baseForm.team = resData.teamId;
-                        this.baseForm.teamName = resData.teamName;
+                        this.baseForm.teamId = resData.teamId;
+                        this.baseForm.team = resData.teamName;
                         this.baseForm.coach = resData.coachId;
                         this.baseForm.coachName = resData.coachName;
                         this.baseForm.contacts = resData.contactsName;
@@ -280,7 +283,7 @@
             onSubmit(types) {
                 this.$refs.baseForm.validate((valid) => {
                     if (valid) {
-                        if(type == 0) {
+                        if(types == 0) {
                             this.btnLoading1 = true;
                         } else {
                             this.btnLoading2 = true;
@@ -301,7 +304,7 @@
                             problem:this.baseForm.problem,
                             projectId:this.baseForm.project,
                             projectName:this.baseForm.projectName,
-                            teamId:this.baseForm.team,
+                            teamId:this.baseForm.teamId,
                             teamName:this.baseForm.teamName,
                             trainDate:this.baseForm.trainYear.split('-').join(''),
                             others: this.baseForm.otherContent,
@@ -343,14 +346,14 @@
                             })
                         }
                     }
-                }, {teamId: this.baseForm.team});
+                }, {teamId: this.baseForm.teamId});
             },
 
             // 通过训练日期和队伍查询月计划
             getMonthInfo() {
                 getTrainInfoByTeamIdAnTrainDate({
                     trainDate: this.baseForm.trainYear,
-                    teamId: this.baseForm.team
+                    teamId: this.baseForm.teamId
                 }).then(res => {
                     if(res.data.code == 200) {
                         let resData = res.data.data;
@@ -420,9 +423,31 @@
         },
 
         watch: {
+            'baseForm.project': function(val) {
+                if(val) {
+                    if(this.firstReq) {
+                        this.firstReq = false;
+                    } else {
+                        this.baseForm.team = null;
+                    }
+                    this.teamByProList = [];
+                    this.getTeamByProject(val);
+                    this.bigProList.forEach(item => {
+                        if(item.dicKey == val) {
+                            this.baseForm.projectName = item.dicValue;
+                        }
+                    });
+                }
+            },
             // 根据队伍获取运动员
             'baseForm.team': function(val) {
                 if(val) {
+                    this.teamByProList.forEach(item => {
+                        if(item.teamId == val) {
+                            this.baseForm.teamName = item.teamName;
+                            this.baseForm.teamId = item.teamId;
+                        }
+                    });
                     this.getAthleteListByTeam();
                 }
             },

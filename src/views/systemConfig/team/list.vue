@@ -100,7 +100,7 @@
                 this.listLoading = true;
                 getTeamList({
                     teamId: formData.id,
-                    teamName: formData.name,
+                    teamName: formData.team,
                     status: formData.teamState,
                     leaderId: formData.leader,
                     projectId: formData.parentPro,

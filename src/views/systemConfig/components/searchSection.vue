@@ -77,12 +77,12 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
-                    <el-form-item prop="name">
-                        <el-select v-model="teamForm.name" placeholder="请选择队伍名称">
+                    <el-form-item prop="parentPro">
+                        <el-select v-model="teamForm.parentPro" placeholder="请选择隶属大项">
                             <el-option
-                                    v-for="(item,idx) in teamInfoList"
+                                    v-for="(item,idx) in bigProList"
                                     :label="item.dicValue"
-                                    :value="item.dicValue"
+                                    :value="item.dicKey"
                                     :key="idx">
                             </el-option>
                         </el-select>
@@ -99,7 +99,7 @@
             </el-row>
             <el-row :gutter="20" class="search-item">
                 <el-col :span="6">
-                    <el-form-item prop="coach">
+                    <el-form-item prop="leader">
                         <el-select v-model="teamForm.leader" placeholder="请选择项目负责人">
                             <el-option
                                     v-for="(item,idx) in leaderInfoList"
@@ -111,13 +111,13 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
-                    <el-form-item prop="parentPro">
-                        <el-select v-model="teamForm.parentPro" placeholder="请选择隶属大项">
+                    <el-form-item prop="team">
+                        <el-select v-model="teamForm.team" placeholder="请选择队伍名称">
                             <el-option
-                                    v-for="(item,idx) in bigProList"
-                                    :label="item.dicValue"
-                                    :value="item.dicKey"
-                                    :key="idx">
+                                     v-for="item in teamByProList"
+                                    :label="item.teamName"
+                                    :value="item.teamName"
+                                    :key="item.teamId">
                             </el-option>
                         </el-select>
                     </el-form-item>
@@ -161,7 +161,7 @@
                 // 队伍表单
                 teamForm: {
                     id: null,
-                    name: null,
+                    team: null,
                     teamState: null,
                     leader: null,      // 项目负责人
                     parentPro: null   // 隶属大项
@@ -191,6 +191,15 @@
                     formName = 'teamForm';
                 }
                 this.$emit('handleFilter', this[formName])
+            }
+        },
+        watch: {
+            'teamForm.parentPro': function(val) {
+                if(val) {
+                    this.teamForm.team = null;
+                    this.teamByProList = [];
+                    this.getTeamByProject(val);
+                }
             }
         }
     })

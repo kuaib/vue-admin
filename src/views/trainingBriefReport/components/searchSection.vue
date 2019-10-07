@@ -24,10 +24,10 @@
                     <el-form-item prop="team">
                         <el-select v-model="searchForm.team" placeholder="请选择队伍">
                             <el-option
-                                    v-for="item in teamInfoList"
-                                    :label="item.dicValue"
-                                    :value="item.dicKey"
-                                    :key="item.dicKey">
+                                    v-for="item in teamByProList"
+                                    :label="item.teamName"
+                                    :value="item.teamId"
+                                    :key="item.teamId">
                             </el-option>
                         </el-select>
                     </el-form-item>
@@ -47,7 +47,7 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
-                    <el-form-item prop="team">
+                    <el-form-item prop="trainYear">
                         <el-date-picker style="width:100%"
                                 v-model="searchForm.trainYear"
                                 type="month"
@@ -105,6 +105,15 @@
             // 搜索
             handleFilter() {
                 this.$emit('handleFilter', this.searchForm)
+            }
+        },
+         watch: {
+            'searchForm.project': function(val) {
+                if(val) {
+                    this.searchForm.team = null;
+                    this.teamByProList = [];
+                    this.getTeamByProject(val);
+                }
             }
         }
     })
