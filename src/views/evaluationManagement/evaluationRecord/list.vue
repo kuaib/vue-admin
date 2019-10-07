@@ -85,7 +85,7 @@
                     currentPage: this.listQuery.currentPage,
                     pageSize: this.listQuery.pageSize,
                     testId: formData.id,
-                    testBatch: formData.batch,
+                    testBatch: formData.testBatch,
                     athleteId: formData.athlete,
                     testTypeId: formData.evaluationType,
                     testProjectId: formData.project

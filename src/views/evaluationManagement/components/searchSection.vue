@@ -48,15 +48,10 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
-                    <el-form-item prop="batch">
-                        <el-select v-model="searchForm.batch" placeholder="请选择测评批次">
-                            <el-option
-                                    v-for="item in coachInfoList"
-                                    :label="item.dicValue"
-                                    :value="item.dicKey"
-                                    :key="item.dicKey">
-                            </el-option>
-                        </el-select>
+                    <el-form-item prop="testBatch">
+                        <el-form-item prop="id">
+                            <el-input placeholder="请输入测评批次" v-model="searchForm.testBatch"></el-input>
+                        </el-form-item>
                     </el-form-item>
                 </el-col>
                 <el-col :span="3">
@@ -141,7 +136,7 @@
                     athlete: null,
                     evaluationType: null,
                     project: null,
-                    batch: null,  // 测评批次
+                    testBatch: null,  // 测评批次
                     fileName: null,
                     uploadDate: null
                 }
