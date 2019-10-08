@@ -31,6 +31,11 @@
                         <span>{{scope.row.testProjectName}}</span>
                     </template>
                 </el-table-column>
+                <el-table-column align="center" label="测评时间">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.testDate}}</span>
+                    </template>
+                </el-table-column>
                 <el-table-column align="center" label="运动员">
                     <template slot-scope="scope">
                         <span>{{scope.row.athleteName}}</span>
