@@ -94,7 +94,8 @@
                             name: item.name,
                             type:'line',
                             stack: '总量',
-                            data: item.data
+                            data: item.data,
+                            symbolSize: 9, // 设定折线点的大小
                         })
                     })
                 }

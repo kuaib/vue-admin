@@ -1,18 +1,21 @@
 <template>
-    <el-menu class="navbar" mode="horizontal">
+    <el-menu class="nav-bar-wrapper" mode="horizontal">
         <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
         <div class="projectName">
             <img src="../../../assets/logo1.jpg" alt="">
             <span>奥运备战</span>
         </div>
         <el-row class="right-menu">
-            <!--<el-button type="primary" v-if="$route.path.indexOf('/dashboard')!=-1">{{$t('navbar.allAthlete')}}-->
-            <!--</el-button>-->
-            <!--<el-button type="primary">{{$t('navbar.teamManage')}}</el-button>-->
-            <!--<el-button type="primary">{{$t('navbar.enterData')}}</el-button>-->
-            <!--<el-button type="primary">{{$t('navbar.test')}}</el-button>-->
             <span style="color: #fff;margin-right: 12px;">您好：{{username}}</span>
-            <el-button type="primary" @click="changeSystem" v-if="username==='admin'">{{sysTemChange}}</el-button>
+            <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal">
+                <el-submenu index="1">
+                    <template slot="title">系统切换</template>
+                    <el-menu-item index="1-1" v-if="username==='admin'" @click="changeSystem('1')">{{sysTemChange}}</el-menu-item>
+                    <el-menu-item index="1-2" @click="changeSystem('2')">运动体征监测</el-menu-item>
+                </el-submenu>
+            </el-menu>
+
+            <!--<el-button type="primary" @click="changeSystem" v-if="username==='admin'">{{sysTemChange}}</el-button>-->
             <el-button type="primary" @click="logout">{{$t('navbar.logOut')}}</el-button>
         </el-row>
     </el-menu>
@@ -29,7 +32,9 @@
             return {
                 username: Cookies.get('userName'),  // 当前的用户名
                 systemType: Cookies.get('systemType'), // 1: 老系统  2: 新系统
-                sysTemChange: ''  // 系统切换按钮名称
+                sysTemChange: '',  // 系统切换按钮名称
+
+                activeIndex: '1'
             }
         },
         components: {
@@ -60,25 +65,31 @@
                 })
             },
 
-            changeSystem() {
-                let systemType = Cookies.get('systemType');
-                if(systemType === '1') {
-                    Cookies.set('systemType', '2');
-                } else if(systemType === '2') {
-                    Cookies.set('systemType', '1');
+            // 系统切换
+            changeSystem(types) {
+                if(types == '1') {
+                    let systemType = Cookies.get('systemType');
+                    if(systemType === '1') {
+                        Cookies.set('systemType', '2');
+                    } else if(systemType === '2') {
+                        Cookies.set('systemType', '1');
+                    }
+                    this.$store.dispatch('GetUserMenue').then(() => {
+                        this.$store.dispatch('delAllViews');
+                        this.$router.push('/');
+                        location.reload();
+                    })
+                } else if(types == '2') {
+                    window.open('http://sport.wpzcare.com:8080/medcooper');
+                    // window.location.href = 'http://sport.wpzcare.com:8080/medcooper';
                 }
-                this.$store.dispatch('GetUserMenue').then(() => {
-                    this.$store.dispatch('delAllViews');
-                    this.$router.push('/');
-                    location.reload();
-                })
             }
         }
     }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
-    .navbar {
+<style rel="stylesheet/scss" lang="scss">
+    .nav-bar-wrapper {
         border-radius: 0px !important;
         background: rgb(48, 65, 86);
         padding: 15px 15px 15px 0;
@@ -126,6 +137,28 @@
                     }
                 }
             }
+        }
+
+        .el-menu {
+            display: inline-block;
+            position: relative;
+            top: 14px;
+            background: transparent;
+            .el-submenu__title {
+                background: transparent !important;
+                color: #fff;
+            }
+        }
+        .el-menu.el-menu--horizontal {
+            border-bottom: none;
+        }
+
+        .el-menu--horizontal>.el-submenu:focus .el-submenu__title, .el-menu--horizontal>.el-submenu:hover .el-submenu__title {
+            color: #fff;
+        }
+        .el-menu--horizontal>.el-submenu.is-active .el-submenu__title {
+            border-bottom: none;
+            color: #fff !important;
         }
     }
 </style>
