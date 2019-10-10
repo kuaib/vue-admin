@@ -99,7 +99,7 @@
                 <el-col :span="6">
                     <el-form-item prop="name">
                         <el-autocomplete style="width:100%;"
-                                v-model="accountForm.name"
+                                v-model="personForm.name"
                                 :fetch-suggestions="getPersonName"
                                 placeholder="请输入姓名"
                         ></el-autocomplete>
