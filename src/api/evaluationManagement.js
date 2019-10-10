@@ -1,6 +1,15 @@
 import request from '@/utils/request'
 
 
+// 获取批次列表
+export function getBatchList(params) {
+    return request({
+        url: '/sports/sports_test/getBatchList',
+        method: 'get',
+        params
+    })
+}
+
 // 获取测评记录列表
 export function getSportsList(params) {
     return request({

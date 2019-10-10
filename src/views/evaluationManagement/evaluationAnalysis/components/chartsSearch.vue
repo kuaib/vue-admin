@@ -17,7 +17,14 @@
             </el-col>
             <el-col :span="6" v-else>
                 <el-form-item prop="testBatch">
-                    <el-input v-model="searchForm.testBatch" placeholder="请输入测评批次"></el-input>
+                    <el-select v-model="searchForm.testBatch" placeholder="请选择测评批次">
+                        <el-option
+                                v-for="(item,idx) in testBatchList"
+                                :label="item"
+                                :value="item"
+                                :key="idx">
+                        </el-option>
+                    </el-select>
                 </el-form-item>
             </el-col>
             <el-col :span="3">
@@ -113,13 +120,14 @@
 
 <script>
     import mixins from '@/utils/mixins'
-    import {getTestTypeOrTestProjectList, getTargetList, getAthleteCharts} from '@/api/evaluationManagement'
+    import {getTestTypeOrTestProjectList, getTargetList, getAthleteCharts, getBatchList} from '@/api/evaluationManagement'
 
     export default {
         mixins: [mixins],
         props: ['typeName'],
         data() {
             return {
+                testBatchList: [],  //测评批次列表
                 testTypeList: [],   // 测评类型
                 testProjectList: [],// 测评项目
                 testTargetList: [], // 测评指标
@@ -152,13 +160,14 @@
                         {required: true, message: '请选择测评指标', trigger: 'change'},
                     ],
                     testBatch: [
-                        {required: true, message: '请输入测评批次', trigger: 'blur'},
+                        {required: true, message: '请选择测评批次', trigger: 'change'},
                     ],
                 }
             }
         },
         created() {
             this.getAllList(); // 获取基础下拉
+            this.getTestBatch(); // 获取测评批次下拉
             this.getTypeOrProjectList({dataLevel: '1', queryId: '0'}, 'testTypeList');//测评类型查询
         },
 
@@ -214,6 +223,20 @@
                         })
                     }
                 });
+            },
+
+            // 获取批次列表
+            getTestBatch() {
+                getBatchList().then(res => {
+                    if(res.data.code == 200) {
+                        this.testBatchList = res.data.data;
+                    } else {
+                        this.$message({
+                            message: res.data.msg,
+                            type: 'warning'
+                        })
+                    }
+                })
             },
 
             // 获取测评指标列表

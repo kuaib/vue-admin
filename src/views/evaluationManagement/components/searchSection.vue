@@ -49,9 +49,14 @@
                 </el-col>
                 <el-col :span="6">
                     <el-form-item prop="testBatch">
-                        <el-form-item prop="id">
-                            <el-input placeholder="请输入测评批次" v-model="searchForm.testBatch"></el-input>
-                        </el-form-item>
+                        <el-select v-model="searchForm.testBatch" placeholder="请选择测评批次">
+                            <el-option
+                                    v-for="(item,idx) in testBatchList"
+                                    :label="item"
+                                    :value="item"
+                                    :key="idx">
+                            </el-option>
+                        </el-select>
                     </el-form-item>
                 </el-col>
                 <el-col :span="3">
@@ -124,13 +129,14 @@
 
 <script>
     import mixin from '@/utils/mixins'
-    import {getTestTypeOrTestProjectList} from '@/api/evaluationManagement'
+    import {getBatchList, getTestTypeOrTestProjectList} from '@/api/evaluationManagement'
     export default ({
         mixins: [mixin],
         data() {
             return {
-                testTypeList: [],    //测评类型
-                testProjectList: [], //测评项目
+                testBatchList: [],   //测评批次列表
+                testTypeList: [],    //测评类型列表
+                testProjectList: [], //测评项目列表
                 searchForm: {
                     id: null,
                     athlete: null,
@@ -144,8 +150,9 @@
         },
 
         created() {
-            this.getAllList(); // 获取基础下拉
+            this.getAllList();     // 获取基础下拉
             this.getAthleteList(); // 获取运动员列表
+            this.getTestBatch();   // 获取测评批次列表
             this.getTypeOrProjectList({dataLevel: '1',queryId: '0' }, 'testTypeList');//测评类型查询
         },
 
@@ -159,6 +166,20 @@
             // 搜索
             handleFilter() {
                 this.$emit('handleFilter', this.searchForm)
+            },
+
+            // 获取批次列表
+            getTestBatch() {
+                getBatchList().then(res => {
+                    if(res.data.code == 200) {
+                        this.testBatchList = res.data.data;
+                    } else {
+                        this.$message({
+                            message: res.data.msg,
+                            type: 'warning'
+                        })
+                    }
+                })
             },
 
             // 获取测评类型/测评项目列表
