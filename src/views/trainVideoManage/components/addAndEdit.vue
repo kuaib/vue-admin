@@ -73,7 +73,7 @@
         <!--视频内容-->
         <el-row>
             <div>视频内容</div>
-            <el-form :model="baseForm1" ref="baseForm1" :rules="rules1" label-width="150px" v-if="canEdit=='true'">
+            <el-form :model="baseForm1" ref="baseForm1" :rules="rules1" label-width="150px" v-if="canEdit=='true'&&fileType==='edit'||fileType==='add'">
                 <el-row :gutter="20">
                     <el-col :span="8">
                         <el-form-item label="文件上传：" prop="videoFile">
