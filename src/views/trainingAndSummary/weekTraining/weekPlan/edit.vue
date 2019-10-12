@@ -50,13 +50,16 @@
             <div slot="header" class="clearfix">
                 <span class="section-title">训练内容</span>
             </div>
-            <train-content ref="trainContent"></train-content>
+            <train-content ref="trainContent" :canOperate="canOperate"></train-content>
         </el-card>
 
         <!--保存-->
-        <el-row style="text-align: center;margin-top:15px;">
+        <el-row style="text-align: center;margin-top:15px;" v-if="canOperate=='true'">
             <el-button type="primary" round @click="cancelAct" style="padding: 12px 35px;">取消</el-button>
             <el-button type="primary" round @click="onSubmit('baseForm')" :loading="btnLoading" style="padding: 12px 35px;">提 交</el-button>
+        </el-row>
+        <el-row style="text-align: center;margin-top:15px;" v-else>
+            <el-button type="primary" round @click="cancelAct('save')" style="padding: 12px 35px;">关闭</el-button>
         </el-row>
     </div>
 </template>
@@ -74,7 +77,7 @@
             return {
                 isSummary: this.$route.path.indexOf('/weekSummary') !== -1,    // 是否是日训练总结(计划与总结页面公用)
                 id: this.$route.query.id,
-                canOperate: this.$route.query.canOperate,
+                canOperate: this.$route.query.canOperate.toString(),
                 btnLoading: false,
                 baseForm: {
                     project: null,

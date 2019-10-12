@@ -23,7 +23,7 @@
                     <span @click="editRow(item,idx)">详情</span>
                 </el-col>
             </el-row>
-            <el-row class="add-btn">
+            <el-row class="add-btn" v-if="canOperate==='true'">
                 <span @click="editRow">增加日训练计划</span>
             </el-row>
         </el-row>
@@ -33,7 +33,7 @@
                 :show-close="false"
                 title="训练内容"
                 :visible.sync="dialogVisible"
-                width="60%"
+                width="75%"
                 :close-on-click-modal="false"
                 center>
             <el-form :model="addForm" ref="addForm" :rules="rules" style="margin-bottom: 15px;">
@@ -70,22 +70,23 @@
                             <span>{{scope.row.trainTypeName}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column align="center" label="训练内容">
+                    <el-table-column align="left" label="训练内容">
                         <template slot-scope="scope">
                             <span>{{scope.row.trainContentName}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column align="center" label="内容细节">
+                    <el-table-column align="left" label="内容细节" width="350">
                         <template slot-scope="scope">
+                            <!--<el-input type="textarea" readonly :value="scope.row.trainDetailName" :autosize="{ minRows: 2, maxRows: 10 }"></el-input>-->
                             <span>{{scope.row.trainDetailName}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column align="center" label="重复次数">
+                    <el-table-column align="center" label="重复次数" width="50">
                         <template slot-scope="scope">
                             <span>{{scope.row.repeatTimes}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column align="center" label="操作">
+                    <el-table-column align="center" label="操作" width="90" v-if="canOperate==='true'">
                         <template slot-scope="scope">
                             <div class="add-btn">
                                 <span @click="handleDel(scope.$index, 'listSpecial')">删除</span>
@@ -95,7 +96,7 @@
                         </template>
                     </el-table-column>
                 </el-table>
-                <el-row class="add-btn"><span @click="addRow('专项')">添加</span></el-row>
+                <el-row class="add-btn"><span @click="addRow('专项')" v-if="canOperate==='true'">添加</span></el-row>
             </el-row>
 
             <!--体能训练-->
@@ -114,32 +115,32 @@
                             <span>{{scope.row.trainTypeName}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column align="center" label="训练内容">
+                    <el-table-column align="left" label="训练内容" width="300">
                         <template slot-scope="scope">
                             <span>{{scope.row.trainContentName}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column align="center" label="每组重复次数">
+                    <el-table-column align="center" label="每组重复次数" width="50">
                         <template slot-scope="scope">
                             <span>{{scope.row.repeatTimes}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column align="center" label="动作组数">
+                    <el-table-column align="center" label="动作组数" width="50">
                         <template slot-scope="scope">
                             <span>{{scope.row.actionTimes}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column align="center" label="组件休息间隔s">
+                    <el-table-column align="center" label="组件休息间隔s" width="50">
                         <template slot-scope="scope">
                             <span>{{scope.row.restInterval}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column align="center" label="节奏">
+                    <el-table-column align="center" label="节奏" width="70">
                         <template slot-scope="scope">
                             <span>{{scope.row.rhythm}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column align="center" label="操作">
+                    <el-table-column align="center" label="操作" width="90" v-if="canOperate==='true'">
                         <template slot-scope="scope">
                             <div class="add-btn">
                                 <span @click="handleDel(scope.$index, 'listBody')">删除</span>
@@ -149,12 +150,15 @@
                         </template>
                     </el-table-column>
                 </el-table>
-                <el-row class="add-btn"><span @click="addRow('体能')">添加</span></el-row>
+                <el-row class="add-btn"><span @click="addRow('体能')" v-if="canOperate==='true'">添加</span></el-row>
             </el-row>
 
-            <span slot="footer" class="dialog-footer">
+            <span slot="footer" class="dialog-footer" v-if="canOperate==='true'">
                 <el-button @click="dialogVisible = false">取 消</el-button>
                 <el-button type="primary" @click="onSubmit('addForm')">保 存</el-button>
+            </span>
+            <span slot="footer" class="dialog-footer" v-else>
+                <el-button @click="dialogVisible = false">关 闭</el-button>
             </span>
         </el-dialog>
     </div>
@@ -167,6 +171,7 @@
     export default {
         mixins: [mixins],
         components: {trainContentAdd},
+        props: ['canOperate'],
         data() {
             return {
                 rowIdx: null,          // 编辑行时候，当前点击的行索引(最外层的大项)
@@ -366,6 +371,10 @@
         }
         .el-date-editor--timerange.el-input__inner {
             width: 190px;
+        }
+
+        .el-table .cell {
+            white-space: pre-line;
         }
     }
 </style>
