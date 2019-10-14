@@ -50,8 +50,7 @@
             <div slot="header" class="clearfix">
                 <span class="section-title">训练内容</span>
             </div>
-            <!--<train-content ref="trainContent" :pickerOptions="pickerOptions" :defaultVal="defaultVal" :trainYear="baseForm.trainYear"></train-content>-->
-            <train-content ref="trainContent"></train-content>
+            <train-content ref="trainContent" :canOperate="canOperate"></train-content>
         </el-card>
 
         <!--保存-->
@@ -75,6 +74,7 @@
             return {
                 isSummary: this.$route.path.indexOf('/weekSummary') !== -1,    // 是否是日训练总结(计划与总结页面公用)
                 userInfo: JSON.parse(localStorage.getItem('trainAndSumUserWeek')),
+                canOperate: this.$route.query.canOperate.toString(),
                 btnLoading: false,
                 baseForm: {
                     project: null,

@@ -168,7 +168,7 @@
             // 创建周计划
             addNew() {
                 localStorage.setItem('trainAndSumUserWeek', JSON.stringify(this.extInfo.useInfo));
-                this.$router.push('/weekTraining/weekPlan/add');
+                this.$router.push({path: '/weekTraining/weekPlan/add', query: {canOperate: this.extInfo.canOperate}});
             },
 
             // 去详情

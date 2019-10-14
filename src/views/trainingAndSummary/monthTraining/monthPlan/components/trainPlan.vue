@@ -72,30 +72,30 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="训练内容" prop="trainContent">
-                            <el-input v-model="addForm.trainContent" placeholder="请输入训练内容"></el-input>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-                <el-row :gutter="20">
-                    <el-col :span="12">
                         <el-form-item label="短板" prop="shortBoard">
                             <el-input v-model="addForm.shortBoard" placeholder="请输入短板"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
-
                 <el-row :gutter="20">
                     <el-col :span="24">
-                        <el-form-item label="训练目的" prop="trainPurposeSelected">
-                            <el-select v-model="addForm.trainPurposeSelected" multiple placeholder="请选择训练目的">
-                                <el-option
-                                        v-for="(item,idx) in addForm.trainPurpose"
-                                        :key="idx"
-                                        :label="item.label"
-                                        :value="item.key">
-                                </el-option>
-                            </el-select>
+                        <el-form-item label="训练目的" prop="trainPurposeSelectedName">
+                            <!--<el-select v-model="addForm.trainPurposeSelected" multiple placeholder="请选择训练目的">-->
+                                <!--<el-option-->
+                                        <!--v-for="(item,idx) in addForm.trainPurpose"-->
+                                        <!--:key="idx"-->
+                                        <!--:label="item.label"-->
+                                        <!--:value="item.key">-->
+                                <!--</el-option>-->
+                            <!--</el-select>-->
+                            <el-input type="textarea" v-model="addForm.trainPurposeSelectedName" placeholder="请输入训练目的"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="24">
+                        <el-form-item label="训练内容" prop="trainContent">
+                            <el-input type="textarea" v-model="addForm.trainContent" placeholder="请输入训练内容"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -141,7 +141,7 @@
                         {key: '目的三', label: '目的三', disabled: false},
                     ],
                     trainPurposeSelected: [],        // 选中的训练目的
-                    trainPurposeSelectedName: null,  // 选中的训练目的名称(、分割，列表中需要这样显示)
+                    trainPurposeSelectedName: null,  // 选中的训练目的名称
                     trainTarget: null
                 },
                 rules: {
@@ -154,8 +154,8 @@
                     shortBoard: [
                         { required: true, message: '请输入短板', trigger: 'blur' }
                     ],
-                    trainPurposeSelected: [
-                        { required: true, message: '请选择训练目的', trigger: 'change' }
+                    trainPurposeSelectedName: [
+                        { required: true, message: '请输入训练目的', trigger: 'blur' }
                     ],
                     trainTarget: [
                         { required: true, message: '请输入期望目标', trigger: 'blur' }
@@ -220,19 +220,19 @@
         },
 
         watch: {
-            'addForm.trainPurposeSelected': function(val) {
-                if(val) {
-                    let str = '';
-                    this.addForm.trainPurpose.forEach(item => {
-                        this.addForm.trainPurposeSelected.forEach(sel => {
-                            if(sel === item.key) {
-                                str += '、' + item.label;
-                            }
-                        });
-                    });
-                    this.addForm.trainPurposeSelectedName = str.substr(1);
-                }
-            },
+            // 'addForm.trainPurposeSelected': function(val) {
+            //     if(val) {
+            //         let str = '';
+            //         this.addForm.trainPurpose.forEach(item => {
+            //             this.addForm.trainPurposeSelected.forEach(sel => {
+            //                 if(sel === item.key) {
+            //                     str += '、' + item.label;
+            //                 }
+            //             });
+            //         });
+            //         this.addForm.trainPurposeSelectedName = str.substr(1);
+            //     }
+            // },
             dialogVisible: function(val) {
                 if(!val) { // dialog关闭的时候
                     this.isEditDialog = false;
