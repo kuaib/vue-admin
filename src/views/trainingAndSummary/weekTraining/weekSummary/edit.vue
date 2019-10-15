@@ -35,12 +35,16 @@
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
-                    <el-col>
+                    <el-col :span="8">
                         <el-form-item label="视频上传：" prop="purpose">
                             <el-upload
                                     class="avatar-uploader"
                                     action="sports/sports_train_day/uploadVideo"
-                                    :on-success="uploadSuccess">
+                                    :limit=limit
+                                    :on-success="uploadSuccess"
+                                    :on-remove="removeFile"
+                                    :file-list="fileList"
+                            >
                                 <el-button size="small" type="primary">点击上传</el-button>
                             </el-upload>
                         </el-form-item>
@@ -85,6 +89,9 @@
         components: {changeTabBar, trainContent, summaryContent},
         data() {
             return {
+                limit: 1,  // 文件上传的个数限制
+                fileList: [],
+
                 id: this.$route.query.id,
                 canOperate: this.$route.query.canOperate,
                 videoUrl: null,
@@ -129,6 +136,7 @@
                         this.baseForm.purpose = resData.purpose;
                         this.baseForm.trainYear = resData.trainDate;
                         this.videoUrl = resData.video;
+                        this.fileList = resData.fileList;
                         // this.changeApplyMonth(resData.trainDate);
 
                         this.$refs.trainContent.listSpecial = this.formatListReverse(resData.special);
@@ -144,7 +152,6 @@
                     }
                 })
             },
-
 
             // 提交
             onSubmit(formName) {
@@ -237,8 +244,20 @@
 
             // 上传成功回调函数
             uploadSuccess(res) {
-                this.videoUrl = res.data.videoUrl;
+                if(res.code == 200) {
+                    this.videoUrl = res.data.videoUrl;
+                } else {
+                    this.$message({
+                        message: res.msg,
+                        type: 'warning'
+                    });
+                }
             },
+
+            // 删除文件
+            removeFile(file, fileList) {
+                this.videoUrl = null;
+            }
         },
     }
 </script>
