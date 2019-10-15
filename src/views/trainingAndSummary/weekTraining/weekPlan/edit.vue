@@ -25,13 +25,25 @@
                 <el-row :gutter="20">
                     <el-col :span="8">
                         <el-form-item label="训练年度：" prop="trainYear">
+                            <!--<el-date-picker-->
+                                    <!--v-model="baseForm.trainYear"-->
+                                    <!--type="month"-->
+                                    <!--value-format="yyyy-MM"-->
+                                    <!--placeholder="请选择训练年度"-->
+                                    <!--@change="changeApplyMonth">-->
+                            <!--</el-date-picker>-->
                             <el-date-picker
                                     v-model="baseForm.trainYear"
-                                    type="month"
-                                    value-format="yyyy-MM"
-                                    placeholder="请选择训练年度"
-                                    @change="changeApplyMonth">
+                                    type="week"
+                                    format="yyyy-MM"
+                                    value-format="yyyy-MM-dd"
+                                    placeholder="请选择训练年度">
                             </el-date-picker>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                        <el-form-item label="周一至周五：" prop="trainDay">
+                            <el-input v-model="baseForm.trainDay" readonly></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -83,6 +95,7 @@
                     project: null,
                     coach: null,
                     trainYear: null,
+                    trainDay: null,
                     purpose: null
                 },
                 rules: {
@@ -118,6 +131,7 @@
                         this.baseForm.coachId = resData.coachId;
                         this.baseForm.purpose = resData.purpose;
                         this.baseForm.trainYear = resData.trainDate;
+                        this.baseForm.trainDay = resData.trainDay;
                         this.changeApplyMonth(resData.trainDate);
 
                         this.$refs.trainContent.dateArrList = this.formatListReverse(resData.sportsTrainDays);
@@ -146,6 +160,7 @@
                             teamId: this.baseForm.teamId,
                             teamName: this.baseForm.teamName,
                             trainDate: this.baseForm.trainYear,
+                            trainDay: this.baseForm.trainDay,
                             purpose: this.baseForm.purpose,
                             sportsTrainDays: sportsTrainDays
                         }).then(res => {
@@ -211,7 +226,6 @@
                         trainTypeId = trainTypeId.map(item => {
                             return parseInt(item)
                         });
-                        console.log(trainTypeId)
                         tempObj.trainType = trainTypeId;
                         tempObj.trainTypeName = dayItem.trainSubType;
                         tempObj.repeatTimes = dayItem.actionRepeat;
@@ -239,13 +253,27 @@
             },
         },
         watch: {
-            // 'baseForm.trainDate': function(val) {
-            //     if(val) {
-            //         if(this.isInitFinish) { // 刚进入页面初始化的时候不去触发子组件的渲染
-            //             this.$refs.trainContent.getDateComplete(this.baseForm.trainYear, this.baseForm.trainDate);
-            //         }
-            //     }
-            // }
+            'baseForm.trainYear': function(val) {
+                // 组件返回的都是周一的时间
+                console.log(val);
+                let arr = val.split("-");
+                let date = new Date(arr[0], arr[1] - 1, arr[2]);
+                let dateOfWeek = date.getDay();//返回当前日期的在当前周的某一天（0～6--周日到周一）
+                let dateOfWeekInt = parseInt(dateOfWeek, 10);//转换为整型
+
+                let aa = 7 - dateOfWeekInt;//当前于周末相差的天数
+                let temp2 = parseInt(arr[2], 10);//按10进制转换，以免遇到08和09的时候转换成0
+                let sunDay = temp2 + aa;//当前日期的周日的日期
+                let monDay = sunDay - 6;//当前日期的周一的日期
+                let startDate = new Date(arr[0], arr[1] - 1, monDay);
+                let endDate = new Date(arr[0], arr[1] - 1, sunDay);
+                let sm = parseInt(startDate.getMonth()) + 1;//月份+1 因为月份从0开始
+                let em = parseInt(endDate.getMonth()) + 1;
+                let start = startDate.getFullYear() + "-" + sm + "-" + startDate.getDate();
+                let end = endDate.getFullYear() + "-" + em + "-" + endDate.getDate();
+                this.baseForm.trainDay = start.substring(5, start.length) + '至' + end.substring(5, end.length);
+                console.log(this.baseForm.trainDay)
+            }
         }
     }
 </script>
