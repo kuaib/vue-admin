@@ -108,7 +108,9 @@
                             status: parseInt(this.addForm.status),
                             leaderId: this.addForm.proManager,
                         };
-                        parames = Object.assign(parames, componentsForm); // 队伍信息与关联信息合并传递
+                        if(componentsForm !== 'save') {
+                            parames = Object.assign(parames, componentsForm); // 队伍信息与关联信息合并传递
+                        }
                         saveTeam(parames).then(res => {
                             this.$refs.associatedAthletes.relationLoading = false;
                             this.$refs.associatedAthletes.btnLoading = false;
