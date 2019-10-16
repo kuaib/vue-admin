@@ -36,7 +36,7 @@
 
                 <el-table-column align="center" label="训练年度">
                     <template slot-scope="scope">
-                        <span>{{scope.row.trainDate}}</span>
+                        <span>{{scope.row.trainDate.substring(0, 7)}}</span>
                     </template>
                 </el-table-column>
 
