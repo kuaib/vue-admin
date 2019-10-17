@@ -26,12 +26,12 @@
                 <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item label="康复情况" prop="detail">
-                            <el-input v-model="addForm.detail" placeholder="请输入伤病人员"></el-input>
+                            <el-input v-model="addForm.detail" placeholder="请输入康复情况"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
                         <el-form-item label="运动员等级" prop="level">
-                            <el-input v-model="addForm.level" placeholder="请输入伤病原因及病症"></el-input>
+                            <el-input v-model="addForm.level" placeholder="请输入运动员等级"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>

@@ -35,22 +35,37 @@
                         <span>{{scope.row.staffName}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column align="center" label="职位">
+                <el-table-column align="center" label="性别">
                     <template slot-scope="scope">
-                        <span>{{scope.row.jobName}}</span>
+                        <span>{{scope.row.gender}}</span>
                     </template>
                 </el-table-column>
+                <el-table-column align="center" label="身高(cm)">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.height}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" label="体重">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.weight}}</span>
+                    </template>
+                </el-table-column>
+                <!--<el-table-column align="center" label="职位">-->
+                    <!--<template slot-scope="scope">-->
+                        <!--<span>{{scope.row.jobName}}</span>-->
+                    <!--</template>-->
+                <!--</el-table-column>-->
                 <!--<el-table-column align="center" label="运动员等级">-->
                     <!--<template slot-scope="scope">-->
                         <!--<span>{{scope.row.jobLevel}}</span>-->
                     <!--</template>-->
                 <!--</el-table-column>-->
-                <el-table-column align="center" label="状态" >
-                    <template slot-scope="scope">
-                        <span v-if="scope.row.status==0">未提交</span>
-                        <span v-if="scope.row.status==1">已提交</span>
-                    </template>
-                </el-table-column>
+                <!--<el-table-column align="center" label="状态" >-->
+                    <!--<template slot-scope="scope">-->
+                        <!--<span v-if="scope.row.status==0">未提交</span>-->
+                        <!--<span v-if="scope.row.status==1">已提交</span>-->
+                    <!--</template>-->
+                <!--</el-table-column>-->
                 <el-table-column align="center" label="操作">
                     <template slot-scope="scope">
                         <el-button size="mini" type="primary" @click="toEdit(scope.row)">详情</el-button>

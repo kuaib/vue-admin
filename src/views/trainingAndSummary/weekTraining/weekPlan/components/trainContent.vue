@@ -130,7 +130,7 @@
                             <span>{{scope.row.actionTimes}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column align="center" label="组件休息间隔s" width="50">
+                    <el-table-column align="center" label="组间休息间隔s" width="50">
                         <template slot-scope="scope">
                             <span>{{scope.row.restInterval}}</span>
                         </template>
