@@ -189,6 +189,7 @@
                 let arr = [];
                 list.forEach((item) => {
                     let obj = {}; obj.sportsTrainDayDetails = [];
+                    obj.trainDayId = item.trainDayId;
                     obj.dayStr = item.trainDate.split('-').join('');
                     obj.whichDay = getWeekChange(item.weekDay);
                     item.trainList.forEach((dayItem,idx) => {
@@ -205,6 +206,7 @@
                         obj.sportsTrainDayDetails[idx].trainDetailId = dayItem.trainDetail;
                         obj.sportsTrainDayDetails[idx].trainDetail = dayItem.trainDetailName;
                         obj.sportsTrainDayDetails[idx].trainDuration = dayItem.trainDuration;
+                        obj.sportsTrainDayDetails[idx].trainDayId = dayItem.trainDayId;
                         obj.sportsTrainDayDetails[idx].trainType = dayItem.typeCode; // 区分专项和体能的
                     });
                     arr.push(obj);
@@ -217,6 +219,7 @@
                 let arr = [];
                 list.forEach((item) => {
                     let obj = {};
+                    obj.trainDayId = item.trainDayId;
                     obj.trainDate = item.dayStr.substring(0, 4) + '-' + item.dayStr.substring(4, 6) + '-' + item.dayStr.substring(6, 8);
                     obj.weekDay = getWeekChange(item.whichDay);
                     obj.trainList = [];
@@ -238,6 +241,7 @@
                         tempObj.trainDetail = dayItem.trainDetailId;
                         tempObj.trainDetailName = dayItem.trainDetail;
                         tempObj.trainDuration = dayItem.trainDuration;
+                        tempObj.trainDayId = dayItem.trainDayId;
                         tempObj.typeCode = dayItem.trainType; // 区分专项和体能的
                         obj.trainList.push(tempObj);
                     });
