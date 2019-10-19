@@ -7,7 +7,7 @@
         <team-charts></team-charts>
 
         <!--运动员测试指标对比图-->
-        <athlete-target-chart></athlete-target-chart>
+        <!--<athlete-target-chart></athlete-target-chart>-->
     </div>
 </template>
 

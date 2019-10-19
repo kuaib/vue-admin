@@ -35,11 +35,11 @@
                         <span>{{scope.row.projectName}}</span>
                     </template>
                 </el-table-column>
-<!--                <el-table-column align="center" label="小项">-->
-<!--                    <template slot-scope="scope">-->
-<!--                        <span>{{scope.row.username}}</span>-->
-<!--                    </template>-->
-<!--                </el-table-column>-->
+                <el-table-column align="center" label="队伍">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.teamName}}</span>
+                    </template>
+                </el-table-column>
                 <el-table-column align="center" label="教练员">
                     <template slot-scope="scope">
                         <span>{{scope.row.coachName}}</span>
@@ -97,6 +97,7 @@
                     pageSize: this.listQuery.pageSize,
                     attendanceId: formData.id,
                     projectId: formData.bigPro,
+                    teamId: formData.team,
                     attDate: formData.dateDay,
                     coachId: formData.coach
                 }).then(res => {

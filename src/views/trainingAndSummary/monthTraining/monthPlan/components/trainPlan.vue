@@ -14,12 +14,12 @@
                     <span>{{scope.row.trainType}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="训练内容">
+            <el-table-column align="left" label="训练内容">
                 <template slot-scope="scope">
                     <span>{{scope.row.trainContent}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="训练目的">
+            <el-table-column align="left" label="训练目的">
                 <template slot-scope="scope">
                     <span>{{scope.row.trainPurposeSelectedName}}</span>
                 </template>
@@ -260,6 +260,9 @@
         }
         .el-transfer-panel__item.el-checkbox {
             display: block;
+        }
+        .el-table .cell {
+            white-space: pre-line;
         }
     }
 </style>

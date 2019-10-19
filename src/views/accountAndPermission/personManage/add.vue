@@ -112,14 +112,15 @@
                     </el-col>
                     <el-col :span="8">
                         <el-form-item label="职位等级：" prop="level">
-                            <el-select v-model="businessForm.level" placeholder="请选择职位等级">
-                                <el-option
-                                        v-for="(item, idx) in levelList"
-                                        :key="idx"
-                                        :label="item"
-                                        :value="item">
-                                </el-option>
-                            </el-select>
+                            <!--<el-select v-model="businessForm.level" placeholder="请选择职位等级">-->
+                                <!--<el-option-->
+                                        <!--v-for="(item, idx) in levelList"-->
+                                        <!--:key="idx"-->
+                                        <!--:label="item"-->
+                                        <!--:value="item">-->
+                                <!--</el-option>-->
+                            <!--</el-select>-->
+                            <el-input v-model="businessForm.level" placeholder="请输入职位等级"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="8">
@@ -136,18 +137,18 @@
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
-                    <el-col :span="8">
-                        <el-form-item label="小项：" prop="smallPro">
-                            <el-select v-model="businessForm.smallPro" placeholder="请选择小项">
-                                <el-option
-                                        v-for="(item, idx) in smallProList"
-                                        :key="idx"
-                                        :label="item"
-                                        :value="item">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
+                    <!--<el-col :span="8">-->
+                        <!--<el-form-item label="小项：" prop="smallPro">-->
+                            <!--<el-select v-model="businessForm.smallPro" placeholder="请选择小项">-->
+                                <!--<el-option-->
+                                        <!--v-for="(item, idx) in smallProList"-->
+                                        <!--:key="idx"-->
+                                        <!--:label="item"-->
+                                        <!--:value="item">-->
+                                <!--</el-option>-->
+                            <!--</el-select>-->
+                        <!--</el-form-item>-->
+                    <!--</el-col>-->
                     <el-col :span="8">
                         <el-form-item label="运动队：" prop="team">
                             <el-select v-model="businessForm.team" placeholder="请选择运动队">
@@ -172,20 +173,21 @@
                             </el-select>
                         </el-form-item>
                     </el-col>
-                </el-row>
-                <el-row :gutter="20">
                     <el-col :span="8">
                         <el-form-item label="原项目：" prop="oldPro">
-                            <el-select v-model="businessForm.oldPro" placeholder="请选择原项目">
-                                <el-option
-                                        v-for="item in bigProList"
-                                        :key="item.dicKey"
-                                        :label="item.dicValue"
-                                        :value="item.dicKey">
-                                </el-option>
-                            </el-select>
+                            <!--<el-select v-model="businessForm.oldPro" placeholder="请选择原项目">-->
+                                <!--<el-option-->
+                                        <!--v-for="item in bigProList"-->
+                                        <!--:key="item.dicKey"-->
+                                        <!--:label="item.dicValue"-->
+                                        <!--:value="item.dicKey">-->
+                                <!--</el-option>-->
+                            <!--</el-select>-->
+                            <el-input v-model="businessForm.oldPro" placeholder="请输入原项目"></el-input>
                         </el-form-item>
                     </el-col>
+                </el-row>
+                <el-row :gutter="20">
                     <el-col :span="8">
                         <el-form-item label="原项目训练年限：" prop="trainYear">
                             <el-input v-model="businessForm.trainYear" placeholder="请输入原项目训练年限"></el-input>
@@ -239,7 +241,7 @@
                     job: null,
                     level: null,
                     bigPro: null,
-                    smallPro: null,
+                    // smallPro: null,
                     team: null,
                     coach: null,
                     oldPro: null,
@@ -297,9 +299,9 @@
 
                                     // 业务信息
                                     jobName: this.businessForm.job,
-                                    jboLevel: parseInt(this.businessForm.level),
+                                    jobLevel: this.businessForm.level,
                                     projectId: this.businessForm.bigPro,
-                                    childProject: this.businessForm.smallPro,
+                                    // childProject: this.businessForm.smallPro,
                                     teamId: this.businessForm.team,
                                     coachId: this.businessForm.coach,
                                     oldProjectId: this.businessForm.oldPro,

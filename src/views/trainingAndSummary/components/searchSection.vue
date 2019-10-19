@@ -176,7 +176,7 @@
                 this.defaultVal = val.getFullYear()+"-"+(val.getMonth()+1)+"-"+"1";
             },
         },
-         watch: {
+        watch: {
             'searchForm.project': function(val) {
                 if(val) {
                     this.searchForm.team = null;
@@ -185,6 +185,6 @@
                 }
             }
         }
-        
+
     })
 </script>

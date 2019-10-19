@@ -17,6 +17,18 @@
                         </el-select>
                     </el-form-item>
                 </el-col>
+                <el-col :span="6">
+                    <el-form-item prop="team">
+                        <el-select v-model="searchForm.team" placeholder="请选择队伍">
+                            <el-option
+                                    v-for="item in teamByProList"
+                                    :label="item.teamName"
+                                    :value="item.teamId"
+                                    :key="item.teamId">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-col>
 <!--                <el-col :span="6">-->
 <!--                    <el-form-item prop="smallPro">-->
 <!--                        <el-select v-model="searchForm.smallPro" placeholder="请选择小项">-->
@@ -83,6 +95,7 @@
                 searchForm: {
                     id: null,
                     bigPro: null,
+                    team: null,
                     smallPro: null,
                     dateDay: null,
                     dateMonth: null,
@@ -105,6 +118,16 @@
             // 搜索
             handleFilter() {
                 this.$emit('handleFilter', this.searchForm)
+            }
+        },
+
+        watch: {
+            'searchForm.bigPro': function(val) {
+                if(val) {
+                    this.searchForm.team = null;
+                    this.teamByProList = [];
+                    this.getTeamByProject(val);
+                }
             }
         }
     })
