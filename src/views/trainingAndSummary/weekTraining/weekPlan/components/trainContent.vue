@@ -40,6 +40,7 @@
                 <el-form-item label="训练年度：" prop="trainDate">
                     <el-col :span="8">
                         <el-date-picker
+                                :editable="false"
                                 v-model="addForm.trainDate"
                                 type="date"
                                 format="MM-dd"

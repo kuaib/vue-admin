@@ -20,7 +20,9 @@ import './createRouter' // routers control
 
 import * as filters from './filters' // global filters
 import waves from '@/directive/waves' // 水波纹指令
+import permission from '@/directive/permission/index' // 权限判断指令
 Vue.use(waves);
+Vue.use(permission);
 
 Vue.use(Element, {
     size: 'medium', // set element-ui default size
