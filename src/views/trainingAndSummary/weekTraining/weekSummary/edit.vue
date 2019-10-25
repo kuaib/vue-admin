@@ -50,12 +50,12 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-row :gutter="20" v-show="videoUrl&&isVideo">
+                <el-row :gutter="20" v-show="videoUrl&&fileType=='isVideo'">
                     <el-col :span="8" :offset="8" style="text-align: center">
                         <video :src="videoUrl" controls="controls" class="video"></video>
                     </el-col>
                 </el-row>
-                <el-row :gutter="20" v-show="videoUrl&&isImg">
+                <el-row :gutter="20" v-show="videoUrl&&fileType=='isImg'">
                     <el-col :span="8" :offset="8" style="text-align: center">
                         <img :src="videoUrl" class="video">
                     </el-col>
@@ -132,13 +132,17 @@
         },
 
         computed: {
-            isImg: function() { // 上传的文件是否是图片
-                let reg = /(\.jpg|\.jpeg|\.bmp|\.gif|\.png|\.JPG|\.JPEG|\.BMP|\.GIF|\.PNG)/;
-                return reg.test(this.videoUrl);
-            },
-            isVideo: function() { // 上传的文件是否是视频
-                let reg = /(\.mp4|\.MP4)/;
-                return reg.test(this.videoUrl);
+            fileType: function() { // 上传的文件是否是图片
+                if(this.videoUrl) {
+                    let reg = /(\.jpg|\.jpeg|\.bmp|\.gif|\.png|\.JPG|\.JPEG|\.BMP|\.GIF|\.PNG)/;
+                    if(reg.test(this.videoUrl)) {
+                        return 'isImg'
+                    } else {
+                        return 'isVideo'
+                    }
+                } else {
+                    return 'noFile'
+                }
             }
         },
 
