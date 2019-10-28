@@ -69,7 +69,7 @@
                 total: null,         // 总条目数
                 listLoading: false,  // 查询table的loading
                 listQuery: {
-                    current: 1,
+                    currentPage: 1,
                     pageSize: 10
                 }
             }
@@ -84,7 +84,7 @@
             getList(formData = {}) {
                 this.listLoading = true;
                 getUserList({
-                    currentPage: this.listQuery.current,
+                    currentPage: this.listQuery.currentPage,
                     pageSize: this.listQuery.pageSize,
                     accountId: formData.id,
                     username: formData.account,
@@ -98,7 +98,7 @@
                         const data = res.data.data;
                         this.list = data.list;
                         this.total = data.pagination.total;
-                        this.listQuery.current = data.pagination.current;
+                        this.listQuery.currentPage = data.pagination.current;
                     } else {
                         this.$message({
                             message: res.data.msg,
