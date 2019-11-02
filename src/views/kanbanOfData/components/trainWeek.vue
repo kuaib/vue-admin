@@ -76,15 +76,19 @@
             // 去详情
             toEdit(row) {
                 let path;
-                if (this.isSummary) {
-                    path = '/weekTraining/weekSummary/edit';
-                    this.$router.push(
-                        {path: path, query: {id: row.trainDayId, canOperate: false}})
-                } else {
-                    path = '/weekTraining/weekPlan/edit';
-                    this.$router.push(
-                        {path: path, query: {id: row.trainWeekId, canOperate: false}})
-                }
+                path = '/weekTraining/weekPlan/edit';
+                this.$router.push({path: path, query: {id: row.trainWeekId, canOperate: false}})
+
+                // let path;
+                // if (this.isSummary) {
+                //     path = '/weekTraining/weekSummary/edit';
+                //     this.$router.push(
+                //         {path: path, query: {id: row.trainDayId, canOperate: false}})
+                // } else {
+                //     path = '/weekTraining/weekPlan/edit';
+                //     this.$router.push(
+                //         {path: path, query: {id: row.trainWeekId, canOperate: false}})
+                // }
 
             },
         }
