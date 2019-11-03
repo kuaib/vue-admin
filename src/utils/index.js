@@ -291,7 +291,7 @@ export function getWeekChange(week) {
                 weekVal = 4;
                 break;
             case '五':
-                weekVal = 6;
+                weekVal = 5;
                 break;
             case '六':
                 weekVal = 6;
