@@ -72,7 +72,7 @@
                 athleteId: '',  // 运动员id
                 teamId: '',     // 队伍id
                 allData: {},    // 所有的数据
-                activeNames: ['1'],
+                activeNames: ['1', '2', '3', '4', '5'],
                 monthFlag: false,  // 是否是月训练总结
                 weekFlag: false,   // 是否是周训练总结
             }
