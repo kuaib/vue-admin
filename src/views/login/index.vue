@@ -39,6 +39,10 @@
             <forget-pswd/>
         </el-dialog>
 
+        <div class="footer-link">
+            <a href="http://beian.miit.gov.cn" target="_blank">网站备案号：京ICP备19053937号-1</a>
+        </div>
+
     </div>
 </template>
 
@@ -228,6 +232,14 @@
             /*bottom: 0;*/
             width: 80%;
             margin-top: 15px;
+        }
+        .footer-link {
+            position: fixed;
+            bottom: 50px;
+            width: 100%;
+            color: #fff;
+            font-size: 13px;
+            text-align: center;
         }
     }
 </style>
